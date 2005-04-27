@@ -1,0 +1,138 @@
+#!/bin/sh
+
+len=500
+outfile=Makefile.am
+
+dirs="qla_int \
+ qla_f qla_f2 qla_f3 qla_fn \
+ qla_d qla_d2 qla_d3 qla_dn \
+ qla_q qla_q2 qla_q3 qla_qn \
+ qla_df qla_df2 qla_df3 qla_dfn \
+ qla_dq qla_dq2 qla_dq3 qla_dqn"
+
+incdir='$(top_builddir)/include'
+
+rm -rf $dirs
+
+for dir in $dirs; do
+  lib="lib$dir"
+  tag=`echo $dir |sed s/_int// |tr [a-z] [A-Z]`
+  idir="$incdir/$dir"
+  hdr="${idir}.h"
+  case $dir in
+    qla_[fdq])      hdrs="$hdr ${idir}_generic.h";;
+    qla_[fdq][23n]) hdrs="$hdr ${idir}_generic.h ${idir}_color_generic.h";;
+    qla_d[fq][23n]) hdrs="$hdr ${idir}_color_generic.h";;
+    *)              hdrs="$hdr";;
+  esac
+  mkdir $dir
+
+  echo $dir
+  cd $dir
+  perl ../perl/build_qla.pl ${tag} ${dir}.h .
+  \ls -1 | grep 'QLA.*\.c' > src_list
+  nl=`wc src_list | sed 's/^[^0-9]*\([0-9]*\)[^0-9].*/\1/'`
+  nf=`expr \( $nl + $len - 1 \) / $len`
+  src1=`head -n1 src_list`
+
+###  start output
+  cat > $outfile <<EOF
+# $outfile for building the $dir library
+
+AUTOMAKE_OPTIONS = no-dependencies
+
+EOF
+###  make list of sources
+
+  i=1
+  line0=1
+  line1=$len
+  while [ $i -le $nf ]; do
+    echo "QLASRC$i = \\" >> $outfile
+    cat src_list | sed "$line0,$line1!d" | sed '$!s/$/ \\/' >> $outfile
+    echo >> $outfile
+    echo "QLAOBJ$i = \\" >> $outfile
+    cat src_list | sed "$line0,$line1!d" | sed 's/\.c/\.o/' |sed '$!s/$/ \\/' >> $outfile
+    echo >> $outfile
+    line0=`expr $line0 + $len`
+    line1=`expr $line1 + $len`
+    i=`expr $i + 1`
+  done
+  qlasrc="\$(QLASRC1)"
+  qlaobj="\$(QLAOBJ1)"
+  i=2
+  while [ $i -le $nf ]; do
+    qlasrc="$qlasrc \$(QLASRC$i)"
+    qlaobj="$qlaobj \$(QLAOBJ$i)"
+    i=`expr $i + 1`
+  done
+
+###  continue output
+  cat >> $outfile <<EOF
+QLASRC = $qlasrc
+QLAOBJ = $qlaobj
+
+BUILD_SCRIPT_DIR = \$(top_srcdir)/lib/perl
+
+BUILD_SCRIPT = \$(BUILD_SCRIPT_DIR)/build_qla.pl
+
+BUILD_DEPS = \\
+	\$(BUILD_SCRIPT_DIR)/build_qla.pl \\
+	\$(BUILD_SCRIPT_DIR)/datatypes.pl \\
+	\$(BUILD_SCRIPT_DIR)/expressions_gamma.pl \\
+	\$(BUILD_SCRIPT_DIR)/expressions_scalar.pl \\
+	\$(BUILD_SCRIPT_DIR)/expressions_tensor.pl \\
+	\$(BUILD_SCRIPT_DIR)/formatting.pl \\
+	\$(BUILD_SCRIPT_DIR)/headers.pl \\
+	\$(BUILD_SCRIPT_DIR)/indirection.pl \\
+	\$(BUILD_SCRIPT_DIR)/make_code_binary.pl \\
+	\$(BUILD_SCRIPT_DIR)/make_code_real_complex.pl \\
+	\$(BUILD_SCRIPT_DIR)/make_code_ternary.pl \\
+	\$(BUILD_SCRIPT_DIR)/make_code_unary.pl \\
+	\$(BUILD_SCRIPT_DIR)/operatortypes.pl \\
+	\$(BUILD_SCRIPT_DIR)/prototype.pl \\
+	\$(BUILD_SCRIPT_DIR)/variable_names.pl
+
+lib_LIBRARIES = ../${lib}.a
+
+AM_CFLAGS = -I\$(top_srcdir)/include
+
+# this is just to force automake to include the .c.o rule
+nodist____${lib}_a_SOURCES = $src1
+
+nodist_include_HEADERS = $hdrs
+
+\$(QLASRC): \$(BUILD_DEPS)
+	\$(PERL) \$(BUILD_SCRIPT) $tag $hdr .
+
+../${lib}.a: \$(QLAOBJ) ../optimized/Makefile
+	-rm -f ../${lib}.a
+EOF
+###  make archive commands
+
+  i=1
+  while [ $i -le $nf ]; do
+    echo "	\$(AR) \$(ARFLAGS) ../${lib}.a \$(QLAOBJ${i})" >> $outfile
+    i=`expr $i + 1`
+  done
+
+###  continue output
+  cat >> $outfile <<EOF
+	\$(RANLIB) ../${lib}.a
+
+clean-local:
+	-rm -f $hdrs
+EOF
+###  make clean commands
+
+  i=1
+  while [ $i -le $nf ]; do
+    echo "	-rm -f \$(QLASRC${i})" >> $outfile
+    echo "	-rm -f \$(QLAOBJ${i})" >> $outfile
+    i=`expr $i + 1`
+  done
+
+  rm -f *.c *.h src_list
+  cd ..
+
+done

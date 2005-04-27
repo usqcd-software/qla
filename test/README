@@ -1,0 +1,104 @@
+Test suite for QLA code
+November 7, 2002
+
+----------------------------------------------------------------------
+
+To test the code do
+
+  make all
+
+in this directory.  Results are logged in files named "testresults*"
+and summarized on stdout.  A successful test summary report looks like
+this (with no failures listed before the summary line).
+
+Checked 3359 subroutines in ../../include/qla_d2.h
+
+For complex arithmetic macros a dump of testresultsmacros is produced
+in place of a summary.
+
+A failure looks like this:
+
+FAIL QLA_r_xeq_norm2_P 2.819434e-11
+Checked 3359 subroutines in ../../include/qla_dn.h
+
+The generic name of the routine is given and the number shows the
+floating point discrepancy that caused the failure.
+
+----------------------------------------------------------------------
+
+Code testing is divided among three subdirectories
+associated with the libraries as follows
+
+directory  libraries      description
+--------------------------------------------------
+    int    libqla_int.a   (integer arithmetic)
+
+    scalar libqla_f.a     (real and complex arithmetic)
+           libqla_d.a     (also tests complex arithmetic
+           libqla_df.a     macros in qla_complex.h)
+
+    tensor libqla_d3.a    (arithmetic on color and spin types)
+           libqla_f3.a
+           libqla_df3.a
+           libqla_d2.a
+           libqla_f2.a
+           libqla_df2.a
+           libqla_dn.a
+           libqla_fn.a
+           libqla_dfn.a
+
+The testing strategy involves comparing results of a call against a
+trusted calculation.  To pass a test the absolute numerical
+differences in any single matrix element must be less than the
+tolerances defined in the include/compare.h header.  Currently these
+are 5e-7 for single precision and 5e-15 for double, based on
+calculations with values mostly less than O(10).  
+
+Procedures are classified into the 13 above libraries and then into
+subcategories according to whether they operate on a single datum
+(sng) or on an indexed list of data (idx).  Testing follows a
+bootstrap sequence, meaning that more fundamental code must be tested
+before proceeding.  Thus the indexed code trusts the single site code.
+The single site tensor code trusts some of the single site scalar
+code.  The scalar code trusts the complex macros.  It is recommended
+that testing begin with the integer code, followed by scalar code,
+including the complex macros, and finally any of the tensor codes.
+
+The treatment of random number generation and gamma matrix arithmetic
+is implementation specific.  Here the random number generators and
+gamma matrix operations are taken from MILC code.  The test of the
+random number generator involves simply verifying that the QLA routine
+produces the same generator state and result as the MILC code.  No
+test of randomness is done.  The same is true of the gamma matrix
+routines.  The code tensor/milc_gamma.c collects the MILC code gamma
+matrix routines.
+
+----------------------------------------------------------------------
+
+The test code suite is built using m4.  Directories are organized as
+follows:
+
+lib
+  compare.m4 generates compare.c for comparing QLA data types and QLA
+    arrays used by all test routines
+
+include
+  header files and m4 include files
+  protocol_compare.m4 for inclusion in compare.m4
+  protocol_idx.m4 for inclusion in indexed routines in int, scalar, and tensor 
+  protocol_tensor_sng.m4 for inclusion in test_tensor_sng.m4
+  tensor_idx_defs.m4 for inclusion in test_tensor_idx.m4
+  tensor_args.m4 for inclusion in protocol_tensor_sng.m4 and protocol_idx.mr
+  milc_gamma.h for prototypes for milc_gamma.c routines
+
+int
+scalar
+tensor
+  Code generation for testing the library components listed above.
+  Testing of the tensor code is broken into four parts to avoid
+  overwhelming the compiler.
+
+This directory
+  checkcomplete.pl
+    compares list of tested routines against the prototypes in the 
+    corresponding header file and summarizes results.
