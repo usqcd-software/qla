@@ -1,0 +1,24 @@
+SciDAC QLA C interface -- Level 1 linear algebra routines
+
+This package uses the standard GNU configuration script.  See the file
+INSTALL for datails on compiling and installing.
+
+Documentation is included in the doc directory.  This is not included in
+the installation.  See the README file in the doc directory for details.
+
+Contents of directories in src
+
+  doc		Documentation - Postscript and HTML
+  include	Predefined headers and generated headers
+  lib/cmath	Complex arithmetic sources
+  lib/perl	Perl script for building the libraries
+  lib/random	Random number utilities
+  lib/c99	c99 functions for non-c99 compliant compilers.
+  lib/qla_*	Contains makefile for each library
+  tests		Test suite
+
+
+Bugs and suggestions:
+C. DeTar
+University of Utah
+detar@physics.utah.edu

@@ -1,0 +1,11 @@
+Authors of QLA
+==============
+
+The QLA API was designed as a part of the National Computational
+Infrastructure for Lattice Gauge Theory (http://www.lqcd.org/).
+Many members of the Software Committee contributed to the design.
+
+The main part of the library, test suite and documentation was written by
+Carleton Detar <detar@physics.utah.edu>.  The conversion to use autoconf
+and automake along with other modifications and the inclusion of the
+optimized routines was done by James Osborn <osborn@physics.utah.edu>.

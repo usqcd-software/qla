@@ -1,0 +1,123 @@
+===========================================================================
+2005-04-27	version 1.3
+===========================================================================
+Rearranged directories to have a top level lib and include.
+Now available from Jlab CVS.
+
+===========================================================================
+2003-09-04	version 1.2
+===========================================================================
+Autoconfiscated and automakeified.
+Added macro QLA_Ns in qla_types.h set to the number of spins (default 4).
+Added functions QLA_S_eq_S with all indexing varieties.
+
+===========================================================================
+2003-02-04	version 1.1 released
+===========================================================================
+1. Dropped the equivalent Gauge and StaggeredPropagator types and
+   consolidated to a "ColorMatrix" type with type code "M" (which
+   was previously used for StaggeredPropagator).
+
+2. Changed StaggeredFermion to ColorVector.
+
+3. Introduced enhanced precision for the result of global reductions.
+
+   A new long double type with code "Q" has been introduced.
+   Its use is limited to returning results from global reductions
+   and to type conversion back to double.
+
+   Global reductions may now produce results in the same precision
+   as the source, or in the next higher precision.
+
+   e.g. QLA_QD3_m_eq_sum_M gives result as type QLA_Q3_ColorMatrix
+
+   The addition of long double results requires the possibility of
+   conversion from long double back to double.  e.g. QLA_DQ3_M_veq_M
+
+   This change adds new libraries and headers with identifiers qla_dq,
+   qla_dq3, qla_dq2, qla_dqn, qla_q, qla_q2, qla_q3, qla_qn, and new
+   accessors, e.g. QLA_Q_elem_M.
+
+4. New elementary unary functions:
+
+    ceil, floor, cosh, sinh, tanh, log10
+
+5. New elementary binary functions added to mod, min, max
+  
+    ldexp, pow, atan2
+
+   The naming conventions may seem a bit idiosyncratic...
+
+    QLA_F_R_eq_R_atan2_R, QLA_F_R_eq_R_pow_R, QLA_F_R_eq_R_ldexp_I
+
+6. Local squared norm and local inner product
+
+   Rather than performing a reduction, these operations generate
+   a Real or Complex array.  e.g.
+
+    QLA_F3_R_xeq_norm2_M, QLA_D2_C_veq_D_dot_D
+
+   We also include the real part of the inner product, as in
+
+    QLA_D3_R_veq_re_V_dot_V
+
+   The allowed source types now include matrices as well as vectors,
+   as illustrated.  The meaning of inner product for matrices A, B is
+   the natural choice: Tr (A^\dagger B)
+
+   We have tried to maintain the parallelism in reduction operations:
+
+     QLA_D3_r_veq_re_D_dot_D
+
+   The change to lowercase r distinguishes global from local
+   operation.
+
+7. Real to integer conversion...
+
+   We now distinguish truncation and rounding.  Previously we had
+   only truncation, so we change the name
+
+      QLA_F_I_eqop_R -> QLA_F_I_eqop_trunc_R
+
+   and introduce
+
+      QLA_F_I_eqop_round_R
+
+   Since "round" was first introduced in the standard C library in C99,
+   we provide a version of "round" for older compilers.  The source
+   code is in the subdirectory c99-src and the library is libqla_c99.a
+   (just one module for now!).
+
+8. Other added functions
+
+    M_eqop_spintrace_P
+    T_eqop_i_T (multiplication by i for all complex types)
+    C_eq_C_divide_C
+    I_eq_I_divide_I   
+
+9. Integer reductions now produce only a Real type result:
+
+    i_eqop_sum_I -> r_eqop_sum_I
+    i_eqop_I_dot_I -> r_eqop_I_dot_I
+    i_eqop_norm2_I -> r_eqop_norm2_I
+
+10. A new real part of the global inner product
+
+    e.g. QLA_F3_r_veq_re_D_dot_D
+
+11. Miscellaneous name changes
+
+      plus_i_times_R -> plus_i_R
+      realtrace_M -> re_trace_M
+      imagtrace_M -> im_trace_M
+      Re -> re
+      Im -> im
+
+12. New complex macros for computing the real and imaginary parts
+    of products:
+
+      e.g. QLA_r_peq_Re_ca_times_c for Re(a^* * b)
+
+===========================================================================
+2002-11-10	Initial release - version 1.0
+===========================================================================
