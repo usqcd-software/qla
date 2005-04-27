@@ -1,0 +1,2388 @@
+% -*-LaTeX-*- document QLA API (C Language Binding) version 1.1
+%
+\documentclass{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Math ops
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\Re}{\mathop{\rm Re}}
+\renewcommand{\Im}{\mathop{\rm Im}}
+\newcommand{\integer}{\mathop{\rm int}}
+\newcommand{\Tr}{\mathop{\rm Tr}}
+\newcommand{\diag}{\mathop{\rm diag}}
+\newcommand{\op}{\mathop{\rm op}}
+\renewcommand{\not}{\mathop{\rm not}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Names of types
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\tReal}{QLA\ttdash Real }
+\newcommand{\tComplex}{QLA\ttdash Complex }
+\newcommand{\tInt}{QLA\ttdash Int }
+\newcommand{\tColorMatrix}{QLA\ttdash ColorMatrix }
+\newcommand{\tHalfFermion}{QLA\ttdash HalfFermion }
+\newcommand{\tDiracFermion}{QLA\ttdash DiracFermion }
+\newcommand{\tColorVector}{QLA\ttdash ColorVector }
+\newcommand{\tDiracPropagator}{QLA\ttdash DiracPropagator }
+\newcommand{\tRandomState}{QLA\ttdash RandomState }
+\newcommand{\tqlaReal}{QLA\ttdash Real }
+\newcommand{\tqlaComplex}{QLA\ttdash Complex }
+\newcommand{\tqlaInt}{QLA\ttdash Int }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Prototype elements
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\namespace}{QLA}
+\newcommand{\allEqOps}{{\tt eq, peq, meq, eqm}}
+\newcommand{\allTypes}{{\tt S, I, R, C, V, H, D, M, P}}
+\newcommand{\allNumericTypes}{{\tt I, R, C, V, H, D, M, P}}
+\newcommand{\allFloatTypes}{{\tt R, C, V, H, D, M, P}}
+\newcommand{\allComplexTypes}{{\tt C, M, H, D, V, P}}
+\newcommand{\ttdash}{{\tt \_}}
+\newcommand{\itt}{\it T}
+\newcommand{\extraarg}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Patterns for prototypes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\protoUnarySingleTypesCR}{{\tt void \namespace}\ttdash{\tt C}\ttdash{\it eqop}\ttdash{\tt R}{\tt ( restrict \tComplex *r, \tReal *a\extraarg)}}
+\newcommand{\protoUnarySingleTypesRI}{{\tt void \namespace}\ttdash{\tt R}\ttdash{\it eqop}\ttdash{\tt I}{\tt ( restrict \tReal *r, \tInt *a\extraarg)}}
+\newcommand{\protoUnarySingleTypesQual}[5]{{\tt void \namespace}\ttdash{\tt #1}\ttdash{\it eqop}\ttdash#2\ttdash{\tt #3}{\tt ( restrict #4 *r, }\\
+  & {\tt #5 *a\extraarg)}}
+\newcommand{\protoUnaryQual}[1]{{\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash#1\ttdash\itt{\tt ( restrict}{\it Type }{\tt *r,}\\
+ & {\it Type }{\tt *a\extraarg)}}
+\newcommand{\protoUnaryQualCR}[1]{{\tt void \namespace}\ttdash{\tt C}\ttdash{\it eqop}\ttdash#1\ttdash{\tt R ( restrict \tComplex }{\tt *r, \tReal }{\tt *a\extraarg)}}
+\newcommand{\protoUnaryQualCC}[1]{{\tt void \namespace}\ttdash{\tt C}\ttdash{\it eqop}\ttdash#1\ttdash{\tt C ( restrict \tComplex }{\tt *r, \tComplex }\\
+       &  {\tt *a\extraarg)}}
+\newcommand{\protoUnaryQualRC}[1]{{\tt void \namespace}\ttdash{\tt R}\ttdash{\it eqop}\ttdash#1\ttdash{\tt C ( restrict \tReal }{\tt *r, \tComplex }{\tt *a\extraarg)}}
+\newcommand{\protoUnaryQualRR}[1]{{\tt void \namespace}\ttdash{\tt R}\ttdash{\it eqop}\ttdash#1\ttdash{\tt R ( restrict \tReal }{\tt *r, \tReal }{\tt *a\extraarg)}}
+\newcommand{\protoUnarySum}{{\tt void \namespace}\ttdash{\it t}\ttdash{\it eqop}\ttdash sum\ttdash\itt{\tt ( restrict}{\it Type }{\tt *r,}{\it Type }{\tt *a\extraarg)}}
+\newcommand{\protoUnary}{{\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash\itt{\tt ( restrict}{\it Type }{\tt *r,}{\it Type }{\tt *a\extraarg)}}
+\newcommand{\protoUnaryA}{{\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash\itt{\tt a( restrict }{\it Type }{\tt *r,}{\it Type }{\tt *a\extraarg)}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% QLA macro names
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\qlaNcMacro}{{\tt QLA}\ttdash{\tt Nc }}
+\newcommand{\qlaPrecisionMacro}{{\tt QLA}\ttdash{\tt Precision}}
+\newcommand{\qlaColorsMacro}{{\tt QLA}\ttdash{\tt Colors}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Omit functions special to QDP
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\shift}{}
+\newcommand{\shiftleftmult}{}
+\newcommand{\shiftleftmultadj}{}
+\newcommand{\funcfill}{}
+\newcommand{\multireduction}{
+The scalar variants of the reduction functions are equivalent to an assignment.
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Functions special to QLA
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\longdoubletodouble}{
+\paragraph{Convert long double to double}
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash {\tt DQ}\ttdash\itt\ttdash{\it eqop}\ttdash\itt{\tt ( restrict}{\it Type}{\tt \_D }{\tt *r,}{\it Type}{\tt \_Q }{\tt *a\extraarg)} \\
+  \hline
+  Meaning     & $r = a$ \\
+  \hline
+  \itt     & {\tt R, C, H, P, V, D, M} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\globalnormsqtypeconv}{
+\paragraph{Global squared norm: float to double}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash {\tt DF}\ttdash{\tt r}\ttdash{\it eqop}\ttdash{\tt norm2}\ttdash\itt{\tt ( restrict \tqlaReal\_D *r, }\\
+              & {\it Type}{\tt \_F *a\extraarg)}\\
+  \hline
+  Meaning     & $r = \sum |a|^2$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \itt        & \allNumericTypes \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Global squared norm: double to long double}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash {\tt QD}\ttdash{\tt r}\ttdash{\it eqop}\ttdash{\tt norm2}\ttdash\itt{\tt ( restrict \tqlaReal\_Q *r, }\\
+              & {\it Type}{\tt \_D *a\extraarg)} \\
+  \hline
+  Meaning     & $r = \sum |a|^2$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \itt        & \allNumericTypes \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\globaldottypeconv}{
+\paragraph{Global inner product: float to double}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt DF}\ttdash{\tt c}\ttdash{\it eqop}\ttdash\itt\ttdash{\tt dot}\ttdash\itt{\tt ( restrict \tqlaComplex\_D *r, }\\
+              & {\it Type}{\tt \_F *a, }{\it Type}{\tt \_F *b\extraarg)} \\
+  exception   & {\tt void \namespace}\ttdash{\tt DF}\ttdash{\tt r}\ttdash{\it eqop}\ttdash{\tt R}\ttdash{\tt dot}\ttdash{\tt R}{\tt ( restrict \tReal\_D *r, }\\
+              & {\tt \tReal\_F *a, }{\tt \tReal\_F }{\tt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = \sum \Tr a^\dagger \cdot b$ \\
+  \hline
+  \itt        & {\tt R, C, M, H, D, V, P} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt DF}\ttdash{\tt r}\ttdash{\it eqop}\ttdash{\tt re}\ttdash\itt\ttdash{\tt dot}\ttdash\itt{\tt ( restrict \tqlaComplex\_D *r, }\\
+              & {\it Type}{\tt \_F *a, }{\it Type}{\tt \_F *b\extraarg)} \\
+  \hline
+  Meaning     & $r = \Re \sum \Tr a^\dagger \cdot b$ \\
+  \hline
+  \itt        & {\tt C, M, H, D, V, P} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+
+\paragraph{Global inner product: double to long double}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt QD}\ttdash{\tt c}\ttdash{\it eqop}\ttdash\itt\ttdash{\tt dot}\ttdash\itt{\tt ( restrict \tqlaComplex\_Q *r, }\\
+              & {\it Type}{\tt \_D *a, }{\it Type}{\tt \_D *b\extraarg)} \\
+  exception   & {\tt void \namespace}\ttdash{\tt QD}\ttdash{\tt r}\ttdash{\it eqop}\ttdash{\tt R}\ttdash{\tt dot}\ttdash{\tt R}{\tt ( restrict \tReal\_Q *r, }\\
+              & {\tt \tReal\_D *a, }{\tt \tReal\_D }{\tt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = \sum \Tr a^\dagger \cdot b$ \\
+  \hline
+  \itt        & {\tt R, C, M, H, D, V, P} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt QD}\ttdash{\tt r}\ttdash{\it eqop}\ttdash{\tt re}\ttdash\itt\ttdash{\tt dot}\ttdash\itt{\tt ( restrict \tqlaComplex\_Q *r, }\\
+              & {\it Type}{\tt \_D *a, }{\it Type}{\tt \_D *b\extraarg)} \\
+  \hline
+  Meaning     & $r = \Re \sum \Tr a^\dagger \cdot b$ \\
+  \hline
+  \itt        & {\tt C, M, H, D, V, P} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\globalsumtypeconv}{
+\paragraph{Global sums: float to double}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt DF}\ttdash{\it t}\ttdash{\it eqop}\ttdash sum\ttdash\itt{\tt ( restrict}{\it QLA\_Type}{\tt \_D }{\tt *r,}{\it Type}{\tt \_F }{\tt *a\extraarg)} \\
+  \hline
+  Meaning     & $r = \sum a$ \\
+  \hline
+  \itt     & \allNumericTypes \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Global sums: double to long double}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt QD}\ttdash{\it t}\ttdash{\it eqop}\ttdash sum\ttdash\itt{\tt ( restrict}{\it QLA\_Type}{\tt \_Q }{\tt *r,}{\it Type}{\tt \_D }{\tt *a\extraarg)} \\
+  \hline
+  Meaning     & $r = \sum a$ \\
+  \hline
+  \itt     & \allNumericTypes \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\title{
+   QLA Linear Algebra Interface for QCD \\{\large Version 1.1}
+}
+\author{ SciDAC Software Coordinating Committee}
+
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+This is a user's guide for the C binding for the QCD Linear Algebra
+Applications Programmer Interface developed under the auspices of the
+U.S. Department of Energy Scientific Discovery through Advanced
+Computing (SciDAC) program.
+
+The QLA interface operates on single node data.  Data objects are
+primitives, such as SU(N) matrices or SU(N) vectors, or arrays of such
+objects.  Linear algebra operations, such as products of matrices and
+vectors, are carried out either on single objects or arrays of
+objects.  For arrays of objects a variety of indirect addressing
+schemes is supported, including indirect indexing (gathers and
+scatters) and pointers.  Various reduction operations (e.g.\ global
+sums) and fill operations (e.g.\ setting values to zero) are also
+included.  It is intended that a subset of operations in this
+interface be optimized for specific architectures, with attention
+paid to efficient cache loading and fast instructions.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Datatypes}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{sec.datatypes}
+
+\subsection{Generic Names}
+
+There are two levels of generic naming: fully generic in which both
+color and precision may be controlled globally through two macros and
+color-generic in which precision is explicit but not color.  Generic
+naming applies to datatypes, module names, and accessor macros and
+follows similar rules.
+
+Names for fully generic datatypes are listed in the table below.
+\begin{center}
+\begin{tabular}{|l|l|l|}
+\hline
+name                      & abbreviation & description \\
+\hline
+{\tt \tReal            } & {\tt R} & real \\
+{\tt \tComplex         } & {\tt C} & complex \\
+{\tt \tInt             } & {\tt I} & integer \\
+{\tt \tColorMatrix     } & {\tt M} & $N_c \times N_c$ complex matrix \\
+{\tt \tHalfFermion     } & {\tt H} & two-spin, $N_c$ color spinor \\
+{\tt \tDiracFermion    } & {\tt D} & four-spin, $N_c$ color spinor \\
+{\tt \tColorVector} & {\tt V} & one-spin,  $N_c$ color spinor \\
+{\tt \tDiracPropagator } & {\tt P} & $4N_c \times 4N_c$ complex matrix \\
+{\tt \tRandomState     } & {\tt S} & implementation dependent \\
+\hline
+\end{tabular}
+\end{center}
+Names for color-generic datatypes are obtained by inserting an
+\ttdash{\tt F} for single precision, \ttdash{\tt D} for double
+precision, or \ttdash{\tt Q} for extended precision after {\tt QLA}
+where appropriate.  Thus {\tt QLA}\ttdash{\tt D}\ttdash{ColorMatrix}
+specifies a double precision color matrix with color to be set through
+a global macro.
+
+An extended precision type with abbreviation {\tt Q} is also defined,
+but it is currently intended only for extending precision in the
+global reduction of double precision data, and then only where the
+architecture and compiler supports it.  Only a handful of functions
+use it, namely, reduction, type conversion and some copying and
+incrementing.
+
+\subsection{Specific Types for Color and Precision}
+
+According to the chosen color and precision, names for specific
+floating point types are constructed from names for generic types.
+Thus {\tt \tColorMatrix} becomes {\tt QLA}\ttdash{\it PC}\ttdash{\tt
+ColorMatrix} where the precision {\it P} is {\tt F}, {\tt D}, or {\tt
+Q} according to the table below
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+abbreviation & description \\
+\hline
+{\tt F}            & single precision \\
+{\tt D}            & double precision \\
+{\tt Q}            & extended precision \\
+\hline
+\end{tabular}
+\end{center}
+and {\it C} is {\tt 2}, {\tt 3}, or {\tt N}, if color is a
+consideration, as listed below.
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+abbreviation & description \\
+\hline
+{\tt 2}            & SU(2) \\
+{\tt 3}            & SU(3) \\
+{\tt N}            & SU(N) \\
+\hline
+\end{tabular}
+\end{center}
+(For the moment there is no provision for distinguishing among integer
+sizes.)
+
+For example, the type
+%
+\begin{verbatim}
+  QLA_F3_DiracFermion
+\end{verbatim}
+%
+describes a four-spin, three-color spinor.
+
+The general color choice {\tt N} can also be used for specialized
+$SU(2)$ or $SU(3)$ at the cost of degrading performance.
+
+\subsection{Color and Precision Uniformity}
+
+In standard coding practice it is assumed that a user keeps one of the
+precision and color options in force throughout the compilation.  So
+as a rule all functions in the interface take operands of the same
+precision and color.  As with data type names, function names come in
+generic and color- and precision-specific forms, as described in the
+next section.  Exceptions to this rule are functions that explicitly
+convert from double to single precision and vice versa.  These and
+functions that do not depend on color or precision are divided among
+seventeen separate libraries.  If the user chooses to adopt color and
+precision uniformity, then all variables can be defined with generic
+types and all functions accessed through generic names.  The
+prevailing color and precision is then defined through macros.  The
+interface automatically translates data type names and function names
+to the appropriate specific type names through typedefs and macros.
+With such a scheme and careful coding, changing only two macros and
+the QLA library converts code from one color and precision choice to
+another.
+
+\subsection{Breaking Color and Precision Uniformity}
+
+It is permissible for a user to mix precision and color choices.  This
+is done by declaring variables with specific type names, using
+functions with specific names, and making appropriate precision
+conversions when needed.  In this case it may be necessary to link
+against a larger set of libraries.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Function Naming Conventions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Scalar Example}
+
+Function names are constructed with a pattern that suggests their
+functionality.  Thus the function
+%
+\begin{verbatim}
+  QLA_V_eq_M_times_V(c,u,b)
+\end{verbatim}
+%
+carries out the product
+%
+\begin{displaymath}
+  c = ub
+\end{displaymath}
+%
+where {\tt c} and {\tt b} are pointers to staggered fermion vectors
+and {\tt u} is a pointer to a color matrix.  The elements of the
+function name are separated by an underscore ``{\tt \_}'' for
+readability.  All function names in this interface begin with ``{\tt
+QLA}''.  The specific name continues with a precision and color label
+as in 
+%
+\begin{verbatim}
+   QLA_F3_V_eq_M_times_V
+\end{verbatim}
+%
+for single precision $SU(3)$.  Then comes a string of elements that
+mimics the algebraic expression.  The next character ``{\tt V}''
+abbreviates the type for the destination operand, in this case the
+argument ``{\tt c}''.  The abbreviations are listed in
+Sec.~\ref{sec.datatypes}.  The next string ``{\tt eq}'' specifies the
+assignment operator.  In this case it is a straight replacement, but
+increments of various types are also supported, as described below.
+Then comes the first rhs operand type ``{\tt M}'' followed by a string
+``{\tt times}'' specifying the operation and a character ``{\tt V}''
+specifying the second rhs operand type.
+
+Supported variants of the assignment operator are tabulated below.
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+ abbreviation & meaning \\
+\hline
+ eq   & $=$  \\
+ peq  & $+=$ \\
+ meq  & $-=$ \\
+ eqm  & $=-$ \\
+\hline
+\end{tabular}
+\end{center}
+
+Some functions allow all of these and some take only a simple
+replacement ($=$).
+
+\subsection{Vector Example}
+
+To denote operation on vectors we attach the prefix ``{\tt v}'' to the
+assignment operator and add an argument for the number of elements.
+So
+%
+\begin{verbatim}
+  QLA_V_veq_M_times_V(c,u,b,n)
+\end{verbatim}
+%
+does
+%
+\begin{verbatim}
+  c[i] = u[i]*b[i]
+\end{verbatim}
+%
+for $i = 1\ldots{}n$.
+
+\subsection{Indirect Addressing for Binary Operations}
+
+Various indexing schemes are supported.  The table below elaborates
+the choices for the matrix-vector product example above, including the
+two illustrated above.  In all cases it is assumed $i = 0\ldots{}n-1$.
+\begin{center}
+\begin{tabular}{|r|l|l|}
+\hline
+ & function name & meaning \\
+\hline
+1  & {\tt QLA\_V\_eq\_M\_times\_V(c,u,b)              } & {\tt c = u*b                         } \\
+2  & {\tt QLA\_V\_veq\_M\_times\_V(c,u,b,n)           } & {\tt c[i] = u[i]*b[i]                } \\
+3  & {\tt QLA\_V\_xeq\_M\_times\_V(c,u,b,j,n)         } & {\tt c[j[i]] = u[j[i]]*b[j[i]]       } \\
+4  & {\tt QLA\_V\_eq\_xM\_times\_V(c,u,ju,b,n)        } & {\tt c[i] = u[ju[i]]*b[i]            } \\
+5  & {\tt QLA\_V\_eq\_M\_times\_xV(c,u,b,jb,n)        } & {\tt c[i] = u[i]*b[jb[i]]            } \\
+6  & {\tt QLA\_xV\_eq\_M\_times\_V(c,jc,u,b,n)        } & {\tt c[jc[i]] = u[i]*b[i]            } \\
+7  & {\tt QLA\_V\_eq\_xM\_times\_xV(c,u,ju,b,jb,n)    } & {\tt c[i] = u[ju[i]]*b[jb[i]]        } \\
+8  & {\tt QLA\_xV\_eq\_M\_times\_xV(c,jc,u,b,jb,n)    } & {\tt c[jc[i]] = u[i]*b[jb[i]]        } \\
+9  & {\tt QLA\_xV\_eq\_xM\_times\_V(c,jc,u,b,jb,n)    } & {\tt c[jc[i]] = u[ju[i]]*b[i]        } \\
+10  & {\tt QLA\_xV\_eq\_xM\_times\_xV(c,jc,u,ju,b,jb,n)} & {\tt c[jc[i]] = u[ju[i]]*b[jb[i]]    } \\
+11  & {\tt QLA\_V\_veq\_pM\_times\_V(c,u,b,n)          } & {\tt c[i] = (*u[i])*b[i]             } \\
+12  & {\tt QLA\_V\_veq\_M\_times\_pV(c,u,b,n)          } & {\tt c[i] = u[i]*(*b[i])             } \\
+13  & {\tt QLA\_V\_veq\_pM\_times\_pV(c,u,b,n)         } & {\tt c[i] = (*u[i])*(*b[i])          } \\
+14  & {\tt QLA\_V\_xeq\_pM\_times\_V(c,u,b,j,n)        } & {\tt c[j[i]] = (*u[j[i]])*b[j[i]]    } \\
+15  & {\tt QLA\_V\_xeq\_M\_times\_pV(c,u,b,j,n)       } & {\tt c[j[i]] = (*u[i])*(*b[j[i]])     } \\
+16  & {\tt QLA\_V\_xeq\_pM\_times\_pV(c,u,b,j,n)       } & {\tt c[j[i]] = (*u[j[i]])*(*b[j[i]]) } \\
+\hline
+\end{tabular}
+\end{center}
+
+Gang-indexing variant 3 applies the same indexing scheme to all three
+arguments simultaneously.  The convention is to place an ``{\tt x}''
+before the assignment operator.  The indexing variants $4-10$ apply an
+index to each of the operands separately in various combinations.  In
+this case the convention places an ``{\tt x}'' before the type
+abbreviation for the variable that is indexed.  Variants $11-16$
+replace the array argument with an array of pointers.  The symbol ``{\tt
+p}'' before the type abbreviation identifies the affected variable.
+
+
+\subsection{Constant Arguments}
+
+As illustrated above, functions generally have vector and scalar
+variants.  In this example, the vector variants require all operands
+to be indexed.  However, in some cases it is desirable to keep some
+arguments constant - i.e.\ never subscripted.  For example the
+function
+%
+\begin{verbatim}
+   QLA_V_veq_c_times_V(c,z,b,n)
+\end{verbatim}
+%
+multiplies an array of color vectors by a complex constant as in
+%
+\begin{verbatim}
+   c[i] = z*b[i]
+\end{verbatim}
+%
+for $i = 1\ldots{}n$.  In this case we specify that the argument is
+constant (nonsubscripted) by converting the type abbreviation to lower
+case: ``{\tt c}''.
+
+
+\subsection{Indirect Addressing for Binary Operations with a Constant}
+
+When an argument in a binary operation is a constant it is never
+subscripted by definition.  The list of variants is shorter.  For
+example, for multiplication of an SU(N) vector by a constant we have
+the following.
+
+\begin{center}
+\begin{tabular}{|r|l|l|}
+\hline
+ & function name & meaning \\
+\hline
+1  & {\tt QLA\_V\_eq\_c\_times\_V(c,z,b)              } & {\tt c = z*b                         } \\
+2  & {\tt QLA\_V\_veq\_c\_times\_V(c,z,b,n)           } & {\tt c[i] = z*b[i]                } \\
+3  & {\tt QLA\_V\_xeq\_c\_times\_V(c,z,b,j,n)         } & {\tt c[j[i]] = z*b[j[i]]       } \\
+5  & {\tt QLA\_V\_eq\_c\_times\_xV(c,z,b,jb,n)        } & {\tt c[i] = z*b[jb[i]]            } \\
+6  & {\tt QLA\_xV\_eq\_c\_times\_V(c,jc,z,b,n)        } & {\tt c[jc[i]] = z*b[i]            } \\
+8  & {\tt QLA\_xV\_eq\_c\_times\_xV(c,jc,z,b,jb,n)    } & {\tt c[jc[i]] = z*b[jb[i]]        } \\
+12  & {\tt QLA\_V\_veq\_c\_times\_pV(c,z,b,n)          } & {\tt c[i] = z*(*b[i])             } \\
+15  & {\tt QLA\_V\_xeq\_c\_times\_pV(c,z,b,j,n)       } & {\tt c[j[i]] = z*(*b[j[i]])     } \\
+\hline
+\end{tabular}
+\end{center}
+
+The scalar variant {\tt QLA\_V\_eq\_C\_times\_V(c,z,b)} is also
+in the library and is equivalent to variant 1 above.
+
+\subsection{Indirect Addressing for Unary Operations}
+
+For unary operations the list is also shorter.  For example, for copying an
+SU(N) staggered fermion vector the variants are as follows.
+
+\begin{center}
+\begin{tabular}{|r|l|l|}
+\hline
+ & function name & meaning \\
+\hline
+1  & {\tt QLA\_V\_eq\_V(c,b)              } & {\tt c = b                         } \\
+2  & {\tt QLA\_V\_veq\_V(c,b,n)           } & {\tt c[i] = b[i]                } \\
+3  & {\tt QLA\_V\_xeq\_V(c,b,j,n)         } & {\tt c[j[i]] = b[j[i]]       } \\
+5  & {\tt QLA\_V\_eq\_xV(c,b,jb,n)        } & {\tt c[i] = b[jb[i]]            } \\
+6  & {\tt QLA\_xV\_eq\_V(c,jc,b,n)        } & {\tt c[jc[i]] = b[i]            } \\
+8  & {\tt QLA\_xV\_eq\_xV(c,jc,b,jb,n)    } & {\tt c[jc[i]] = b[jb[i]]        } \\
+12  & {\tt QLA\_V\_veq\_pV(c,b,n)          } & {\tt c[i] = (*b[i])             } \\
+15  & {\tt QLA\_V\_xeq\_pV(c,b,j,n)       } & {\tt c[j[i]] = (*b[j[i]])     } \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Indirect Addressing for Unary Operations with a Constant}
+
+For unary operations with a constant rhs the list is even shorter.
+For example, for setting a staggered fermion vector to zero the
+variants are as follows.
+
+\begin{center}
+\begin{tabular}{|r|l|l|}
+\hline
+ & function name & meaning \\
+\hline
+1  & {\tt QLA\_V\_eq\_zero(c)              } & {\tt c = 0                         } \\
+2  & {\tt QLA\_V\_veq\_V(c,n)           } & {\tt c[i] = 0                } \\
+3  & {\tt QLA\_V\_xeq\_V(c,j,n)         } & {\tt c[j[i]] = 0       } \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Color argument for SU(N)}
+
+For the general color case $SU(N)$ the specific function call requires
+an extra argument giving the number of colors.  It always comes first.
+Thus in the above example we would write
+%
+\begin{verbatim}
+   QLA_FN_V_veq_c_times_V(nc,c,z,b,n)
+\end{verbatim}
+%
+where {\tt nc} specifies the number of colors.  In normal practice,
+the value of the argument {\tt nc} should be derived from the required
+user-defined macro \qlaNcMacro specifying the prevailing number of
+colors.  The generic function is actually a macro and is automatically
+converted to this usage with \qlaNcMacro for the first argument.
+However, if the specific name is used, the user must supply the
+argument.
+
+\subsection{Adjoint}
+
+The adjoint of an operand is specified by a suffix {\tt a} after the
+type abbreviation.  Thus
+%
+\begin{verbatim}
+  QLA_F3_V_eq_Ma_times_V(c,u,b)
+\end{verbatim}
+%
+carries out the product
+%
+\begin{verbatim}
+  c = adjoint(u)*b
+\end{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Compilation with QLA}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Generic header and macros}
+
+As described above, normally the user selects a prevailing color and
+precision for the entire calculation.  In that case it is permissible
+to use the generic function names and datatypes, making it possible to
+change colors and precision with a simple recompilation, if desired.
+For this purpose the generic header file is {\tt qla.h}.  The
+following macros must be defined by the user prior to including this
+header file:
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+ required macro & choices \\
+\hline
+ \qlaPrecisionMacro & {\tt 'F','D'} \\
+ \qlaColorsMacro    & {\tt 2, 3, 'N'} \\
+ \qlaNcMacro        & $n_c$ if {\tt \qlaColorsMacro = 'N'} \\
+\hline
+\end{tabular}
+\end{center}
+%
+Single quotes are required around nonnumeric values.  
+
+A sample code preamble for double precision $SU(3)$ reads
+%
+\begin{verbatim}
+#define QLA_Precision 'D'
+#define QLA_Colors 3
+#include <qla.h>
+\end{verbatim}
+%
+with the include search path set to {\tt \$QLA}\ttdash{\tt
+HOME/include} and {\tt \$QLA}\ttdash{\tt HOME} set to the home
+directory for QLA\@.  With such a preamble the generic function names
+and datatypes are automatically mapped to the requested specific
+types.  Of course the precision and color macros can also be defined
+through a compiler flag, as in
+%
+\begin{verbatim}
+gcc  -DQLA_Precision=\'D\' -DQLA_Colors=3 ...
+\end{verbatim}
+%
+The single quotes are required and they must each be preceded by a
+backslash {\tt \\} to keep them from being eaten by the shell.
+
+For $SU(4)$ one might do
+%
+\begin{verbatim}
+#define QLA_Precision 'F'
+#define QLA_Colors 'N'
+#define QLA_Nc 4
+#include <qla.h>
+\end{verbatim}
+%
+In the current implementation the maximum number of colors is 5,
+specified by the macro
+\begin{verbatim}
+  QLA_MAX_Nc
+\end{verbatim}
+defined in the auxiliary header {\tt qla}\ttdash{\tt types.h}.
+Changing it is trivial, but requires recompiling the libraries (but
+not rebuilding the source code).
+
+\subsection{Libraries}
+
+Normally, it is necessary to link six libraries for a given choice of
+color and precision.  Routines involving only integers, the scalar
+complex math and random number libraries, and the standard math
+library are common to all choices.  Routines involving only real or
+complex numbers are common to all colors.  Thus for single precision
+$SU(3)$ the required libraries are linked through
+%
+\begin{verbatim}
+  -lqla_int -lqla_f -lqla_f3 -lm -lqla_cmath -lqla_random 
+\end{verbatim}
+%
+with the library search path set to {\tt \$QLA}\ttdash{\tt HOME/lib}.
+A complete list of the QLA libraries is given below.  Each library
+module is standalone, except that a few require scalar functions in
+{\tt qla}\ttdash{\tt cmath}, {\tt qla}\ttdash{\tt random}, and {\tt
+m}, the standard C math library.  If the {\tt round} function is
+needed and the compiler is not C99-compliant, the library {\tt -lqla\_c99}
+is also required.
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+ name & purpose \\
+\hline
+ {\tt libqla}\ttdash{\tt cmath.a}  & double precision {\tt cexp, clog, csqrt, cexpi} \\
+ {\tt libqla}\ttdash{\tt random.a} & random number generator             \\
+ {\tt libqla}\ttdash{\tt c99.a}    & round                               \\
+ {\tt libqla}\ttdash{\tt int.a}    & integers, boolean                   \\
+ {\tt libqla}\ttdash{\tt f.a  }    & real, complex, single precision     \\
+ {\tt libqla}\ttdash{\tt d.a  }    & real, complex, double precision     \\
+ {\tt libqla}\ttdash{\tt q.a  }    & real, complex, extended precision   \\
+ {\tt libqla}\ttdash{\tt df.a }    & real, complex, precision conversion \\
+ {\tt libqla}\ttdash{\tt dq.a }    & real, complex, precision conversion \\
+ {\tt libqla}\ttdash{\tt f3.a }    & SU(3), single precision             \\
+ {\tt libqla}\ttdash{\tt d3.a }    & SU(3), double precision             \\
+ {\tt libqla}\ttdash{\tt q3.a }    & SU(3), extended precision           \\
+ {\tt libqla}\ttdash{\tt df3.a}    & SU(3), precision conversion         \\
+ {\tt libqla}\ttdash{\tt dq3.a}    & SU(3), precision conversion         \\
+ {\tt libqla}\ttdash{\tt f2.a }    & SU(2), single precision             \\
+ {\tt libqla}\ttdash{\tt d2.a }    & SU(2), double precision             \\
+ {\tt libqla}\ttdash{\tt q2.a }    & SU(2), extended precision           \\
+ {\tt libqla}\ttdash{\tt df2.a}    & SU(2), precision conversion         \\
+ {\tt libqla}\ttdash{\tt dq2.a}    & SU(2), precision conversion         \\
+ {\tt libqla}\ttdash{\tt fn.a }    & SU(N), single precision             \\
+ {\tt libqla}\ttdash{\tt dn.a }    & SU(N), double precision             \\
+ {\tt libqla}\ttdash{\tt qn.a }    & SU(N), extended precision           \\
+ {\tt libqla}\ttdash{\tt dfn.a}    & SU(N), precision conversion         \\
+ {\tt libqla}\ttdash{\tt dqn.a}    & SU(N), precision conversion         \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Nonuniform color and precision}
+
+Users wishing to vary color and precision within a single calculation
+must use specific type names and function names whenever these types
+and names differ from the prevailing precision and color.  For
+example, if an $SU(3)$ calculation is done primarly in single
+precision, but has double precision components, the following preamble
+is appropriate:
+%
+\begin{verbatim}
+#define QLA_Precision 'F'
+#define QLA_Colors 3
+#include <qla.h>
+#include <qla_d.h>
+#include <qla_d3.h>
+\end{verbatim}
+%
+and the following linkage to get the corresponding libraries:
+%
+\begin{verbatim}
+  -lqla_int -lqla_f -lqla_f3 -lqla_d -lqla_df 
+      -lqla_d3 -lqla_df3 -lqla_cmath -lqla_random -lm
+\end{verbatim}
+%
+As in the previous example, the single precision and type conversion
+components for $SU(3)$ are automatically included through {\tt qla.h}.
+Then we need the corresponding double precision components.  And we
+also need the {\tt DF} libraries to do conversions between single and
+double precision.  They, too have colored and noncolored members.
+
+The following table lists all the QLA headers.
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+ name & purpose \\
+\hline
+ {\tt qla.h }                   & Master header                       \\
+ {\tt qla}\ttdash{\tt cmath.h } & double precision {\tt cexp, clog, csqrt, cexpi} \\
+ {\tt qla}\ttdash{\tt random.h} & random number seed and generation   \\
+ {\tt qla}\ttdash{\tt int.h   } & integers, boolean                   \\
+ {\tt qla}\ttdash{\tt f.h     } & real, complex, single precision     \\
+ {\tt qla}\ttdash{\tt d.h     } & real, complex, double precision     \\
+ {\tt qla}\ttdash{\tt q.h     } & real, complex, extended precision   \\
+ {\tt qla}\ttdash{\tt df.h    } & real, complex, precision conversion \\
+ {\tt qla}\ttdash{\tt dq.h    } & real, complex, precision conversion \\
+ {\tt qla}\ttdash{\tt f3.h    } & SU(3), single precision             \\
+ {\tt qla}\ttdash{\tt d3.h    } & SU(3), double precision             \\
+ {\tt qla}\ttdash{\tt q3.h    } & SU(3), extended precision           \\
+ {\tt qla}\ttdash{\tt df3.h   } & SU(3), precision conversion         \\
+ {\tt qla}\ttdash{\tt dq3.h   } & SU(3), precision conversion         \\
+ {\tt qla}\ttdash{\tt f2.h    } & SU(2), single precision             \\
+ {\tt qla}\ttdash{\tt d2.h    } & SU(2), double precision             \\
+ {\tt qla}\ttdash{\tt q2.h    } & SU(2), extended precision           \\
+ {\tt qla}\ttdash{\tt df2.h   } & SU(2), precision conversion         \\
+ {\tt qla}\ttdash{\tt dq2.h   } & SU(2), precision conversion         \\
+ {\tt qla}\ttdash{\tt fn.h    } & SU(N), single precision             \\
+ {\tt qla}\ttdash{\tt dn.h    } & SU(N), double precision             \\
+ {\tt qla}\ttdash{\tt qn.h    } & SU(N), extended precision           \\
+ {\tt qla}\ttdash{\tt dfn.h   } & SU(N), precision conversion         \\
+ {\tt qla}\ttdash{\tt dqn.h   } & SU(N), precision conversion         \\
+\hline
+\end{tabular}
+\end{center}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Auxiliary Features}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In addition to the library of linear algebra routines, the QLA
+interface provides implementation-independent macros for accessing
+derived data types and for setting color and precision values.
+
+\subsection{Accessor macros}
+
+The data layout for the composite types is left to the implementation.
+However, it is then necessary to provide tools for accessing the
+components of these types.  The following table lists macros that an
+implementer must supply for building the QLA library.
+
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+  macro                                       \\
+\hline
+{\tt QLA}\ttdash{\it PC}\ttdash\ttdash{\tt elem}\ttdash{\tt M}{\tt(a,ic,jc)}                  \\
+{\tt QLA}\ttdash{\it PC}\ttdash\ttdash{\tt elem}\ttdash{\tt H}{\tt(a,ic,is)}            \\
+{\tt QLA}\ttdash{\it PC}\ttdash\ttdash{\tt elem}\ttdash{\tt D}{\tt(a,ic,is)}           \\
+{\tt QLA}\ttdash{\it PC}\ttdash\ttdash{\tt elem}\ttdash{\tt V}{\tt(a,ic)}          \\
+{\tt QLA}\ttdash{\it PC}\ttdash\ttdash{\tt elem}\ttdash{\tt D}{\tt(a,ic,is,jc,js)}  \\
+\hline
+\end{tabular}
+\end{center}
+
+Both generic and precision-color-specific versions of these macros are
+provided.  Generic names omit the precision-color suffix {\it PC}, the
+symbol {\it P} standing for the precision label {\tt Q}, {\tt D} or
+{\tt F}, and {\it C}, the color label {\tt 2}, {\tt 3}, or {\tt N}.
+
+Here are the definitions of the dummy macro arguments above:
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+  argument           & meaning                                 \\
+\hline
+{\tt a}   & name of structure (value, not pointer) \\
+{\tt ic}  & color row index \\
+{\tt is}  & spin row index \\
+{\tt jc}  & color column index \\
+{\tt js}  & spin column index \\
+\hline
+\end{tabular}
+\end{center}
+
+The number of Dirac spins is fixed at four for a full spinor and two
+for a half-spinor.  The number of colors is 2, 3 or \qlaNcMacro for
+the $SU(N)$ case.
+
+\subsection{Complex functions}
+
+The following single-variable functions involving the complex type are
+also provided.
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+  name           & meaning      \\
+\hline
+{\tt ComplexD QLA}\ttdash{\tt cexp(ComplexD *a) }  & $\exp(a)$ \\
+{\tt ComplexD QLA}\ttdash{\tt csqrt(ComplexD *a)}  & $\sqrt{a} \ \ \arg(a) \in (-\pi,\pi]$ \\
+{\tt ComplexD QLA}\ttdash{\tt clog(ComplexD *a) }  & $\log(a)  \ \ \arg(a) \in [0, 2\pi)$ \\
+{\tt ComplexD QLA}\ttdash{\tt cexpi(RealD a)    }  & $\exp(ia)$ \\
+\hline
+\end{tabular}
+\end{center}
+
+
+\subsection{Complex variable macros}
+
+The following macros are provided for access and complex arithmetic.
+
+\paragraph{Complex macros with one argument}
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+  name           & meaning      \\
+\hline
+\verb|QLA_real(c)   |  & $\Re c$   \\
+\verb|QLA_imag(c)   |  & $\Im c$   \\
+\verb|QLA_arg(c)    |  & $\arg(c)$ \\
+\verb|QLA_norm_c(c) |  & $|c|$     \\
+\verb|QLA_norm2_c(c)|  & $|c|^2$   \\
+\hline
+\end{tabular}
+\end{center}
+
+\paragraph{Complex macros with two arguments}
+
+The naming conventions follow closely those for the functions, except
+that the arguments are all values, rather than pointers.
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+  name           & meaning      \\
+\hline
+\verb|QLA_c_eq_r(c,a)      | & $ c = a \ \ \mbox{(real)}        $ \\
+\verb|QLA_c_eq_c(c,a)      | & $ c = a                          $ \\
+\verb|QLA_c_eqm_c(c,a)     | & $ c = -a                         $ \\
+\verb|QLA_c_eqm_c(c,a)     | & $ c = -a                         $ \\
+\verb|QLA_c_eqm_r(c,a)     | & $ c = -a \ \ \mbox{(real)}       $ \\
+\verb|QLA_c_peq_r(c,a)     | & $ c = c +  a \ \ \mbox{(real)}   $ \\
+\verb|QLA_c_peq_c(c,a)     | & $ c = c +  a                     $ \\
+\verb|QLA_c_meq_r(c,a)     | & $ c = c -  a \ \ \mbox{(real)}   $ \\
+\verb|QLA_c_meq_c(c,a)     | & $ c = c -  a                     $ \\
+\verb|QLA_c_meq_c(c,a)     | & $ c = c -  a                     $ \\
+\verb|QLA_c_eq_ca(c,a)     | & $ c =  a^*                       $ \\
+\verb|QLA_c_peq_ca(c,a)    | & $ c = c +  a^*                   $ \\
+\verb|QLA_c_meq_ca(c,a)    | & $ c = c -  a^*                   $ \\
+\verb|QLA_c_eqm_ca(c,a)    | & $ c =- a^*                       $ \\
+\verb|QLA_r_eq_Re_c(c,a)   | & $ c = \Re(a)                     $ \\
+\verb|QLA_r_eq_Im_c(c,a)   | & $ c = \Im(a)                     $ \\
+\verb|QLA_r_peq_Re_c(c,a)  | & $ c = c +  \Re(a)                $ \\
+\verb|QLA_r_peq_Im_c(c,a)  | & $ c = c +  \Im(a)                $ \\
+\verb|QLA_r_meq_Re_c(c,a)  | & $ c = c -  \Re(a)                $ \\
+\verb|QLA_r_meq_Im_c(c,a)  | & $ c = c -  \Im(a)                $ \\
+\verb|QLA_r_eqm_Re_c(c,a)  | & $ c =- \Re(a)                    $ \\
+\verb|QLA_r_eqm_Im_c(c,a)  | & $ c =- \Im(a)                    $ \\
+\verb|QLA_c_eq_ic(c,a)     | & $ c = ia                         $ \\
+\verb|QLA_c_eqm_ic(c,a)    | & $ c = -ia                        $ \\
+\verb|QLA_c_peq_ic(c,a)    | & $ c = c +  ia                    $ \\
+\verb|QLA_c_meq_ic(c,a)    | & $ c = c -  ia                    $ \\
+\verb|QLA_c_meq_ic(c,a)    | & $ c = c -  ia                    $ \\
+\verb|QLA_c_eqm_ic(c,a)    | & $ c = -ia                        $ \\
+\hline
+\end{tabular}
+\end{center}
+
+\newpage
+\paragraph{Complex macros with three arguments}
+
+Again, the naming conventions follow closely those for the functions,
+except that the arguments are all values, rather than pointers.
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+  name           & meaning      \\
+\hline
+\verb|QLA_c_eq_c_plus_c(c,a,b)      | & $ c = a + b                       $ \\
+\verb|QLA_c_eq_c_plus_ic(c,a,b)     | & $ c = a + ib                      $ \\
+\verb|QLA_c_eq_r_plus_ir(c,a,b)     | & $ c = a+ib                        $ \\
+\verb|QLA_c_peq_r_plus_ir(c,a,b)    | & $ c = c + a+ib                    $ \\
+\verb|QLA_c_eqm_r_plus_ir(c,a,b)    | & $ c =- a+ib                       $ \\
+\verb|QLA_c_meq_r_plus_ir(c,a,b)    | & $ c = c - a+ib                    $ \\
+\verb|QLA_c_eq_c_minus_c(c,a,b)     | & $ c = a - b                       $ \\
+\verb|QLA_c_eq_c_minus_ca(c,a,b)    | & $ c = a - b^*                     $ \\
+\verb|QLA_c_eq_c_minus_c(c,a,b)     | & $ c = a - ib                      $ \\
+\verb|QLA_c_eq_c_times_c(c,a,b)     | & $ c = ab                          $ \\
+\verb|QLA_c_peq_c_times_c(c,a,b)    | & $ c = c + ab                      $ \\
+\verb|QLA_c_eqm_c_times_c(c,a,b)    | & $ c = -ab                         $ \\
+\verb|QLA_c_meq_c_times_c(c,a,b)    | & $ c = c -  ab                     $ \\
+\verb|QLA_r_eq_Re_c_times_c(c,a,b)  | & $ c = \Re(ab)                     $ \\
+\verb|QLA_r_peq_Re_c_times_c(c,a,b) | & $ c = c + \Re(ab)                 $ \\
+\verb|QLA_r_eqm_Re_c_times_c(c,a,b) | & $ c = -\Re(ab)                    $ \\
+\verb|QLA_r_meq_Re_c_times_c(c,a,b) | & $ c = c -  \Re(ab)                $ \\
+\verb|QLA_r_eq_Im_c_times_c(c,a,b)  | & $ c = \Im(ab)                     $ \\
+\verb|QLA_r_peq_Im_c_times_c(c,a,b) | & $ c = c + \Im(ab)                 $ \\
+\verb|QLA_r_eqm_Im_c_times_c(c,a,b) | & $ c = -\Im(ab)                    $ \\
+\verb|QLA_r_meq_Im_c_times_c(c,a,b) | & $ c = c -  \Im(ab)                $ \\
+\verb|QLA_c_eq_c_div_c(c,a,b)       | & $ c = a / b                       $ \\
+\verb|QLA_c_eq_c_times_ca(c,a,b)    | & $ c = ab^*                        $ \\
+\verb|QLA_c_peq_c_times_ca(c,a,b)   | & $ c = c +  ab^*                   $ \\
+\verb|QLA_c_eqm_c_times_ca(c,a,b)   | & $ c = -ab^*                       $ \\
+\verb|QLA_c_meq_c_times_ca(c,a,b)   | & $ c = c -  ab^*                   $ \\
+\verb|QLA_r_eq_Re_c_times_ca(c,a,b) | & $ c = \Re(ab^*)                   $ \\
+\verb|QLA_r_peq_Re_c_times_ca(c,a,b)| & $ c = c +  \Re(ab^*)              $ \\
+\verb|QLA_r_eqm_Re_c_times_ca(c,a,b)| & $ c = -\Re(ab^*)                  $ \\
+\verb|QLA_r_meq_Re_c_times_ca(c,a,b)| & $ c = c - \Re(ab^*)               $ \\
+\verb|QLA_r_eq_Im_c_times_ca(c,a,b) | & $ c = \Im(ab^*)                   $ \\
+\verb|QLA_r_peq_Im_c_times_ca(c,a,b)| & $ c = c +  \Im(ab^*)              $ \\
+\verb|QLA_r_eqm_Im_c_times_ca(c,a,b)| & $ c = -\Im(ab^*)                  $ \\
+\verb|QLA_r_meq_Im_c_times_ca(c,a,b)| & $ c = c - \Im(ab^*)               $ \\
+\verb|QLA_c_eq_ca_times_c(c,a,b)    | & $ c = a^*b                        $ \\
+\verb|QLA_c_peq_ca_times_c(c,a,b)   | & $ c = c +  a^*b                   $ \\
+\verb|QLA_c_eqm_ca_times_c(c,a,b)   | & $ c = -a^*b                       $ \\
+\verb|QLA_c_meq_ca_times_c(c,a,b)   | & $ c = c -  a^*b                   $ \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+  name           & meaning      \\
+\hline
+\verb|QLA_r_eq_Re_ca_times_c(c,a,b) | & $ c = \Re(a^*b)                   $ \\
+\verb|QLA_r_peq_Re_ca_times_c(c,a,b)| & $ c = c +  \Re(a^*b)              $ \\
+\verb|QLA_r_eqm_Re_ca_times_c(c,a,b)| & $ c = -\Re(a^*b)                  $ \\
+\verb|QLA_r_meq_Re_ca_times_c(c,a,b)| & $ c = c -  \Re(a^*b)              $ \\
+\verb|QLA_r_eq_Im_ca_times_c(c,a,b) | & $ c = \Im(a^*b)                   $ \\
+\verb|QLA_r_peq_Im_ca_times_c(c,a,b)| & $ c = c +  \Im(a^*b)              $ \\
+\verb|QLA_r_eqm_Im_ca_times_c(c,a,b)| & $ c = -\Im(a^*b)                  $ \\
+\verb|QLA_r_meq_Im_ca_times_c(c,a,b)| & $ c = c -  \Im(a^*b)              $ \\
+\verb|QLA_c_eq_ca_times_ca(c,a,b)   | & $ c = a^*b^*                      $ \\
+\verb|QLA_c_peq_ca_times_ca(c,a,b)  | & $ c = c +  a^*b^*                 $ \\
+\verb|QLA_c_eqm_ca_times_ca(c,a,b)  | & $ c = -a^*b^*                     $ \\
+\verb|QLA_c_meq_ca_times_ca(c,a,b)  | & $ c = c -  a^*b^*                 $ \\
+\verb|QLA_r_eq_Re_ca_times_ca(c,a,b)| & $ c = \Re(a^*b^*)                 $ \\
+\verb|QLA_r_peq_Re_ca_times_ca(c,a,b)|& $ c = c +  \Re(a^*b^*)            $ \\
+\verb|QLA_r_eqm_Re_ca_times_ca(c,a,b)|& $ c = -\Re(a^*b^*)                $ \\
+\verb|QLA_r_meq_Re_ca_times_ca(c,a,b)|& $ c = c - \Re(a^*b^*)             $ \\
+\verb|QLA_r_eq_Im_ca_times_ca(c,a,b)| & $ c = \Im(a^*b^*)                 $ \\
+\verb|QLA_r_peq_Im_ca_times_ca(c,a,b)|& $ c = c +  \Im(a^*b^*)            $ \\
+\verb|QLA_r_eqm_Im_ca_times_ca(c,a,b)|& $ c = -\Im(a^*b^*)                $ \\
+\verb|QLA_r_meq_Im_ca_times_ca(c,a,b)|& $ c = c - \Im(a^*b^*)             $ \\
+\verb|QLA_c_eq_c_times_r(c,a,b)     | & $ c = ab \ \ \mbox{($b$ real)}    $ \\
+\verb|QLA_c_peq_c_times_r(c,a,b)    | & $ c = c + ab \ \ \mbox{($b$ real)}$ \\
+\verb|QLA_c_eqm_c_times_r(c,a,b)    | & $ c = -ab \ \ \mbox{($b$ real)}   $ \\
+\verb|QLA_c_meq_c_times_r(c,a,b)    | & $ c = c - ab \ \ \mbox{($b$ real)}$ \\
+\verb|QLA_c_peq_c_times_r(c,a,b)    | & $ c = c + ab \ \ \mbox{($b$ real)}$ \\
+\verb|QLA_c_eq_r_times_c(c,a,b)     | & $ c = ab \ \ \mbox{($a$ real)}    $ \\
+\verb|QLA_c_peq_r_times_c(c,a,b)    | & $ c = c + ab \ \ \mbox{($a$ real)}$ \\
+\verb|QLA_c_eqm_r_times_c(c,a,b)    | & $ c = -ab \ \ \mbox{($a$ real)}   $ \\
+\verb|QLA_c_meq_r_times_c(c,a,b)    | & $ c = c - ab \ \ \mbox{($a$ real)}$ \\
+\verb|QLA_c_peq_r_times_c(c,a,b)    | & $ c = c + ab \ \ \mbox{($a$ real)}$ \\
+\verb|QLA_c_eq_c_div_r(c,a,b)       | & $ c = a/b \ \ \mbox{($b$ real)}   $ \\
+\hline
+\end{tabular}
+\end{center}
+
+\paragraph{Complex macros with four arguments}
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+  name           & meaning      \\
+\hline
+\verb|QLA_c_eq_c_times_c_plus_c(c,a,x,b) | & $c = ax + b                   $\\
+\verb|QLA_c_eq_c_times_c_minus_c(c,a,x,b)| & $c = ax - b                   $\\
+\verb|QLA_c_eq_c_times_r_plus_r(c,a,x,b) | & $c = ax + b \ \ \mbox{($x$ real)}$\\
+\verb|QLA_c_eq_c_times_r_minus_r(c,a,x,b)| & $c = ax - b \ \ \mbox{($x$ real)}$\\
+\verb|QLA_c_eq_r_times_c_plus_c(c,a,x,b) | & $c = ax + b \ \ \mbox{($a$ real)}$\\
+\verb|QLA_c_eq_r_times_c_minus_c(c,a,x,b)| & $c = ax - b \ \ \mbox{($a$ real)}$\\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection{Gamma matrices}
+
+Until we have decided on a standard, gamma matrices are numbered from
+$\mu = -1$ to $3$ with $\mu = -1$ specifying $\gamma_5$.
+
+\subsection{Random numbers}
+
+The generation of random numbers is based on the state of the
+generator, stored in an implementation-specific structure of type {\tt
+RandomState}.  The following functions are provided for seeding and
+accessing random numbers.
+
+\begin{center}
+\begin{tabular}{|l|}
+\hline
+  name               \\
+\hline
+\verb|RealF QLA_random(RandomState *s);            | \\
+\verb|RealF QLA_gaussian(RandomState *s);          | \\
+\verb|void QLA_seed_random(RandomState *s, Int seed, Int i); | \\
+\hline
+\end{tabular}
+\end{center}
+
+The first of these returns a random real value uniformly distributed
+on $[0,1]$.  The second returns a real Gaussian normal deviate
+$N(0,1)$.  The third seeds a single random number generator from a
+pair of integers {\tt seed, i}.  In typical usage, many generators are
+maintained.  Thus the integer {\tt i} distinguishes them and the
+integer {\tt seed} seeds it, resulting in the initial state {\tt s}.
+It is assumed that storage for the state {\tt s} has been allocated
+prior to the call.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Function Details}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{sec:details}
+
+This section describes in some detail the names and functionality for
+all functions in the interface.  Because of the variety of indexing
+schemes, datatypes, and assignment operations, there are several
+thousand names altogether.  However, there are only a couple dozen
+categories.  It is hoped that the construction of the names is
+sufficiently natural that with only a little practice, the user can
+guess the name of any function and determine its functionality without
+consulting a list.
+
+\subsection{Unary Operations}
+
+\paragraph{Elementary unary functions on reals}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnaryQualRR{\it func}  \\
+  \hline
+  Meaning     & $r = {\rm func}(a)$ \\
+  \hline
+  {\it func}  & cos, sin, tan, acos, asin, atan,
+		sqrt, fabs, exp, log, sign, \\
+              & ceil, floor, cosh, sinh, tanh, log10 \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Elementary unary functions real to complex}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnaryQualCR{\it func}  \\
+  \hline
+  Meaning     & $r = \exp(ia)$ \\
+  \hline
+  {\it func}  & cexpi \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Elementary unary functions complex to real}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnaryQualRC{\it func}  \\
+  \hline
+  Meaning     & $r = {\rm func}(a)$ \\
+  \hline
+  {\it func}  & norm, arg \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Elementary unary functions on complex values}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnaryQualCC{\it func}  \\
+  \hline
+  Meaning     & $r = {\rm func}(a)$ \\
+  \hline
+  {\it func}  & cexp, csqrt, clog \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Elementary binary functions on reals}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt R}\ttdash{\it eqop}\ttdash{\tt R}\ttdash{\it func}\ttdash{\tt R( restrict \tReal *r, \tReal *a,}\\
+              & {\tt \tReal }{\tt *b\extraarg)} \\
+  exception   & {\tt void \namespace}\ttdash{\tt R}\ttdash{\it eqop}\ttdash{\tt R}\ttdash{\tt ldexp}\ttdash{\tt I( restrict \tReal *r, \tReal *a,}\\
+              & {\tt \tInt }{\tt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = {\rm func}(a,b)$ \\
+  \hline
+  {\it func}  & {\tt  mod, max, min, ldexp, pow, atan2} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Elementary binary functions on integers}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt I}\ttdash{\it eqop}\ttdash{\tt I}\ttdash{\it op}\ttdash{\tt I( restrict}{ \tInt *r, \tInt *a,} \\
+              & {\tt \tInt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = {\rm func}(a,b)$\\
+  \hline
+  $\op$       & {\tt lshift, rshift, mod, max, min} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Copying and incrementing}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnary  \\
+  \hline
+  Meaning     & $r = a$, etc. \\
+  \hline
+  \itt     & \allNumericTypes \\
+  \hline
+  {\it eqop}  & \allEqOps \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\shift
+
+\paragraph{Hermitian conjugate}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnaryA  \\
+  \hline
+  Meaning     & $r = a^\dagger$, etc. \\
+  \hline
+  \itt     & {\tt C, M, P} \\
+  \hline
+  {\it eqop}  & \allEqOps \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Transpose}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnaryQual{\tt transpose}  \\
+  \hline
+  Meaning     & $r = {\rm transpose}(a)$, etc. \\
+  \hline
+  \itt     & {\tt M, P} \\
+  \hline
+  {\it eqop}  & \allEqOps \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Complex conjugate}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnaryQual{\tt conj}  \\
+  \hline
+  Meaning     & $r = a^*$, etc. \\
+  \hline
+  \itt     & {\tt C, V, H, D, M, P} \\
+  \hline
+  {\it eqop}  & \allEqOps \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Local squared norm: uniform precision}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnarySingleTypesQual{R}{\tt norm2}{\itt}{\tqlaReal}{{\it Type}} \\
+  \hline
+  Meaning     & $r = |a|^2$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \itt        & \allComplexTypes \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\subsection{Type conversion and component extraction and insertion}
+
+\paragraph{Convert float to double}
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash {\tt DF}\ttdash\itt\ttdash{\it eqop}\ttdash\itt{\tt ( restrict}{\it Type}{\tt \_D }{\tt *r,}{\it Type}{\tt \_F }{\tt *a\extraarg)} \\
+  \hline
+  Meaning     & $r = a$ \\
+  \hline
+  \itt     & {\tt R, C, V, H, D, M, P} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Convert double to float}
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash {\tt FD}\ttdash\itt\ttdash{\it eqop}\ttdash\itt{\tt ( restrict}{\it Type}{\tt \_F }{\tt *r,}{\it Type}{\tt \_D }{\tt *a\extraarg)} \\
+  \hline
+  Meaning     & $r = a$ \\
+  \hline
+  \itt     & {\tt R, C, V, H, D, M, P} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\longdoubletodouble
+
+\paragraph{Convert real to complex (zero imaginary part)}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnarySingleTypesCR \\
+  \hline
+  Meaning     & $\Re r = a$, $\Im r = 0$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Convert real and imaginary to complex}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt C}\ttdash{\it eqop}\ttdash{\tt R\_plus\_i\_R( restrict \tComplex *r,}\\
+              & {\tt \tReal *a, \tReal *b\extraarg)} \\
+  \hline
+  Meaning     & $\Re r = a$, $\Im r = b$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Real part of complex}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnarySingleTypesQual{R}{\tt re}{C}{\tReal}{\tComplex} \\
+  \hline
+  Meaning     & $r = \Re a$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Imaginary part of complex}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnarySingleTypesQual{R}{\tt im}{C}{\tReal}{\tComplex} \\
+  \hline
+  Meaning     & $r = \Im a$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Integer to real}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnarySingleTypesRI \\
+  \hline
+  Meaning     & $r = a$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Real to integer (truncate)}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt I}\ttdash{\it eqop}\ttdash{\tt trunc}\ttdash{\tt R ( restrict \tInt }{\tt *r, \tReal }{\tt *a\extraarg)}\\
+  \hline
+  Meaning     & $r = a$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Real to integer (round)}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt I}\ttdash{\it eqop}\ttdash{\tt round}\ttdash{\tt R ( restrict \tInt }{\tt *r, \tReal }{\tt *a\extraarg)}\\
+  \hline
+  Meaning     & {\tt r = a>=0 ? a+0.5 : a-0.5} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Accessing a color matrix element}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt C}\ttdash{\it eqop}\ttdash{\tt elem}\ttdash\itt{\tt ( restrict \tComplex *r, Type *a,}\\
+              & {\tt int i, int j\extraarg)} \\
+  \hline
+  Meaning     & $r = a_{i,j}$\\
+  \hline
+  \itt        & {\tt M} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Inserting a color matrix element}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash{\tt elem}\ttdash{\tt C( restrict Type *r, \tComplex *a,}\\
+              & {\tt int i, int j\extraarg)} \\
+  \hline
+  Meaning     & $r_{i,j} = a$\\
+  \hline
+  \itt        & {\tt M} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Accessing a half fermion or Dirac fermion spinor element}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt C}\ttdash{\it eqop}\ttdash{\tt elem}\ttdash\itt{\tt ( restrict \tComplex *r, Type *a,}\\
+              & {\tt int i\_c, int i\_s\extraarg)} \\
+  \hline
+  Meaning     & $r = a_{i_c,i_s}$\\
+  \hline
+  \itt        & {\tt H, D} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Inserting a half fermion or Dirac fermion spinor element}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash{\tt elem}\ttdash{\tt C( restrict Type *r, \tComplex *a, }\\
+              & {\tt int i\_c, int i\_s\extraarg)} \\
+  \hline
+  Meaning     & $r_{i_c,i_s} = a$\\
+  \hline
+  \itt        & {\tt H, D} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Accessing a staggered fermion spinor element}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt C}\ttdash{\it eqop}\ttdash{\tt elem}\ttdash{\tt V( restrict \tComplex *r,}\\
+              & {\tt \tColorVector *a, int i\extraarg)} \\
+  \hline
+  Meaning     & $r = a_i$\\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Inserting a staggered fermion spinor element}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt V}\ttdash{\it eqop}\ttdash{\tt elem}\ttdash{\tt C( restrict \tColorVector *r,}\\
+              & {\tt \tComplex *a, int i\extraarg)} \\
+  \hline
+  Meaning     & $r_i = a$\\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Accessing a Dirac propagator matrix element}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt C}\ttdash{\it eqop}\ttdash{\tt elem}\ttdash{\tt P( restrict \tComplex *r, \tDiracPropagator *a,} \\
+              & {\tt int i\_c, int i\_s, int j\_c, int j\_s\extraarg)} \\
+  \hline
+  Meaning     & $r = a_{i_c,i_s,j_c,j_s}$\\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Inserting a Dirac propagator matrix element}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt P}\ttdash{\it eqop}\ttdash{\tt elem}\ttdash{\tt C( restrict \tDiracPropagator *r, \tComplex *a,} \\
+              & {\tt int i\_c, int i\_s, int j\_c, int j\_s\extraarg)} \\
+  \hline
+  Meaning     & $r_{i_c,i_s,j_c,j_s} = a$\\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Extracting a color column vector from a color matrix}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt V}\ttdash{\it eqop}\ttdash{\tt colorvec}\ttdash\itt{\tt ( restrict \tColorVector *r,}\\
+              & {\tt Type *a, int j\extraarg)} \\
+  \hline
+  Meaning     & $r_i = a_{i,j}\ \ \ \mbox{for $i = 0\ldots{}n_c-1$}$\\
+  \hline
+  \itt        & {\tt M} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Inserting a color vector into a color matrix}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash{\tt colorvec}\ttdash{\tt V( restrict Type *r, \tColorVector *a,}\\
+              & {\tt int j\extraarg)} \\
+  \hline
+  Meaning     & $r_{i,j} = a_i\ \ \ \mbox{for $i = 0\ldots{}n_c-1$}$\\
+  \hline
+  \itt        & {\tt M} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Extracting a color column vector from a half fermion or Dirac fermion spinor}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt V}\ttdash{\it eqop}\ttdash{\tt colorvec}\ttdash\itt{\tt ( restrict \tColorVector *r, Type *a,}\\
+              & {\tt int i\_s\extraarg)} \\
+  \hline
+  Meaning     & $r_{i_c} = a_{i_c,i_s}\ \ \ \mbox{for $i_c = 0\ldots{}n_c-1$}$\\
+  \hline
+  \itt        & {\tt H, D} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Inserting a color column vector into a half fermion or Dirac fermion spinor}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash{\tt colorvec}\ttdash{\tt V( restrict Type *r, \tColorVector *a, }\\
+              & {\tt int i\_s\extraarg)} \\
+  \hline
+  Meaning     & $r_{i_c,i_s} = a_{i_c}\ \ \ \mbox{for $i_c = 0\ldots{}n_c-1$}$\\
+  \hline
+  \itt        & {\tt H, D} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Extracting a Dirac column vector from a Dirac propagator matrix}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt D}\ttdash{\it eqop}\ttdash{\tt diracvec}\ttdash{\tt P( restrict \tDiracFermion *r,}\\
+              & {\tt \tDiracPropagator *a, int jc, int js\extraarg)} \\
+  \hline
+  Meaning     & $r_{i_c,i_s} = a_{i_c,i_s,j_c,j_s}\ \ \ \mbox{for $i_c = 0\ldots{}n_c-1, i_s = 0\ldots{}3$}$\\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Inserting a Dirac column vector into a Dirac propagator matrix}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt P}\ttdash{\it eqop}\ttdash{\tt diracvec}\ttdash{\tt D( restrict \tDiracPropagator *r,}\\
+              & {\tt \tDiracFermion *a, int jc, int js\extraarg)} \\
+  \hline
+  Meaning     & $r_{i_c,i_s,j_c,j_s} = a_{i_c,i_s} \ \ \ \mbox{for $i_c = 0\ldots{}n_c-1, i_s = 0\ldots{}3$}$\\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Trace of color matrix}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnarySingleTypesQual{C}{\tt trace}{M}{\tComplex}{\tColorMatrix} \\
+  \hline
+  Meaning     & $r = \Tr a$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Real trace of color matrix}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnarySingleTypesQual{R}{\tt re\_trace}{M}{\tReal}{\tColorMatrix} \\
+  \hline
+  Meaning     & $r = \Re\Tr a$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Imaginary trace of color matrix}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnarySingleTypesQual{R}{\tt im\_trace}{M}{\tReal}{\tColorMatrix} \\
+  \hline
+  Meaning     & $r = \Im\Tr a$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Traceless antihermitian part of color matrix}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnarySingleTypesQual{M}{\tt antiherm}{M}{\tColorMatrix}{\tColorMatrix}\\
+  \hline
+  Meaning     & $r = (a - a^\dagger)/2 - i\Im \Tr a/n_c$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Spin trace of Dirac propagator}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnarySingleTypesQual{M}{\tt spintrace}{P}{\tColorMatrix}{\tDiracPropagator} \\
+  \hline
+  Meaning     & $r_{i_c,j_c} = \sum_{i_s} a_{i_c,i_s,j_c,i_s}$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Dirac spin projection}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt H}\ttdash{\it eqop}\ttdash{\tt spproj}\ttdash{\tt D( restrict \tHalfFermion *r,}\\
+              & {\tt \tDiracFermion *a, int d, int p\extraarg)} \\
+  \hline
+  Meaning     & $r = (1 + p\gamma_d)a$\\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Dirac spin reconstruction}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt D}\ttdash{\it eqop}\ttdash{\tt sprecon}\ttdash{\tt H( restrict \tDiracFermion *r,}\\
+              & {\tt \tHalfFermion *a, int d, int p\extraarg)} \\
+  \hline
+  Meaning     & $r = {\rm recon\,}(p,d,a)$\\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\subsection{Binary Operations with Constants}
+
+\paragraph{Multiplication by real constant}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash{\tt r}\ttdash{\tt times}\ttdash\itt{\tt ( restrict}{\it Type }{\tt *r, \tqlaReal *a,}\\
+              & {\it Type }{\tt *b\extraarg)} \\
+  exception    & {\tt void \namespace}\ttdash{\tt I}\ttdash{\it eqop}\ttdash{\tt i}\ttdash{\tt times}\ttdash{\tt I( restrict \tInt *r, \tqlaInt *a,}\\
+              & {\tt \tInt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = a*b$, etc. ($a$ real, constant)
+$
+$\\
+  \hline
+  \itt     & \allNumericTypes \\
+  \hline
+  {\it eqop}  & \allEqOps \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Multiplication by complex constant}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash{\tt c}\ttdash{\tt times}\ttdash\itt{\tt ( restrict}{\it Type }{\tt *r, \tqlaComplex *a,}\\
+              & {\it Type }{\tt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = a*b$, etc. ($a$ complex, constant)
+$
+$\\
+  \hline
+  \itt     & {\tt C, V, H, D, M, P} \\
+  \hline
+  {\it eqop}  & \allEqOps \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Multiplication by i}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash{\tt i}\ttdash\itt{\tt ( restrict}{\it Type }{\tt *r, \tqlaComplex *a,}\\
+              & {\it Type }{\tt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = i*a$, etc.\\
+  \hline
+  \itt     & {\tt C, V, H, D, M, P} \\
+  \hline
+  {\it eqop}  & \allEqOps \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Left multiplication by gamma matrix}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash{\tt gamma}\ttdash{\tt times}\ttdash\itt{\tt ( restrict}{\it Type }{\tt *r, }{\it Type }\\
+              & {\tt *a, int d\extraarg)} \\
+  \hline
+  Meaning     & $r = \gamma_d a$ \\
+  \hline
+  \itt     & {\tt D, P} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Right multiplication by gamma matrix}
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt P}\ttdash{\it eqop}\ttdash{\tt P}\ttdash{\tt times}\ttdash{\tt gamma( restrict}{\it Type }{\tt *r, }{\it Type }\\
+              & {\tt *a, int d\extraarg)} \\
+  \hline
+  Meaning     & $r = a \gamma_d$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\subsection{Binary Operations with Fields}
+
+\paragraph{Division of real, complex, and integer fields}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt R}\ttdash{\it eqop}\ttdash{\tt R}\ttdash{\tt divide}\ttdash{\tt R}{\tt ( restrict \tReal *r, \tReal *a, }\\
+              & {\tt \tReal *b\extraarg)} \\
+  \hline
+  Meaning     & $r = a/b$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt C}\ttdash{\it eqop}\ttdash{\tt C}\ttdash{\tt divide}\ttdash{\tt C}{\tt ( restrict \tComplex *r,}\\
+              & {\tt  \tComplex *a, \tComplex *b\extraarg)} \\
+  \hline
+  Meaning     & $r = a/b$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt I}\ttdash{\it eqop}\ttdash{\tt I}\ttdash{\tt divide}\ttdash{\tt I}{\tt ( restrict \tInt *r, \tInt *a, }\\
+              & {\tt \tInt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = a/b$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Addition}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash\itt\ttdash{\tt plus}\ttdash\itt{\tt ( restrict}{\it Type }{\tt *r, }{\it Type }{\tt *a, }{\it Type }{\tt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = a + b$ \\
+  \hline
+  \itt        & \allNumericTypes \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Subtraction}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash\itt\ttdash{\tt minus}\ttdash\itt{\tt ( restrict}{\it Type }{\tt *r, }{\it Type }{\tt *a, }{\it Type }{\tt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = a - b$ \\
+  \hline
+  \itt        & \allNumericTypes \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Multiplication: uniform types}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash\itt\ttdash{\tt times}\ttdash\itt{\tt ( restrict}{\it Type }{\tt *r, }{\it Type }{\tt *a, }{\it Type }{\tt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = a * b$, etc. \\
+  \hline
+  \itt        & {\tt I, R, C, M, P} \\
+  \hline
+  {\it eqop}  & \allEqOps \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Local inner product}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt C}\ttdash{\it eqop}\ttdash\itt\ttdash{\tt dot}\ttdash\itt{\tt ( restrict \tqlaComplex *r, }\\
+              & {\it Type *a, }{\it Type }{\tt *b\extraarg)} \\
+  exception   & {\tt void \namespace}\ttdash{\tt R}\ttdash{\it eqop}\ttdash{\tt R}\ttdash{\tt dot}\ttdash{\tt R}{\tt ( restrict \tReal *r, }\\
+              & {\tt \tReal *a, }{\tt \tReal }{\tt *b\extraarg)} \\
+              & {\tt void \namespace}\ttdash{\tt R}\ttdash{\it eqop}\ttdash{\tt I}\ttdash{\tt dot}\ttdash{\tt I}{\tt ( restrict \tReal *r, }\\
+              & {\tt \tInt *a, }{\tt \tInt }{\tt *b\extraarg)} \\
+  \hline
+  Meaning     & $r_i = \Tr a^\dagger_i \cdot b_i$ \\
+  \hline
+  \itt        & \allComplexTypes \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt R}\ttdash{\it eqop}\ttdash{\tt re}\ttdash\itt\ttdash{\tt dot}\ttdash\itt{\tt ( restrict \tqlaComplex *r, }\\
+              & {\it Type}{\tt *a, }{\it Type }{\tt *b\extraarg)} \\
+  \hline
+  Meaning     & $r_i = \Re \Tr a^\dagger_i \cdot b_i$ \\
+  \hline
+  \itt        & {\tt C, V, H, D, M, P} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Color matrix from outer product}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\it M}\ttdash{\it eqop}\ttdash{\tt V}\ttdash{\tt times}\ttdash{\tt Va( restrict}{\tt \tColorMatrix }{\tt *r, }\\
+              & {\tt \tColorVector }{\tt *a, }{\tt \tColorVector }{\tt *b\extraarg)} \\
+  \hline
+  Meaning     & $r_{i,j} = a_i * b_j^*$, etc. \\
+  \hline
+  {\it eqop}  & \allEqOps \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Left multiplication by color matrix}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash{\tt M}\ttdash{\tt times}\ttdash\itt{\tt ( restrict}{\it Type }{\tt *r, \tColorMatrix *a, }\\
+              & {\it Type }{\tt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = a * b$, etc. \\
+  \hline
+  \itt        & {\tt V, H, D, M, P} \\
+  \hline
+  {\it eqop}  & \allEqOps \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\shiftleftmult
+
+\paragraph{Adjoint of color matrix times adjoint of color matrix}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt M}\ttdash{\it eqop}\ttdash{\tt Ma}\ttdash{\tt times}\ttdash{\tt Ma ( restrict \tColorMatrix *r, }\\
+              & {\tt \tColorMatrix *a, \tColorMatrix *b\extraarg)} \\
+  \hline
+  Meaning     & $r = a^\dagger * b^\dagger$ \\
+  \hline
+  {\it eqop}  & \allEqOps \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Left multiplication by adjoint of color matrix}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash{\tt Ma}\ttdash{\tt times}\ttdash\itt{\tt ( restrict}{\it Type }{\tt *r, \tColorMatrix *a, }\\
+              & {\it Type }{\tt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = a * b$, etc. \\
+  \hline
+  \itt        & {\tt V, H, D, M, P} \\
+  \hline
+  {\it eqop}  & \allEqOps \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\shiftleftmultadj
+
+\paragraph{Right multiplication by color matrix}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash\itt\ttdash{\tt times}\ttdash{\tt M ( restrict}{\it Type }{\tt *r, \tColorMatrix *a, }\\
+              & {\it Type }{\tt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = a * b$, etc. \\
+  \hline
+  \itt        & {\tt M, P} \\
+  \hline
+  {\it eqop}  & \allEqOps \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Right multiplication by adjoint of color matrix}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash\itt\ttdash{\tt times}\ttdash{\tt Ma ( restrict}{\it Type }{\tt *r, \tColorMatrix *a, }\\
+              & {\it Type }{\tt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = a * b^\dagger$, etc. \\
+  \hline
+  \itt        & {\tt M, P} \\
+  \hline
+  {\it eqop}  & \allEqOps \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\subsection{Ternary Operations with Fields}
+
+\paragraph{Addition with real scalar multiplication}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {{\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash{\tt r}\ttdash{\tt times}\ttdash\itt\ttdash{\tt plus}\itt{\tt ( restrict}{\it Type }{\tt *r, \tqlaReal *a,}}\\
+               & {{\it Type }{\tt *b,}{\it Type }{\tt *c\extraarg)}} \\
+  exception    & {\tt void \namespace}\ttdash{\tt I}\ttdash{\it eqop}\ttdash{\tt i}\ttdash{\tt times}\ttdash{\tt I}\ttdash{\tt plus}{\tt I( restrict \tInt *r, \tqlaInt *a,}\\
+              & {\tt \tInt *b, \tInt *c\extraarg)} \\
+  \hline
+  Meaning     & $r = a * b + c$, etc. \\
+  \hline
+  \itt        & \allNumericTypes \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Subtraction with real scalar multiplication}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {{\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash{\tt r}\ttdash{\tt times}\ttdash\itt\ttdash{\tt minus}\itt{\tt ( restrict}{\it Type }{\tt *r, \tqlaReal *a,}}\\
+              & {{\it Type }{\tt *b,}{\it Type }{\tt *c\extraarg)}} \\
+  exception   & {\tt void \namespace}\ttdash{\tt I}\ttdash{\it eqop}\ttdash{\tt i}\ttdash{\tt times}\ttdash{\tt I}\ttdash{\tt minus}\ttdash{\tt I( restrict \tInt *r, \tqlaInt *a,}\\
+              & {\tt \tInt *b, \tInt *c\extraarg)} \\
+  \hline
+  Meaning     & $r = a * b - c$, etc. \\
+  \hline
+  \itt        & \allNumericTypes \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Addition with complex scalar multiplication}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash{\tt c}\ttdash{\tt times}\ttdash\itt\ttdash{\tt plus}\itt{\tt ( restrict}{\it Type }{\tt *r, }{\tt \tqlaComplex *a, }\\
+              & {\it Type }{\tt *b,}{\it Type }{\tt *c\extraarg)} \\
+  \hline
+  Meaning     & $r = a * b + c$, etc. \\
+  \hline
+  \itt        & {\tt C, V, H, D, M, P} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Subtraction with complex scalar multiplication}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash{\tt c}\ttdash{\tt times}\ttdash\itt\ttdash{\tt minus}\itt{\tt ( restrict}{\it Type }{\tt *r, }{\tt \tqlaComplex *a, }\\
+              & {\it Type }{\tt *b,}{\it Type }{\tt *c\extraarg)} \\
+  \hline
+  Meaning     & $r = a * b - c$, etc. \\
+  \hline
+  \itt        & {\tt C, V, H, D, M, P} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\subsection{Boolean and Bit Operations}
+\paragraph{Comparisons of integers and reals}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt I}\ttdash{\it eqop}\ttdash\itt\ttdash{\it op}\ttdash\itt{\tt ( restrict}{\it Type }{\tt *r, } {\it Type}{\tt *a, }{\it Type }{\tt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = \op(a,b)$ \\
+  \hline
+  \itt        & {\tt I, R} \\
+  \hline
+  $\op$       & {\tt eq, ne, gt, lt, ge, le} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Boolean Operations}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt I}\ttdash{\it eqop}\ttdash{\tt I}\ttdash{\it op}\ttdash{\tt I( restrict}{ \tInt *r, \tInt *a, \tInt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = a \op b$\\
+  \hline
+  $\op$       & {\tt or, and, xor} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt I}\ttdash{\it eqop}\ttdash{\tt not}\ttdash{\tt I( restrict}{ \tInt *r, \tInt *a)} \\
+  \hline
+  Meaning     & $r = \not a$\\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Copymask}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash\itt\ttdash{\tt mask}\ttdash{\tt I}{\tt ( restrict}{\it Type }{\tt *r, }{\it Type }{\tt *a, }{\tt \tInt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = b$ if $a$ is true\\
+  \hline
+  \itt        & \allNumericTypes \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\subsection{Reductions}
+
+\paragraph{Global squared norm: uniform precision}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnarySingleTypesQual{r}{\tt norm2}{\itt}{\tqlaReal}{{\it Type}} \\
+  \hline
+  Meaning     & $r = \sum |a|^2$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \itt        & \allNumericTypes \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\globalnormsqtypeconv
+
+\paragraph{Global inner product}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt c}\ttdash{\it eqop}\ttdash\itt\ttdash{\tt dot}\ttdash\itt{\tt ( restrict \tqlaComplex *r, }\\
+              & {\it Type *a, }{\it Type }{\tt *b\extraarg)} \\
+  exception   & {\tt void \namespace}\ttdash{\tt r}\ttdash{\it eqop}\ttdash{\tt R}\ttdash{\tt dot}\ttdash{\tt R}{\tt ( restrict \tReal *r, }\\
+              & {\tt \tReal *a, }{\tt \tReal }{\tt *b\extraarg)} \\
+              & {\tt void \namespace}\ttdash{\tt r}\ttdash{\it eqop}\ttdash{\tt R}\ttdash{\tt dot}\ttdash{\tt R}{\tt ( restrict \tReal *r, }\\
+              & {\tt \tInt *a, }{\tt \tInt }{\tt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = \sum \Tr a^\dagger \cdot b$ \\
+  \hline
+  \itt        & {\tt \allNumericTypes} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt r}\ttdash{\it eqop}\ttdash{\tt re}\ttdash\itt\ttdash{\tt dot}\ttdash\itt{\tt ( restrict \tqlaComplex *r, }\\
+              & {\it Type}{\tt *a, }{\it Type }{\tt *b\extraarg)} \\
+  \hline
+  Meaning     & $r = \Re \sum \Tr a^\dagger \cdot b$ \\
+  \hline
+  \itt        & {\tt C, H, D, V, P, M} \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\globaldottypeconv
+
+\paragraph{Global sums}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & \protoUnarySum \\
+  exception   & {\tt void \namespace}\ttdash{\tt r}\ttdash{\it eqop}\ttdash sum\ttdash{\tt I( restrict \tqlaReal *r, \tInt *a\extraarg)}\\
+  \hline
+  Meaning     & $r = \sum a$ \\
+  \hline
+  \itt     & \allNumericTypes \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\globalsumtypeconv
+
+\multireduction
+
+\subsection{Fills}
+
+\paragraph{Zero fills}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash{\tt zero}{\tt (}{\it Type }{\tt *r\extraarg)} \\
+  \hline
+  Meaning     & $r = 0$ \\
+  \hline
+  \itt        & \allNumericTypes \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\funcfill
+
+\paragraph{Constant fills and random numbers}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash{\it t}{\tt ( restrict }{\it Type }{\tt *r,}{\it Type }{\tt *a\extraarg)} \\
+  \hline
+  Meaning     & $r = a$ (constant)\\
+  \hline
+  \itt        & \allNumericTypes \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt M}\ttdash{\it eqop}\ttdash{\tt c ( restrict \tColorMatrix *r,}{\it QLA\_Type }{\tt *a\extraarg)} \\
+  \hline
+  Meaning     & $r = \diag(a,a,\ldots{})$ (constant $a$)\\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Uniform random number fills}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt R}\ttdash{\it eqop}\ttdash{\tt random}\ttdash{\tt S ( restrict \tReal *r,}\\
+              & {\tt \tRandomState *a\extraarg )} \\
+  \hline
+  Meaning     & $r$ random, uniform on $[0,1]$ \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Gaussian random number fills}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash\itt\ttdash{\it eqop}\ttdash{\tt gaussian}\ttdash{\tt S ( restrict }{\it Type } \\
+              & {\tt *r, \tRandomState *a\extraarg)} \\
+  \hline
+  Meaning     & $r$ normal Gaussian \\
+  \hline
+  \itt        & \allFloatTypes \\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+\paragraph{Seeding the random number generator field from an integer field}
+
+\begin{flushleft}
+  \begin{tabular}{|l|l|}
+  \hline
+  Syntax      & {\tt void \namespace}\ttdash{\tt S}\ttdash{\it eqop}\ttdash{\tt seed}\ttdash{\tt i}\ttdash{\tt I (}{\it Type }{ \tRandomState *r, int seed,}\\
+              & {\tt \tInt *a\extraarg)} \\
+  \hline
+  Meaning     & seed $r$ from field $a$ and constant {\tt seed}\\
+  \hline
+  {\it eqop}  & {\tt eq} \\
+  \hline
+  \end{tabular}
+\end{flushleft}
+
+For details see the discussion of the corresponding scalar function
+{\tt qla}\ttdash{\tt random.h}.
+
+\end{document}
+
