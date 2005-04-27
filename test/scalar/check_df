@@ -1,0 +1,5 @@
+outfile=results.check_df
+rm -f $outfile
+./test_scalar_df_sng > $outfile
+./test_scalar_df_idx >> $outfile
+perl ../checkcomplete.pl $outfile ../../include/qla_df.h

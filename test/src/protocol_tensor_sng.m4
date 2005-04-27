@@ -1,0 +1,1023 @@
+define(rem,)
+rem(`
+----------------------------------------------------------------------
+     Test protocol include file for single tensor routines
+----------------------------------------------------------------------
+')
+
+include(tensor_args.m4)
+
+define(lower,`translit($1,ABCDEFGHIJKLMNOPQRSTUVWXYZ,abcdefghijklmnopqrstuvwxyz)')
+
+rem(`
+     Create long double field
+')
+rem(`makeGaussianQ(t1,name)')
+define(makeGaussianQ,`
+  for_$1_elem{
+    QLA_real(argdQ(C)) = (QLA_Q_Real)QLA_gaussian(&sS1)/3.;
+    QLA_imag(argdQ(C)) = (QLA_Q_Real)QLA_gaussian(&sS1)/3.;
+    QLA_c_eq_c($1_elem($2),argdQ(C));
+  }
+')
+
+rem(`
+     Random field generation
+')
+rem(`chkGaussian(t1)')
+define(chkGaussian,`
+  strcpy(name,"QLA_$1_eq_gaussian_S");
+  QLA_S_eq_seed_i_I(&sS1,sI2,&sI3);
+  QLA_$1_eq_gaussian_S(&argt($1),&sS1);
+  QLA_seed_random(&sS1,sI2,sI3);
+  for_$1_elem{
+    QLA_real(argd(C)) = QLA_gaussian(&sS1);
+    QLA_imag(argd(C)) = QLA_gaussian(&sS1);
+    QLA_c_eq_c($1_elem(argd($1)),argd(C));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+rem(`
+     Assignment
+')
+rem(`chkAssign(td,eq)')
+define(chkAssign,`
+  strcpy(name,"QLA_$1_$2_$1");
+  QLA_$1_eq_$1(&argd($1),&arg2($1));
+  QLA_$1_$2_$1(&argd($1),&arg1($1));
+  QLA_$1_eq_$1(&argt($1),&arg2($1));
+  for_$1_elem{
+    QLA_c_eq_c($1_elem(argt($1)),$1_elem(arg2($1)));
+    QLA_c_$2_c($1_elem(argt($1)),$1_elem(arg1($1)));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+rem(`
+     Iterator for Assignment
+')
+rem(`chkEqop(td)')
+define(chkEqop,`
+chkAssign($1,eq)
+chkAssign($1,peq)
+chkAssign($1,eqm)
+chkAssign($1,meq)
+')
+
+rem(`
+     Precision conversion
+')
+rem(`chkAssignDF(td)')
+define(chkAssignDF,`
+  strcpy(name,"QLA_DF_$1_eq_$1");
+  QLA_D_$1_eq_$1(&argdD($1),&arg2D($1));
+  QLA_DF_$1_eq_$1(&argdD($1),&arg1F($1));
+  QLA_D_$1_eq_$1(&argtD($1),&arg2D($1));
+  for_$1_elem{
+    QLA_c_eq_c($1_elem(argtD($1)),$1_elem(arg2D($1)));
+    QLA_c_eq_c($1_elem(argtD($1)),$1_elem(arg1F($1)));
+  }
+  checkeqsngD$1$1(&argdD($1),&argtD($1),name);
+')
+
+rem(`
+     Precision conversion
+')
+rem(`chkAssignFD(td)')
+define(chkAssignFD,`
+  strcpy(name,"QLA_FD_$1_eq_$1");
+  QLA_F_$1_eq_$1(&argdF($1),&arg2F($1));
+  QLA_FD_$1_eq_$1(&argdF($1),&arg1D($1));
+  QLA_F_$1_eq_$1(&argtF($1),&arg2F($1));
+  for_$1_elem{
+    QLA_c_eq_c($1_elem(argtF($1)),$1_elem(arg2F($1)));
+    QLA_c_eq_c($1_elem(argtF($1)),$1_elem(arg1D($1)));
+  }
+  checkeqsngF$1$1(&argdF($1),&argtF($1),name);
+')
+
+rem(`
+     Precision conversion
+')
+rem(`chkAssignDQ(td)')
+define(chkAssignDQ,`
+  strcpy(name,"QLA_DQ_$1_eq_$1");
+  QLA_D_$1_eq_$1(&argdD($1),&arg2D($1));
+  QLA_DQ_$1_eq_$1(&argdD($1),&arg1Q($1));
+  QLA_D_$1_eq_$1(&argtD($1),&arg2D($1));
+  for_$1_elem{
+    QLA_c_eq_c($1_elem(argtD($1)),$1_elem(arg2D($1)));
+    QLA_c_eq_c($1_elem(argtD($1)),$1_elem(arg1Q($1)));
+  }
+  checkeqsngD$1$1(&argdD($1),&argtD($1),name);
+')
+
+rem(`
+     Hermitian conjugate
+')
+rem(`chkAssignHconj(t1,eqop)')
+define(chkAssignHconj,`
+  strcpy(name,"QLA_$1_$2_$1a");
+  QLA_$1_eq_$1(&argd($1),&arg2($1));
+  QLA_$1_$2_$1a(&argd($1),&arg1($1));
+  QLA_$1_eq_$1(&argt($1),&arg2($1));
+  for_$1_elem{
+    QLA_c_$2_ca($1_elem(argt($1)),$1t_elem(arg1($1)));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+rem(`
+     Hermitian conjugate iterator
+')
+rem(`chkHconj(t1)')
+define(chkHconj,`
+chkAssignHconj($1,eq)
+chkAssignHconj($1,peq)
+chkAssignHconj($1,eqm)
+chkAssignHconj($1,meq)
+')
+
+rem(`
+     Transpose
+')
+rem(`chkAssignTranspose(td,eqop)')
+define(chkAssignTranspose,`
+  strcpy(name,"QLA_$1_$2_transpose_$1");
+  QLA_$1_eq_$1(&argd($1),&arg2($1));
+  QLA_$1_$2_transpose_$1(&argd($1),&arg1($1));
+  QLA_$1_eq_$1(&argt($1),&arg2($1));
+  for_$1_elem{
+    QLA_c_$2_c($1_elem(argt($1)),$1t_elem(arg1($1)));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+rem(`
+     Transpose iterator
+')
+rem(`chkTranspose(td)')
+define(chkTranspose,`
+chkAssignTranspose($1,eq)
+chkAssignTranspose($1,peq)
+chkAssignTranspose($1,eqm)
+chkAssignTranspose($1,meq)
+')
+
+rem(`
+     Complex conjugation
+')
+rem(`chkAssignConj(td,eq)')
+define(chkAssignConj,`
+  strcpy(name,"QLA_$1_$2_conj_$1");
+  QLA_$1_$2_conj_$1(&argd($1),&arg1($1));
+  for_$1_elem{
+    QLA_c_$2_ca($1_elem(argt($1)),$1_elem(arg1($1)));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+rem(`
+     Iterator for complex conjugation
+')
+rem(`chkConj(td)')
+define(chkConj,`
+chkAssignConj($1,eq)
+chkAssignConj($1,peq)
+chkAssignConj($1,eqm)
+chkAssignConj($1,meq)
+')
+
+rem(`
+     Local squared norm
+')
+
+rem(`chkLocalNorm2(t1)')
+define(chkLocalNorm2,`
+  strcpy(name,"QLA_R_eq_norm2_$1");
+  QLA_R_eq_norm2_$1(&argd(R),&arg1($1));
+  argtD(R) = 0;
+  for_$1_elem{
+    argtD(R) += QLA_norm2_c($1_elem(arg1($1)));
+  }
+  argt(R) = argtD(R);
+  checkeqsngRR(&argd(R),&argt(R),name);
+')
+
+rem(`
+     Extraction of element
+')
+rem(`chkExtractElem(td)')
+define(chkExtractElem,`
+  strcpy(name,"QLA_C_eq_elem_$1");
+  for_$1_elem{
+    QLA_C_eq_elem_$1(&argd(C),&arg1($1),$1_list);
+    QLA_c_eq_c($1_elem(argt($1)),argd(C));
+  }
+  checkeqsng$1$1(&argt($1),&arg1($1),name);
+')
+
+rem(`
+     Insertion of element
+')
+rem(`chkInsertElem(td)')
+define(chkInsertElem,`
+  strcpy(name,"QLA_$1_eq_elem_C");
+  QLA_$1_eq_$1(&argd($1),&arg2($1));
+  QLA_$1_eq_$1(&argt($1),&arg1($1));
+  for_$1_elem{
+    QLA_c_eq_c(argd(C),$1_elem(arg1($1)));
+    QLA_$1_eq_elem_C(&argd($1),&argd(C),$1_list);
+  }
+  checkeqsng$1$1(&argd($1),&arg1($1),name);
+')
+
+rem(`
+     Extraction of color vector
+')
+rem(`chkExtractColorvec(td)')
+define(chkExtractColorvec,`
+  strcpy(name,"QLA_V_eq_colorvec_$1");
+  for_$1_colorvec{
+    QLA_V_eq_colorvec_$1(&argd(V),&arg1($1),$1_list_cvec);
+    for(ic=0;ic<nc;ic++){
+      QLA_C_eq_elem_V(&argd(C),&argd(V),ic);
+      QLA_c_eq_c($1_elem(argt($1)),argd(C));
+    }
+  }
+  checkeqsng$1$1(&argt($1),&arg1($1),name);
+')
+
+rem(`
+     Insertion of color vector
+')
+rem(`chkInsertColorvec(td)')
+define(chkInsertColorvec,`
+  strcpy(name,"QLA_$1_eq_colorvec_V");
+  QLA_$1_eq_$1(&argd($1),&arg2($1));
+  QLA_$1_eq_$1(&argt($1),&arg1($1));
+  for_$1_colorvec{
+    for(ic=0;ic<nc;ic++){
+      QLA_c_eq_c(argd(C),$1_elem(arg1($1)));
+      QLA_V_eq_elem_C(&argd(V),&argd(C),ic);
+      QLA_$1_eq_colorvec_V(&argd($1),&argd(V),$1_list_cvec);
+    }
+  }
+  checkeqsng$1$1(&argd($1),&arg1($1),name);
+')
+
+rem(`
+     Extraction of Dirac vector
+')
+rem(`chkExtractDiracvec(td)')
+define(chkExtractDiracvec,`
+  strcpy(name,"QLA_D_eq_diracvec_$1");
+  for_$1_diracvec{
+    QLA_D_eq_diracvec_$1(&argd(D),&arg1($1),$1_list_dvec);
+    for(ic=0;ic<nc;ic++)for(is=0;is<ns;is++){
+      QLA_C_eq_elem_D(&argd(C),&argd(D),ic,is);
+      QLA_c_eq_c($1_elem(argt($1)),argd(C));
+    }
+  }
+  checkeqsng$1$1(&argt($1),&arg1($1),name);
+')
+
+rem(`
+     Insertion of Dirac vector
+')
+rem(`chkInsertDiracvec(td)')
+define(chkInsertDiracvec,`
+  strcpy(name,"QLA_$1_eq_diracvec_D");
+  QLA_$1_eq_$1(&argd($1),&arg2($1));
+  QLA_$1_eq_$1(&argt($1),&arg1($1));
+  for_$1_diracvec{
+    for(ic=0;ic<nc;ic++)for(is=0;is<ns;is++){
+      QLA_c_eq_c(argd(C),$1_elem(arg1($1)));
+      QLA_D_eq_elem_C(&argd(D),&argd(C),ic,is);
+      QLA_$1_eq_diracvec_D(&argd($1),&argd(D),$1_list_dvec);
+    }
+  }
+  checkeqsng$1$1(&argd($1),&arg1($1),name);
+')
+
+rem(`
+     Trace
+')
+rem(`chkRealtrace')
+define(chkRealtrace,`
+  strcpy(name,"QLA_R_eq_re_trace_M");
+  QLA_R_eq_re_trace_M(&argd(R),&arg1(M));
+  argt(R) = 0;
+  for(ic=0;ic<nc;ic++)argt(R)+=QLA_real(QLA_elem_M(arg1(M),ic,ic));
+  checkeqsngRR(&argt(R),&argd(R),name);
+')
+
+rem(`chkImagtrace')
+define(chkImagtrace,`
+  strcpy(name,"QLA_R_eq_im_trace_M");
+  QLA_R_eq_im_trace_M(&argd(R),&arg1(M));
+  argt(R) = 0;
+  for(ic=0;ic<nc;ic++)argt(R)+=QLA_imag(QLA_elem_M(arg1(M),ic,ic));
+  checkeqsngRR(&argt(R),&argd(R),name);
+')
+
+rem(`chkTrace')
+define(chkTrace,`
+  strcpy(name,"QLA_C_eq_trace_M");
+  QLA_C_eq_trace_M(&argd(C),&arg1(M));
+  QLA_c_eq_r(argt(C),0.);
+  for(ic=0;ic<nc;ic++)QLA_c_peq_c(argt(C),QLA_elem_M(arg1(M),ic,ic));
+  checkeqsngCC(&argt(C),&argd(C),name);
+')
+
+rem(`
+     Spin trace
+')
+rem(`chkSpintrace')
+define(chkSpintrace,`
+  strcpy(name,"QLA_M_eq_spintrace_P");
+  QLA_M_eq_spintrace_P(&argd(M),&arg1(P));
+  for(ic=0;ic<nc;ic++)for(jc=0;jc<nc;jc++){
+    QLA_c_eq_r(QLA_elem_M(argt(M),ic,jc),0.);
+    for(is=0;is<ns;is++)
+       QLA_c_peq_c(QLA_elem_M(argt(M),ic,jc),
+         QLA_elem_P(arg1(P),ic,is,jc,is));
+  }
+  checkeqsngMM(&argt(M),&argd(M),name);
+')
+
+rem(`
+     Antihermitian projection
+')
+rem(`chkAntiherm')
+define(chkAntiherm,`
+  strcpy(name,"QLA_M_eq_antiherm_M");
+  QLA_M_eq_antiherm_M(&argd(M),&arg1(M));
+  for_M_elem{
+    QLA_c_eq_c_minus_ca(QLA_elem_M(argt(M),ic,jc),QLA_elem_M(arg1(M),ic,jc),
+           QLA_elem_M(arg1(M),jc,ic));
+    QLA_c_eq_r_times_c(QLA_elem_M(argt(M),ic,jc),0.5,
+           QLA_elem_M(argt(M),ic,jc));
+  }
+  QLA_R_eq_im_trace_M(&argt(R),&argt(M));
+  for(ic=0;ic<nc;ic++)QLA_c_meq_r_plus_ir(QLA_elem_M(argt(M),ic,ic),0,argt(R)/nc);
+  checkeqsngMM(&argd(M),&argt(M),name);
+')
+
+rem(`
+     Spin projection
+')
+rem(`chkSpproj(eq)')
+define(chkSpproj,`
+  /* Implementation dependent! */
+  strcpy(name,"QLA_H_$1_spproj_D");
+  for(mu=0;mu<4;mu++)for(sign=-1;sign<2;sign+=2){
+    QLA_H_eq_H(&argd(H),&arg2(H));
+    QLA_H_eq_H(&argt(H),&arg2(H));
+    QLA_H_$1_spproj_D(&argd(H),&arg1(D),mu,sign);
+    wp_shrink(&argt(H),&arg1(D),mu,sign);
+    checkeqsngHH(&argd(H),&argt(H),name);
+  }
+')
+
+rem(`
+     Spin reconstruction
+')
+rem(`chkSprecon(eq)')
+define(chkSprecon,`
+  /* Implementation dependent! */
+  strcpy(name,"QLA_D_$1_sprecon_H");
+  for(mu=0;mu<4;mu++)for(sign=-1;sign<2;sign+=2){
+    QLA_D_eq_D(&argt(D),&arg2(D));
+    wp_grow(&argd(D),&arg1(H),mu,sign);
+    QLA_D_$1_D(&argt(D),&argd(D));
+    QLA_D_eq_D(&argd(D),&arg2(D));
+    QLA_D_$1_sprecon_H(&argd(D),&arg1(H),mu,sign);
+    checkeqsngDD(&argd(D),&argt(D),name);
+  }
+')
+
+rem(`
+     Gamma matrix multiplication
+')
+rem(`chkGammamult')
+define(chkGammamult,`
+  /* Implementation dependent! */
+  strcpy(name,"QLA_P_eq_gamma_times_P");
+  for(mu=-1;mu<4;mu++){
+    QLA_P_eq_gamma_times_P(&argd(P),&arg1(P),mu);
+    mult_by_gamma_left(&argt(P),&arg1(P),mu);
+    checkeqsngPP(&argd(P),&argt(P),name);
+  }
+
+  strcpy(name,"QLA_D_eq_gamma_times_D");
+  for(mu=-1;mu<4;mu++){
+    QLA_D_eq_gamma_times_D(&argd(D),&arg1(D),mu);
+    mult_wv_by_gamma_left(&argt(D),&arg1(D),mu);
+    checkeqsngDD(&argd(D),&argt(D),name);
+  }
+
+  strcpy(name,"QLA_P_eq_P_times_gamma");
+  for(mu=-1;mu<4;mu++){
+    QLA_P_eq_P_times_gamma(&argd(P),&arg1(P),mu);
+    mult_by_gamma_right(&argt(P),&arg1(P),mu);
+    checkeqsngPP(&argd(P),&argt(P),name);
+  }
+')
+
+rem(`
+     Multiplication by real constant
+')
+rem(`chkAssignrMult(t1,eq)')
+define(chkAssignrMult,`
+  strcpy(name,"QLA_$1_$2_r_times_$1");
+  QLA_$1_eq_$1(&argd($1),&arg2($1));
+  QLA_$1_$2_r_times_$1(&argd($1),&sR1,&arg1($1));
+  QLA_$1_eq_$1(&argt($1),&arg2($1));
+  for_$1_elem{
+    QLA_c_$2_r_times_c($1_elem(argt($1)),sR1,$1_elem(arg1($1)));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+rem(`chkrMult(td)')
+define(chkrMult,`
+chkAssignrMult($1,eq)
+chkAssignrMult($1,peq)
+chkAssignrMult($1,eqm)
+chkAssignrMult($1,meq)
+')
+
+rem(`
+     Multiplication by complex constant
+')
+rem(`chkAssigncMult(t1,eq)')
+define(chkAssigncMult,`
+  strcpy(name,"QLA_$1_$2_c_times_$1");
+  QLA_$1_eq_$1(&argd($1),&arg2($1));
+  QLA_$1_$2_c_times_$1(&argd($1),&sC1,&arg1($1));
+  QLA_$1_eq_$1(&argt($1),&arg2($1));
+  for_$1_elem{
+    QLA_c_$2_c_times_c($1_elem(argt($1)),sC1,$1_elem(arg1($1)));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+rem(`chkcMult(td)')
+define(chkcMult,`
+chkAssigncMult($1,eq)
+chkAssigncMult($1,peq)
+chkAssigncMult($1,eqm)
+chkAssigncMult($1,meq)
+')
+
+rem(`
+     Multiplication by i
+')
+rem(`chkAssigniMult(t1,eq)')
+define(chkAssigniMult,`
+  strcpy(name,"QLA_$1_$2_i_$1");
+  QLA_$1_eq_$1(&argd($1),&arg2($1));
+  QLA_$1_$2_i_$1(&argd($1),&arg1($1));
+  QLA_$1_eq_$1(&argt($1),&arg2($1));
+  for_$1_elem{
+    QLA_c_$2_ic($1_elem(argt($1)),$1_elem(arg1($1)));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+rem(`chkiMult(td)')
+define(chkiMult,`
+chkAssigniMult($1,eq)
+chkAssigniMult($1,peq)
+chkAssigniMult($1,eqm)
+chkAssigniMult($1,meq)
+')
+
+rem(`
+     Addition
+')
+rem(`chkPlus(t1)')
+define(chkPlus,`
+  strcpy(name,"QLA_$1_eq_$1_plus_$1");
+  QLA_$1_eq_$1_plus_$1(&argd($1),&arg1($1),&arg2($1));
+  for_$1_elem{
+    QLA_c_eq_c_plus_c($1_elem(argt($1)),$1_elem(arg1($1)),$1_elem(arg2($1)));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+rem(`
+     Subraction
+')
+rem(`chkMinus(t1)')
+define(chkMinus,`
+  strcpy(name,"QLA_$1_eq_$1_minus_$1");
+  QLA_$1_eq_$1_minus_$1(&argd($1),&arg1($1),&arg2($1));
+  for_$1_elem{
+    QLA_c_eq_c_minus_c($1_elem(argt($1)),$1_elem(arg1($1)),$1_elem(arg2($1)));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+rem(`
+     Multiplication - uniform types
+')
+rem(`chkAssignUniformMult(t1,eq)')
+define(chkAssignUniformMult,`
+  strcpy(name,"QLA_$1_$2_$1_times_$1");
+  QLA_$1_eq_$1(&argd($1),&arg2($1));
+  QLA_$1_$2_$1_times_$1(&argd($1),&arg1($1),&arg2($1));
+  QLA_$1_eq_$1(&argt($1),&arg2($1));
+  for_$1_elem{
+    QLA_c_eq_r(argt(C),0.);
+    for_$1_dot{
+      QLA_c_peq_c_times_c(argt(C),$1_elem_mleft(arg1($1)),
+        $1_elem_mright(arg2($1)));
+    }
+   QLA_c_$2_c($1_elem(argt($1)),argt(C));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+
+rem(`chkUniformMult(td)')
+define(chkUniformMult,`
+chkAssignUniformMult($1,eq)
+chkAssignUniformMult($1,peq)
+chkAssignUniformMult($1,eqm)
+chkAssignUniformMult($1,meq)
+')
+
+rem(`
+     Outer products
+')
+rem(`chkAssignOuterprod(td,eq)')
+define(chkAssignOuterprod,`
+  strcpy(name,"QLA_M_$2_V_times_Va");
+  QLA_$1_eq_$1(&argd($1),&arg2($1));
+  QLA_M_$2_V_times_Va(&argd(M),&arg1(V),&arg2(V));
+  QLA_$1_eq_$1(&argt($1),&arg2($1));
+  for_$1_elem{
+    QLA_c_$2_c_times_ca($1_elem(argt($1)),QLA_elem_V(arg1(V),ic),QLA_elem_V(arg2(V),jc));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+rem(`chkOuterprod')
+define(chkOuterprod,`
+chkAssignOuterprod(M,eq)
+chkAssignOuterprod(M,peq)
+chkAssignOuterprod(M,eqm)
+chkAssignOuterprod(M,meq)
+')
+
+rem(`
+     Local dot product
+')
+rem(`chkLocalDot(t1)')
+define(chkLocalDot,`
+  strcpy(name,"QLA_C_eq_$1_dot_$1");
+  QLA_C_eq_$1_dot_$1(&argd(C),&arg1($1),&arg2($1));
+  QLA_c_eq_r(argt(C),0.);  
+  for_$1_elem{
+    QLA_c_peq_ca_times_c(argt(C),$1_elem(arg1($1)),$1_elem(arg2($1)));
+  }
+  checkeqsngCC(&argd(C),&argt(C),name);
+')
+
+rem(`
+     Local dot product
+')
+rem(`chkLocalRealDot(t1)')
+define(chkLocalRealDot,`
+  strcpy(name,"QLA_R_eq_re_$1_dot_$1");
+  QLA_R_eq_re_$1_dot_$1(&argd(R),&arg1($1),&arg2($1));
+  argt(R) = 0.;  
+  for_$1_elem{
+    QLA_r_peq_Re_ca_times_c(argt(R),$1_elem(arg1($1)),$1_elem(arg2($1)));
+  }
+  checkeqsngRR(&argd(R),&argt(R),name);
+')
+
+rem(`
+     Left multiplication by gauge matrix
+')
+rem(`chkAssignLeftMultM(t1,eq)')
+define(chkAssignLeftMultM,`
+  strcpy(name,"QLA_$1_$2_M_times_$1");
+  QLA_$1_eq_$1(&argd($1),&arg3($1));
+  QLA_$1_$2_M_times_$1(&argd($1),&arg1(M),&arg2($1));
+  QLA_$1_eq_$1(&argt($1),&arg3($1));
+  for_$1_elem{
+    QLA_c_eq_r(argt(C),0.);
+    for_M_colordot{
+      QLA_c_peq_c_times_c(argt(C),M_elem_mleft(arg1(M)),
+        $1_elem_Mmright(arg2($1)));
+    }
+   QLA_c_$2_c($1_elem(argt($1)),argt(C));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+
+rem(`chkLeftMultM(td)')
+define(chkLeftMultM,`
+chkAssignLeftMultM($1,eq)
+chkAssignLeftMultM($1,peq)
+chkAssignLeftMultM($1,eqm)
+chkAssignLeftMultM($1,meq)
+')
+
+rem(`
+     Adjoint gauge time adjoint gauge
+')
+rem(`chkAssignMultMaMa(td,eq)')
+define(chkAssignMultMaMa,`
+  strcpy(name,"QLA_$1_$2_Ma_times_Ma");
+  QLA_$1_eq_$1(&argd($1),&arg3($1));
+  QLA_$1_$2_Ma_times_Ma(&argd($1),&arg1(M),&arg2(M));
+  QLA_M_eq_M(&argt($1),&arg3($1));
+  for_$1_elem{
+    QLA_c_eq_r(argt(C),0.);
+    for_$1_colordot{
+      QLA_c_peq_ca_times_ca(argt(C),Ma_elem_mleft(arg1(M)),
+        Ma_elem_mright(arg2(M)));
+    }
+   QLA_c_$2_c($1_elem(argt($1)),argt(C));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+rem(`chkMultMaMa(td)')
+define(chkMultMaMa,`
+chkAssignMultMaMa(M,eq)
+chkAssignMultMaMa(M,peq)
+chkAssignMultMaMa(M,eqm)
+chkAssignMultMaMa(M,meq)
+')
+
+rem(`
+     Left multiplication by adjoint gauge
+')
+rem(`chkAssignLeftMultMa(t1,eq)')
+define(chkAssignLeftMultMa,`
+  strcpy(name,"QLA_$1_$2_Ma_times_$1");
+  QLA_$1_eq_$1(&argd($1),&arg3($1));
+  QLA_$1_$2_Ma_times_$1(&argd($1),&arg1(M),&arg2($1));
+  QLA_$1_eq_$1(&argt($1),&arg3($1));
+  for_$1_elem{
+    QLA_c_eq_r(argt(C),0.);
+    for_M_colordot{
+      QLA_c_peq_ca_times_c(argt(C),Ma_elem_mleft(arg1(M)),
+        $1_elem_Mmright(arg2($1)));
+    }
+   QLA_c_$2_c($1_elem(argt($1)),argt(C));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+
+rem(`chkLeftMultMa(td)')
+define(chkLeftMultMa,`
+chkAssignLeftMultMa($1,eq)
+chkAssignLeftMultMa($1,peq)
+chkAssignLeftMultMa($1,eqm)
+chkAssignLeftMultMa($1,meq)
+')
+
+rem(`
+     Right multiplication by gauge
+')
+rem(`chkAssignRightMultM(t1,eq)')
+define(chkAssignRightMultM,`
+  strcpy(name,"QLA_$1_$2_$1_times_M");
+  QLA_$1_eq_$1(&argd($1),&arg3($1));
+  QLA_$1_$2_$1_times_M(&argd($1),&arg1($1),&arg2(M));
+  QLA_$1_eq_$1(&argt($1),&arg3($1));
+  for_$1_elem{
+    QLA_c_eq_r(argt(C),0.);
+    for_M_colordot{
+      QLA_c_peq_c_times_c(argt(C),$1_elem_mleftM(arg1($1)),
+        M_elem_mright(arg2(M)));
+    }
+   QLA_c_$2_c($1_elem(argt($1)),argt(C));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+
+rem(`chkRightMultM(td)')
+define(chkRightMultM,`
+chkAssignRightMultM($1,eq)
+chkAssignRightMultM($1,peq)
+chkAssignRightMultM($1,eqm)
+chkAssignRightMultM($1,meq)
+')
+
+rem(`
+     Right multiplication by adjoint gauge
+')
+rem(`chkAssignRightMultMa(t1,eq)')
+define(chkAssignRightMultMa,`
+  strcpy(name,"QLA_$1_$2_$1_times_Ma");
+  QLA_$1_eq_$1(&argd($1),&arg3($1));
+  QLA_$1_$2_$1_times_Ma(&argd($1),&arg1($1),&arg2(M));
+  QLA_$1_eq_$1(&argt($1),&arg3($1));
+  for_$1_elem{
+    QLA_c_eq_r(argt(C),0.);
+    for_M_colordot{
+      QLA_c_peq_c_times_ca(argt(C),$1_elem_mleftM(arg1($1)),
+        Ma_elem_mright(arg2(M)));
+    }
+   QLA_c_$2_c($1_elem(argt($1)),argt(C));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+
+rem(`chkRightMultMa(td)')
+define(chkRightMultMa,`
+chkAssignRightMultMa($1,eq)
+chkAssignRightMultMa($1,peq)
+chkAssignRightMultMa($1,eqm)
+chkAssignRightMultMa($1,meq)
+')
+
+
+rem(`
+     Ternary with real constant
+')
+rem(`chkrMultPM(t1,pm)')
+define(chkrMultPM,`
+  strcpy(name,"QLA_$1_eq_r_times_$1_$2_$1");
+  QLA_$1_eq_r_times_$1_$2_$1(&argd($1),&sR1,&arg1($1),&arg2($1));
+  for_$1_elem{
+    QLA_c_eq_r_times_c_$2_c($1_elem(argt($1)),sR1,$1_elem(arg1($1)),$1_elem(arg2($1)));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+rem(`chkrMultAdd(td)')
+define(chkrMultAdd,`
+chkrMultPM($1,plus)
+chkrMultPM($1,minus)
+')
+
+rem(`
+     Ternary with complex constant
+')
+rem(`chkcMultPM(t1,eq,pm)')
+define(chkcMultPM,`
+  strcpy(name,"QLA_$1_eq_c_times_$1_$2_$1");
+  QLA_$1_eq_c_times_$1_$2_$1(&argd($1),&sC1,&arg1($1),&arg2($1));
+  for_$1_elem{
+    QLA_c_eq_c_times_c_$2_c($1_elem(argt($1)),sC1,$1_elem(arg1($1)),$1_elem(arg2($1)));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
+')
+
+rem(`chkcMultAdd(td)')
+define(chkcMultAdd,`
+chkcMultPM($1,plus)
+chkcMultPM($1,minus)
+')
+
+rem(`
+     Copymask
+')
+rem(`chkMask(t1)')
+define(chkMask,`
+  strcpy(name,"QLA_$1_eq_$1_mask_I");
+  QLA_$1_eq_$1(&argd($1),&arg2($1));
+  QLA_$1_eq_$1_mask_I(&argd($1),&arg1($1),&arg1(I));
+  if(arg1(I))checkeqsng$1$1(&argd($1),&arg1($1),name);
+  else checkeqsng$1$1(&argd($1),&arg2($1),name);
+
+  QLA_$1_eq_$1(&argd($1),&arg2($1));
+  QLA_$1_eq_$1_mask_I(&argd($1),&arg1($1),&arg2(I));
+  if(arg2(I))checkeqsng$1$1(&argd($1),&arg1($1),name);
+  else checkeqsng$1$1(&argd($1),&arg2($1),name);
+')
+
+rem(`
+     Squared norm
+')
+rem(`chkNorm2(t1)')
+define(chkNorm2,`
+  strcpy(name,"QLA_r_eq_norm2_$1");
+  QLA_r_eq_norm2_$1(&argd(R),&arg1($1));
+  argtD(R) = 0;
+  for_$1_elem{
+    argtD(R) += QLA_norm2_c($1_elem(arg1($1)));
+  }
+  argt(R) = argtD(R);
+  checkeqsngRR(&argd(R),&argt(R),name);
+')
+
+rem(`
+     Squared norm float to double
+')
+rem(`chkNorm2DF(t1)')
+define(chkNorm2DF,`
+  strcpy(name,"QLA_DF_r_eq_norm2_$1");
+  QLA_DF_r_eq_norm2_$1(&argdD(R),&arg1F($1));
+  argtD(R) = 0;
+  for_$1_elem{
+    argtD(R) += QLA_norm2_c($1_elem(arg1F($1)));
+  }
+  checkeqsngDRR(&argdD(R),&argtD(R),name);
+')
+
+rem(`
+     Squared norm double to long double
+')
+rem(`chkNorm2QD(t1)')
+define(chkNorm2QD,`
+  strcpy(name,"QLA_QD_r_eq_norm2_$1");
+  QLA_QD_r_eq_norm2_$1(&argdQ(R),&arg1D($1));
+  argtQ(R) = 0;
+  for_$1_elem{
+    argtQ(R) += QLA_norm2_c($1_elem(arg1D($1)));
+  }
+  checkeqsngQRR(&argdQ(R),&argtQ(R),name);
+')
+
+rem(`
+     Dot product
+')
+rem(`chkDot(t1)')
+define(chkDot,`
+  strcpy(name,"QLA_c_eq_$1_dot_$1");
+  QLA_c_eq_$1_dot_$1(&argd(C),&arg1($1),&arg2($1));
+  QLA_c_eq_r(argt(C),0.);  
+  for_$1_elem{
+    QLA_c_peq_ca_times_c(argt(C),$1_elem(arg1($1)),$1_elem(arg2($1)));
+  }
+  checkeqsngCC(&argd(C),&argt(C),name);
+')
+
+rem(`
+     Real part of dot product
+')
+rem(`chkRealDot(t1)')
+define(chkRealDot,`
+  strcpy(name,"QLA_r_eq_re_$1_dot_$1");
+  QLA_r_eq_re_$1_dot_$1(&argd(R),&arg1($1),&arg2($1));
+  argt(R) =  0.;  
+  for_$1_elem{
+    QLA_r_peq_Re_ca_times_c(argt(R),$1_elem(arg1($1)),$1_elem(arg2($1)));
+  }
+  checkeqsngRR(&argd(R),&argt(R),name);
+')
+
+rem(`
+     Dot product float to double
+')
+rem(`chkDotDF(t1)')
+define(chkDotDF,`
+  strcpy(name,"QLA_DF_c_eq_$1_dot_$1");
+  QLA_DF_c_eq_$1_dot_$1(&argdD(C),&arg1F($1),&arg2F($1));
+  QLA_c_eq_r(argtD(C),0.);  
+  for_$1_elem{
+    QLA_c_peq_ca_times_c(argtD(C),$1_elem(arg1F($1)),$1_elem(arg2F($1)));
+  }
+  checkeqsngDCC(&argdD(C),&argtD(C),name);
+')
+
+rem(`
+     Real part of dot product float to double
+')
+rem(`chkRealDotDF(t1)')
+define(chkRealDotDF,`
+  strcpy(name,"QLA_DF_r_eq_re_$1_dot_$1");
+  QLA_DF_r_eq_re_$1_dot_$1(&argdD(R),&arg1F($1),&arg2F($1));
+  argtD(R) =  0.;  
+  for_$1_elem{
+    QLA_r_peq_Re_ca_times_c(argtD(R),$1_elem(arg1F($1)),$1_elem(arg2F($1)));
+  }
+  checkeqsngDRR(&argdD(R),&argtD(R),name);
+')
+
+rem(`
+     Dot product double to long double
+')
+rem(`chkDotQD(t1)')
+define(chkDotQD,`
+  strcpy(name,"QLA_QD_c_eq_$1_dot_$1");
+  QLA_QD_c_eq_$1_dot_$1(&argdQ(C),&arg1D($1),&arg2D($1));
+  QLA_c_eq_r(argtQ(C),0.);  
+  for_$1_elem{
+    QLA_c_peq_ca_times_c(argtQ(C),$1_elem(arg1D($1)),$1_elem(arg2D($1)));
+  }
+  checkeqsngQCC(&argdQ(C),&argtQ(C),name);
+')
+
+rem(`
+     Real part of dot product double to long double
+')
+rem(`chkRealDotQD(t1)')
+define(chkRealDotQD,`
+  strcpy(name,"QLA_QD_r_eq_re_$1_dot_$1");
+  QLA_QD_r_eq_re_$1_dot_$1(&argdQ(R),&arg1D($1),&arg2D($1));
+  argtQ(R) =  0.;  
+  for_$1_elem{
+    QLA_r_peq_Re_ca_times_c(argtQ(R),$1_elem(arg1D($1)),$1_elem(arg2D($1)));
+  }
+  checkeqsngQRR(&argdQ(R),&argtQ(R),name);
+')
+
+rem(`
+     Sum
+')
+rem(`chkSumDest(td,t1)')
+define(chkSumDest,`
+  strcpy(name,"QLA_$1_eq_sum_$2");
+  QLA_$2_eq_$2(&argt($2),&arg1($2));
+  QLA_$1_eq_sum_$2(&argd($2),&arg1($2));
+  checkeqsng$2$2(&argd($2),&argt($2),name);
+')
+
+rem(`chkSum(t1)')
+define(chkSum,`
+chkSumDest(lower($1),$1)
+')
+
+rem(`
+     Sum float to double
+')
+rem(`chkSumDestDF(td,t1)')
+define(chkSumDestDF,`
+  strcpy(name,"QLA_DF_$1_eq_sum_$2");
+  QLA_DF_$2_eq_$2(&argtD($2),&arg1F($2));
+  QLA_DF_$1_eq_sum_$2(&argdD($2),&arg1F($2));
+  checkeqsngD$2$2(&argdD($2),&argtD($2),name);
+')
+
+rem(`chkSumDF(t1)')
+define(chkSumDF,`
+chkSumDestDF(lower($1),$1)
+')
+
+rem(`
+     Sum double to long double
+')
+
+rem(`chkSumDestQD(td,t1)')
+define(chkSumDestQD,`
+  strcpy(name,"QLA_QD_$1_eq_sum_$2");
+  for_$2_elem{
+     QLA_c_eq_c($2_elem(argtQ($2)),$2_elem(arg1D($2)));
+  }
+  QLA_QD_$1_eq_sum_$2(&argdQ($2),&arg1D($2));
+  checkeqsngQ$2$2(&argdQ($2),&argtQ($2),name);
+')
+
+rem(`chkSumQD(t1)')
+define(chkSumQD,`
+chkSumDestQD(lower($1),$1)
+')
+
+rem(`
+     Zero fill
+')
+rem(`chkZero(t1)')
+define(chkZero,`
+  strcpy(name,"QLA_$1_eq_zero");
+  QLA_$1_eq_$1(&argd($1),&arg2($1));
+  QLA_$1_eq_zero(&argd($1));
+  QLA_R_eq_norm2_$1(&argd(R),&argd($1));
+  argt(R) = 0;
+  checkeqsngRR(&argd(R),&argt(R),name);
+')
+
+
+rem(`
+     Constant fill
+')
+rem(`chkConstDest(td,t1)')
+define(chkConstDest,`
+  strcpy(name,"QLA_$1_eq_$2");
+  QLA_$1_eq_$1(&argd($1),&arg2($1));
+  QLA_$1_eq_$2(&argd($1),&arg1($1));
+  checkeqsng$1$1(&argd($1),&arg1($1),name);
+')
+
+rem(`chkConst(t1)')
+define(chkConst,`
+chkConstDest($1,lower($1))
+')
+
+rem(`
+     Diagonal gauge constant fill
+')
+rem(`chkMConst')
+define(chkMConst,`
+  strcpy(name,"QLA_M_eq_c");
+  QLA_M_eq_M(&argd(M),&arg2(M));
+  QLA_M_eq_c(&argd(M),&arg1(C));
+  QLA_M_eq_zero(&argt(M));
+  for(ic=0;ic<nc;ic++)QLA_elem_M(argt(M),ic,ic) = arg1(C);
+  checkeqsngMM(&argd(M),&argt(M),name);
+')

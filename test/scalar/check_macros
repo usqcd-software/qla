@@ -1,0 +1,3 @@
+outfile=results.check_macros
+rm -f $outfile
+./test_macros > $outfile

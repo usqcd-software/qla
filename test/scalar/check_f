@@ -1,0 +1,5 @@
+outfile=results.check_f
+rm -f $outfile
+./test_scalar_f_sng > $outfile
+./test_scalar_f_idx >> $outfile
+perl ../checkcomplete.pl $outfile ../../include/qla_f.h F

@@ -1,0 +1,112 @@
+;
+; QLA_F3_V_eq_M_times_V(QLA_F3_ColorVector *aa, QLA_F3_ColorMatrix *bb, QLA_F3_ColorVector *cc)
+;
+
+global QLA_F3_V_eq_M_times_V
+QLA_F3_V_eq_M_times_V:
+	push		ebp
+	mov		ebp,esp
+	push		eax
+	push		ebx
+	push		ecx
+	mov		eax,[ebp+8]			; su3_vector *a
+	mov		ebx,[ebp+12]			; su3_matrix *b
+	mov		ecx,[ebp+16]			; su3_vector *c
+
+	;  bring in real and imaginary c vector
+	movlps		xmm0,[ecx]			; x,x,c0i,c0r		<(cc)->c[0]>
+	movlps		xmm1,[ecx+8]			; x,x,c1i,c1r		<(cc)->c[1]>
+	movlps		xmm2,[ecx+16]			; x,x,c2i,c2r		<(cc)->c[2]>
+	shufps		xmm0,xmm0,0x44			; c0i,c0r,c0i,c0r
+	shufps		xmm1,xmm1,0x44			; c1i,c1r,c1i,c1r
+	shufps		xmm2,xmm2,0x44			; c2i,c2r,c2i,c2r
+
+	; bring in real components of first two rows of matrix b
+	movss		xmm3,[ebx]			; x,x,x,b00r		<(bb)->e[0][0].real>
+	movss		xmm7,[ebx+24]			; x,x,x,b10r		<(bb)->e[1][0].real>
+	shufps		xmm3,xmm7,0x00			; b10r,b10r,b00r,b00r
+	movss		xmm4,[ebx+8]			; x,x,x,b01r		<(bb)->e[0][1].real>
+	movss		xmm7,[ebx+32]			; x,x,x,b11r		<(bb)->e[1][1].real>
+	shufps		xmm4,xmm7,0x00			; b11r,b11r,b01r,b01r
+	mulps		xmm3,xmm0
+	mulps		xmm4,xmm1
+	addps		xmm3,xmm4
+	movss		xmm5,[ebx+16]			; x,x,x,b02r		<(bb)->e[0][2].real>
+	movss		xmm7,[ebx+40]			; x,x,x,b12r		<(bb)->e[1][2].real>
+	shufps		xmm5,xmm7,0x00			; b12r,b12r,b02r,b02r
+	mulps		xmm5,xmm2
+	addps		xmm3,xmm5
+
+	; special handling of the 3rd row of matrix b
+	shufps		xmm1,xmm0,0x44			; b0i,b0r,b1i,b1r
+	movss		xmm7,[ebx+48]			; x,x,x,b20r		<(bb)->e[2][0].real>
+	movss		xmm6,[ebx+56]			; x,x,x,b21r		<(bb)->e[2][1].real>
+	shufps		xmm6,xmm7,0x00			; b20r,b20r,b21r,b21r
+	mulps		xmm6,xmm1
+
+	; shuffle c vector for imaginary components of matrix b
+	shufps		xmm0,xmm0,0xB1			; b0r,b0i,b0r,b0i
+	xorps		xmm0,[negate]			; b0r,-b0i,b0r,-b0i	<_sse_sgn13>
+	shufps		xmm1,xmm1,0x11			; b1r,b1i,b1r,b1i
+	xorps		xmm1,[negate]			; b1r,-b1i,b1r,-b1i	<_sse_sgn13>
+	shufps		xmm2,xmm2,0xB1			; b2r,b2i,b2r,b2i
+	xorps		xmm2,[negate]			; b2r,-b2i,b2r,-b2i	<_sse_sgn13>
+
+	; bring in imaginary components of first two rows of matrix b
+	movss		xmm4,[ebx+4]			; x,x,x,c00i		<(bb)->e[0][0].imag>
+	movss		xmm7,[ebx+28]			; x,x,x,c10i		<(bb)->e[1][0].imag>
+	shufps		xmm4,xmm7,0x00			; c10i,c10i,c00i,c00i
+	mulps		xmm4,xmm0
+	addps		xmm3,xmm4
+	movss		xmm5,[ebx+12]			; x,x,x,c01i		<(bb)->e[0][1].imag>
+	movss		xmm7,[ebx+36]			; x,x,x,c11i		<(bb)->e[1][1].imag>
+	shufps		xmm5,xmm7,0x00			; c11i,c11i,c01i,c01i
+	mulps		xmm5,xmm1
+	addps		xmm3,xmm5
+	movss		xmm5,[ebx+20]			; x,x,x,c02i		<(bb)->e[0][2].imag>
+	movss		xmm7,[eax+44]			; x,x,x,c12i		<(bb)->e[1][2].imag>
+	shufps		xmm5,xmm7,0x00			; c12i,c12i,c02i,c02i
+	mulps		xmm5,xmm2
+	addps		xmm3,xmm5			; d1i,d1r,d0i,d0r
+	movups		[eax],xmm3			; store result		<(aa)->c[0]>
+
+	; more special handling of the 3rd row of matrix b
+	shufps		xmm1,xmm0,0x44			; b0r,-b0i,b1r,-b1i
+	movss		xmm7,[ebx+52]			; x,x,x,c20i		<(bb)->e[2][0].imag>
+	movss		xmm5,[ebx+60]			; x,x,x,c21i		<(bb)->e[2][1].imag>
+	shufps		xmm5,xmm7,0x00			; c20i,c20i,c21i,c21i
+	mulps		xmm5,xmm1
+	addps		xmm6,xmm5
+	shufps		xmm2,xmm2,0xB4			; -b2i,b2r,b2r,-b2i
+	xorps		xmm2,[neg2]			; b2i,b2r,b2r,-b2i	<_sse_sgn4>
+	movlps		xmm7,[ebx+64]			; x,x,c22i,c22r		<(bb)->e[2][2]>
+	shufps		xmm7,xmm7,0x05			; c22r,c22r,c22i,c22i
+	mulps		xmm7,xmm2
+	addps		xmm6,xmm7
+	movaps		xmm7,xmm6
+	shufps		xmm7,xmm7,0xEE
+	addps		xmm6,xmm7
+	movlps		[eax+16],xmm6			;			<(aa)->c[2]>
+
+	
+	; *******************************************************************	
+
+here:	pop	ecx
+	pop	ebx
+	pop	eax
+	mov	esp,ebp
+	pop	ebp
+	ret
+	
+	align		16
+negate:	dd		0x80000000
+	dd		0x00000000
+	dd		0x80000000
+	dd		0x00000000
+	
+	align		16
+neg2:   dd		0x00000000
+	dd		0x00000000
+	dd		0x00000000
+	dd		0x80000000
+	
