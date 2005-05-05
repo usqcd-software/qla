@@ -78,6 +78,8 @@ AM_CONDITIONAL(NCN, [test "X$NC" = "XN" -o "X$NC" = "Xall"])
 
 # configuration files
 AC_CONFIG_FILES(Makefile)
+AC_CONFIG_FILES(bin/Makefile)
+AC_CONFIG_FILES(bin/qla-config)
 AC_CONFIG_FILES(doc/Makefile)
 AC_CONFIG_FILES(include/Makefile)
 AC_CONFIG_FILES(lib/Makefile)
