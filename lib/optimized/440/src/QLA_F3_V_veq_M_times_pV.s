@@ -3,10 +3,10 @@
 	.globl  QLA_F3_V_veq_M_times_pV
 	.type   QLA_F3_V_veq_M_times_pV,@function
 QLA_F3_V_veq_M_times_pV:
-	mr	%r7,	%r3	; dest
-	mr	%r3,	%r6	; n
-	mr	%r6,	%r5	; srcvec
-	mr	%r5,	%r4	; srcmat
+	mr	%r7,	%r3
+	mr	%r3,	%r6
+	mr	%r6,	%r5
+	mr	%r5,	%r4
 	la  %r1,	-864(%r1)
 	stw	%r14,	368(%r1)
 	stw	%r15,	376(%r1)
