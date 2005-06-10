@@ -11,6 +11,16 @@
 #define QLA_Precision 'F'
 #endif
 
+/* allow numeric precision specification */
+#if QLA_Precision == 1
+#undef QLA_Precision
+#define QLA_Precision 'F'
+#endif
+#if QLA_Precision == 2
+#undef QLA_Precision
+#define QLA_Precision 'D'
+#endif
+
 /* Apply rule for default color namespace, based on QLA_Nc */
 #if QLA_Nc == 2
 #if QLA_Colors != 'N'

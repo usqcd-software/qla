@@ -1,1 +1,1 @@
-SUBDIRS = doc include lib bin test
+SUBDIRS = doc include lib bin test examples
