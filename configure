@@ -275,7 +275,7 @@ PACKAGE_BUGREPORT='detar@physics.utah.edu'
 
 ac_unique_file="include/qla.h"
 ac_unique_file="lib/random/QLA_random.c"
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM mkdir_p AWK SET_MAKE am__leading_dot AMTAR am__tar am__untar OPT_SSE OPT_SSE2 OPT_440 NC RANLIB ac_ct_RANLIB CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE GCC PERL M4 LATEX AR ac_ct_AR OPT_SSE_TRUE OPT_SSE_FALSE OPT_SSE2_TRUE OPT_SSE2_FALSE OPT_440_TRUE OPT_440_FALSE NC2_TRUE NC2_FALSE NC3_TRUE NC3_FALSE NCN_TRUE NCN_FALSE LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM mkdir_p AWK SET_MAKE am__leading_dot AMTAR am__tar am__untar OPT_SSE OPT_SSE2 OPT_440 NC RANLIB ac_ct_RANLIB CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE GNUCC PERL M4 LATEX AR ac_ct_AR OPT_SSE_TRUE OPT_SSE_FALSE OPT_SSE2_TRUE OPT_SSE2_FALSE OPT_440_TRUE OPT_440_FALSE NC2_TRUE NC2_FALSE NC3_TRUE NC3_FALSE NCN_TRUE NCN_FALSE LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -2739,16 +2739,17 @@ else
 fi
 
 
+if test "X$GCC" = "Xyes"; then GNUCC="$CC"; else
 # Extract the first word of "gcc", so it can be a program name with args.
 set dummy gcc; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
-if test "${ac_cv_path_GCC+set}" = set; then
+if test "${ac_cv_path_GNUCC+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  case $GCC in
+  case $GNUCC in
   [\\/]* | ?:[\\/]*)
-  ac_cv_path_GCC="$GCC" # Let the user override the test with a path.
+  ac_cv_path_GNUCC="$GNUCC" # Let the user override the test with a path.
   ;;
   *)
   as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
@@ -2758,27 +2759,28 @@ do
   test -z "$as_dir" && as_dir=.
   for ac_exec_ext in '' $ac_executable_extensions; do
   if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_path_GCC="$as_dir/$ac_word$ac_exec_ext"
+    ac_cv_path_GNUCC="$as_dir/$ac_word$ac_exec_ext"
     echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
 done
 done
 
-  test -z "$ac_cv_path_GCC" && ac_cv_path_GCC="gcc"
+  test -z "$ac_cv_path_GNUCC" && ac_cv_path_GNUCC="gcc"
   ;;
 esac
 fi
-GCC=$ac_cv_path_GCC
+GNUCC=$ac_cv_path_GNUCC
 
-if test -n "$GCC"; then
-  echo "$as_me:$LINENO: result: $GCC" >&5
-echo "${ECHO_T}$GCC" >&6
+if test -n "$GNUCC"; then
+  echo "$as_me:$LINENO: result: $GNUCC" >&5
+echo "${ECHO_T}$GNUCC" >&6
 else
   echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
 fi
 
+fi
 # Extract the first word of "perl", so it can be a program name with args.
 set dummy perl; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
@@ -3908,7 +3910,7 @@ s,@AMDEPBACKSLASH@,$AMDEPBACKSLASH,;t t
 s,@CCDEPMODE@,$CCDEPMODE,;t t
 s,@am__fastdepCC_TRUE@,$am__fastdepCC_TRUE,;t t
 s,@am__fastdepCC_FALSE@,$am__fastdepCC_FALSE,;t t
-s,@GCC@,$GCC,;t t
+s,@GNUCC@,$GNUCC,;t t
 s,@PERL@,$PERL,;t t
 s,@M4@,$M4,;t t
 s,@LATEX@,$LATEX,;t t

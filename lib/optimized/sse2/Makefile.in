@@ -66,7 +66,7 @@ ECHO_C = @ECHO_C@
 ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EXEEXT = @EXEEXT@
-GCC = @GCC@
+GNUCC = @GNUCC@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
 INSTALL_SCRIPT = @INSTALL_SCRIPT@
@@ -139,6 +139,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
+GCC = @GNUCC@
 OPTLIBS = $(am__append_1)
 EXTRA_DIST = include src
 all: all-am
@@ -297,6 +298,7 @@ all: $(OPTLIBS)
 .PHONY: libd3
 libd3:
 	for f in $(srcdir)/src/*.c; do \
+	  echo compiling $$f; \
 	  $(GCC) -O3 -DSSE_INLINE -I$(top_srcdir)/include -I$(srcdir)/include -c $$f; \
 	done
 	mv -f *.o ../../qla_d3

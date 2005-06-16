@@ -54,7 +54,9 @@ if ! set | grep '^CFLAGS='; then
 fi
 AC_PROG_RANLIB
 AC_PROG_CC([cc gcc])
-AC_PATH_PROG([GCC], [gcc], [gcc])
+if test "X$GCC" = "Xyes"; then GNUCC="$CC"; else
+AC_PATH_PROG([GNUCC], [gcc], [gcc])
+fi
 AC_PATH_PROG([PERL], [perl], [perl])
 AC_PATH_PROG([M4], [m4], [m4])
 AC_PATH_PROGS([LATEX], [latex2e latex], [latex])
