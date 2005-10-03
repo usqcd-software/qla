@@ -182,7 +182,7 @@ sub make_code_spproj_sprecon_mult {
 
     print QLA_SRC @indent, "{\n";
     push @indent, "  ";
-    if($qualifier eq "spproj") {
+    if($def{'qualifier'} eq "spproj") {
       &print_val_assign_spproj( *dest_def, $eqop, *mytemp, $mu, $sign );
     } else {
       &print_val_assign_sprecon( *dest_def, $eqop, *mytemp, $mu, $sign );

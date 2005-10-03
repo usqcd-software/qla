@@ -142,10 +142,11 @@ sub make_code_spproj_sprecon {
     local($eqop,$mu,$sign,$qualifier) = @_;
 
     &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
-    if($qualifier eq "spproj"){	&print_val_assign_spproj(
-				       *dest_def,$eqop,*src1_def,$mu,$sign); }
-    else{                       &print_val_assign_sprecon(
-                                       *dest_def,$eqop,*src1_def,$mu,$sign); }
+    if($def{'qualifier'} eq "spproj") {
+      &print_val_assign_spproj(*dest_def,$eqop,*src1_def,$mu,$sign);
+    } else {
+      &print_val_assign_sprecon(*dest_def,$eqop,*src1_def,$mu,$sign);
+    }
     &print_end_matter($var_i,$def{'dim_name'});
 }
 
