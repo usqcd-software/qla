@@ -150,6 +150,43 @@ sub make_code_spproj_sprecon {
     &print_end_matter($var_i,$def{'dim_name'});
 }
 
+#-----------------------------------------------------------------------
+# Code for Wilson spin multiply
+#-----------------------------------------------------------------------
+
+sub make_code_wilsonspin {
+    local($eqop,$mu,$sign) = @_;
+    local(%mytemp) = ();
+
+    &load_arg_hash(*mytemp,'src1');
+    $mytemp{t} = $datatype_halffermion_abbrev;
+    $mytemp{type} = &datatype_specific($mytemp{t});
+    $mytemp{value} = "t";
+
+    &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
+
+    print_def($mytemp{type}, $mytemp{value});
+
+    if($def{dim_name} ne "") {
+      make_temp_ptr(%dest_def,$def{dest_name});
+      make_temp_ptr(%src1_def,$def{src1_name});
+    }
+
+    print QLA_SRC @indent, "{\n";
+    push @indent, "  ";
+    &print_val_assign_spproj( *mytemp, "eq", *src1_def, $mu, $sign );
+    pop @indent;
+    print QLA_SRC @indent, "}\n";
+
+    print QLA_SRC @indent, "{\n";
+    push @indent, "  ";
+    &print_val_assign_sprecon( *dest_def, $eqop, *mytemp, $mu, $sign );
+    pop @indent;
+    print QLA_SRC @indent, "}\n";
+
+    &print_end_matter($var_i,$def{'dim_name'});
+}
+
 #---------------------------------------------------------------------
 # Code for left or right multiplication by gamma matrix
 #---------------------------------------------------------------------

@@ -160,12 +160,11 @@ sub make_code_spproj_sprecon_mult {
 
     &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
 
-    #print QLA_SRC @indent, $src2_def{type}, " t;\n";
-    print_def($src2_def{type}, "t");
-
     %mytemp = ();
-    &load_arg_hash(*mytemp,'src2');
+    if($def{'qualifier'} eq "spproj") { &load_arg_hash(*mytemp,'dest'); }
+    else { &load_arg_hash(*mytemp,'src2'); }
     $mytemp{value} = "t";
+    print_def($mytemp{type}, $mytemp{value});
 
     if($def{dim_name} ne "") {
       make_temp_ptr(%dest_def,$def{dest_name});
@@ -173,22 +172,33 @@ sub make_code_spproj_sprecon_mult {
       make_temp_ptr(%src2_def,$def{src2_name});
     }
 
-    print QLA_SRC @indent, "{\n";
-    push @indent, "  ";
-    &print_val_eqop_val_op_val( *mytemp, "eq", "",
-				*src1_def, $def{'op'}, *src2_def );
-    pop @indent;
-    print QLA_SRC @indent, "}\n";
-
-    print QLA_SRC @indent, "{\n";
-    push @indent, "  ";
     if($def{'qualifier'} eq "spproj") {
-      &print_val_assign_spproj( *dest_def, $eqop, *mytemp, $mu, $sign );
+      print QLA_SRC @indent, "{\n";
+      push @indent, "  ";
+      &print_val_assign_spproj( *mytemp, "eq", *src2_def, $mu, $sign );
+      pop @indent;
+      print QLA_SRC @indent, "}\n";
+
+      print QLA_SRC @indent, "{\n";
+      push @indent, "  ";
+      &print_val_eqop_val_op_val( *dest_def, $eqop, "",
+ 				  *src1_def, $def{'op'}, *mytemp );
+      pop @indent;
+      print QLA_SRC @indent, "}\n";
     } else {
+      print QLA_SRC @indent, "{\n";
+      push @indent, "  ";
+      &print_val_eqop_val_op_val( *mytemp, "eq", "",
+ 				  *src1_def, $def{'op'}, *src2_def );
+      pop @indent;
+      print QLA_SRC @indent, "}\n";
+
+      print QLA_SRC @indent, "{\n";
+      push @indent, "  ";
       &print_val_assign_sprecon( *dest_def, $eqop, *mytemp, $mu, $sign );
+      pop @indent;
+      print QLA_SRC @indent, "}\n";
     }
-    pop @indent;
-    print QLA_SRC @indent, "}\n";
 
     &print_end_matter($var_i,$def{'dim_name'});
 }

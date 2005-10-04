@@ -1059,6 +1059,31 @@ foreach $assgn ( @assign_list ){
 }
 }
 #---------------------------------------------------------------------
+&header2("Dirac spin projection with reconstruction");
+#---------------------------------------------------------------------
+
+require("make_code_binary.pl");
+require("variable_names.pl");
+
+if(!$quadprecision){
+
+#@assign_list = ( $eqop_eq, $eqop_peq );
+@assign_list = @eqop_all;
+
+foreach $assgn ( @assign_list ){
+  foreach $indexing ( @ind_binary_list ){
+    %def = ();
+    $def{'dest_t'} = $datatype_diracfermion_abbrev;
+    $def{'src1_t'} = $datatype_diracfermion_abbrev;
+    $def{'src1_extra_arg'} = ", int $arg_mu, int $arg_sign ";
+    $def{'qualifier'} = "spproj";
+    if(&make_prototype($indexing,$assgn)) {
+      &make_code_wilsonspin($assgn,$arg_mu,$arg_sign);
+    }
+  }
+}
+}
+#---------------------------------------------------------------------
 &header2("Matrix multiply and Dirac spin projection");
 #---------------------------------------------------------------------
 
@@ -1074,10 +1099,10 @@ foreach $assgn ( @assign_list ){
   foreach $indexing ( @ind_binary_list ){
     foreach $adj ( 0, 1 ) {
     %def = ();
-    $def{'dest_t'} = $datatype_diracfermion_abbrev;
+    $def{'dest_t'} = $datatype_halffermion_abbrev;
     $def{'src1_t'} = $datatype_colormatrix_abbrev;
     if($adj) { $def{'src1_adj'} = $suffix_adjoint; }
-    $def{'src2_t'} = $datatype_halffermion_abbrev;
+    $def{'src2_t'} = $datatype_diracfermion_abbrev;
     $def{'src2_extra_arg'} = ", int $arg_mu, int $arg_sign ";
     $def{'qualifier'} = "spproj";
     $def{'op'} = "times";
@@ -1119,7 +1144,7 @@ foreach $assgn ( @assign_list ){
 }
 }
 #---------------------------------------------------------------------
-&header2("Matrix multiply and Wilson spin multiply");
+&header2("Matrix multiply and Dirac spin projection with reconstruction");
 #---------------------------------------------------------------------
 
 require("make_code_binary.pl");
@@ -1139,7 +1164,7 @@ foreach $assgn ( @assign_list ){
     if($adj) { $def{'src1_adj'} = $suffix_adjoint; }
     $def{'src2_t'} = $datatype_diracfermion_abbrev;
     $def{'src2_extra_arg'} = ", int $arg_mu, int $arg_sign ";
-    $def{'qualifier'} = "wilsonspin";
+    $def{'qualifier'} = "spproj";
     $def{'op'} = "times";
     if(&make_prototype($indexing,$assgn)) {
       &make_code_wilsonspin_mult($assgn,$arg_mu,$arg_sign);
