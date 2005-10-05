@@ -274,6 +274,7 @@ $dir_X = "0";
 $dir_Y = "1";
 $dir_Z = "2";
 $dir_T = "3";
+$dir_S = "4";
 $dir_5 = "-1";
 
 $sign_MINUS = "-1";

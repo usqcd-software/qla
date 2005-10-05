@@ -644,7 +644,7 @@ sub make_prototype {
     # Load individual hash tables for arguments
     ############################################################
     
-    %dest_def = {}; &load_arg_hash(*dest_def,'dest');
+    %dest_def = (); &load_arg_hash(*dest_def,'dest');
     %src1_def = (); &load_arg_hash(*src1_def,'src1');
     %src2_def = (); &load_arg_hash(*src2_def,'src2');
     %src3_def = (); &load_arg_hash(*src3_def,'src3');

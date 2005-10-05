@@ -1388,6 +1388,7 @@ QLA_F2_H_eqm_i_H.c \
 QLA_F2_H_eqm_Ma_times_H.c \
 QLA_F2_H_eqm_M_times_H.c \
 QLA_F2_H_eqm_r_times_H.c \
+QLA_F2_H_eqm_spproj_D.c \
 QLA_F2_H_eqm_spproj_Ma_times_D.c \
 QLA_F2_H_eqm_spproj_M_times_D.c \
 QLA_F2_h_eqm_sum_H.c \
@@ -1407,6 +1408,7 @@ QLA_F2_H_meq_i_H.c \
 QLA_F2_H_meq_Ma_times_H.c \
 QLA_F2_H_meq_M_times_H.c \
 QLA_F2_H_meq_r_times_H.c \
+QLA_F2_H_meq_spproj_D.c \
 QLA_F2_H_meq_spproj_Ma_times_D.c \
 QLA_F2_H_meq_spproj_M_times_D.c \
 QLA_F2_h_meq_sum_H.c \
@@ -1417,6 +1419,7 @@ QLA_F2_H_peq_i_H.c \
 QLA_F2_H_peq_Ma_times_H.c \
 QLA_F2_H_peq_M_times_H.c \
 QLA_F2_H_peq_r_times_H.c \
+QLA_F2_H_peq_spproj_D.c \
 QLA_F2_H_peq_spproj_Ma_times_D.c \
 QLA_F2_H_peq_spproj_M_times_D.c \
 QLA_F2_h_peq_sum_H.c \
@@ -1468,10 +1471,12 @@ QLA_F2_H_veqm_pM_times_H.c \
 QLA_F2_H_veqm_pM_times_pH.c \
 QLA_F2_H_veqm_r_times_H.c \
 QLA_F2_H_veqm_r_times_pH.c \
+QLA_F2_H_veqm_spproj_D.c \
 QLA_F2_H_veqm_spproj_Ma_times_D.c \
 QLA_F2_H_veqm_spproj_Ma_times_pD.c \
 QLA_F2_H_veqm_spproj_M_times_D.c \
 QLA_F2_H_veqm_spproj_M_times_pD.c \
+QLA_F2_H_veqm_spproj_pD.c \
 QLA_F2_H_veqm_spproj_pMa_times_D.c \
 QLA_F2_H_veqm_spproj_pMa_times_pD.c \
 QLA_F2_H_veqm_spproj_pM_times_D.c \
@@ -1501,12 +1506,7 @@ QLA_F2_H_veq_r_times_pH_minus_H.c \
 QLA_F2_H_veq_r_times_pH_minus_pH.c \
 QLA_F2_H_veq_r_times_pH_plus_H.c \
 QLA_F2_H_veq_r_times_pH_plus_pH.c \
-QLA_F2_H_veq_spproj_D.c \
-QLA_F2_H_veq_spproj_Ma_times_D.c \
-QLA_F2_H_veq_spproj_Ma_times_pD.c \
-QLA_F2_H_veq_spproj_M_times_D.c \
-QLA_F2_H_veq_spproj_M_times_pD.c \
-QLA_F2_H_veq_spproj_pD.c
+QLA_F2_H_veq_spproj_D.c
 
 QLAOBJ2 = \
 QLA_F2_D_veqm_i_pD.o \
@@ -1890,6 +1890,7 @@ QLA_F2_H_eqm_i_H.o \
 QLA_F2_H_eqm_Ma_times_H.o \
 QLA_F2_H_eqm_M_times_H.o \
 QLA_F2_H_eqm_r_times_H.o \
+QLA_F2_H_eqm_spproj_D.o \
 QLA_F2_H_eqm_spproj_Ma_times_D.o \
 QLA_F2_H_eqm_spproj_M_times_D.o \
 QLA_F2_h_eqm_sum_H.o \
@@ -1909,6 +1910,7 @@ QLA_F2_H_meq_i_H.o \
 QLA_F2_H_meq_Ma_times_H.o \
 QLA_F2_H_meq_M_times_H.o \
 QLA_F2_H_meq_r_times_H.o \
+QLA_F2_H_meq_spproj_D.o \
 QLA_F2_H_meq_spproj_Ma_times_D.o \
 QLA_F2_H_meq_spproj_M_times_D.o \
 QLA_F2_h_meq_sum_H.o \
@@ -1919,6 +1921,7 @@ QLA_F2_H_peq_i_H.o \
 QLA_F2_H_peq_Ma_times_H.o \
 QLA_F2_H_peq_M_times_H.o \
 QLA_F2_H_peq_r_times_H.o \
+QLA_F2_H_peq_spproj_D.o \
 QLA_F2_H_peq_spproj_Ma_times_D.o \
 QLA_F2_H_peq_spproj_M_times_D.o \
 QLA_F2_h_peq_sum_H.o \
@@ -1970,10 +1973,12 @@ QLA_F2_H_veqm_pM_times_H.o \
 QLA_F2_H_veqm_pM_times_pH.o \
 QLA_F2_H_veqm_r_times_H.o \
 QLA_F2_H_veqm_r_times_pH.o \
+QLA_F2_H_veqm_spproj_D.o \
 QLA_F2_H_veqm_spproj_Ma_times_D.o \
 QLA_F2_H_veqm_spproj_Ma_times_pD.o \
 QLA_F2_H_veqm_spproj_M_times_D.o \
 QLA_F2_H_veqm_spproj_M_times_pD.o \
+QLA_F2_H_veqm_spproj_pD.o \
 QLA_F2_H_veqm_spproj_pMa_times_D.o \
 QLA_F2_H_veqm_spproj_pMa_times_pD.o \
 QLA_F2_H_veqm_spproj_pM_times_D.o \
@@ -2003,14 +2008,14 @@ QLA_F2_H_veq_r_times_pH_minus_H.o \
 QLA_F2_H_veq_r_times_pH_minus_pH.o \
 QLA_F2_H_veq_r_times_pH_plus_H.o \
 QLA_F2_H_veq_r_times_pH_plus_pH.o \
-QLA_F2_H_veq_spproj_D.o \
-QLA_F2_H_veq_spproj_Ma_times_D.o \
-QLA_F2_H_veq_spproj_Ma_times_pD.o \
-QLA_F2_H_veq_spproj_M_times_D.o \
-QLA_F2_H_veq_spproj_M_times_pD.o \
-QLA_F2_H_veq_spproj_pD.o
+QLA_F2_H_veq_spproj_D.o
 
 QLASRC3 = \
+QLA_F2_H_veq_spproj_Ma_times_D.c \
+QLA_F2_H_veq_spproj_Ma_times_pD.c \
+QLA_F2_H_veq_spproj_M_times_D.c \
+QLA_F2_H_veq_spproj_M_times_pD.c \
+QLA_F2_H_veq_spproj_pD.c \
 QLA_F2_H_veq_spproj_pMa_times_D.c \
 QLA_F2_H_veq_spproj_pMa_times_pD.c \
 QLA_F2_H_veq_spproj_pM_times_D.c \
@@ -2036,10 +2041,12 @@ QLA_F2_H_vmeq_pM_times_H.c \
 QLA_F2_H_vmeq_pM_times_pH.c \
 QLA_F2_H_vmeq_r_times_H.c \
 QLA_F2_H_vmeq_r_times_pH.c \
+QLA_F2_H_vmeq_spproj_D.c \
 QLA_F2_H_vmeq_spproj_Ma_times_D.c \
 QLA_F2_H_vmeq_spproj_Ma_times_pD.c \
 QLA_F2_H_vmeq_spproj_M_times_D.c \
 QLA_F2_H_vmeq_spproj_M_times_pD.c \
+QLA_F2_H_vmeq_spproj_pD.c \
 QLA_F2_H_vmeq_spproj_pMa_times_D.c \
 QLA_F2_H_vmeq_spproj_pMa_times_pD.c \
 QLA_F2_H_vmeq_spproj_pM_times_D.c \
@@ -2064,10 +2071,12 @@ QLA_F2_H_vpeq_pM_times_H.c \
 QLA_F2_H_vpeq_pM_times_pH.c \
 QLA_F2_H_vpeq_r_times_H.c \
 QLA_F2_H_vpeq_r_times_pH.c \
+QLA_F2_H_vpeq_spproj_D.c \
 QLA_F2_H_vpeq_spproj_Ma_times_D.c \
 QLA_F2_H_vpeq_spproj_Ma_times_pD.c \
 QLA_F2_H_vpeq_spproj_M_times_D.c \
 QLA_F2_H_vpeq_spproj_M_times_pD.c \
+QLA_F2_H_vpeq_spproj_pD.c \
 QLA_F2_H_vpeq_spproj_pMa_times_D.c \
 QLA_F2_H_vpeq_spproj_pMa_times_pD.c \
 QLA_F2_H_vpeq_spproj_pM_times_D.c \
@@ -2122,10 +2131,12 @@ QLA_F2_H_xeqm_pM_times_H.c \
 QLA_F2_H_xeqm_pM_times_pH.c \
 QLA_F2_H_xeqm_r_times_H.c \
 QLA_F2_H_xeqm_r_times_pH.c \
+QLA_F2_H_xeqm_spproj_D.c \
 QLA_F2_H_xeqm_spproj_Ma_times_D.c \
 QLA_F2_H_xeqm_spproj_Ma_times_pD.c \
 QLA_F2_H_xeqm_spproj_M_times_D.c \
 QLA_F2_H_xeqm_spproj_M_times_pD.c \
+QLA_F2_H_xeqm_spproj_pD.c \
 QLA_F2_H_xeqm_spproj_pMa_times_D.c \
 QLA_F2_H_xeqm_spproj_pMa_times_pD.c \
 QLA_F2_H_xeqm_spproj_pM_times_D.c \
@@ -2186,10 +2197,12 @@ QLA_F2_H_xmeq_pM_times_H.c \
 QLA_F2_H_xmeq_pM_times_pH.c \
 QLA_F2_H_xmeq_r_times_H.c \
 QLA_F2_H_xmeq_r_times_pH.c \
+QLA_F2_H_xmeq_spproj_D.c \
 QLA_F2_H_xmeq_spproj_Ma_times_D.c \
 QLA_F2_H_xmeq_spproj_Ma_times_pD.c \
 QLA_F2_H_xmeq_spproj_M_times_D.c \
 QLA_F2_H_xmeq_spproj_M_times_pD.c \
+QLA_F2_H_xmeq_spproj_pD.c \
 QLA_F2_H_xmeq_spproj_pMa_times_D.c \
 QLA_F2_H_xmeq_spproj_pMa_times_pD.c \
 QLA_F2_H_xmeq_spproj_pM_times_D.c \
@@ -2214,10 +2227,12 @@ QLA_F2_H_xpeq_pM_times_H.c \
 QLA_F2_H_xpeq_pM_times_pH.c \
 QLA_F2_H_xpeq_r_times_H.c \
 QLA_F2_H_xpeq_r_times_pH.c \
+QLA_F2_H_xpeq_spproj_D.c \
 QLA_F2_H_xpeq_spproj_Ma_times_D.c \
 QLA_F2_H_xpeq_spproj_Ma_times_pD.c \
 QLA_F2_H_xpeq_spproj_M_times_D.c \
 QLA_F2_H_xpeq_spproj_M_times_pD.c \
+QLA_F2_H_xpeq_spproj_pD.c \
 QLA_F2_H_xpeq_spproj_pMa_times_D.c \
 QLA_F2_H_xpeq_spproj_pMa_times_pD.c \
 QLA_F2_H_xpeq_spproj_pM_times_D.c \
@@ -2495,24 +2510,14 @@ QLA_F2_M_xeq_c_times_pM_plus_M.c \
 QLA_F2_M_xeq_c_times_pM_plus_pM.c \
 QLA_F2_M_xeq_elem_C.c \
 QLA_F2_M_xeq_elem_pC.c \
-QLA_F2_M_xeq_gaussian_pS.c \
-QLA_F2_M_xeq_gaussian_S.c \
-QLA_F2_M_xeq_i_M.c \
-QLA_F2_M_xeq_i_pM.c \
-QLA_F2_M_xeq_Ma.c \
-QLA_F2_M_xeq_Ma_times_Ma.c \
-QLA_F2_M_xeq_Ma_times_M.c \
-QLA_F2_M_xeq_Ma_times_pMa.c \
-QLA_F2_M_xeq_Ma_times_pM.c \
-QLA_F2_M_xeq_m.c \
-QLA_F2_M_xeq_M.c \
-QLA_F2_M_xeqm_conj_M.c \
-QLA_F2_M_xeqm_conj_pM.c \
-QLA_F2_M_xeqm_c_times_M.c \
-QLA_F2_M_xeqm_c_times_pM.c \
-QLA_F2_M_xeqm_i_M.c
+QLA_F2_M_xeq_gaussian_pS.c
 
 QLAOBJ3 = \
+QLA_F2_H_veq_spproj_Ma_times_D.o \
+QLA_F2_H_veq_spproj_Ma_times_pD.o \
+QLA_F2_H_veq_spproj_M_times_D.o \
+QLA_F2_H_veq_spproj_M_times_pD.o \
+QLA_F2_H_veq_spproj_pD.o \
 QLA_F2_H_veq_spproj_pMa_times_D.o \
 QLA_F2_H_veq_spproj_pMa_times_pD.o \
 QLA_F2_H_veq_spproj_pM_times_D.o \
@@ -2538,10 +2543,12 @@ QLA_F2_H_vmeq_pM_times_H.o \
 QLA_F2_H_vmeq_pM_times_pH.o \
 QLA_F2_H_vmeq_r_times_H.o \
 QLA_F2_H_vmeq_r_times_pH.o \
+QLA_F2_H_vmeq_spproj_D.o \
 QLA_F2_H_vmeq_spproj_Ma_times_D.o \
 QLA_F2_H_vmeq_spproj_Ma_times_pD.o \
 QLA_F2_H_vmeq_spproj_M_times_D.o \
 QLA_F2_H_vmeq_spproj_M_times_pD.o \
+QLA_F2_H_vmeq_spproj_pD.o \
 QLA_F2_H_vmeq_spproj_pMa_times_D.o \
 QLA_F2_H_vmeq_spproj_pMa_times_pD.o \
 QLA_F2_H_vmeq_spproj_pM_times_D.o \
@@ -2566,10 +2573,12 @@ QLA_F2_H_vpeq_pM_times_H.o \
 QLA_F2_H_vpeq_pM_times_pH.o \
 QLA_F2_H_vpeq_r_times_H.o \
 QLA_F2_H_vpeq_r_times_pH.o \
+QLA_F2_H_vpeq_spproj_D.o \
 QLA_F2_H_vpeq_spproj_Ma_times_D.o \
 QLA_F2_H_vpeq_spproj_Ma_times_pD.o \
 QLA_F2_H_vpeq_spproj_M_times_D.o \
 QLA_F2_H_vpeq_spproj_M_times_pD.o \
+QLA_F2_H_vpeq_spproj_pD.o \
 QLA_F2_H_vpeq_spproj_pMa_times_D.o \
 QLA_F2_H_vpeq_spproj_pMa_times_pD.o \
 QLA_F2_H_vpeq_spproj_pM_times_D.o \
@@ -2624,10 +2633,12 @@ QLA_F2_H_xeqm_pM_times_H.o \
 QLA_F2_H_xeqm_pM_times_pH.o \
 QLA_F2_H_xeqm_r_times_H.o \
 QLA_F2_H_xeqm_r_times_pH.o \
+QLA_F2_H_xeqm_spproj_D.o \
 QLA_F2_H_xeqm_spproj_Ma_times_D.o \
 QLA_F2_H_xeqm_spproj_Ma_times_pD.o \
 QLA_F2_H_xeqm_spproj_M_times_D.o \
 QLA_F2_H_xeqm_spproj_M_times_pD.o \
+QLA_F2_H_xeqm_spproj_pD.o \
 QLA_F2_H_xeqm_spproj_pMa_times_D.o \
 QLA_F2_H_xeqm_spproj_pMa_times_pD.o \
 QLA_F2_H_xeqm_spproj_pM_times_D.o \
@@ -2688,10 +2699,12 @@ QLA_F2_H_xmeq_pM_times_H.o \
 QLA_F2_H_xmeq_pM_times_pH.o \
 QLA_F2_H_xmeq_r_times_H.o \
 QLA_F2_H_xmeq_r_times_pH.o \
+QLA_F2_H_xmeq_spproj_D.o \
 QLA_F2_H_xmeq_spproj_Ma_times_D.o \
 QLA_F2_H_xmeq_spproj_Ma_times_pD.o \
 QLA_F2_H_xmeq_spproj_M_times_D.o \
 QLA_F2_H_xmeq_spproj_M_times_pD.o \
+QLA_F2_H_xmeq_spproj_pD.o \
 QLA_F2_H_xmeq_spproj_pMa_times_D.o \
 QLA_F2_H_xmeq_spproj_pMa_times_pD.o \
 QLA_F2_H_xmeq_spproj_pM_times_D.o \
@@ -2716,10 +2729,12 @@ QLA_F2_H_xpeq_pM_times_H.o \
 QLA_F2_H_xpeq_pM_times_pH.o \
 QLA_F2_H_xpeq_r_times_H.o \
 QLA_F2_H_xpeq_r_times_pH.o \
+QLA_F2_H_xpeq_spproj_D.o \
 QLA_F2_H_xpeq_spproj_Ma_times_D.o \
 QLA_F2_H_xpeq_spproj_Ma_times_pD.o \
 QLA_F2_H_xpeq_spproj_M_times_D.o \
 QLA_F2_H_xpeq_spproj_M_times_pD.o \
+QLA_F2_H_xpeq_spproj_pD.o \
 QLA_F2_H_xpeq_spproj_pMa_times_D.o \
 QLA_F2_H_xpeq_spproj_pMa_times_pD.o \
 QLA_F2_H_xpeq_spproj_pM_times_D.o \
@@ -2997,24 +3012,24 @@ QLA_F2_M_xeq_c_times_pM_plus_M.o \
 QLA_F2_M_xeq_c_times_pM_plus_pM.o \
 QLA_F2_M_xeq_elem_C.o \
 QLA_F2_M_xeq_elem_pC.o \
-QLA_F2_M_xeq_gaussian_pS.o \
-QLA_F2_M_xeq_gaussian_S.o \
-QLA_F2_M_xeq_i_M.o \
-QLA_F2_M_xeq_i_pM.o \
-QLA_F2_M_xeq_Ma.o \
-QLA_F2_M_xeq_Ma_times_Ma.o \
-QLA_F2_M_xeq_Ma_times_M.o \
-QLA_F2_M_xeq_Ma_times_pMa.o \
-QLA_F2_M_xeq_Ma_times_pM.o \
-QLA_F2_M_xeq_m.o \
-QLA_F2_M_xeq_M.o \
-QLA_F2_M_xeqm_conj_M.o \
-QLA_F2_M_xeqm_conj_pM.o \
-QLA_F2_M_xeqm_c_times_M.o \
-QLA_F2_M_xeqm_c_times_pM.o \
-QLA_F2_M_xeqm_i_M.o
+QLA_F2_M_xeq_gaussian_pS.o
 
 QLASRC4 = \
+QLA_F2_M_xeq_gaussian_S.c \
+QLA_F2_M_xeq_i_M.c \
+QLA_F2_M_xeq_i_pM.c \
+QLA_F2_M_xeq_Ma.c \
+QLA_F2_M_xeq_Ma_times_Ma.c \
+QLA_F2_M_xeq_Ma_times_M.c \
+QLA_F2_M_xeq_Ma_times_pMa.c \
+QLA_F2_M_xeq_Ma_times_pM.c \
+QLA_F2_M_xeq_m.c \
+QLA_F2_M_xeq_M.c \
+QLA_F2_M_xeqm_conj_M.c \
+QLA_F2_M_xeqm_conj_pM.c \
+QLA_F2_M_xeqm_c_times_M.c \
+QLA_F2_M_xeqm_c_times_pM.c \
+QLA_F2_M_xeqm_i_M.c \
 QLA_F2_M_xeqm_i_pM.c \
 QLA_F2_M_xeqm_Ma.c \
 QLA_F2_M_xeq_M_mask_I.c \
@@ -3499,24 +3514,24 @@ QLA_F2_P_xeq_P_plus_P.c \
 QLA_F2_P_xeq_P_plus_pP.c \
 QLA_F2_P_xeq_pP_mask_I.c \
 QLA_F2_P_xeq_pP_mask_pI.c \
-QLA_F2_P_xeq_pP_minus_P.c \
-QLA_F2_P_xeq_pP_minus_pP.c \
-QLA_F2_P_xeq_pP_plus_P.c \
-QLA_F2_P_xeq_pP_plus_pP.c \
-QLA_F2_P_xeq_pP_times_gamma.c \
-QLA_F2_P_xeq_pP_times_Ma.c \
-QLA_F2_P_xeq_pP_times_M.c \
-QLA_F2_P_xeq_pP_times_P.c \
-QLA_F2_P_xeq_pP_times_pMa.c \
-QLA_F2_P_xeq_pP_times_pM.c \
-QLA_F2_P_xeq_pP_times_pP.c \
-QLA_F2_P_xeq_P_times_gamma.c \
-QLA_F2_P_xeq_P_times_Ma.c \
-QLA_F2_P_xeq_P_times_M.c \
-QLA_F2_P_xeq_P_times_P.c \
-QLA_F2_P_xeq_P_times_pMa.c
+QLA_F2_P_xeq_pP_minus_P.c
 
 QLAOBJ4 = \
+QLA_F2_M_xeq_gaussian_S.o \
+QLA_F2_M_xeq_i_M.o \
+QLA_F2_M_xeq_i_pM.o \
+QLA_F2_M_xeq_Ma.o \
+QLA_F2_M_xeq_Ma_times_Ma.o \
+QLA_F2_M_xeq_Ma_times_M.o \
+QLA_F2_M_xeq_Ma_times_pMa.o \
+QLA_F2_M_xeq_Ma_times_pM.o \
+QLA_F2_M_xeq_m.o \
+QLA_F2_M_xeq_M.o \
+QLA_F2_M_xeqm_conj_M.o \
+QLA_F2_M_xeqm_conj_pM.o \
+QLA_F2_M_xeqm_c_times_M.o \
+QLA_F2_M_xeqm_c_times_pM.o \
+QLA_F2_M_xeqm_i_M.o \
 QLA_F2_M_xeqm_i_pM.o \
 QLA_F2_M_xeqm_Ma.o \
 QLA_F2_M_xeq_M_mask_I.o \
@@ -4001,24 +4016,24 @@ QLA_F2_P_xeq_P_plus_P.o \
 QLA_F2_P_xeq_P_plus_pP.o \
 QLA_F2_P_xeq_pP_mask_I.o \
 QLA_F2_P_xeq_pP_mask_pI.o \
-QLA_F2_P_xeq_pP_minus_P.o \
-QLA_F2_P_xeq_pP_minus_pP.o \
-QLA_F2_P_xeq_pP_plus_P.o \
-QLA_F2_P_xeq_pP_plus_pP.o \
-QLA_F2_P_xeq_pP_times_gamma.o \
-QLA_F2_P_xeq_pP_times_Ma.o \
-QLA_F2_P_xeq_pP_times_M.o \
-QLA_F2_P_xeq_pP_times_P.o \
-QLA_F2_P_xeq_pP_times_pMa.o \
-QLA_F2_P_xeq_pP_times_pM.o \
-QLA_F2_P_xeq_pP_times_pP.o \
-QLA_F2_P_xeq_P_times_gamma.o \
-QLA_F2_P_xeq_P_times_Ma.o \
-QLA_F2_P_xeq_P_times_M.o \
-QLA_F2_P_xeq_P_times_P.o \
-QLA_F2_P_xeq_P_times_pMa.o
+QLA_F2_P_xeq_pP_minus_P.o
 
 QLASRC5 = \
+QLA_F2_P_xeq_pP_minus_pP.c \
+QLA_F2_P_xeq_pP_plus_P.c \
+QLA_F2_P_xeq_pP_plus_pP.c \
+QLA_F2_P_xeq_pP_times_gamma.c \
+QLA_F2_P_xeq_pP_times_Ma.c \
+QLA_F2_P_xeq_pP_times_M.c \
+QLA_F2_P_xeq_pP_times_P.c \
+QLA_F2_P_xeq_pP_times_pMa.c \
+QLA_F2_P_xeq_pP_times_pM.c \
+QLA_F2_P_xeq_pP_times_pP.c \
+QLA_F2_P_xeq_P_times_gamma.c \
+QLA_F2_P_xeq_P_times_Ma.c \
+QLA_F2_P_xeq_P_times_M.c \
+QLA_F2_P_xeq_P_times_P.c \
+QLA_F2_P_xeq_P_times_pMa.c \
 QLA_F2_P_xeq_P_times_pM.c \
 QLA_F2_P_xeq_P_times_pP.c \
 QLA_F2_P_xeq_r_times_P.c \
@@ -4503,24 +4518,24 @@ QLA_F2_R_xeq_norm2_H.c \
 QLA_F2_r_xeq_norm2_M.c \
 QLA_F2_R_xeq_norm2_M.c \
 QLA_F2_r_xeq_norm2_P.c \
-QLA_F2_R_xeq_norm2_P.c \
-QLA_F2_r_xeq_norm2_pD.c \
-QLA_F2_R_xeq_norm2_pD.c \
-QLA_F2_r_xeq_norm2_pH.c \
-QLA_F2_R_xeq_norm2_pH.c \
-QLA_F2_r_xeq_norm2_pM.c \
-QLA_F2_R_xeq_norm2_pM.c \
-QLA_F2_r_xeq_norm2_pP.c \
-QLA_F2_R_xeq_norm2_pP.c \
-QLA_F2_r_xeq_norm2_pV.c \
-QLA_F2_R_xeq_norm2_pV.c \
-QLA_F2_r_xeq_norm2_V.c \
-QLA_F2_R_xeq_norm2_V.c \
-QLA_F2_r_xeq_re_D_dot_D.c \
-QLA_F2_R_xeq_re_D_dot_D.c \
-QLA_F2_r_xeq_re_D_dot_pD.c
+QLA_F2_R_xeq_norm2_P.c
 
 QLAOBJ5 = \
+QLA_F2_P_xeq_pP_minus_pP.o \
+QLA_F2_P_xeq_pP_plus_P.o \
+QLA_F2_P_xeq_pP_plus_pP.o \
+QLA_F2_P_xeq_pP_times_gamma.o \
+QLA_F2_P_xeq_pP_times_Ma.o \
+QLA_F2_P_xeq_pP_times_M.o \
+QLA_F2_P_xeq_pP_times_P.o \
+QLA_F2_P_xeq_pP_times_pMa.o \
+QLA_F2_P_xeq_pP_times_pM.o \
+QLA_F2_P_xeq_pP_times_pP.o \
+QLA_F2_P_xeq_P_times_gamma.o \
+QLA_F2_P_xeq_P_times_Ma.o \
+QLA_F2_P_xeq_P_times_M.o \
+QLA_F2_P_xeq_P_times_P.o \
+QLA_F2_P_xeq_P_times_pMa.o \
 QLA_F2_P_xeq_P_times_pM.o \
 QLA_F2_P_xeq_P_times_pP.o \
 QLA_F2_P_xeq_r_times_P.o \
@@ -5005,24 +5020,24 @@ QLA_F2_R_xeq_norm2_H.o \
 QLA_F2_r_xeq_norm2_M.o \
 QLA_F2_R_xeq_norm2_M.o \
 QLA_F2_r_xeq_norm2_P.o \
-QLA_F2_R_xeq_norm2_P.o \
-QLA_F2_r_xeq_norm2_pD.o \
-QLA_F2_R_xeq_norm2_pD.o \
-QLA_F2_r_xeq_norm2_pH.o \
-QLA_F2_R_xeq_norm2_pH.o \
-QLA_F2_r_xeq_norm2_pM.o \
-QLA_F2_R_xeq_norm2_pM.o \
-QLA_F2_r_xeq_norm2_pP.o \
-QLA_F2_R_xeq_norm2_pP.o \
-QLA_F2_r_xeq_norm2_pV.o \
-QLA_F2_R_xeq_norm2_pV.o \
-QLA_F2_r_xeq_norm2_V.o \
-QLA_F2_R_xeq_norm2_V.o \
-QLA_F2_r_xeq_re_D_dot_D.o \
-QLA_F2_R_xeq_re_D_dot_D.o \
-QLA_F2_r_xeq_re_D_dot_pD.o
+QLA_F2_R_xeq_norm2_P.o
 
 QLASRC6 = \
+QLA_F2_r_xeq_norm2_pD.c \
+QLA_F2_R_xeq_norm2_pD.c \
+QLA_F2_r_xeq_norm2_pH.c \
+QLA_F2_R_xeq_norm2_pH.c \
+QLA_F2_r_xeq_norm2_pM.c \
+QLA_F2_R_xeq_norm2_pM.c \
+QLA_F2_r_xeq_norm2_pP.c \
+QLA_F2_R_xeq_norm2_pP.c \
+QLA_F2_r_xeq_norm2_pV.c \
+QLA_F2_R_xeq_norm2_pV.c \
+QLA_F2_r_xeq_norm2_V.c \
+QLA_F2_R_xeq_norm2_V.c \
+QLA_F2_r_xeq_re_D_dot_D.c \
+QLA_F2_R_xeq_re_D_dot_D.c \
+QLA_F2_r_xeq_re_D_dot_pD.c \
 QLA_F2_R_xeq_re_D_dot_pD.c \
 QLA_F2_r_xeq_re_H_dot_H.c \
 QLA_F2_R_xeq_re_H_dot_H.c \
@@ -5475,6 +5490,21 @@ QLA_F2_v_xpeq_sum_V.c \
 QLA_F2_V_xpeq_V.c
 
 QLAOBJ6 = \
+QLA_F2_r_xeq_norm2_pD.o \
+QLA_F2_R_xeq_norm2_pD.o \
+QLA_F2_r_xeq_norm2_pH.o \
+QLA_F2_R_xeq_norm2_pH.o \
+QLA_F2_r_xeq_norm2_pM.o \
+QLA_F2_R_xeq_norm2_pM.o \
+QLA_F2_r_xeq_norm2_pP.o \
+QLA_F2_R_xeq_norm2_pP.o \
+QLA_F2_r_xeq_norm2_pV.o \
+QLA_F2_R_xeq_norm2_pV.o \
+QLA_F2_r_xeq_norm2_V.o \
+QLA_F2_R_xeq_norm2_V.o \
+QLA_F2_r_xeq_re_D_dot_D.o \
+QLA_F2_R_xeq_re_D_dot_D.o \
+QLA_F2_r_xeq_re_D_dot_pD.o \
 QLA_F2_R_xeq_re_D_dot_pD.o \
 QLA_F2_r_xeq_re_H_dot_H.o \
 QLA_F2_R_xeq_re_H_dot_H.o \

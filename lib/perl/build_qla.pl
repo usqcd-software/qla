@@ -1020,9 +1020,11 @@ require("variable_names.pl");
 
 if(!$quadprecision){
 
-$assgn = $eqop_eq;
+#$assgn = $eqop_eq;
+@assign_list = @eqop_all;
 
-foreach $indexing ( @ind_unary_list ){
+foreach $assgn ( @assign_list ){
+  foreach $indexing ( @ind_unary_list ){
     %def = ();
     ($def{'dest_t'},$def{'src1_t'}) = 
 	($datatype_halffermion_abbrev,$datatype_diracfermion_abbrev);
@@ -1031,6 +1033,7 @@ foreach $indexing ( @ind_unary_list ){
     if(&make_prototype($indexing,$assgn)){
 	&make_code_spproj_sprecon($assgn,$arg_mu,$arg_sign);
     }
+  }
 }
 }
 #---------------------------------------------------------------------

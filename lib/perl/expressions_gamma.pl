@@ -74,10 +74,16 @@ sub print_spproj_c_eqop_c_op_c {
     $src2_elem_value = &make_accessor(*src1_def,$def{'nc'},$ic,$src2_s,"","");
 
     $macro = $carith2{$eqop.$op};
-    defined($macro) || die "no carith2 macro for $eqop$op\n";
-
-    print QLA_SRC @indent,"$macro($dest_elem_value,";
-    print QLA_SRC @indent,"$src1_elem_value,$src2_elem_value)\n";
+    #defined($macro) || die "no carith2 macro for $eqop$op\n";
+    if(defined($macro)) {
+      print QLA_SRC @indent,"$macro($dest_elem_value,";
+      print QLA_SRC @indent,"$src1_elem_value,$src2_elem_value)\n";
+    } else {
+      $macro = $carith1{$eqop.$op};
+      defined($macro) || die "no carith2 or carith1 macro for $eqop$op\n";
+      print QLA_SRC @indent,"$macro($dest_elem_value,";
+      print QLA_SRC @indent,"$src1_elem_value)\n";
+    }
 }
 
 sub print_spproj_dir {
@@ -112,6 +118,7 @@ sub print_val_assign_spproj {
     &print_spproj_dir($ic,$eqop,$dir_Y,'c+c' ,0,3,'c-c' ,1,2);
     &print_spproj_dir($ic,$eqop,$dir_Z,'c+ic',0,2,'c-ic',1,3);
     &print_spproj_dir($ic,$eqop,$dir_T,'c+c' ,0,2,'c+c' ,1,3);
+    &print_spproj_dir($ic,$eqop,$dir_S,'c'   ,0,0,'c'   ,1,1);
 
     &open_block();
     &close_brace();
@@ -128,6 +135,7 @@ sub print_val_assign_spproj {
     &print_spproj_dir($ic,$eqop,$dir_Y,'c-c' ,0,3,'c+c' ,1,2);
     &print_spproj_dir($ic,$eqop,$dir_Z,'c-ic',0,2,'c+ic',1,3);
     &print_spproj_dir($ic,$eqop,$dir_T,'c-c' ,0,2,'c-c' ,1,3);
+    &print_spproj_dir($ic,$eqop,$dir_S,'c'   ,2,2,'c'   ,3,3);
 
     &open_block();
     &close_brace();
@@ -147,10 +155,11 @@ sub print_sprecon_c_eqop_op_c {
     $dest_elem_value = &make_accessor(*dest_def,$def{'nc'},$ic,$dest_s,"","");
     $src1_elem_value = &make_accessor(*src1_def,$def{'nc'},$ic,$src1_s,"","");
 
-    $macro = $carith1{$eqop.$op};
-    defined($macro) || die "no carith1 macro for $eqop$op.\n";
-
-    print QLA_SRC @indent,"$macro($dest_elem_value,$src1_elem_value)\n";
+    if( !($op eq '0') ) {
+      $macro = $carith1{$eqop.$op};
+      defined($macro) || die "no carith1 macro for $eqop$op.\n";
+      print QLA_SRC @indent,"$macro($dest_elem_value,$src1_elem_value)\n";
+    }
 }
 
 sub print_sprecon_dir {
@@ -191,6 +200,8 @@ sub print_val_assign_sprecon {
 		       0, 1, 0, 1);
     &print_sprecon_dir($ic,$maxic,$eqop,$dir_T, 'c', 'c', 'c'  , 'c',
 		       0, 1, 0, 1);
+    &print_sprecon_dir($ic,$maxic,$eqop,$dir_S, 'c', 'c', '0'  , '0',
+		       0, 1, 0, 1);
 
     &open_block();
     &close_brace();
@@ -210,6 +221,8 @@ sub print_val_assign_sprecon {
     &print_sprecon_dir($ic,$maxic,$eqop,$dir_Z, 'c', 'c', 'ic' , '-ic',
 		       0, 1, 0, 1);
     &print_sprecon_dir($ic,$maxic,$eqop,$dir_T, 'c', 'c', '-c' , '-c',
+		       0, 1, 0, 1);
+    &print_sprecon_dir($ic,$maxic,$eqop,$dir_S, '0', '0', 'c'  , 'c',
 		       0, 1, 0, 1);
 
     &open_block();
