@@ -76,13 +76,12 @@ sub print_spproj_c_eqop_c_op_c {
     $macro = $carith2{$eqop.$op};
     #defined($macro) || die "no carith2 macro for $eqop$op\n";
     if(defined($macro)) {
-      print QLA_SRC @indent,"$macro($dest_elem_value,";
-      print QLA_SRC @indent,"$src1_elem_value,$src2_elem_value)\n";
+      print QLA_SRC @indent,"$macro($dest_elem_value,\n";
+      print QLA_SRC @indent,"      $src1_elem_value,$src2_elem_value);\n";
     } else {
       $macro = $carith1{$eqop.$op};
       defined($macro) || die "no carith2 or carith1 macro for $eqop$op\n";
-      print QLA_SRC @indent,"$macro($dest_elem_value,";
-      print QLA_SRC @indent,"$src1_elem_value)\n";
+      print QLA_SRC @indent,"$macro($dest_elem_value,$src1_elem_value);\n";
     }
 }
 
@@ -155,10 +154,15 @@ sub print_sprecon_c_eqop_op_c {
     $dest_elem_value = &make_accessor(*dest_def,$def{'nc'},$ic,$dest_s,"","");
     $src1_elem_value = &make_accessor(*src1_def,$def{'nc'},$ic,$src1_s,"","");
 
-    if( !($op eq '0') ) {
+    if( $op eq '0' ) {
+      if( ($eqop eq "eq") || ($eqop eq "eqm") ) {
+	$macro = $carith1{'eqr'};
+	print QLA_SRC @indent, "$macro($dest_elem_value,0.0);\n";
+      }
+    } else {
       $macro = $carith1{$eqop.$op};
       defined($macro) || die "no carith1 macro for $eqop$op.\n";
-      print QLA_SRC @indent,"$macro($dest_elem_value,$src1_elem_value)\n";
+      print QLA_SRC @indent,"$macro($dest_elem_value,$src1_elem_value);\n";
     }
 }
 
@@ -232,6 +236,132 @@ sub print_val_assign_sprecon {
 }
 
 ######################################################################
+# New spin project and reconstruction
+######################################################################
+
+sub print_spproj_dirs {
+    local($ic,$eqop,$dir,$op0,$src01_s,$src02_s,$op1,$src11_s,$src12_s) = @_;
+
+#    print QLA_SRC @indent,"case $dir:\n";
+#    &open_block();
+#    &open_iter($ic,$maxic);
+    &print_spproj_c_eqop_c_op_c($ic,$eqop,$op0,0,$src01_s,$src02_s);
+    &print_spproj_c_eqop_c_op_c($ic,$eqop,$op1,1,$src11_s,$src12_s);
+#    &close_iter($ic);
+#    print QLA_SRC @indent,"break;\n";
+#    &close_block();
+}
+
+sub print_val_assign_spproj_dirs {
+  local(*dest_def, *src1_def, $sign, $dir, $eqop) = @_;
+  if($sign==$sign_PLUS) {
+    &print_spproj_dirs($ic,$eqop,$dir_X,'c+ic',0,3,'c+ic',1,2) if($dir==$dir_X);
+    &print_spproj_dirs($ic,$eqop,$dir_Y,'c+c' ,0,3,'c-c' ,1,2) if($dir==$dir_Y);
+    &print_spproj_dirs($ic,$eqop,$dir_Z,'c+ic',0,2,'c-ic',1,3) if($dir==$dir_Z);
+    &print_spproj_dirs($ic,$eqop,$dir_T,'c+c' ,0,2,'c+c' ,1,3) if($dir==$dir_T);
+    &print_spproj_dirs($ic,$eqop,$dir_S,'c'   ,0,0,'c'   ,1,1) if($dir==$dir_S);
+  } else {
+    &print_spproj_dirs($ic,$eqop,$dir_X,'c-ic',0,3,'c-ic',1,2) if($dir==$dir_X);
+    &print_spproj_dirs($ic,$eqop,$dir_Y,'c-c' ,0,3,'c+c' ,1,2) if($dir==$dir_Y);
+    &print_spproj_dirs($ic,$eqop,$dir_Z,'c-ic',0,2,'c+ic',1,3) if($dir==$dir_Z);
+    &print_spproj_dirs($ic,$eqop,$dir_T,'c-c' ,0,2,'c-c' ,1,3) if($dir==$dir_T);
+    &print_spproj_dirs($ic,$eqop,$dir_S,'c'   ,2,2,'c'   ,3,3) if($dir==$dir_S);
+  }
+}
+
+sub print_sprecon_dirs {
+    local($ic,$maxic,$eqop,$dir,$op0,$op1,$op2,$op3,$h0,$h1,$h2,$h3) = @_;
+
+#    print QLA_SRC @indent,"case $dir:\n";
+#    &open_block();
+#    &open_iter($ic,$maxic);
+    &print_sprecon_c_eqop_op_c($ic,$maxic,$eqop,$op0,0,$h0);
+    &print_sprecon_c_eqop_op_c($ic,$maxic,$eqop,$op1,1,$h1);
+    &print_sprecon_c_eqop_op_c($ic,$maxic,$eqop,$op2,2,$h2);
+    &print_sprecon_c_eqop_op_c($ic,$maxic,$eqop,$op3,3,$h3);
+#    &close_iter($ic);
+#    print QLA_SRC @indent,"break;\n";
+#    &close_block();
+}
+
+sub print_val_assign_sprecon_dirs {
+  local(*dest_def, *src1_def, $sign, $dir, $eqop) = @_;
+  if($sign==$sign_PLUS) {
+    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_X, 'c', 'c', '-ic', '-ic',
+		       0, 1, 1, 0) if($dir==$dir_X);
+    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_Y, 'c', 'c', '-c' , 'c',
+		       0, 1, 1, 0) if($dir==$dir_Y);
+    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_Z, 'c', 'c', '-ic', 'ic',
+		       0, 1, 0, 1) if($dir==$dir_Z);
+    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_T, 'c', 'c', 'c'  , 'c',
+		       0, 1, 0, 1) if($dir==$dir_T);
+    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_S, 'c', 'c', '0'  , '0',
+		       0, 1, 0, 1) if($dir==$dir_S);
+  } else {
+    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_X, 'c', 'c', 'ic' , 'ic',
+		       0, 1, 1, 0) if($dir==$dir_X);
+    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_Y, 'c', 'c', 'c'  , '-c',
+		       0, 1, 1, 0) if($dir==$dir_Y);
+    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_Z, 'c', 'c', 'ic' , '-ic',
+		       0, 1, 0, 1) if($dir==$dir_Z);
+    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_T, 'c', 'c', '-c' , '-c',
+		       0, 1, 0, 1) if($dir==$dir_T);
+    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_S, '0', '0', 'c'  , 'c',
+		       0, 1, 0, 1) if($dir==$dir_S);
+
+  }
+}
+
+sub print_spin_dir {
+  local($sign, $dir, $eqop, $spfunc) = @_;
+
+  print QLA_SRC @indent,"case $dir: {\n";
+  &open_block();
+  &$spfunc($sign, $dir, $eqop);
+  print QLA_SRC @indent,"} break;\n";
+  &close_block();
+}
+
+sub print_val_assign_spin {
+    local($eqop,$mu,$sign,$spfunc) = @_;
+
+#    $ic = &get_row_color_index(*src1_def);
+#    &print_int_def($ic);
+#    $maxic = $src1_def{'mc'};
+
+    print QLA_SRC @indent,"if($sign==$sign_PLUS) {\n";
+
+    # Up directions
+
+    &open_block();
+    print QLA_SRC @indent,"switch($mu) {\n";
+
+    for($i=0; $i<5; $i++) {
+      &print_spin_dir($sign_PLUS, $i, $eqop, $spfunc);
+    }
+
+    &open_block();
+    &close_brace();
+    &close_brace();
+
+    print QLA_SRC @indent,"else {\n";
+
+    # Down directions
+
+    &open_block();
+    print QLA_SRC @indent,"switch($mu) {\n";
+
+    for($i=0; $i<5; $i++) {
+      &print_spin_dir($sign_MINUS, $i, $eqop, $spfunc);
+    }
+
+    &open_block();
+    &close_brace();
+    &close_brace();
+
+}
+
+######################################################################
 # Left and right multiplication by gamma matrices
 ######################################################################
 
@@ -246,7 +376,7 @@ sub print_lmult_gamma_c_eqop_op_c {
 				      $ic,$src1_s,$jc,$js);
     local($macro) = $carith1{$eqop.$op};
     defined($macro) || die "No carith1 macro for $macro\n";
-    print QLA_SRC @indent,"$macro($dest_elem_value,$src1_elem_value)\n";
+    print QLA_SRC @indent,"$macro($dest_elem_value,$src1_elem_value);\n";
 }
 
 sub print_rmult_gamma_c_eqop_op_c {
@@ -260,7 +390,7 @@ sub print_rmult_gamma_c_eqop_op_c {
 				      $ic,$is,$jc,$src1_s);
     local($macro) = $carith1{$eqop.$op};
     defined($macro) || die "No carith1 macro for $macro\n";
-    print QLA_SRC @indent,"$macro($dest_elem_value,$src1_elem_value)\n";
+    print QLA_SRC @indent,"$macro($dest_elem_value,$src1_elem_value);\n";
 }
 
 sub print_lmult_gamma_dir {

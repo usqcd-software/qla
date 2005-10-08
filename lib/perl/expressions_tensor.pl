@@ -32,7 +32,7 @@ require("expressions_scalar.pl");
 sub print_val_eqop_op_val {
     local(*dest_def,$eqop,*src1_def,$qualifier) = @_;
 
-    local($dest_elem_value,$src1_elem_value,$src2_elem_value);
+    local($dest_elem_value,$src1_elem_value);
 
     # Operand dimensions
 
@@ -55,12 +55,12 @@ sub print_val_eqop_op_val {
     }
 
     # Open iteration over destination row indices
-    &print_int_def($ic); &open_iter($ic,$mcd);
     &print_int_def($is); &open_iter($is,$msd);
+    &print_int_def($ic); &open_iter($ic,$mcd);
 
     # Open iteration over destination column indices, if needed
-    &print_int_def($jc); &open_iter($jc,$ncd);
     &print_int_def($js); &open_iter($js,$nsd);
+    &print_int_def($jc); &open_iter($jc,$ncd);
 
     $dest_elem_value = &make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
     $src1_elem_value = &make_accessor(*src1_def,$def{'nc'},$ic,$is,$jc,$js);
@@ -125,7 +125,7 @@ sub print_val_eqop_op_val {
 }
 
 #---------------------------------------------------------------------
-# Antihermitian traceless part (gauge matrix only) 
+# Antihermitian traceless part (gauge matrix only)
 #---------------------------------------------------------------------
 
 sub print_g_eqop_antiherm_g {
@@ -194,7 +194,7 @@ sub print_g_eqop_antiherm_g {
     $src1_tran_value = &make_accessor(*src1_def,$def{'nc'},$jc,$is,$ic,$js);
     $dest_elem_value = &make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
     $dest_tran_value = &make_accessor(*dest_def,$def{'nc'},$jc,$is,$ic,$js);
-    
+
     # D_ij = S_ij - S_ji^*
     &print_s_eqop_s_op_s("c",$dest_elem_value,$eqop_eq,"",
 			 "c",$src1_elem_value,"","-",
@@ -226,7 +226,7 @@ sub print_val_eqop_norm2_val {
 
     local($srce_value);
 
-    &print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
+    &print_def_open_iter_list($is,$maxis,$ic,$maxic,$js,$maxjs,$jc,$maxjc);
 
     # Print product for real, norm2 for complex
     $src1_elem_value = &make_accessor(*src1_def,$def{'nc'},$ic,$is,$jc,$js);
@@ -239,7 +239,7 @@ sub print_val_eqop_norm2_val {
 
     print QLA_SRC @indent,"$dest_def{'value'} $eqop_notation{$eqop} $srce_value;\n";
 
-    &print_close_iter_list($ic,$is,$jc,$js);
+    &print_close_iter_list($is,$ic,$js,$jc);
 }
 
 #---------------------------------------------------------------------
@@ -269,7 +269,7 @@ sub print_val_getset_component {
 	&print_int_def($ic); &open_iter($ic,$maxic);
 	$icx = $ic;
     }
-    
+
     # Extraction
     if($qualifier eq "getcolorvec" || $qualifier eq "getmatelem" ||
        $qualifier eq "getdiracvec"){
@@ -286,9 +286,9 @@ sub print_val_getset_component {
 	$dest_elem_value = &make_accessor(*dest_def,$def{'nc'},
 					  $ic,$is,$jc,$js);
     }
-    
+
     &print_s_eqop_s($rc_d,$dest_elem_value,$eqop,"",$rc_s1,$src1_elem_value,"");
-    
+
     if($qualifier eq "getcolorvec" || $qualifier eq "setcolorvec" ||
        $qualifier eq "getdiracvec" || $qualifier eq "setdiracvec"){
 	&close_iter($ic);
@@ -351,7 +351,7 @@ sub print_val_assign_spin_tr {
     # Open iteration over color indices
 
     &print_def_open_iter_list($ic,$maxic,$jc,$maxjc);
-    &print_int_def($is); 
+    &print_int_def($is);
 
     # Define and zero intermediate variable for accumulating sum
     &print_def(&datatype_element_specific($dest_t),$var_x);
@@ -370,7 +370,7 @@ sub print_val_assign_spin_tr {
     # Assign result to dest
     $dest_elem_value = &make_accessor(*dest_def,$def{'nc'},$ic,"",$jc,"");
     &print_s_eqop_s($rc_d,$dest_elem_value,$eqop,"",$rc_x,$var_x,"");
-    
+
     &print_close_iter_list($ic,$jc);
 }
 
@@ -421,11 +421,11 @@ sub mult_terms {
     if($cpat eq "XX"){ $ic1=$ic; $jc1=$kc; $ic2=$kc; $jc2=$jc;}
     elsif($cpat eq "IX"){$ic1=""; $jc1=""; $ic2=$ic; $jc2=$jc; $kc = "";}
     elsif($cpat eq "XI"){$ic1=$ic; $jc1=$jc; $ic2=""; $jc2=""; $kc = "";}
-    
+
     if($spat eq "XX"){ $is1=$is; $js1=$ks; $is2=$ks; $js2=$js;}
     elsif($spat eq "IX"){$is1=""; $js1=""; $is2=$is; $js2=$js; $ks = "";}
     elsif($spat eq "XI"){$is1=$is; $js1=$js; $is2=""; $js2=""; $ks = "";}
-    
+
     $arg1_elem_value = &make_accessor(*arg1_def,$def{'nc'},
 				      $ic1,$is1,$jc1,$js1);
     $arg2_elem_value = &make_accessor(*arg2_def,$def{'nc'},
@@ -459,8 +459,17 @@ sub print_s_eqop_v_times_v_pm_s {
 
     local($rc_x) = $rc_d;
 
-    &print_int_def($kc);  &print_int_def($ks);
-    
+    local($unroll) = 0;
+    local($nout) = 1;
+    #if( ($maxkc==2) || ($maxkc==3) ) {
+    if(0) {
+      $unroll = 1;
+      $nout = $maxkc;
+    } else {
+      &print_int_def($kc);
+    }
+    &print_int_def($ks);
+
     # Define and zero intermediate variable for accumulating sum
     $rc_x = $rc_d;
     &print_def(&datatype_element_specific($dest_t),"*$var_x");
@@ -491,16 +500,31 @@ sub print_s_eqop_v_times_v_pm_s {
 			     $pm,
 			     $rc_s3,$src3_elem_value,$conj3);
     }
-    
-    &open_iter($kc,$maxkc); &open_iter($ks,$maxks);
-    
-    # Accumulate product
-    &print_s_eqop_s_op_s($rc_x,"*$var_x",
-			 $loop_eqop,"",
-			 $rc_s1,$src1_elem_value,$conj1,
-			 '*',
-			 $rc_s2,$src2_elem_value,$conj2);    
-    &close_iter($ks); &close_iter($kc);
+
+    &open_iter($ks,$maxks);
+    if(!$unroll) {
+      &open_iter($kc,$maxkc);
+    }
+    for(my $i=0; $i<$nout; $i++) {
+      local($s1) = $src1_elem_value;
+      local($s2) = $src2_elem_value;
+      if($unroll) {
+	$s1 =~ s/$kc/$i/;
+	$s2 =~ s/$kc/$i/;
+      }
+
+      # Accumulate product
+      &print_s_eqop_s_op_s($rc_x,"*$var_x",
+			   $loop_eqop,"",
+			   $rc_s1,$s1,$conj1,
+			   '*',
+			   $rc_s2,$s2,$conj2);
+
+    }
+    if(!$unroll) {
+      &close_iter($kc);
+    }
+    &close_iter($ks);
 }
 
 # Do row-column dot product with trace
@@ -515,17 +539,17 @@ sub print_s_eqop_v_dot_v {
 
     &print_int_def($ic);  &print_int_def($is);
     &print_int_def($jc);  &print_int_def($js);
-    
+
     &open_iter($ic,$maxic); &open_iter($is,$maxis);
     &open_iter($jc,$maxjc); &open_iter($js,$maxjs);
-    
+
     # Accumulate product
     &print_s_eqop_s_op_s($rc_x,$var_x,
 			 $eqop_peq,$imre,
 			 $rc_s1,$src1_elem_value,$conj1,
 			 '*',
 			 $rc_s2,$src2_elem_value,$conj2);
-    
+
     &close_iter($is); &close_iter($ic);
     &close_iter($js); &close_iter($jc);
 }
@@ -534,8 +558,39 @@ sub print_s_eqop_v_dot_v {
 #  Binary operation between tensors
 #---------------------------------------------------------------------
 
+sub print_MV {
+    local(*dest_def,$eqop,*src1_def,*src2_def) = @_;
+
+    print QLA_SRC "test\n";
+}
+
 sub print_val_eqop_val_op_val {
     local(*dest_def,$eqop,$imre,*src1_def,$op,*src2_def) = @_;
+
+    $inline = 0;
+    if($inline) {
+#      if( ($op eq "times") && ($src1_def{t} eq "M") ) {
+#        if($src2_def{t} eq "V") {
+#	  &print_MV(*dest_def,$eqop,*src1_def,*src2_def);
+#          return;
+#        }
+#      }
+      local($func) = "$def{prefix}";
+      $func .= "_$dest_def{t}$dest_def{adj}";
+      $func .= "_$eqop";
+      $func .= "_$src1_def{t}$src1_def{adj}";
+      $func .= "_$op";
+      $func .= "_$src2_def{t}$src2_def{adj}";
+      local($args);
+      $args = "&$dest_def{value}";
+      $args .= ", &$src1_def{value}";
+      $args .= ", &$src2_def{value}";
+      $args =~ s/&\*//g;
+      print QLA_SRC @indent, "$func($args);\n";
+#print "$func($args);\n";
+#print %dest_def, "\n";
+      return;
+    }
 
     local($dest_elem_value,$src1_elem_value,$src2_elem_value);
     local($kc);
@@ -588,11 +643,11 @@ sub print_val_eqop_val_op_val {
 	($maxic,$maxis,$maxjc,$maxjs) = ($mcd,$msd,$ncd,$nsd);
 	($ic,$is,$jc,$js) = &get_color_spin_indices(*dest_def);
 
-	&print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
-	$dest_elem_value = 
+	&print_def_open_iter_list($is,$maxis,$ic,$maxic,$js,$maxjs,$jc,$maxjc);
+	$dest_elem_value =
 	    &make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
     }
-	
+
     if($op eq "times"){
 
 	# Construct multiplier and multiplicand
@@ -627,7 +682,7 @@ sub print_val_eqop_val_op_val {
 
 	# Construct multiplier and multiplicand
 
-	($ic,$is,$jc,$js,$src1_elem_value,$src2_elem_value) = 
+	($ic,$is,$jc,$js,$src1_elem_value,$src2_elem_value) =
 	    &dot_terms(*src1_def,*src2_def);
 
 	# If we are summing over ic, jc, is, or js, need to handle the sum
@@ -668,7 +723,7 @@ sub print_val_eqop_val_op_val {
     }
 
     if($op ne "dot"){
-	&print_close_iter_list($ic,$is,$jc,$js);
+      &print_close_iter_list($is,$ic,$js,$jc);
     }
 }
 
@@ -691,7 +746,7 @@ sub print_val_eqop_val_op_val {
 sub print_val_eqop_val_op_val_elementary {
     local(*dest_def,$eqop,*src1_def,$op,*src2_def) = @_;
     local($sym);
-    
+
     if($op eq "lshift"){
 	&print_s_eqop_s("r",$dest_def{'value'},$eqop,"","r",
 			"$src1_def{'value'} << $src2_def{'value'}");
@@ -793,13 +848,13 @@ sub print_val_eqop_val_op_val_op2_val {
     if($op2 eq "plus"){$pm = '+';}
     elsif($op2 eq "minus"){$pm = '-';}
 
-    &print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
+    &print_def_open_iter_list($is,$maxis,$ic,$maxic,$js,$maxjs,$jc,$maxjc);
     $dest_elem_value = &make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
-    
+
     # Construct multiplier and multiplicand
     ($kc,$ks,$src1_elem_value,$src2_elem_value) = 
 	&mult_terms($cpat,$spat,*src1_def,*src2_def,$ic,$is,$jc,$js);
-    
+
     # Construct addend
     $src3_elem_value = &make_accessor(*src3_def,$def{'nc'},
 				      $ic,$is,$jc,$js);
@@ -827,7 +882,7 @@ sub print_val_eqop_val_op_val_op2_val {
 			     $rc_s3,$src3_elem_value,$src3_def{'conj'});
     }
 
-    &print_close_iter_list($ic,$is,$jc,$js);
+    &print_close_iter_list($is,$ic,$js,$jc);
 }
 
 #---------------------------------------------------------------------
@@ -841,15 +896,14 @@ sub print_fill {
     local($maxic,$maxis,$maxjc,$maxjs) = @dest_def{'mc','ms','nc','ns'};
     local($rc_d)  = $dest_def{'rc'};
 
-    &print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
+    &print_def_open_iter_list($is,$maxis,$ic,$maxic,$js,$maxjs,$jc,$maxjc);
 
     $dest_elem_value = &make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
 
     if($qualifier eq "zero") {
-      #&print_s_eqop_s($rc_d,$dest_elem_value,$eqop,"","r","0.","");
       &print_s_eqop_s($rc_d,$dest_elem_value,$eqop_eq,"","r","0.","");
     }
 
-    &print_close_iter_list($ic,$is,$jc,$js);
+    &print_close_iter_list($is,$ic,$js,$jc);
 }
 1;

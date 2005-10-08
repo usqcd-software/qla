@@ -18,22 +18,21 @@
 #define NH (QLA_Ns/2)
 
 /* SU(3) single precision */
-typedef struct { QLA_F_Complex e[3][3]; } QLA_F3_ColorMatrix;
 typedef struct { QLA_F_Complex c[3]; } QLA_F3_ColorVector;
 typedef struct { QLA_F3_ColorVector h[NH]; } QLA_F3_HalfFermion;
 typedef struct { QLA_F3_ColorVector d[NS]; } QLA_F3_DiracFermion;
-typedef struct { QLA_F3_DiracFermion d[NS]; } QLA_F3_SpinDiracFermion;
-typedef struct { QLA_F3_SpinDiracFermion c[3]; } QLA_F3_DiracPropagator;
+typedef struct { QLA_F_Complex e[3][3]; } QLA_F3_ColorMatrix;
+typedef struct { QLA_F3_DiracFermion c[3]; } QLA_F3_ColorDiracFermion;
+typedef struct { QLA_F3_ColorDiracFermion d[NS]; } QLA_F3_DiracPropagator;
 
+#define QLA_F3_elem_I(a) (a)
 #define QLA_F3_elem_R(a) (a)
 #define QLA_F3_elem_C(a) (a)
-#define QLA_F3_elem_I(a) (a)
+#define QLA_F3_elem_V(a,ic) (a).c[ic]
 #define QLA_F3_elem_H(a,ic,is) (a).h[is].c[ic]
 #define QLA_F3_elem_D(a,ic,is) (a).d[is].c[ic]
-#define QLA_F3_elem_J(a,ic,is,js) (a).d[is].c[ic].d[js]
-#define QLA_F3_elem_V(a,ic) (a).c[ic]
-#define QLA_F3_elem_P(a,ic,is,jc,js) (a).c[jc].d[js].d[ic].c[is]
 #define QLA_F3_elem_M(a,ic,jc) (a).e[ic][jc]
+#define QLA_F3_elem_P(a,ic,is,jc,js) (a).d[is].c[ic].d[js].c[jc]
 
 /* SU(3) double precision */
 typedef struct { QLA_D_Complex e[3][3]; } QLA_D3_ColorMatrix;
@@ -211,7 +210,6 @@ double round(double x);
 typedef QLA_F3_ColorMatrix         QLA_F_ColorMatrix;
 typedef QLA_F3_ColorVector         QLA_F_ColorVector;
 typedef QLA_F3_HalfFermion         QLA_F_HalfFermion;
-typedef QLA_F3_SpinDiracFermion    QLA_F_SpinDiracFermion;
 typedef QLA_F3_DiracFermion        QLA_F_DiracFermion;
 typedef QLA_F3_DiracPropagator     QLA_F_DiracPropagator;
 
@@ -220,7 +218,6 @@ typedef QLA_F3_DiracPropagator     QLA_F_DiracPropagator;
 #define QLA_F_elem_I QLA_F3_elem_I 
 #define QLA_F_elem_H QLA_F3_elem_H 
 #define QLA_F_elem_D QLA_F3_elem_D 
-#define QLA_F_elem_J QLA_F3_elem_J 
 #define QLA_F_elem_V QLA_F3_elem_V 
 #define QLA_F_elem_P QLA_F3_elem_P 
 #define QLA_F_elem_M QLA_F3_elem_M 
@@ -264,7 +261,6 @@ typedef QLA_Q3_DiracPropagator     QLA_Q_DiracPropagator;
 typedef QLA_F3_ColorMatrix         QLA_ColorMatrix;
 typedef QLA_F3_ColorVector         QLA_ColorVector;
 typedef QLA_F3_HalfFermion         QLA_HalfFermion;
-typedef QLA_F3_SpinDiracFermion    QLA_SpinDiracFermion;
 typedef QLA_F3_DiracFermion        QLA_DiracFermion;
 typedef QLA_F3_DiracPropagator     QLA_DiracPropagator;
 
@@ -273,7 +269,6 @@ typedef QLA_F3_DiracPropagator     QLA_DiracPropagator;
 #define QLA_elem_I QLA_F3_elem_I 
 #define QLA_elem_H QLA_F3_elem_H 
 #define QLA_elem_D QLA_F3_elem_D 
-#define QLA_elem_J QLA_F3_elem_J 
 #define QLA_elem_V QLA_F3_elem_V 
 #define QLA_elem_P QLA_F3_elem_P 
 #define QLA_elem_M QLA_F3_elem_M 

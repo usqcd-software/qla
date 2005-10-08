@@ -42,7 +42,7 @@ sub print_s_eqop_s {
 	$key = $eqop.$imre.$rc_s.$conj_s;
 	local($macro) = $carith1{$key};
 	defined($macro) || die "no carith1 for $key\n";
-	print QLA_SRC @indent,"$macro($dest,$srce)\n";
+	print QLA_SRC @indent,"$macro($dest,$srce);\n";
     }
 
     # Case real eqop real
@@ -80,7 +80,7 @@ sub print_s_eqop_s_op_s {
 	$key = $eqop.$imre.$rc_s1.$conj_s1.$op.$rc_s2.$conj_s2;
 	local($macro) = $carith2{$key};
 	defined($macro) || die "no carith2 for $key\n";
-	print QLA_SRC @indent,"$macro($dest,$src1,$src2)\n";
+	print QLA_SRC @indent,"$macro($dest,$src1,$src2);\n";
     }
     
     # Case real eqop real
@@ -124,7 +124,7 @@ sub print_s_eqop_s_times_s_pm_s {
 	$key = $eqop.$rc_s1.$conj_s1.$op.$rc_s2.$conj_s2.$op2.$rc_s3.$conj_s3;
 	local($macro) = $carith3{$key};
 	defined($macro) || die "no carith2 for $key\n";
-	print QLA_SRC @indent,"$macro($dest,$src1,$src2,$src3)\n";
+	print QLA_SRC @indent,"$macro($dest,$src1,$src2,$src3);\n";
     }
     
     # Case real eqop real

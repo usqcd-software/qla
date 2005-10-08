@@ -139,6 +139,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
+CINC = -I$(top_srcdir)/include -I$(srcdir)/include
 OPTLIBS = $(am__append_1)
 EXTRA_DIST = include src
 all: all-am
@@ -296,11 +297,13 @@ all: $(OPTLIBS)
 
 .PHONY: libf3
 libf3:
-	for f in $(srcdir)/src/*.c; do \
-	  echo compiling $$f; \
-	  $(CC) $(CFLAGS) -I$(top_srcdir)/include -I$(srcdir)/include -c $$f; \
+	-for f in $(srcdir)/src/*.c; do \
+	  if [ -f $f ]; then \
+	    echo compiling $$f; \
+	    $(CC) $(CFLAGS) $(CINC) -c $$f; \
+	  fi; \
 	done
-	mv -f *.o ../../qla_f3
+	-mv -f *.o ../../qla_f3
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

@@ -51,14 +51,11 @@ sub make_code_binary {
 sub make_code_binary_dot {
     local($eqop,$imre) = @_;
     local(%src1_mod_def) = %src1_def;
-    local($t);
+    local(%temp_def) = %dest_def;
 
+#print %dest_def, "\n";
     # The dot product is accumulated in a complex or real type
-    $t = &datatype_element_specific_abbr($dest_t);
-#    $temp_def{'t'} = $datatype_scalar_abbrev{$t};
-    $temp_def{'type'} = &datatype_specific($t);
     $temp_def{'value'} = $var_x;
-    $temp_def{'rc'} = $dest_def{'rc'};
 
     # For the dot product the adjoint of src1 is understood
     $src1_mod_def{'adj'} = "a";
@@ -154,58 +151,145 @@ sub make_code_binary_elementary {
 # Code for matrix multiply with Dirac spin projection and reconstruction
 #-----------------------------------------------------------------------
 
+sub spproj_mult_func {
+  local($sign, $dir, $eqop) = @_;
+  &print_def_open_iter($var_i,$def{'dim_name'});
+  print_def($mytemp{type}, $mytemp{value});
+  if($def{dim_name} ne "") {
+    make_temp_ptr(%dest_def,$def{dest_name});
+    make_temp_ptr(%src1_def,$def{src1_name});
+    make_temp_ptr(%src2_def,$def{src2_name});
+  }
+  $ic = &get_row_color_index(*src2_def);
+  $maxic = $src1_def{'mc'};
+  &open_brace();
+  &print_int_def($ic);
+  &open_iter($ic,$maxic);
+  print_val_assign_spproj_dirs(*mytemp, *src2_def, $sign, $dir, "eq");
+  &close_iter($ic);
+  &close_brace();
+  &open_brace();
+  &print_val_eqop_val_op_val( *dest_def, $eqop, "",
+			      *src1_def, $def{'op'}, *mytemp );
+  &close_brace();
+  if($def{'dim_name'} ne "") {
+    &close_iter($var_i);
+  }
+}
+
+sub sprecon_mult_func {
+  local($sign, $dir, $eqop) = @_;
+  &print_def_open_iter($var_i,$def{'dim_name'});
+  print_def($mytemp{type}, $mytemp{value});
+  if($def{dim_name} ne "") {
+    make_temp_ptr(%dest_def,$def{dest_name});
+    make_temp_ptr(%src1_def,$def{src1_name});
+    make_temp_ptr(%src2_def,$def{src2_name});
+  }
+  $ic = &get_row_color_index(*src2_def);
+  $maxic = $src1_def{'mc'};
+  &open_brace();
+  &print_val_eqop_val_op_val( *mytemp, "eq", "",
+			      *src1_def, $def{'op'}, *src2_def );
+  &close_brace();
+  &open_brace();
+  &print_int_def($ic);
+  &open_iter($ic,$maxic);
+  print_val_assign_sprecon_dirs(*dest_def, *mytemp, $sign, $dir, $eqop);
+  &close_iter($ic);
+  &close_brace();
+  if($def{'dim_name'} ne "") {
+    &close_iter($var_i);
+  }
+}
+
 sub make_code_spproj_sprecon_mult {
     local($eqop,$mu,$sign,$qualifier) = @_;
     local(%mytemp) = ();
 
-    &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
+    &print_very_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
 
     %mytemp = ();
     if($def{'qualifier'} eq "spproj") { &load_arg_hash(*mytemp,'dest'); }
     else { &load_arg_hash(*mytemp,'src2'); }
     $mytemp{value} = "t";
-    print_def($mytemp{type}, $mytemp{value});
+#    print_def($mytemp{type}, $mytemp{value});
 
-    if($def{dim_name} ne "") {
-      make_temp_ptr(%dest_def,$def{dest_name});
-      make_temp_ptr(%src1_def,$def{src1_name});
-      make_temp_ptr(%src2_def,$def{src2_name});
-    }
+#    if($def{dim_name} ne "") {
+#      make_temp_ptr(%dest_def,$def{dest_name});
+#      make_temp_ptr(%src1_def,$def{src1_name});
+#      make_temp_ptr(%src2_def,$def{src2_name});
+#    }
 
     if($def{'qualifier'} eq "spproj") {
-      print QLA_SRC @indent, "{\n";
-      push @indent, "  ";
-      &print_val_assign_spproj( *mytemp, "eq", *src2_def, $mu, $sign );
-      pop @indent;
-      print QLA_SRC @indent, "}\n";
+#      print QLA_SRC @indent, "{\n";
+#      push @indent, "  ";
+#      &print_val_assign_spproj( *mytemp, "eq", *src2_def, $mu, $sign );
+#      pop @indent;
+#      print QLA_SRC @indent, "}\n";
 
-      print QLA_SRC @indent, "{\n";
-      push @indent, "  ";
-      &print_val_eqop_val_op_val( *dest_def, $eqop, "",
- 				  *src1_def, $def{'op'}, *mytemp );
-      pop @indent;
-      print QLA_SRC @indent, "}\n";
+#      print QLA_SRC @indent, "{\n";
+#      push @indent, "  ";
+#      &print_val_eqop_val_op_val( *dest_def, $eqop, "",
+# 				  *src1_def, $def{'op'}, *mytemp );
+#      pop @indent;
+#      print QLA_SRC @indent, "}\n";
+      &print_val_assign_spin($eqop, $mu, $sign, \&spproj_mult_func);
     } else {
-      print QLA_SRC @indent, "{\n";
-      push @indent, "  ";
-      &print_val_eqop_val_op_val( *mytemp, "eq", "",
- 				  *src1_def, $def{'op'}, *src2_def );
-      pop @indent;
-      print QLA_SRC @indent, "}\n";
+#      print QLA_SRC @indent, "{\n";
+#      push @indent, "  ";
+#      &print_val_eqop_val_op_val( *mytemp, "eq", "",
+# 				  *src1_def, $def{'op'}, *src2_def );
+#      pop @indent;
+#      print QLA_SRC @indent, "}\n";
 
-      print QLA_SRC @indent, "{\n";
-      push @indent, "  ";
-      &print_val_assign_sprecon( *dest_def, $eqop, *mytemp, $mu, $sign );
-      pop @indent;
-      print QLA_SRC @indent, "}\n";
+#      print QLA_SRC @indent, "{\n";
+#      push @indent, "  ";
+#      &print_val_assign_sprecon( *dest_def, $eqop, *mytemp, $mu, $sign );
+#      pop @indent;
+#      print QLA_SRC @indent, "}\n";
+      &print_val_assign_spin($eqop, $mu, $sign, \&sprecon_mult_func);
     }
 
-    &print_end_matter($var_i,$def{'dim_name'});
+    &print_very_end_matter($var_i,$def{'dim_name'});
 }
 
 #-----------------------------------------------------------------------
 # Code for matrix multiply with Wilson spin multiply
 #-----------------------------------------------------------------------
+
+sub wilsonspin_mult_func {
+  local($sign, $dir, $eqop) = @_;
+  &print_def_open_iter($var_i,$def{'dim_name'});
+  print_def($mytemp1{type}, $mytemp1{value});
+  print_def($mytemp2{type}, $mytemp2{value});
+  if($def{dim_name} ne "") {
+    make_temp_ptr(%dest_def,$def{dest_name});
+    make_temp_ptr(%src1_def,$def{src1_name});
+    make_temp_ptr(%src2_def,$def{src2_name});
+  }
+  $ic = &get_row_color_index(*src2_def);
+  $maxic = $src1_def{'mc'};
+  &open_brace();
+  &print_int_def($ic);
+  &open_iter($ic,$maxic);
+  print_val_assign_spproj_dirs(*mytemp1, *src2_def, $sign, $dir, "eq");
+  &close_iter($ic);
+  &close_brace();
+  &open_brace();
+  &print_val_eqop_val_op_val( *mytemp2, "eq", "",
+			      *src1_def, $def{'op'}, *mytemp1 );
+  &close_brace();
+  &open_brace();
+  &print_int_def($ic);
+  &open_iter($ic,$maxic);
+  print_val_assign_sprecon_dirs(*dest_def, *mytemp2, $sign, $dir, $eqop);
+  &close_iter($ic);
+  &close_brace();
+  if($def{'dim_name'} ne "") {
+    &close_iter($var_i);
+  }
+}
 
 sub make_code_wilsonspin_mult {
     local($eqop,$mu,$sign) = @_;
@@ -213,41 +297,45 @@ sub make_code_wilsonspin_mult {
     local(%mytemp2) = ();
 
     &load_arg_hash(*mytemp1,'src2');
+    $def{t1_t} = $datatype_halffermion_abbrev;
+    &max_color_spin_dim('t1','');
+    &load_arg_hash(*mytemp1,'t1');
     $mytemp1{t} = $datatype_halffermion_abbrev;
     $mytemp1{type} = &datatype_specific($mytemp1{t});
     %mytemp2 = %mytemp1;
     $mytemp1{value} = "t1";
     $mytemp2{value} = "t2";
 
-    &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
+    &print_very_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
 
-    print_def($mytemp1{type}, $mytemp1{value});
-    print_def($mytemp2{type}, $mytemp2{value});
+#    print_def($mytemp1{type}, $mytemp1{value});
+#    print_def($mytemp2{type}, $mytemp2{value});
 
-    if($def{dim_name} ne "") {
-      make_temp_ptr(%dest_def,$def{dest_name});
-      make_temp_ptr(%src1_def,$def{src1_name});
-      make_temp_ptr(%src2_def,$def{src2_name});
-    }
+#    if($def{dim_name} ne "") {
+#      make_temp_ptr(%dest_def,$def{dest_name});
+#      make_temp_ptr(%src1_def,$def{src1_name});
+#      make_temp_ptr(%src2_def,$def{src2_name});
+#    }
 
-    print QLA_SRC @indent, "{\n";
-    push @indent, "  ";
-    &print_val_assign_spproj( *mytemp1, "eq", *src2_def, $mu, $sign );
-    pop @indent;
-    print QLA_SRC @indent, "}\n";
+#    print QLA_SRC @indent, "{\n";
+#    push @indent, "  ";
+#    &print_val_assign_spproj( *mytemp1, "eq", *src2_def, $mu, $sign );
+#    pop @indent;
+#    print QLA_SRC @indent, "}\n";
 
-    print QLA_SRC @indent, "{\n";
-    push @indent, "  ";
-    &print_val_eqop_val_op_val( *mytemp2, "eq", "",
-				*src1_def, $def{'op'}, *mytemp1 );
-    pop @indent;
-    print QLA_SRC @indent, "}\n";
+#    print QLA_SRC @indent, "{\n";
+#    push @indent, "  ";
+#    &print_val_eqop_val_op_val( *mytemp2, "eq", "",
+#				*src1_def, $def{'op'}, *mytemp1 );
+#    pop @indent;
+#    print QLA_SRC @indent, "}\n";
 
-    print QLA_SRC @indent, "{\n";
-    push @indent, "  ";
-    &print_val_assign_sprecon( *dest_def, $eqop, *mytemp2, $mu, $sign );
-    pop @indent;
-    print QLA_SRC @indent, "}\n";
+#    print QLA_SRC @indent, "{\n";
+#    push @indent, "  ";
+#    &print_val_assign_sprecon( *dest_def, $eqop, *mytemp2, $mu, $sign );
+#    pop @indent;
+#    print QLA_SRC @indent, "}\n";
+    &print_val_assign_spin($eqop, $mu, $sign, \&wilsonspin_mult_func);
 
-    &print_end_matter($var_i,$def{'dim_name'});
+    &print_very_end_matter($var_i,$def{'dim_name'});
 }
