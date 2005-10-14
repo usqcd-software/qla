@@ -20,27 +20,28 @@ void QLA_F3_D_vpeq_spproj_M_times_pD ( QLA_F3_DiracFermion *__restrict__ r , QLA
           QLA_F3_DiracFermion *ri = &r[i];
           QLA_F3_ColorMatrix *ai = &a[i];
           QLA_F3_DiracFermion *bi = b[i];
-          {
-            int i_c;
-            for(i_c=0;i_c<3;i_c++)
-              {
-                QLA_c_eq_c_plus_ic(QLA_F3_elem_H(t1,i_c,0),                QLA_F3_elem_D(*bi,i_c,0),QLA_F3_elem_D(*bi,i_c,3))
-                QLA_c_eq_c_plus_ic(QLA_F3_elem_H(t1,i_c,1),                QLA_F3_elem_D(*bi,i_c,1),QLA_F3_elem_D(*bi,i_c,2))
-              }
-          }
-          {
-            QLA_F3_H_eq_M_times_H(&t2, ai, &t1);
-          }
-          {
-            int i_c;
-            for(i_c=0;i_c<3;i_c++)
-              {
-                QLA_c_peq_c(QLA_F3_elem_D(*ri,i_c,0),QLA_F3_elem_H(t2,i_c,0))
-                QLA_c_peq_c(QLA_F3_elem_D(*ri,i_c,1),QLA_F3_elem_H(t2,i_c,1))
-                QLA_c_meq_ic(QLA_F3_elem_D(*ri,i_c,2),QLA_F3_elem_H(t2,i_c,1))
-                QLA_c_meq_ic(QLA_F3_elem_D(*ri,i_c,3),QLA_F3_elem_H(t2,i_c,0))
-              }
-          }
+
+          QLA_c_eq_c_plus_ic(QLA_F3_elem_H(t1,0,0),QLA_F3_elem_D(*bi,0,0),QLA_F3_elem_D(*bi,0,3))
+          QLA_c_eq_c_plus_ic(QLA_F3_elem_H(t1,1,0),QLA_F3_elem_D(*bi,1,0),QLA_F3_elem_D(*bi,1,3))
+          QLA_c_eq_c_plus_ic(QLA_F3_elem_H(t1,2,0),QLA_F3_elem_D(*bi,2,0),QLA_F3_elem_D(*bi,2,3))
+          QLA_c_eq_c_plus_ic(QLA_F3_elem_H(t1,0,1),QLA_F3_elem_D(*bi,0,1),QLA_F3_elem_D(*bi,0,2))
+          QLA_c_eq_c_plus_ic(QLA_F3_elem_H(t1,1,1),QLA_F3_elem_D(*bi,1,1),QLA_F3_elem_D(*bi,1,2))
+          QLA_c_eq_c_plus_ic(QLA_F3_elem_H(t1,2,1),QLA_F3_elem_D(*bi,2,1),QLA_F3_elem_D(*bi,2,2))
+
+          QLA_F3_H_eq_M_times_H(&t2, ai, &t1);
+
+          QLA_c_peq_c(QLA_F3_elem_D(*ri,0,0),QLA_F3_elem_H(t2,0,0))
+          QLA_c_peq_c(QLA_F3_elem_D(*ri,1,0),QLA_F3_elem_H(t2,1,0))
+          QLA_c_peq_c(QLA_F3_elem_D(*ri,2,0),QLA_F3_elem_H(t2,2,0))
+          QLA_c_peq_c(QLA_F3_elem_D(*ri,0,1),QLA_F3_elem_H(t2,0,1))
+          QLA_c_peq_c(QLA_F3_elem_D(*ri,1,1),QLA_F3_elem_H(t2,1,1))
+          QLA_c_peq_c(QLA_F3_elem_D(*ri,2,1),QLA_F3_elem_H(t2,2,1))
+          QLA_c_meq_ic(QLA_F3_elem_D(*ri,0,2),QLA_F3_elem_H(t2,0,1))
+          QLA_c_meq_ic(QLA_F3_elem_D(*ri,1,2),QLA_F3_elem_H(t2,1,1))
+          QLA_c_meq_ic(QLA_F3_elem_D(*ri,2,2),QLA_F3_elem_H(t2,2,1))
+          QLA_c_meq_ic(QLA_F3_elem_D(*ri,0,3),QLA_F3_elem_H(t2,0,0))
+          QLA_c_meq_ic(QLA_F3_elem_D(*ri,1,3),QLA_F3_elem_H(t2,1,0))
+          QLA_c_meq_ic(QLA_F3_elem_D(*ri,2,3),QLA_F3_elem_H(t2,2,0))
         }
       } break;
     case 1: {
@@ -54,25 +55,28 @@ void QLA_F3_D_vpeq_spproj_M_times_pD ( QLA_F3_DiracFermion *__restrict__ r , QLA
           QLA_F3_DiracFermion *bi = b[i];
           {
             int i_c;
-            for(i_c=0;i_c<3;i_c++)
-              {
+            for(i_c=0;i_c<3;i_c++) {
                 QLA_c_eq_c_plus_c(QLA_F3_elem_H(t1,i_c,0),                QLA_F3_elem_D(*bi,i_c,0),QLA_F3_elem_D(*bi,i_c,3))
+            }
+            for(i_c=0;i_c<3;i_c++) {
                 QLA_c_eq_c_minus_c(QLA_F3_elem_H(t1,i_c,1),                QLA_F3_elem_D(*bi,i_c,1),QLA_F3_elem_D(*bi,i_c,2))
-              }
+            }
           }
           {
             QLA_F3_H_eq_M_times_H(&t2, ai, &t1);
           }
-          {
-            int i_c;
-            for(i_c=0;i_c<3;i_c++)
-              {
-                QLA_c_peq_c(QLA_F3_elem_D(*ri,i_c,0),QLA_F3_elem_H(t2,i_c,0))
-                QLA_c_peq_c(QLA_F3_elem_D(*ri,i_c,1),QLA_F3_elem_H(t2,i_c,1))
-                QLA_c_meq_c(QLA_F3_elem_D(*ri,i_c,2),QLA_F3_elem_H(t2,i_c,1))
-                QLA_c_peq_c(QLA_F3_elem_D(*ri,i_c,3),QLA_F3_elem_H(t2,i_c,0))
-              }
-          }
+          QLA_c_peq_c(QLA_F3_elem_D(*ri,0,0),QLA_F3_elem_H(t2,0,0))
+          QLA_c_peq_c(QLA_F3_elem_D(*ri,1,0),QLA_F3_elem_H(t2,1,0))
+          QLA_c_peq_c(QLA_F3_elem_D(*ri,2,0),QLA_F3_elem_H(t2,2,0))
+          QLA_c_peq_c(QLA_F3_elem_D(*ri,0,1),QLA_F3_elem_H(t2,0,1))
+          QLA_c_peq_c(QLA_F3_elem_D(*ri,1,1),QLA_F3_elem_H(t2,1,1))
+          QLA_c_peq_c(QLA_F3_elem_D(*ri,2,1),QLA_F3_elem_H(t2,2,1))
+          QLA_c_meq_c(QLA_F3_elem_D(*ri,0,2),QLA_F3_elem_H(t2,0,1))
+          QLA_c_meq_c(QLA_F3_elem_D(*ri,1,2),QLA_F3_elem_H(t2,1,1))
+          QLA_c_meq_c(QLA_F3_elem_D(*ri,2,2),QLA_F3_elem_H(t2,2,1))
+          QLA_c_peq_c(QLA_F3_elem_D(*ri,0,3),QLA_F3_elem_H(t2,0,0))
+          QLA_c_peq_c(QLA_F3_elem_D(*ri,1,3),QLA_F3_elem_H(t2,1,0))
+          QLA_c_peq_c(QLA_F3_elem_D(*ri,2,3),QLA_F3_elem_H(t2,2,0))
         }
       } break;
     case 2: {
@@ -86,9 +90,10 @@ void QLA_F3_D_vpeq_spproj_M_times_pD ( QLA_F3_DiracFermion *__restrict__ r , QLA
           QLA_F3_DiracFermion *bi = b[i];
           {
             int i_c;
-            for(i_c=0;i_c<3;i_c++)
-              {
+            for(i_c=0;i_c<3;i_c++) {
                 QLA_c_eq_c_plus_ic(QLA_F3_elem_H(t1,i_c,0),                QLA_F3_elem_D(*bi,i_c,0),QLA_F3_elem_D(*bi,i_c,2))
+              }
+            for(i_c=0;i_c<3;i_c++) {
                 QLA_c_eq_c_minus_ic(QLA_F3_elem_H(t1,i_c,1),                QLA_F3_elem_D(*bi,i_c,1),QLA_F3_elem_D(*bi,i_c,3))
               }
           }
@@ -97,11 +102,16 @@ void QLA_F3_D_vpeq_spproj_M_times_pD ( QLA_F3_DiracFermion *__restrict__ r , QLA
           }
           {
             int i_c;
-            for(i_c=0;i_c<3;i_c++)
-              {
+            for(i_c=0;i_c<3;i_c++) {
                 QLA_c_peq_c(QLA_F3_elem_D(*ri,i_c,0),QLA_F3_elem_H(t2,i_c,0))
+              }
+            for(i_c=0;i_c<3;i_c++) {
                 QLA_c_peq_c(QLA_F3_elem_D(*ri,i_c,1),QLA_F3_elem_H(t2,i_c,1))
+              }
+            for(i_c=0;i_c<3;i_c++) {
                 QLA_c_meq_ic(QLA_F3_elem_D(*ri,i_c,2),QLA_F3_elem_H(t2,i_c,0))
+              }
+            for(i_c=0;i_c<3;i_c++) {
                 QLA_c_peq_ic(QLA_F3_elem_D(*ri,i_c,3),QLA_F3_elem_H(t2,i_c,1))
               }
           }
@@ -118,9 +128,10 @@ void QLA_F3_D_vpeq_spproj_M_times_pD ( QLA_F3_DiracFermion *__restrict__ r , QLA
           QLA_F3_DiracFermion *bi = b[i];
           {
             int i_c;
-            for(i_c=0;i_c<3;i_c++)
-              {
+            for(i_c=0;i_c<3;i_c++) {
                 QLA_c_eq_c_plus_c(QLA_F3_elem_H(t1,i_c,0),                QLA_F3_elem_D(*bi,i_c,0),QLA_F3_elem_D(*bi,i_c,2))
+              }
+            for(i_c=0;i_c<3;i_c++) {
                 QLA_c_eq_c_plus_c(QLA_F3_elem_H(t1,i_c,1),                QLA_F3_elem_D(*bi,i_c,1),QLA_F3_elem_D(*bi,i_c,3))
               }
           }
@@ -129,11 +140,16 @@ void QLA_F3_D_vpeq_spproj_M_times_pD ( QLA_F3_DiracFermion *__restrict__ r , QLA
           }
           {
             int i_c;
-            for(i_c=0;i_c<3;i_c++)
-              {
+            for(i_c=0;i_c<3;i_c++) {
                 QLA_c_peq_c(QLA_F3_elem_D(*ri,i_c,0),QLA_F3_elem_H(t2,i_c,0))
+              }
+            for(i_c=0;i_c<3;i_c++) {
                 QLA_c_peq_c(QLA_F3_elem_D(*ri,i_c,1),QLA_F3_elem_H(t2,i_c,1))
+              }
+            for(i_c=0;i_c<3;i_c++) {
                 QLA_c_peq_c(QLA_F3_elem_D(*ri,i_c,2),QLA_F3_elem_H(t2,i_c,0))
+              }
+            for(i_c=0;i_c<3;i_c++) {
                 QLA_c_peq_c(QLA_F3_elem_D(*ri,i_c,3),QLA_F3_elem_H(t2,i_c,1))
               }
           }

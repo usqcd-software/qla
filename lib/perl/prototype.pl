@@ -564,7 +564,7 @@ sub make_prototype {
 
     $declaration .= &make_arg($def{'dest_type'},
 			      $def{'dest_ptr_pfx'},
-                              "__restrict__ $def{'dest_name'}",
+                              "restrict $def{'dest_name'}",
 			      $def{'dest_index_name'});
     $declaration .= $def{'dest_extra_arg'};
 

@@ -42,6 +42,7 @@ $QLA_this_header = "<$qla_header_file>";
 # Headers needed by the library
 @headers = (
             "<stdio.h>",
+            "<qla_config.h>",
 	    "$QLA_types_header",
 	    "$QLA_random_header",
 	    "$QLA_cmath_header",

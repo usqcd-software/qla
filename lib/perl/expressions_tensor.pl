@@ -472,21 +472,22 @@ sub print_s_eqop_v_times_v_pm_s {
 
     # Define and zero intermediate variable for accumulating sum
     $rc_x = $rc_d;
-    &print_def(&datatype_element_specific($dest_t),"*$var_x");
+    &print_def(&datatype_element_specific($dest_t), $var_x);
 
     my($loop_eqop);
     if(!defined($src3_elem_value)){
       # Assign accumulated result to dest
-      print QLA_SRC @indent,"$var_x = &$dest_elem_value;\n";
       if($eqop eq $eqop_eq) {
-	&print_s_eqop_s($rc_x,"*$var_x",$eqop_eq);
+	&print_s_eqop_s($rc_x, $var_x, $eqop_eq);
 	$loop_eqop = $eqop_peq;
       } elsif($eqop eq $eqop_peq) {
+	&print_s_eqop_s($rc_x, $var_x, $eqop_eq, "", $rc_d, $dest_elem_value);
 	$loop_eqop = $eqop_peq;
       } elsif($eqop eq $eqop_meq) {
+	&print_s_eqop_s($rc_x, $var_x, $eqop_eq, "", $rc_d, $dest_elem_value);
 	$loop_eqop = $eqop_meq;
       } elsif($eqop eq $eqop_eqm) {
-	&print_s_eqop_s($rc_x,"*$var_x",$eqop_eq);
+	&print_s_eqop_s($rc_x, $var_x, $eqop_eq);
 	$loop_eqop = $eqop_meq;
       }
     }
@@ -514,17 +515,18 @@ sub print_s_eqop_v_times_v_pm_s {
       }
 
       # Accumulate product
-      &print_s_eqop_s_op_s($rc_x,"*$var_x",
-			   $loop_eqop,"",
-			   $rc_s1,$s1,$conj1,
+      &print_s_eqop_s_op_s($rc_x, $var_x,
+			   $loop_eqop, "",
+			   $rc_s1, $s1, $conj1,
 			   '*',
-			   $rc_s2,$s2,$conj2);
+			   $rc_s2, $s2, $conj2);
 
     }
     if(!$unroll) {
       &close_iter($kc);
     }
     &close_iter($ks);
+    &print_s_eqop_s($rc_d, $dest_elem_value, $eqop_eq, "", $rc_x, $var_x);
 }
 
 # Do row-column dot product with trace

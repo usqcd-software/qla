@@ -68,6 +68,8 @@ AC_CHECK_TOOL(AR, ar, [ar])
 
 # Checks for typedefs, structures, and compiler characteristics.
 
+AC_C_RESTRICT
+
 # Checks for library functions.
 
 # set makefile variables

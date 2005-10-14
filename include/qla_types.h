@@ -183,13 +183,6 @@ typedef struct { QLA_Q2_SpinDiracFermion c[2]; } QLA_Q2_DiracPropagator;
 #undef NH
 #undef NS
 
-/************************************************************************/
-/* If the compiler doesn't know about "restrict" we have to suppress it */
-/************************************************************************/
-#ifndef __restrict__
-#define __restrict__
-#endif
-
 /*********************************************************************/
 /* If the compiler doesn't know about "round" (C99 standard) 
    we have to define it   */
