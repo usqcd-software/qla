@@ -55,12 +55,12 @@ sub print_val_eqop_op_val {
     }
 
     # Open iteration over destination row indices
-    &print_int_def($is); &open_iter($is,$msd);
     &print_int_def($ic); &open_iter($ic,$mcd);
+    &print_int_def($is); &open_iter($is,$msd);
 
     # Open iteration over destination column indices, if needed
-    &print_int_def($js); &open_iter($js,$nsd);
     &print_int_def($jc); &open_iter($jc,$ncd);
+    &print_int_def($js); &open_iter($js,$nsd);
 
     $dest_elem_value = &make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
     $src1_elem_value = &make_accessor(*src1_def,$def{'nc'},$ic,$is,$jc,$js);
@@ -99,7 +99,7 @@ sub print_val_eqop_op_val {
 	&print_s_eqop_s($rc_d,$dest_elem_value,$eqop,"i",
 			$rc_s1,$src1_elem_value,$src1_def{'conj'});
     }
-    
+
     # Standard case
     else{
 	&print_s_eqop_s($rc_d,$dest_elem_value,$eqop,"",
@@ -107,7 +107,7 @@ sub print_val_eqop_op_val {
     }
 
     # Close inner tensor index loops
-    &close_iter($jc); &close_iter($js);
+    &close_iter($js); &close_iter($jc);
 
     # Additional statement if needed
     if($qualifier eq "diagfill"){
@@ -120,7 +120,7 @@ sub print_val_eqop_op_val {
     }
 
     # Close outer tensor index loops
-    &close_iter($ic);  &close_iter($is);
+    &close_iter($is);  &close_iter($ic);
 
 }
 
@@ -151,7 +151,7 @@ sub print_g_eqop_antiherm_g {
     &print_def($temp_type,$var_x);
     &print_def($temp_type,$var_x2);
 
-    &print_int_def($ic); 
+    &print_int_def($ic);
     # Zero the intermediate value var_x
     &print_s_eqop_s("r",$var_x,$eqop_eq);
 
@@ -226,7 +226,7 @@ sub print_val_eqop_norm2_val {
 
     local($srce_value);
 
-    &print_def_open_iter_list($is,$maxis,$ic,$maxic,$js,$maxjs,$jc,$maxjc);
+    &print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
 
     # Print product for real, norm2 for complex
     $src1_elem_value = &make_accessor(*src1_def,$def{'nc'},$ic,$is,$jc,$js);
@@ -239,7 +239,7 @@ sub print_val_eqop_norm2_val {
 
     print QLA_SRC @indent,"$dest_def{'value'} $eqop_notation{$eqop} $srce_value;\n";
 
-    &print_close_iter_list($is,$ic,$js,$jc);
+    &print_close_iter_list($ic,$is,$jc,$js);
 }
 
 #---------------------------------------------------------------------
@@ -254,13 +254,6 @@ sub print_val_getset_component {
     local($rc_d,$rc_s1) = ($dest_def{'rc'},$src1_def{'rc'});
     local($icx,$isx) = ("","");
 
-    # Dirac vector insertion, extraction requires loop over spin row index
-
-    if($qualifier eq "getdiracvec" || $qualifier eq "setdiracvec"){
-	&print_int_def($is); &open_iter($is,$maxis);
-	$isx = $is;
-    }
-
     # Color and Dirac vector insertion, extraction requires loop over
     # color row index
 
@@ -268,6 +261,13 @@ sub print_val_getset_component {
        $qualifier eq "getdiracvec" || $qualifier eq "setdiracvec"){
 	&print_int_def($ic); &open_iter($ic,$maxic);
 	$icx = $ic;
+    }
+
+    # Dirac vector insertion, extraction requires loop over spin row index
+
+    if($qualifier eq "getdiracvec" || $qualifier eq "setdiracvec"){
+	&print_int_def($is); &open_iter($is,$maxis);
+	$isx = $is;
     }
 
     # Extraction
@@ -289,12 +289,12 @@ sub print_val_getset_component {
 
     &print_s_eqop_s($rc_d,$dest_elem_value,$eqop,"",$rc_s1,$src1_elem_value,"");
 
+    if($qualifier eq "getdiracvec" || $qualifier eq "setdiracvec"){
+	&close_iter($is);
+    }
     if($qualifier eq "getcolorvec" || $qualifier eq "setcolorvec" ||
        $qualifier eq "getdiracvec" || $qualifier eq "setdiracvec"){
 	&close_iter($ic);
-    }
-    if($qualifier eq "getdiracvec" || $qualifier eq "setdiracvec"){
-	&close_iter($is);
     }
 }
 
@@ -325,8 +325,8 @@ sub print_val_assign_tr {
     $src1_elem_value = &make_accessor(*src1_def,$def{'nc'},$ic,$is,$ic,$is);
     &print_s_eqop_s($rc_x,$var_x,$eqop_peq,$imre,$rc_s1,$src1_elem_value);
 
-    &close_iter($ic);
     &close_iter($is);
+    &close_iter($ic);
 
     # Assign result to dest
     &print_s_eqop_s($rc_d,$dest_def{'value'},$eqop,"",$rc_x,$var_x,"");
@@ -461,14 +461,14 @@ sub print_s_eqop_v_times_v_pm_s {
 
     local($unroll) = 0;
     local($nout) = 1;
+    &print_int_def($kc);
     #if( ($maxkc==2) || ($maxkc==3) ) {
     if(0) {
       $unroll = 1;
-      $nout = $maxkc;
+      $nout = $maxks;
     } else {
-      &print_int_def($kc);
+      &print_int_def($ks);
     }
-    &print_int_def($ks);
 
     # Define and zero intermediate variable for accumulating sum
     $rc_x = $rc_d;
@@ -502,16 +502,16 @@ sub print_s_eqop_v_times_v_pm_s {
 			     $rc_s3,$src3_elem_value,$conj3);
     }
 
-    &open_iter($ks,$maxks);
+    &open_iter($kc,$maxkc);
     if(!$unroll) {
-      &open_iter($kc,$maxkc);
+      &open_iter($ks,$maxks);
     }
     for(my $i=0; $i<$nout; $i++) {
       local($s1) = $src1_elem_value;
       local($s2) = $src2_elem_value;
       if($unroll) {
-	$s1 =~ s/$kc/$i/;
-	$s2 =~ s/$kc/$i/;
+	$s1 =~ s/$ks/$i/;
+	$s2 =~ s/$ks/$i/;
       }
 
       # Accumulate product
@@ -523,9 +523,9 @@ sub print_s_eqop_v_times_v_pm_s {
 
     }
     if(!$unroll) {
-      &close_iter($kc);
+      &close_iter($ks);
     }
-    &close_iter($ks);
+    &close_iter($kc);
     &print_s_eqop_s($rc_d, $dest_elem_value, $eqop_eq, "", $rc_x, $var_x);
 }
 
@@ -552,8 +552,8 @@ sub print_s_eqop_v_dot_v {
 			 '*',
 			 $rc_s2,$src2_elem_value,$conj2);
 
-    &close_iter($is); &close_iter($ic);
     &close_iter($js); &close_iter($jc);
+    &close_iter($is); &close_iter($ic);
 }
 
 #---------------------------------------------------------------------
@@ -645,9 +645,9 @@ sub print_val_eqop_val_op_val {
 	($maxic,$maxis,$maxjc,$maxjs) = ($mcd,$msd,$ncd,$nsd);
 	($ic,$is,$jc,$js) = &get_color_spin_indices(*dest_def);
 
-	&print_def_open_iter_list($is,$maxis,$ic,$maxic,$js,$maxjs,$jc,$maxjc);
+	&print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
 	$dest_elem_value =
-	    &make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
+	  &make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
     }
 
     if($op eq "times"){
@@ -724,8 +724,8 @@ sub print_val_eqop_val_op_val {
 	die "Can't do op $op\n";
     }
 
-    if($op ne "dot"){
-      &print_close_iter_list($is,$ic,$js,$jc);
+    if(($op ne "dot")&&(!$noclose)){
+      &print_close_iter_list($ic,$is,$jc,$js);
     }
 }
 
@@ -850,7 +850,7 @@ sub print_val_eqop_val_op_val_op2_val {
     if($op2 eq "plus"){$pm = '+';}
     elsif($op2 eq "minus"){$pm = '-';}
 
-    &print_def_open_iter_list($is,$maxis,$ic,$maxic,$js,$maxjs,$jc,$maxjc);
+    &print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
     $dest_elem_value = &make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
 
     # Construct multiplier and multiplicand
@@ -884,7 +884,7 @@ sub print_val_eqop_val_op_val_op2_val {
 			     $rc_s3,$src3_elem_value,$src3_def{'conj'});
     }
 
-    &print_close_iter_list($is,$ic,$js,$jc);
+    &print_close_iter_list($ic,$is,$jc,$js);
 }
 
 #---------------------------------------------------------------------
@@ -898,7 +898,7 @@ sub print_fill {
     local($maxic,$maxis,$maxjc,$maxjs) = @dest_def{'mc','ms','nc','ns'};
     local($rc_d)  = $dest_def{'rc'};
 
-    &print_def_open_iter_list($is,$maxis,$ic,$maxic,$js,$maxjs,$jc,$maxjc);
+    &print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
 
     $dest_elem_value = &make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
 
@@ -906,6 +906,6 @@ sub print_fill {
       &print_s_eqop_s($rc_d,$dest_elem_value,$eqop_eq,"","r","0.","");
     }
 
-    &print_close_iter_list($is,$ic,$js,$jc);
+    &print_close_iter_list($ic,$is,$jc,$js);
 }
 1;

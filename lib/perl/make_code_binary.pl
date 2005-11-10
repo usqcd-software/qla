@@ -277,8 +277,11 @@ sub wilsonspin_mult_func {
   &close_iter($ic);
   &close_brace();
   &open_brace();
+#  $noclose = 1;
   &print_val_eqop_val_op_val( *mytemp2, "eq", "",
 			      *src1_def, $def{'op'}, *mytemp1 );
+#  $noclose = 0;
+#  &close_iter($is);
   &close_brace();
   &open_brace();
   &print_int_def($ic);
