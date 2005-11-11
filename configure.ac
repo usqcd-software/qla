@@ -49,18 +49,23 @@ if test `expr match $NC '[0-9]*$' \& $NC \> 3` -ne 0; then NC="N"; fi
 if test "X$NC" != X2 -a "X$NC" != X3 -a "X$NC" != XN; then NC="all"; fi 
 
 # Checks for programs.
-if ! set | grep '^CFLAGS='; then
-  CFLAGS=-O
-fi
+AC_CHECK_TOOL(AR, ar, [ar])
 AC_PROG_RANLIB
-AC_PROG_CC([cc gcc])
-if test "X$GCC" = "Xyes"; then GNUCC="$CC"; else
-AC_PATH_PROG([GNUCC], [gcc], [gcc])
-fi
 AC_PATH_PROG([PERL], [perl], [perl])
 AC_PATH_PROG([M4], [m4], [m4])
 AC_PATH_PROGS([LATEX], [latex2e latex], [latex])
-AC_CHECK_TOOL(AR, ar, [ar])
+if ! set | grep '^CFLAGS='; then ac_CFLAGS_not_set=1; fi
+AC_PROG_CC([c99 gcc])
+if test "X$ac_CFLAGS_not_set" = "X1"; then
+  if test "X$GCC" = "Xyes"; then
+    CFLAGS="-std=c99 -O2"
+  else
+    CFLAGS=-O
+  fi
+fi
+if test "X$GCC" = "Xyes"; then GNUCC="$CC"; else
+AC_PATH_PROG([GNUCC], [gcc], [gcc])
+fi
 
 # Checks for libraries.
 

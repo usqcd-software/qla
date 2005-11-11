@@ -1,7 +1,14 @@
 SciDAC QLA C interface -- Level 1 linear algebra routines
 
 This package uses the standard GNU configuration script.  See the file
-INSTALL for datails on compiling and installing.
+INSTALL for datails on compiling and installing.  It is recommended that
+QLA be compiled with a C99 compliant compiler (or at least one that
+understands the restrict keyword).  Linking to QLA may also require a C99
+compiler or a redefinition of restrict before including the QLA header.
+If you get errors like 'error: syntax error before "r"' then most likely
+you are not using your compiler in C99 mode.  Check your compiler
+documentation to find the appropriate option (for gcc try -std=c99 or
+for xlc try -qlanglvl=stdc99).
 
 Documentation is included in the doc directory.  This is not included in
 the installation.  See the README file in the doc directory for details.
