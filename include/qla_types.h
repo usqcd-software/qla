@@ -332,7 +332,6 @@ typedef QLA_F2_DiracPropagator     QLA_F_DiracPropagator;
 typedef QLA_D2_ColorMatrix         QLA_D_ColorMatrix;
 typedef QLA_D2_ColorVector         QLA_D_ColorVector;
 typedef QLA_D2_HalfFermion         QLA_D_HalfFermion;
-typedef QLA_D2_SpinDiracFermion    QLA_D_SpinDiracFermion;
 typedef QLA_D2_DiracFermion        QLA_D_DiracFermion;
 typedef QLA_D2_DiracPropagator     QLA_D_DiracPropagator;
 
@@ -384,7 +383,6 @@ typedef QLA_F2_DiracPropagator     QLA_DiracPropagator;
 typedef QLA_D2_ColorMatrix         QLA_ColorMatrix;
 typedef QLA_D2_ColorVector         QLA_ColorVector;
 typedef QLA_D2_HalfFermion         QLA_HalfFermion;
-typedef QLA_D2_SpinDiracFermion    QLA_SpinDiracFermion;
 typedef QLA_D2_DiracFermion        QLA_DiracFermion;
 typedef QLA_D2_DiracPropagator     QLA_DiracPropagator;
 

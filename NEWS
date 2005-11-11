@@ -1,6 +1,13 @@
 ===========================================================================
 SciDAC QLA C interface
 ===========================================================================
+Version 1.4
+November 10, 2005
+
+See Changelog for changes.
+Note that the internal layout for some fields has changed so all codes
+linking to QLA should be recompiled for this version.
+===========================================================================
 Version 1.3
 April 27, 2005
 

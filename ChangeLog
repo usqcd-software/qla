@@ -1,7 +1,9 @@
 ===========================================================================
-2005-10-03	version 1.4
+2005-11-10	version 1.4
 ===========================================================================
-Added some functions to help with Wilson type fermions.
+2005-11-10: Changed layout of spin objects to better accommodate SSE.
+2005-10-08: Improved perl generated source.
+2005-10-03: Added some functions to help with Wilson type fermions.
 
 ===========================================================================
 2005-06-15	version 1.3.1
