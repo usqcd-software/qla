@@ -139,7 +139,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-CINC = -I$(top_srcdir)/include -I$(srcdir)/include
+CINC = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(srcdir)/include
 OPTLIBS = $(am__append_1)
 EXTRA_DIST = include src
 all: all-am

@@ -1,4 +1,4 @@
-CINC = -I$(top_srcdir)/include -I$(srcdir)/include
+CINC = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(srcdir)/include
 
 OPTLIBS = 
 if NC3

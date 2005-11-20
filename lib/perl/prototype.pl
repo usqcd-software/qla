@@ -325,9 +325,9 @@ sub make_arg {
     local($string);
 
     $string = $type;
-    if($ptr eq $pointer_pfx){$string = $string." **$arg ";}
-    else {$string = $string." *$arg ";}
-    if($index_name ne ""){$string = $string.", int *$index_name ";}
+    if($ptr eq $pointer_pfx){$string = $string." *restrict *$arg";}
+    else {$string = $string." *restrict $arg";}
+    if($index_name ne ""){$string = $string.", int *$index_name";}
     $string;
 }
 
@@ -564,7 +564,7 @@ sub make_prototype {
 
     $declaration .= &make_arg($def{'dest_type'},
 			      $def{'dest_ptr_pfx'},
-                              "restrict $def{'dest_name'}",
+                              $def{'dest_name'},
 			      $def{'dest_index_name'});
     $declaration .= $def{'dest_extra_arg'};
 
@@ -573,8 +573,9 @@ sub make_prototype {
     foreach $arg ( 'src1', 'src2', 'src3' ){
 	if(defined($def{$arg.'_t'})){
 	    $v = $def{$arg.'_type'};
-	    $declaration .= &make_arg(", $v ",
-				      $def{$arg.'_ptr_pfx'},$def{$arg.'_name'},
+	    $declaration .= &make_arg(", $v",
+				      $def{$arg.'_ptr_pfx'},
+                                      $def{$arg.'_name'},
 				      $def{$arg.'_index_name'});
 	}
 	$declaration .= $def{$arg.'_extra_arg'};
@@ -610,8 +611,10 @@ sub make_prototype {
     print QLA_HDR $comment2 if $comment2; $comment2 = "";
     print QLA_HDR $comment3 if $comment3; $comment3 = "";
 
-    print QLA_HDR "$declaration;\n";
     $def{'declaration'} = $declaration;
+# remove restrict from header file
+    $declaration =~ s/restrict //g;
+    print QLA_HDR "$declaration;\n";
 
     ############################################################
     # Print the map from the generic to specific function names
