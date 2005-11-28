@@ -12,16 +12,33 @@ include(protocol_tensor_sng.m4)
 #include "milc_gamma.h"
 
 int main(){
-
-  int nc = QLA_Nc;
-  int ns = 4;
-  int mu,sign;
+'
+#if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
+#if (QLA_Precision == 1) || (QLA_Precision == 'F')
+  QLA_D_Real    destRP;
+  QLA_D_Complex destCP;
+#else
+  QLA_Q_Real    destRP;
+  QLA_Q_Complex destCP;
+#endif
+`
+  int kc, ks;
 
   QLA_Int sI1 = -4123;
+  QLA_Real sR1 =  0.17320508075688772;
+
+  /*QLA_D_Real              chkRD;*/
+  QLA_Q_Real              chkRQ;
+  QLA_Q_Complex           chkCQ;
+  int mu,sign;
+#endif
+
+  int nc = QLA_Nc;
+  int ns = QLA_Ns;
+  int ic,jc,is,js;
+
   QLA_Int sI2 = 0;
   QLA_Int sI3 = 7032;
-
-  QLA_Real sR1 =  0.17320508075688772;
 
   QLA_Real sC1re = -8.8000370811461867;
   QLA_Real sC1im =  5.7248575675626134;
@@ -48,11 +65,12 @@ int main(){
   QLA_ColorVector         destV,chkV;
   QLA_DiracPropagator     destP,chkP;
 
-  QLA_D_Real              chkRD;
-
   char name[64];
-  int ic,jc,is,js,kc,ks;
   
+  destR = 0.;
+  chkR = 0.;
+  QLA_c_eq_r(chkC, 0.);
+
   /* Test gaussian random fills against 
      direct call to the same underlying routine */
 '
@@ -114,16 +132,12 @@ chkTranspose(M);
 
 alltensors(`chkConj');
 
-#endif /* QLA_Precision != Q */
-
   /* QLA_R_eq_norm2_T */
 chkLocalNorm2(H);
 chkLocalNorm2(D);
 chkLocalNorm2(V);
 chkLocalNorm2(P);
 chkLocalNorm2(M);
-
-#if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 
   /* QLA_C_eq_elem_T */
 
@@ -171,10 +185,19 @@ chkAntiherm;
 
   /* Gamma matrix tests */
 
-chkSpproj(eq);
-chkSprecon(eq);
-chkSprecon(peq);
+alleqops(`chkSpproj(H,',`)')
+alleqops(`chkSpproj(D,',`)')
+alleqops(`chkSprecon(',`)')
 chkGammamult;
+
+  /* Gamma matrix and multiply tests */
+
+alleqops(`chkSpprojMult(H,',`,)')
+alleqops(`chkSpprojMult(H,',`,a)')
+alleqops(`chkSpprojMult(D,',`,)')
+alleqops(`chkSpprojMult(D,',`,a)')
+alleqops(`chkSpreconMult(',`,)')
+alleqops(`chkSpreconMult(',`,a)')
 
   /* QLA_T_eq_t_times_T */
 

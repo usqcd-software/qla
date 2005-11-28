@@ -36,20 +36,20 @@ test_macros_LDADD = -lm
 # f
 nodist_test_scalar_f_sng_SOURCES = $(SNGSRC) $(CMPSRC)
 test_scalar_f_sng_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'F\'
-test_scalar_f_sng_LDADD = $(QLAF) $(QLAEXTRA)
+test_scalar_f_sng_LDADD = $(QLADF) $(QLAEXTRA)
 
 nodist_test_scalar_f_idx_SOURCES = $(IDXSRC) $(CMPSRC)
 test_scalar_f_idx_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'F\'
-test_scalar_f_idx_LDADD = $(QLAF) $(QLAEXTRA)
+test_scalar_f_idx_LDADD = $(QLADF) $(QLAEXTRA)
 
 # d
 nodist_test_scalar_d_sng_SOURCES = $(SNGSRC) $(CMPSRC)
 test_scalar_d_sng_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'D\'
-test_scalar_d_sng_LDADD = $(QLAD) $(QLAEXTRA)
+test_scalar_d_sng_LDADD = $(QLADQ) $(QLAEXTRA)
 
 nodist_test_scalar_d_idx_SOURCES = $(IDXSRC) $(CMPSRC)
 test_scalar_d_idx_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'D\'
-test_scalar_d_idx_LDADD = $(QLAD) $(QLAEXTRA)
+test_scalar_d_idx_LDADD = $(QLADQ) $(QLAEXTRA)
 
 # q
 nodist_test_scalar_q_sng_SOURCES = $(SNGSRC) $(CMPSRC)

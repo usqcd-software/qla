@@ -14,11 +14,16 @@ include(protocol_idx.m4)
 
 int main(){
 
+#define QLA_PRF(x) QLA_DF_ ## x
+#define QLA_PRD(x) QLA_QD_ ## x
+
   QLA_Q_Real sRQ1[MAX] = { 61.88, -10.38,  73.59, -96.07,  50.32,
 		92.37,   34.58, -21.10, -67.05, 104.01};
 
+#if 0
   QLA_Q_Real sRQ3[MAX] = {-23.59, -56.32, -55.88, -11.55, 145.46, 
 		 219.29, 71.47, -268.80, 42.82, 54.72};
+#endif
 
   QLA_Q_Real sCQ1re[MAX] = { 92.37,   34.58, -21.10, -67.05, 104.01,
 		      61.88, -10.38,  73.59, -96.07,  50.32};
@@ -32,26 +37,26 @@ int main(){
   QLA_Q_Real sCQ3im[MAX] = {-23.59, -56.32, -55.88, -11.55, 145.46, 
 		      97.89, -44.57, 86.02, 42.82, 79.20};
 
-  QLA_Q_Complex destCQ[MAX],chkCQ[MAX];
+  QLA_Q_Complex /*destCQ[MAX],*/chkCQ[MAX];
 
   QLA_Q_Complex destcQ,chkcQ;
 
   QLA_Q_Complex sCQ1[MAX],sCQ3[MAX];
 
-  int dRx[MAX]   = {8,5,6,7,1,2,9,0,3,4};
+  /*int dRx[MAX]   = {8,5,6,7,1,2,9,0,3,4};*/
   int sR1x[MAX]  = {3,0,1,8,2,4,5,9,7,6};
   int sR2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
   int sR3x[MAX] = {8,3,2,5,6,9,7,4,0,1};
 
-  int dCx[MAX]  = {8,3,2,5,6,9,7,4,0,1};
+  /*int dCx[MAX]  = {8,3,2,5,6,9,7,4,0,1};*/
   int sC1x[MAX] = {8,5,6,7,1,2,9,0,3,4};
   int sC2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
 
-  QLA_Q_Real destRQ[MAX],chkRQ[MAX];
+  /*QLA_Q_Real destRQ[MAX],chkRQ[MAX];*/
 
-  QLA_Q_Real destrQ,chkrQ;
+  QLA_Q_Real destrQ, chkrQ;
 
-  QLA_Q_Real *sRQ1p[MAX],*sRQ2p[MAX];
+  QLA_Q_Real *sRQ1p[MAX]/*,*sRQ2p[MAX]*/;
 
   QLA_Q_Complex *sCQ1p[MAX];
 

@@ -59,68 +59,68 @@ am__objects_2 = test_scalar_d_idx-test_scalar_idx.$(OBJEXT)
 am__objects_3 = test_scalar_d_idx-compare.$(OBJEXT)
 nodist_test_scalar_d_idx_OBJECTS = $(am__objects_2) $(am__objects_3)
 test_scalar_d_idx_OBJECTS = $(nodist_test_scalar_d_idx_OBJECTS)
-am__DEPENDENCIES_1 = $(SRCDIR)/libqla_d.a
-am__DEPENDENCIES_2 = $(SRCDIR)/libqla_int.a $(SRCDIR)/libqla_random.a \
+am__DEPENDENCIES_1 = $(SRCDIR)/libqla_q.a
+am__DEPENDENCIES_2 = $(SRCDIR)/libqla_d.a
+am__DEPENDENCIES_3 = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
+	$(SRCDIR)/libqla_dq.a
+am__DEPENDENCIES_4 = $(SRCDIR)/libqla_int.a $(SRCDIR)/libqla_random.a \
 	$(SRCDIR)/libqla_cmath.a $(SRCDIR)/libqla_c99.a
-test_scalar_d_idx_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_2)
+test_scalar_d_idx_DEPENDENCIES = $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_4)
 am__objects_4 = test_scalar_d_sng-test_scalar_sng.$(OBJEXT)
 am__objects_5 = test_scalar_d_sng-compare.$(OBJEXT)
 nodist_test_scalar_d_sng_OBJECTS = $(am__objects_4) $(am__objects_5)
 test_scalar_d_sng_OBJECTS = $(nodist_test_scalar_d_sng_OBJECTS)
-test_scalar_d_sng_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_2)
+test_scalar_d_sng_DEPENDENCIES = $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_4)
 am__objects_6 = compare.$(OBJEXT)
 nodist_test_scalar_df_idx_OBJECTS = test_scalar_df_idx.$(OBJEXT) \
 	$(am__objects_6)
 test_scalar_df_idx_OBJECTS = $(nodist_test_scalar_df_idx_OBJECTS)
-am__DEPENDENCIES_3 = $(SRCDIR)/libqla_f.a
-am__DEPENDENCIES_4 = $(am__DEPENDENCIES_3) $(am__DEPENDENCIES_1) \
+am__DEPENDENCIES_5 = $(SRCDIR)/libqla_f.a
+am__DEPENDENCIES_6 = $(am__DEPENDENCIES_5) $(am__DEPENDENCIES_2) \
 	$(SRCDIR)/libqla_df.a
-test_scalar_df_idx_DEPENDENCIES = $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_2)
+test_scalar_df_idx_DEPENDENCIES = $(am__DEPENDENCIES_6) \
+	$(am__DEPENDENCIES_4)
 nodist_test_scalar_df_sng_OBJECTS = test_scalar_df_sng.$(OBJEXT) \
 	$(am__objects_6)
 test_scalar_df_sng_OBJECTS = $(nodist_test_scalar_df_sng_OBJECTS)
-test_scalar_df_sng_DEPENDENCIES = $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_2)
+test_scalar_df_sng_DEPENDENCIES = $(am__DEPENDENCIES_6) \
+	$(am__DEPENDENCIES_4)
 nodist_test_scalar_dq_idx_OBJECTS = test_scalar_dq_idx.$(OBJEXT) \
 	$(am__objects_6)
 test_scalar_dq_idx_OBJECTS = $(nodist_test_scalar_dq_idx_OBJECTS)
-am__DEPENDENCIES_5 = $(SRCDIR)/libqla_q.a
-am__DEPENDENCIES_6 = $(am__DEPENDENCIES_5) $(am__DEPENDENCIES_1) \
-	$(SRCDIR)/libqla_dq.a
-test_scalar_dq_idx_DEPENDENCIES = $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_2)
+test_scalar_dq_idx_DEPENDENCIES = $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_4)
 nodist_test_scalar_dq_sng_OBJECTS = test_scalar_dq_sng.$(OBJEXT) \
 	$(am__objects_6)
 test_scalar_dq_sng_OBJECTS = $(nodist_test_scalar_dq_sng_OBJECTS)
-test_scalar_dq_sng_DEPENDENCIES = $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_2)
+test_scalar_dq_sng_DEPENDENCIES = $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_4)
 am__objects_7 = test_scalar_f_idx-test_scalar_idx.$(OBJEXT)
 am__objects_8 = test_scalar_f_idx-compare.$(OBJEXT)
 nodist_test_scalar_f_idx_OBJECTS = $(am__objects_7) $(am__objects_8)
 test_scalar_f_idx_OBJECTS = $(nodist_test_scalar_f_idx_OBJECTS)
-test_scalar_f_idx_DEPENDENCIES = $(am__DEPENDENCIES_3) \
-	$(am__DEPENDENCIES_2)
+test_scalar_f_idx_DEPENDENCIES = $(am__DEPENDENCIES_6) \
+	$(am__DEPENDENCIES_4)
 am__objects_9 = test_scalar_f_sng-test_scalar_sng.$(OBJEXT)
 am__objects_10 = test_scalar_f_sng-compare.$(OBJEXT)
 nodist_test_scalar_f_sng_OBJECTS = $(am__objects_9) $(am__objects_10)
 test_scalar_f_sng_OBJECTS = $(nodist_test_scalar_f_sng_OBJECTS)
-test_scalar_f_sng_DEPENDENCIES = $(am__DEPENDENCIES_3) \
-	$(am__DEPENDENCIES_2)
+test_scalar_f_sng_DEPENDENCIES = $(am__DEPENDENCIES_6) \
+	$(am__DEPENDENCIES_4)
 am__objects_11 = test_scalar_q_idx-test_scalar_idx.$(OBJEXT)
 am__objects_12 = test_scalar_q_idx-compare.$(OBJEXT)
 nodist_test_scalar_q_idx_OBJECTS = $(am__objects_11) $(am__objects_12)
 test_scalar_q_idx_OBJECTS = $(nodist_test_scalar_q_idx_OBJECTS)
-test_scalar_q_idx_DEPENDENCIES = $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_2)
+test_scalar_q_idx_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_4)
 am__objects_13 = test_scalar_q_sng-test_scalar_sng.$(OBJEXT)
 am__objects_14 = test_scalar_q_sng-compare.$(OBJEXT)
 nodist_test_scalar_q_sng_OBJECTS = $(am__objects_13) $(am__objects_14)
 test_scalar_q_sng_OBJECTS = $(nodist_test_scalar_q_sng_OBJECTS)
-test_scalar_q_sng_DEPENDENCIES = $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_2)
+test_scalar_q_sng_DEPENDENCIES = $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_4)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)/include
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
@@ -262,18 +262,18 @@ test_macros_LDADD = -lm
 # f
 nodist_test_scalar_f_sng_SOURCES = $(SNGSRC) $(CMPSRC)
 test_scalar_f_sng_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'F\'
-test_scalar_f_sng_LDADD = $(QLAF) $(QLAEXTRA)
+test_scalar_f_sng_LDADD = $(QLADF) $(QLAEXTRA)
 nodist_test_scalar_f_idx_SOURCES = $(IDXSRC) $(CMPSRC)
 test_scalar_f_idx_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'F\'
-test_scalar_f_idx_LDADD = $(QLAF) $(QLAEXTRA)
+test_scalar_f_idx_LDADD = $(QLADF) $(QLAEXTRA)
 
 # d
 nodist_test_scalar_d_sng_SOURCES = $(SNGSRC) $(CMPSRC)
 test_scalar_d_sng_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'D\'
-test_scalar_d_sng_LDADD = $(QLAD) $(QLAEXTRA)
+test_scalar_d_sng_LDADD = $(QLADQ) $(QLAEXTRA)
 nodist_test_scalar_d_idx_SOURCES = $(IDXSRC) $(CMPSRC)
 test_scalar_d_idx_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'D\'
-test_scalar_d_idx_LDADD = $(QLAD) $(QLAEXTRA)
+test_scalar_d_idx_LDADD = $(QLADQ) $(QLAEXTRA)
 
 # q
 nodist_test_scalar_q_sng_SOURCES = $(SNGSRC) $(CMPSRC)

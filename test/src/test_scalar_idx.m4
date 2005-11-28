@@ -4,7 +4,6 @@
 
 include(protocol_idx.m4)
 
-`
 #include <qla.h>
 #include <qla_d.h>
 #include <stdio.h>
@@ -14,6 +13,42 @@ include(protocol_idx.m4)
 
 int main(){
 
+#define QLA_DF_r_eq_I_dot_I QLA_D_r_eq_I_dot_I
+#define QLA_QD_r_eq_I_dot_I QLA_D_r_eq_I_dot_I
+
+#define QLA_PRF(x) QLA_DF_ ## x
+#define QLA_PRD(x) QLA_QD_ ## x
+
+#if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
+
+#if (QLA_Precision == 1) || (QLA_Precision == 'F')
+#define QLA_PR(x) QLA_DF_ ## x
+  QLA_D_Real destrP, chkrP;
+  QLA_D_Complex destcP, chkcP;
+#else
+#define QLA_PR(x) QLA_QD_ ## x
+  QLA_Q_Real destrP, chkrP;
+  QLA_Q_Complex destcP, chkcP;
+#endif
+
+  QLA_Real sR4       = -1.635;
+  /*QLA_Int sI5      = 13;*/
+
+  /*int dIx[MAX]  = {8,3,2,5,6,9,7,4,0,1};*/
+
+  /*int zI1x[MAX] = {8,5,6,7,1,2,9,0,3,4};*/
+
+  /*QLA_D_Complex chkCD[MAX];*/
+  QLA_Q_Complex chkCQ[MAX];
+  QLA_Int destI[MAX],chkI[MAX];
+
+  QLA_Real destr,chkr;
+  QLA_D_Real destrD,chkrD;
+  QLA_Complex destc,chkc;
+  /*QLA_D_Complex chkcD;*/
+  QLA_Q_Real chkrQ;
+  QLA_Q_Complex chkcQ;
+#endif
   
   QLA_Real sR1[MAX] = { 61.88, -10.38,  73.59, -96.07,  50.32,
 		92.37,   34.58, -21.10, -67.05, 104.01};
@@ -23,8 +58,6 @@ int main(){
   
   QLA_Real sR3[MAX] = {-23.59, -56.32, -55.88, -11.55, 145.46, 
 		 219.29, 71.47, -268.80, 42.82, 54.72};
-
-  QLA_Real sR4       = -6.35;
 
   QLA_Real sC1re[MAX] = { 92.37,   34.58, -21.10, -67.05, 104.01,
 		      61.88, -10.38,  73.59, -96.07,  50.32};
@@ -65,7 +98,6 @@ int main(){
 		   61, -10,  73, -96,  50};
 
   QLA_Int sI4      = 5001;
-  QLA_Int sI5      = 13;
 
   int dRx[MAX]  = {8,5,6,7,1,2,9,0,3,4};
   int sR1x[MAX] = {3,0,1,8,2,4,5,9,7,6};
@@ -76,12 +108,9 @@ int main(){
   int sC1x[MAX] = {8,5,6,7,1,2,9,0,3,4};
   int sC2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
 
-  int dIx[MAX]  = {8,3,2,5,6,9,7,4,0,1};
   int sI1x[MAX] = {4,9,0,2,1,3,7,8,5,6};
   int sI2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
   int sI3x[MAX] = {8,3,2,5,6,9,7,4,0,1};
-
-  int zI1x[MAX] = {8,5,6,7,1,2,9,0,3,4};
 
   int sS1x[MAX] = {1,3,8,5,9,4,7,6,0,2};
 
@@ -93,17 +122,8 @@ int main(){
   
   QLA_Real destR[MAX],chkR[MAX];
   QLA_Complex destC[MAX],chkC[MAX];
-  QLA_D_Complex chkCD[MAX];
-  QLA_Q_Complex chkCQ[MAX];
-  QLA_Int destI[MAX],chkI[MAX];
 
   int i;
-  QLA_Real destr,chkr;
-  QLA_D_Real chkrD;
-  QLA_Complex destc,chkc;
-  QLA_D_Complex chkcD;
-  QLA_Q_Real destrQ,chkrQ;
-  QLA_Q_Complex destcQ,chkcQ;
 
   char name[64];
 
@@ -149,7 +169,7 @@ int main(){
   for(i = 0; i < MAX; i++){QLA_C_eq_C(&chkC[i],&sC1[i]);}
   checkeqidxCC(chkC,destC,name);
 
-#if ( QLA_Precision != ''Q' )  /* Q precision is limited to assignments */
+#if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 
   /* Unary functions of real and complex */
 
@@ -201,7 +221,6 @@ unary(C,meq,C)
 
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 
-
   /* Complex conjugate */
 
 unarya(C,eq,C)
@@ -216,7 +235,7 @@ unary(C,meq_conj,C)
 
   /* Local squared norm */
 
-unary(R,eq_norm2,C)
+alleqops(`unary(R,',`_norm2,C)')
 
   /* Type conversion */
 
@@ -273,8 +292,8 @@ binary(C,meq,C,times,C,sC1,sC2)
 
   /* Local inner product - complex */
 
-binary(C,eq,C,dot,C,sC1,sC2)
-binary(R,eq_re,C,dot,C,sC1,sC2)
+alleqops(`binary(C,',`,C,dot,C,sC1,sC2)')
+alleqops(`binary(R,',`_re,C,dot,C,sC1,sC2)')
 
   /* Ternary operations */
 

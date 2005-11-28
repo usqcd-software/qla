@@ -15,6 +15,68 @@ int test_tensor_idx4(){
 '
   /* Define test data */
 
+#define QLA_DF_r_eq_I_dot_I QLA_D_r_eq_I_dot_I
+#define QLA_QD_r_eq_I_dot_I QLA_D_r_eq_I_dot_I
+
+#define QLA(x) QLA_ ## x
+#define QLA_DF(x) QLA_DF_ ## x
+#define QLA_QD(x) QLA_QD_ ## x
+
+#if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
+
+#if (QLA_Precision == 1) || (QLA_Precision == 'F')
+#define QLA_PR(x) QLA_DF_ ## x
+  QLA_D_Real destrP, chkrP;
+  QLA_D_Complex destcP, chkcP;
+#else
+#define QLA_PR(x) QLA_QD_ ## x
+  QLA_Q_Real destrP, chkrP;
+  QLA_Q_Complex destcP, chkcP;
+#endif
+
+  int nc = QLA_Nc;
+  int ns = QLA_Ns;
+  int ic,jc,is,js;
+
+  QLA_Real sR4       = -6.35;
+
+  /*QLA_Q_Real                chkRQ[MAX];*/
+  /*QLA_Q_Complex             chkCQ[MAX];*/
+  QLA_Q_ColorMatrix         chkMQ[MAX];
+  QLA_Q_HalfFermion         chkHQ[MAX];
+  QLA_Q_DiracFermion        chkDQ[MAX];
+  QLA_Q_ColorVector         chkVQ[MAX];
+  QLA_Q_DiracPropagator     chkPQ[MAX];
+
+  QLA_Q_Real                chkrQ;
+  /*QLA_Q_Complex             chkcQ;*/
+  QLA_Q_ColorMatrix         chkmQ;
+  QLA_Q_HalfFermion         chkhQ;
+  QLA_Q_DiracFermion        chkdQ;
+  QLA_Q_ColorVector         chkvQ;
+  QLA_Q_DiracPropagator     chkpQ;
+
+  QLA_Real                 destr,chkr;
+  QLA_Complex              destc,chkc;
+  QLA_ColorMatrix          destm,chkm;
+  QLA_HalfFermion          desth,chkh;
+  QLA_DiracFermion         destd,chkd;
+  QLA_ColorVector          destv,chkv;
+  QLA_DiracPropagator      destp,chkp;
+
+#if 0
+  QLA_Q_Real               destrQ;
+  QLA_Q_Complex            destcQ;
+#endif
+
+#endif
+
+  int dHx[MAX]  = {9,2,6,1,4,5,7,0,8,3};
+  int dDx[MAX]  = {4,1,2,9,7,5,3,6,0,8};
+  int dVx[MAX]  = {4,2,5,1,6,0,3,8,9,7};
+  int dPx[MAX]  = {9,7,3,2,5,8,6,4,0,1};
+  int dMx[MAX]  = {1,2,9,7,3,0,4,6,5,8};
+
 include(tensor_idx_defs.m4);
 
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */

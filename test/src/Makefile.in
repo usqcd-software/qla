@@ -164,7 +164,7 @@ EXTRA_DIST = $(M4SRC) tensor_args.m4 tensor_idx_defs.m4 \
 
 PSNGDEP = protocol_tensor_sng.m4 tensor_args.m4
 PIDXDEP = protocol_idx.m4 tensor_args.m4
-TIDXDEP = tensor_idx_defs.m4
+TIDXDEP = protocol_idx.m4 tensor_idx_defs.m4
 all: all-am
 
 .SUFFIXES:
@@ -320,6 +320,7 @@ uninstall-am: uninstall-info-am
 
 
 check-local: $(CSRC)
+	-cp -fp $(srcdir)/../checkcomplete.pl ..
 
 .m4.c:
 	$(M4) -I$(srcdir) $< > $@

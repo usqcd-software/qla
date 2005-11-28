@@ -13,12 +13,14 @@
 #define YUP 1
 #define ZUP 2
 #define TUP 3
-#define TDOWN 4
-#define ZDOWN 5
-#define YDOWN 6
-#define XDOWN 7
+#define SUP 4
+#define SDOWN 5
+#define TDOWN 6
+#define ZDOWN 7
+#define YDOWN 8
+#define XDOWN 9
 
-#define OPP_DIR(dir)	(7-(dir))	/* Opposite direction */
+#define OPP_DIR(dir)	(9-(dir))	/* Opposite direction */
 
 #define GAMMAFIVE -1    /* some integer which is not a direction */
 #define PLUS 1          /* flags for selecting M or M_adjoint */
@@ -193,6 +195,22 @@ void wp_shrink( QLA_HalfFermion *dest, QLA_DiracFermion *src,
 	- QLA_imag(QLA_elem_D(*src,i,3));
     }
     break;
+  case SUP:
+    for(i=0;i<nc;i++){
+      QLA_real(QLA_elem_H(*dest,i,0)) = QLA_real(QLA_elem_D(*src,i,0));
+      QLA_imag(QLA_elem_H(*dest,i,0)) = QLA_imag(QLA_elem_D(*src,i,0));
+      QLA_real(QLA_elem_H(*dest,i,1)) = QLA_real(QLA_elem_D(*src,i,1));
+      QLA_imag(QLA_elem_H(*dest,i,1)) = QLA_imag(QLA_elem_D(*src,i,1));
+    }
+    break;
+  case SDOWN:
+    for(i=0;i<nc;i++){
+      QLA_real(QLA_elem_H(*dest,i,0)) = QLA_real(QLA_elem_D(*src,i,2));
+      QLA_imag(QLA_elem_H(*dest,i,0)) = QLA_imag(QLA_elem_D(*src,i,2));
+      QLA_real(QLA_elem_H(*dest,i,1)) = QLA_real(QLA_elem_D(*src,i,3));
+      QLA_imag(QLA_elem_H(*dest,i,1)) = QLA_imag(QLA_elem_D(*src,i,3));
+    }
+    break;
   default:
     printf("BAD CALL TO WP_SHRINK()\n");
   }
@@ -304,6 +322,22 @@ void wp_grow(  QLA_DiracFermion *dest, QLA_HalfFermion *src,
 	    QLA_elem_D(*dest,i,1)      = QLA_elem_H(*src,i,1);
 	    QLA_c_eqm_c(QLA_elem_D(*dest,i,2) , QLA_elem_H(*src,i,0));
 	    QLA_c_eqm_c(QLA_elem_D(*dest,i,3) , QLA_elem_H(*src,i,1));
+	}
+	break;
+    case SUP:
+	for(i=0;i<nc;i++){
+	    QLA_elem_D(*dest,i,0) = QLA_elem_H(*src,i,0);
+	    QLA_elem_D(*dest,i,1) = QLA_elem_H(*src,i,1);
+	    QLA_c_eq_r(QLA_elem_D(*dest,i,2), 0.);
+	    QLA_c_eq_r(QLA_elem_D(*dest,i,3), 0.);
+	}
+	break;
+    case SDOWN:
+	for(i=0;i<nc;i++){
+	    QLA_c_eq_r(QLA_elem_D(*dest,i,0), 0.);
+	    QLA_c_eq_r(QLA_elem_D(*dest,i,1), 0.);
+	    QLA_elem_D(*dest,i,2) = QLA_elem_H(*src,i,0);
+	    QLA_elem_D(*dest,i,3) = QLA_elem_H(*src,i,1);
 	}
 	break;
     default:

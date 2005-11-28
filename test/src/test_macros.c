@@ -33,7 +33,7 @@ int main(){
   QLA_Complex sC1,sC2,sC3;
 
   QLA_Real destR,chkR;
-  QLA_Complex destC,chkC;
+  QLA_Complex destC/*,chkC*/;
 
   char name[64];
 

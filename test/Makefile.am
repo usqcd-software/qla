@@ -17,6 +17,9 @@
 #
 # Revision History:
 #   $Log$
+#   Revision 1.1  2005/04/27 17:47:46  osborn
+#   (Hopefully) Last set of files added.
+#
 #   
 #   
 #   
@@ -38,12 +41,11 @@ if NCN
   TDIRS += tensorN
 endif
 
-SUBDIRS = . src int scalar $(TDIRS)
+SUBDIRS = src int scalar $(TDIRS) .
 
-EXTRA_DIST = README checkcomplete.pl
+EXTRA_DIST = README checkcomplete.pl check_all
 
-check-local:
-	-cp -fp $(srcdir)/checkcomplete.pl .
+TESTS = check_all
 
 distclean-local:
 	-if [ "X$(srcdir)" != "X." ]; then rm -f checkcomplete.pl; fi

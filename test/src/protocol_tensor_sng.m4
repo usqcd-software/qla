@@ -193,16 +193,26 @@ rem(`
      Local squared norm
 ')
 
+rem(`chkLocalNorm2eqop(t1,op)')
+define(chkLocalNorm2eqop,`
+  strcpy(name,"QLA_R_$2_norm2_$1");
+  argdP(R) = 0;
+  for_$1_elem{
+    argdP(R) += QLA_norm2_c($1_elem(arg1($1)));
+  }
+  argt(R) = arg1(R);
+  argt(R) eqop$2 argdP(R);
+  QLA_R_eq_R(&argd(R),&arg1(R));
+  QLA_R_$2_norm2_$1(&argd(R),&arg1($1));
+  checkeqsngRR(&argd(R),&argt(R),name);
+')
+
 rem(`chkLocalNorm2(t1)')
 define(chkLocalNorm2,`
-  strcpy(name,"QLA_R_eq_norm2_$1");
-  QLA_R_eq_norm2_$1(&argd(R),&arg1($1));
-  argtD(R) = 0;
-  for_$1_elem{
-    argtD(R) += QLA_norm2_c($1_elem(arg1($1)));
-  }
-  argt(R) = argtD(R);
-  checkeqsngRR(&argd(R),&argt(R),name);
+chkLocalNorm2eqop($1,eq)
+chkLocalNorm2eqop($1,peq)
+chkLocalNorm2eqop($1,eqm)
+chkLocalNorm2eqop($1,meq)
 ')
 
 rem(`
@@ -368,16 +378,18 @@ define(chkAntiherm,`
 rem(`
      Spin projection
 ')
-rem(`chkSpproj(eq)')
+rem(`chkSpproj(dt,eq)')
 define(chkSpproj,`
   /* Implementation dependent! */
-  strcpy(name,"QLA_H_$1_spproj_D");
-  for(mu=0;mu<4;mu++)for(sign=-1;sign<2;sign+=2){
-    QLA_H_eq_H(&argd(H),&arg2(H));
-    QLA_H_eq_H(&argt(H),&arg2(H));
-    QLA_H_$1_spproj_D(&argd(H),&arg1(D),mu,sign);
-    wp_shrink(&argt(H),&arg1(D),mu,sign);
-    checkeqsngHH(&argd(H),&argt(H),name);
+  strcpy(name,"QLA_$1_$2_spproj_D");
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
+    wp_shrink(&argd(H),&arg1(D),mu,sign);
+    ifelse($1,`D',`wp_grow(&argd(D),&argd(H),mu,sign);')
+    QLA_$1_eq_$1(&argt($1),&arg2($1));
+    QLA_$1_$2_$1(&argt($1),&argd($1));
+    QLA_$1_eq_$1(&argd($1),&arg2($1));
+    QLA_$1_$2_spproj_D(&argd($1),&arg1(D),mu,sign);
+    checkeqsng$1$1(&argd($1),&argt($1),name);
   }
 ')
 
@@ -388,12 +400,47 @@ rem(`chkSprecon(eq)')
 define(chkSprecon,`
   /* Implementation dependent! */
   strcpy(name,"QLA_D_$1_sprecon_H");
-  for(mu=0;mu<4;mu++)for(sign=-1;sign<2;sign+=2){
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
     QLA_D_eq_D(&argt(D),&arg2(D));
     wp_grow(&argd(D),&arg1(H),mu,sign);
     QLA_D_$1_D(&argt(D),&argd(D));
     QLA_D_eq_D(&argd(D),&arg2(D));
     QLA_D_$1_sprecon_H(&argd(D),&arg1(H),mu,sign);
+    checkeqsngDD(&argd(D),&argt(D),name);
+  }
+')
+
+rem(`
+     Spin projection and matrix multiply
+')
+rem(`chkSpprojMult(dt,eq,adj)')
+define(chkSpprojMult,`
+  /* Implementation dependent! */
+  strcpy(name,"QLA_$1_$2_spproj_M$3_times_D");
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
+    wp_shrink(&argd(H),&arg1(D),mu,sign);
+    ifelse($1,`D',`wp_grow(&argd(D),&argd(H),mu,sign);')
+    QLA_$1_eq_$1(&argt($1),&arg2($1));
+    QLA_$1_$2_M$3_times_$1(&argt($1),&arg1(M),&argd($1));
+    QLA_$1_eq_$1(&argd($1),&arg2($1));
+    QLA_$1_$2_spproj_M$3_times_D(&argd($1),&arg1(M),&arg1(D),mu,sign);
+    checkeqsng$1$1(&argd($1),&argt($1),name);
+  }
+')
+
+rem(`
+     Spin reconstruction and matrix multiply
+')
+rem(`chkSpreconMult(eq,adj)')
+define(chkSpreconMult,`
+  /* Implementation dependent! */
+  strcpy(name,"QLA_D_$1_sprecon_M$2_times_H");
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
+    wp_grow(&argd(D),&arg1(H),mu,sign);
+    QLA_D_eq_D(&argt(D),&arg2(D));
+    QLA_D_$1_M$2_times_D(&argt(D),&arg1(M),&argd(D));
+    QLA_D_eq_D(&argd(D),&arg2(D));
+    QLA_D_$1_sprecon_M$2_times_H(&argd(D),&arg1(M),&arg1(H),mu,sign);
     checkeqsngDD(&argd(D),&argt(D),name);
   }
 ')
@@ -576,29 +623,51 @@ chkAssignOuterprod(M,meq)
 rem(`
      Local dot product
 ')
+rem(`chkLocalDoteqop(t1,op)')
+define(chkLocalDoteqop,`
+  strcpy(name,"QLA_C_$2_$1_dot_$1");
+  QLA_c_eq_r(argdP(C),0.);  
+  for_$1_elem {
+    QLA_c_peq_ca_times_c(argdP(C),$1_elem(arg1($1)),$1_elem(arg2($1)));
+  }
+  QLA_c_eq_c(argt(C), arg1(C));
+  QLA_c_$2_c(argt(C), argdP(C));
+  QLA_c_eq_c(argd(C), arg1(C));
+  QLA_C_$2_$1_dot_$1(&argd(C),&arg1($1),&arg2($1));
+  checkeqsngCC(&argd(C),&argt(C),name);
+')
+
 rem(`chkLocalDot(t1)')
 define(chkLocalDot,`
-  strcpy(name,"QLA_C_eq_$1_dot_$1");
-  QLA_C_eq_$1_dot_$1(&argd(C),&arg1($1),&arg2($1));
-  QLA_c_eq_r(argt(C),0.);  
-  for_$1_elem{
-    QLA_c_peq_ca_times_c(argt(C),$1_elem(arg1($1)),$1_elem(arg2($1)));
-  }
-  checkeqsngCC(&argd(C),&argt(C),name);
+chkLocalDoteqop($1,eq)
+chkLocalDoteqop($1,peq)
+chkLocalDoteqop($1,eqm)
+chkLocalDoteqop($1,meq)
 ')
 
 rem(`
      Local dot product
 ')
+rem(`chkLocalRealDoteqop(t1)')
+define(chkLocalRealDoteqop,`
+  strcpy(name,"QLA_R_$2_re_$1_dot_$1");
+  argdP(R) = 0.;  
+  for_$1_elem{
+    QLA_r_peq_Re_ca_times_c(argdP(R),$1_elem(arg1($1)),$1_elem(arg2($1)));
+  }
+  argt(R) = arg1(R);
+  argt(R) eqop$2 argdP(R);
+  argd(R) = arg1(R);
+  QLA_R_$2_re_$1_dot_$1(&argd(R),&arg1($1),&arg2($1));
+  checkeqsngRR(&argd(R),&argt(R),name);
+')
+
 rem(`chkLocalRealDot(t1)')
 define(chkLocalRealDot,`
-  strcpy(name,"QLA_R_eq_re_$1_dot_$1");
-  QLA_R_eq_re_$1_dot_$1(&argd(R),&arg1($1),&arg2($1));
-  argt(R) = 0.;  
-  for_$1_elem{
-    QLA_r_peq_Re_ca_times_c(argt(R),$1_elem(arg1($1)),$1_elem(arg2($1)));
-  }
-  checkeqsngRR(&argd(R),&argt(R),name);
+chkLocalRealDoteqop($1,eq)
+chkLocalRealDoteqop($1,peq)
+chkLocalRealDoteqop($1,eqm)
+chkLocalRealDoteqop($1,meq)
 ')
 
 rem(`
@@ -631,7 +700,7 @@ chkAssignLeftMultM($1,meq)
 ')
 
 rem(`
-     Adjoint gauge time adjoint gauge
+     Adjoint gauge times adjoint gauge
 ')
 rem(`chkAssignMultMaMa(td,eq)')
 define(chkAssignMultMaMa,`
@@ -808,11 +877,11 @@ rem(`chkNorm2(t1)')
 define(chkNorm2,`
   strcpy(name,"QLA_r_eq_norm2_$1");
   QLA_r_eq_norm2_$1(&argd(R),&arg1($1));
-  argtD(R) = 0;
+  argtQ(R) = 0;
   for_$1_elem{
-    argtD(R) += QLA_norm2_c($1_elem(arg1($1)));
+    argtQ(R) += QLA_norm2_c($1_elem(arg1($1)));
   }
-  argt(R) = argtD(R);
+  argt(R) = argtQ(R);
   checkeqsngRR(&argd(R),&argt(R),name);
 ')
 
@@ -851,10 +920,11 @@ rem(`chkDot(t1)')
 define(chkDot,`
   strcpy(name,"QLA_c_eq_$1_dot_$1");
   QLA_c_eq_$1_dot_$1(&argd(C),&arg1($1),&arg2($1));
-  QLA_c_eq_r(argt(C),0.);  
+  QLA_c_eq_r(argtQ(C),0.);  
   for_$1_elem{
-    QLA_c_peq_ca_times_c(argt(C),$1_elem(arg1($1)),$1_elem(arg2($1)));
+    QLA_c_peq_ca_times_c(argtQ(C),$1_elem(arg1($1)),$1_elem(arg2($1)));
   }
+  QLA_c_eq_c(argt(C), argtQ(C));
   checkeqsngCC(&argd(C),&argt(C),name);
 ')
 
@@ -865,10 +935,11 @@ rem(`chkRealDot(t1)')
 define(chkRealDot,`
   strcpy(name,"QLA_r_eq_re_$1_dot_$1");
   QLA_r_eq_re_$1_dot_$1(&argd(R),&arg1($1),&arg2($1));
-  argt(R) =  0.;  
+  argtQ(R) =  0.;
   for_$1_elem{
-    QLA_r_peq_Re_ca_times_c(argt(R),$1_elem(arg1($1)),$1_elem(arg2($1)));
+    QLA_r_peq_Re_ca_times_c(argtQ(R),$1_elem(arg1($1)),$1_elem(arg2($1)));
   }
+  argt(R) = argtQ(R);
   checkeqsngRR(&argd(R),&argt(R),name);
 ')
 
@@ -987,11 +1058,11 @@ define(chkZero,`
   strcpy(name,"QLA_$1_eq_zero");
   QLA_$1_eq_$1(&argd($1),&arg2($1));
   QLA_$1_eq_zero(&argd($1));
-  QLA_R_eq_norm2_$1(&argd(R),&argd($1));
-  argt(R) = 0;
-  checkeqsngRR(&argd(R),&argt(R),name);
+  for_$1_elem {
+    QLA_c_eq_r($1_elem(argt($1)),0.);
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name);
 ')
-
 
 rem(`
      Constant fill

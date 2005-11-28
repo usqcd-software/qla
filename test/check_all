@@ -1,0 +1,81 @@
+#!/bin/sh
+
+echo "************************************************************************"
+echo "**********************  Summary of test results  ***********************"
+echo "************************************************************************"
+
+for f in int/*; do
+  case $f in
+    (int/results.check_int)
+      perl ./checkcomplete.pl $f ../include/qla_int.h
+    ;;
+    (*results*) echo WARNING: not summarized: $f ;;
+  esac
+done
+
+for f in scalar/*; do
+  case $f in
+    (scalar/results.check_macros)
+      grep -v OK $f
+    ;;
+    (scalar/results.check_[dfq])
+      lib=`echo $f |sed s/.*check_//`
+      ulib=`echo $lib |tr 'a-z' 'A-Z'`
+      perl ./checkcomplete.pl $f ../include/qla_$lib.h $ulib
+    ;;
+    (scalar/results.check_d[fq])
+      lib=`echo $f |sed s/.*check_//`
+      perl ./checkcomplete.pl $f ../include/qla_$lib.h
+    ;;
+    (*results*) echo WARNING: not summarized: $f ;;
+  esac
+done
+
+for f in tensor2/*; do
+  case $f in
+    (tensor2/results.check_[dfq])
+      lib=`echo $f |sed s/.*check_//`"2"
+      ulib=`echo $lib |tr 'a-z' 'A-Z'`
+      perl ./checkcomplete.pl $f ../include/qla_$lib.h $ulib
+    ;;
+    (tensor2/results.check_d[fq])
+      lib=`echo $f |sed s/.*check_//`"2"
+      perl ./checkcomplete.pl $f ../include/qla_$lib.h 2
+    ;;
+    (*results*) echo WARNING: not summarized: $f ;;
+  esac
+done
+
+for f in tensor3/*; do
+  case $f in
+    (tensor3/results.check_[dfq])
+      lib=`echo $f |sed s/.*check_//`"3"
+      ulib=`echo $lib |tr 'a-z' 'A-Z'`
+      perl ./checkcomplete.pl $f ../include/qla_$lib.h $ulib
+    ;;
+    (tensor3/results.check_d[fq])
+      lib=`echo $f |sed s/.*check_//`"3"
+      perl ./checkcomplete.pl $f ../include/qla_$lib.h 3
+    ;;
+    (*results*) echo WARNING: not summarized: $f ;;
+  esac
+done
+
+for f in tensorN/*; do
+  case $f in
+    (tensorN/results.check_[dfq])
+      lib=`echo $f |sed s/.*check_//`"n"
+      ulib=`echo $lib |tr 'a-z' 'A-Z'`
+      perl ./checkcomplete.pl $f ../include/qla_$lib.h $ulib
+    ;;
+    (tensorN/results.check_d[fq])
+      lib=`echo $f |sed s/.*check_//`"n"
+      perl ./checkcomplete.pl $f ../include/qla_$lib.h N
+    ;;
+    (*results*) echo WARNING: not summarized: $f ;;
+  esac
+done
+
+echo "************************************************************************"
+echo "****************************  End of summary  **************************"
+echo "************************************************************************"

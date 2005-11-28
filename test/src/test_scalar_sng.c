@@ -27,14 +27,19 @@ QLA_Real min(QLA_Real sR1, QLA_Real z2){
 
 int main(){
 
+#if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
+  QLA_Int destI;
+  QLA_Int chkI;
   QLA_Int sI1 = -4123;
+  QLA_Int sI4 = -17;
+  QLA_Real sR3 = -3.6694280525381038;
+#endif
+
   QLA_Int sI2 = 0;
   QLA_Int sI3 = 7032;
-  QLA_Int sI4 = -17;
 
   QLA_Real sR1 =  0.17320508075688772;
   QLA_Real sR2 = -9.3527446341505872;
-  QLA_Real sR3 = -3.6694280525381038;
 
   QLA_Real sC1re = -8.8000370811461867;
   QLA_Real sC1im =  5.7248575675626134;
@@ -47,11 +52,9 @@ int main(){
 
   QLA_RandomState sS1;
 
-  QLA_Int destI;
   QLA_Real destR;
   QLA_Complex destC;
 
-  QLA_Int                 chkI;
   QLA_Real                chkR1,chkR2;
   QLA_Complex             chkC;
 
@@ -291,6 +294,20 @@ int main(){
   QLA_R_eq_norm2_C(&destR,&sC1);
   CHECKeqsngRR(destR,sC1re*sC1re+sC1im*sC1im,name);
 
+  strcpy(name,"QLA_R_eqm_norm2_C");
+  QLA_R_eqm_norm2_C(&destR,&sC1);
+  CHECKeqsngRR(destR,-sC1re*sC1re-sC1im*sC1im,name);
+
+  strcpy(name,"QLA_R_peq_norm2_C");
+  destR = sR1;
+  QLA_R_peq_norm2_C(&destR,&sC1);
+  CHECKeqsngRR(destR,sR1+sC1re*sC1re+sC1im*sC1im,name);
+
+  strcpy(name,"QLA_R_meq_norm2_C");
+  destR = sR1;
+  QLA_R_meq_norm2_C(&destR,&sC1);
+  CHECKeqsngRR(destR,sR1-sC1re*sC1re-sC1im*sC1im,name);
+
   /* Type conversions */
 
   strcpy(name,"QLA_C_eq_R");
@@ -474,9 +491,47 @@ int main(){
   QLA_c_eq_ca_times_c(chkC,sC2,sC1);
   CHECKeqsngCC(&chkC,&destC,name);
 
+  strcpy(name,"QLA_C_eqm_C_dot_C");
+  QLA_C_eqm_C_dot_C(&destC,&sC2,&sC1);
+  QLA_c_eqm_ca_times_c(chkC,sC2,sC1);
+  CHECKeqsngCC(&chkC,&destC,name);
+
+  QLA_c_eq_c(destC, sC1);
+  QLA_c_eq_c(chkC, sC1);
+  strcpy(name,"QLA_C_peq_C_dot_C");
+  QLA_C_peq_C_dot_C(&destC,&sC2,&sC1);
+  QLA_c_peq_ca_times_c(chkC,sC2,sC1);
+  CHECKeqsngCC(&chkC,&destC,name);
+
+  QLA_c_eq_c(destC, sC1);
+  QLA_c_eq_c(chkC, sC1);
+  strcpy(name,"QLA_C_meq_C_dot_C");
+  QLA_C_meq_C_dot_C(&destC,&sC2,&sC1);
+  QLA_c_meq_ca_times_c(chkC,sC2,sC1);
+  CHECKeqsngCC(&chkC,&destC,name);
+
   strcpy(name,"QLA_R_eq_re_C_dot_C");
   QLA_R_eq_re_C_dot_C(&destR,&sC2,&sC1);
   QLA_r_eq_Re_ca_times_c(chkR1,sC2,sC1);
+  CHECKeqsngRR(chkR1,destR,name);
+
+  strcpy(name,"QLA_R_eqm_re_C_dot_C");
+  QLA_R_eqm_re_C_dot_C(&destR,&sC2,&sC1);
+  QLA_r_eqm_Re_ca_times_c(chkR1,sC2,sC1);
+  CHECKeqsngRR(chkR1,destR,name);
+
+  destR = sR1;
+  chkR1 = sR1;
+  strcpy(name,"QLA_R_peq_re_C_dot_C");
+  QLA_R_peq_re_C_dot_C(&destR,&sC2,&sC1);
+  QLA_r_peq_Re_ca_times_c(chkR1,sC2,sC1);
+  CHECKeqsngRR(chkR1,destR,name);
+
+  destR = sR1;
+  chkR1 = sR1;
+  strcpy(name,"QLA_R_meq_re_C_dot_C");
+  QLA_R_meq_re_C_dot_C(&destR,&sC2,&sC1);
+  QLA_r_meq_Re_ca_times_c(chkR1,sC2,sC1);
   CHECKeqsngRR(chkR1,destR,name);
 
   /* Uniform types - times */

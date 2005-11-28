@@ -14,6 +14,15 @@ define(argtD, chk$1D)
 define(argdF, dest$1F)
 define(argtF, chk$1F)
 
+define(argdP, dest$1P)
+define(argdPF, `argdD($1)')
+define(argdPD, `argdQ($1)')
+define(argdPQ, `argdQ($1)')
+define(argtP, chk$1P)
+define(argtPF, `argtD($1)')
+define(argtPD, `argtQ($1)')
+define(argtPQ, `argtQ($1)')
+
 define(arg1, s$1``1'')
 define(arg2, s$1``2'')
 define(arg3, s$1``3'')
@@ -169,4 +178,16 @@ $1(V,$2,$3,V)
 $1(P,$2,$3,P)
 $1(M,$2,$3,M)
 ')
+
+define(alleqops,`
+$1eq$2
+$1eqm$2
+$1peq$2
+$1meq$2
+')
+
+define(eqopeq,`=')
+define(eqopeqm,`=-')
+define(eqoppeq,`+=')
+define(eqopmeq,`-=')
 

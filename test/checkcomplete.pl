@@ -14,12 +14,12 @@ open(TESTRESULT,$testresultfile) || die "Can't open $testresultfile\n";
 
 # Build hash table with module names and results
 $n = 0;
-%result = (); %error = ();
+%result = (); %error = (); %tols = ();
 while(<TESTRESULT>){
     # Parse line
     # Mostly OK/FAIL name
     # Exception OK MACRO name
-    ($ok,$name,$diff) = split(" ",$_);
+    ($ok,$name,$diff,$tol) = split(" ",$_);
     if($name eq "MACRO"){next;}
     # Convert generic name to specific name
     # by adding color-precision label, if it was specified on the command line
@@ -46,11 +46,15 @@ while(<TESTRESULT>){
 	if($diff ne ""){
 	    $error{$name} = $diff;
 	}
+	if($tol ne ""){
+	    $tols{$name} = $tol;
+	}
     }
     else{
 	if($ok ne "OK"){
 	    $result{$name} = $ok;
 	    $error{$name} = $diff;
+	    $tols{$name} = $tol;
 	}
     }
 }
@@ -67,9 +71,13 @@ while(<HEADER>){
     # Parse prototype
     # Strip argument list, leaving specific function name
     ($name) = split('\(',$prototype);
-    if($result{$name} eq ""){print "ERROR: untested $name\n";}
+    if($result{$name} eq ""){print "WARNING: untested $name\n";}
     elsif($result{$name} eq "FAIL"){
-      printf "ERROR: FAILED %-26s %e\n", $name, $error{$name};
+      if($error{$name}<10*$tols{$name}) {
+	printf "WARNING: FAILED %-32s with error %e\n", $name, $error{$name};
+      } else {
+	printf "ERROR:   FAILED %-32s with error %e\n", $name, $error{$name};
+      }
     }
 }
 

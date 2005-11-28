@@ -58,51 +58,51 @@ am__objects_2 = test_tensor_d_idx-compare.$(OBJEXT)
 nodist_test_tensor_d_idx_OBJECTS = $(am__objects_1) $(am__objects_2)
 test_tensor_d_idx_OBJECTS = $(nodist_test_tensor_d_idx_OBJECTS)
 am__DEPENDENCIES_1 = $(SRCDIR)/libqla_d.a $(SRCDIR)/libqla_d$(c).a
-am__DEPENDENCIES_2 = $(SRCDIR)/libqla_int.a $(SRCDIR)/libqla_random.a \
+am__DEPENDENCIES_2 = $(SRCDIR)/libqla_q.a $(SRCDIR)/libqla_q$(c).a
+am__DEPENDENCIES_3 = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_2) \
+	$(SRCDIR)/libqla_dq$(c).a
+am__DEPENDENCIES_4 = $(SRCDIR)/libqla_int.a $(SRCDIR)/libqla_random.a \
 	$(SRCDIR)/libqla_cmath.a $(SRCDIR)/libqla_c99.a
-test_tensor_d_idx_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_2)
+test_tensor_d_idx_DEPENDENCIES = $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_4)
 am__objects_3 = test_tensor_d_sng-test_tensor_sng.$(OBJEXT) \
 	test_tensor_d_sng-milc_gamma.$(OBJEXT)
 am__objects_4 = test_tensor_d_sng-compare.$(OBJEXT)
 nodist_test_tensor_d_sng_OBJECTS = $(am__objects_3) $(am__objects_4)
 test_tensor_d_sng_OBJECTS = $(nodist_test_tensor_d_sng_OBJECTS)
-test_tensor_d_sng_DEPENDENCIES = $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_2)
+test_tensor_d_sng_DEPENDENCIES = $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_4)
 am__objects_5 = test_tensor_df_idx-compare.$(OBJEXT)
 nodist_test_tensor_df_idx_OBJECTS =  \
 	test_tensor_df_idx-test_tensor_df_idx.$(OBJEXT) \
 	$(am__objects_5)
 test_tensor_df_idx_OBJECTS = $(nodist_test_tensor_df_idx_OBJECTS)
-am__DEPENDENCIES_3 = $(SRCDIR)/libqla_f.a $(SRCDIR)/libqla_f$(c).a
-am__DEPENDENCIES_4 = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_3) \
+am__DEPENDENCIES_5 = $(SRCDIR)/libqla_f.a $(SRCDIR)/libqla_f$(c).a
+am__DEPENDENCIES_6 = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_5) \
 	$(SRCDIR)/libqla_df$(c).a
-test_tensor_df_idx_DEPENDENCIES = $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_2)
+test_tensor_df_idx_DEPENDENCIES = $(am__DEPENDENCIES_6) \
+	$(am__DEPENDENCIES_4)
 am__objects_6 = test_tensor_df_sng-compare.$(OBJEXT)
 nodist_test_tensor_df_sng_OBJECTS =  \
 	test_tensor_df_sng-test_tensor_df_sng.$(OBJEXT) \
 	$(am__objects_6)
 test_tensor_df_sng_OBJECTS = $(nodist_test_tensor_df_sng_OBJECTS)
-test_tensor_df_sng_DEPENDENCIES = $(am__DEPENDENCIES_4) \
-	$(am__DEPENDENCIES_2)
+test_tensor_df_sng_DEPENDENCIES = $(am__DEPENDENCIES_6) \
+	$(am__DEPENDENCIES_4)
 am__objects_7 = test_tensor_dq_idx-compare.$(OBJEXT)
 nodist_test_tensor_dq_idx_OBJECTS =  \
 	test_tensor_dq_idx-test_tensor_dq_idx.$(OBJEXT) \
 	$(am__objects_7)
 test_tensor_dq_idx_OBJECTS = $(nodist_test_tensor_dq_idx_OBJECTS)
-am__DEPENDENCIES_5 = $(SRCDIR)/libqla_q.a $(SRCDIR)/libqla_q$(c).a
-am__DEPENDENCIES_6 = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_5) \
-	$(SRCDIR)/libqla_dq$(c).a
-test_tensor_dq_idx_DEPENDENCIES = $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_2)
+test_tensor_dq_idx_DEPENDENCIES = $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_4)
 am__objects_8 = test_tensor_dq_sng-compare.$(OBJEXT)
 nodist_test_tensor_dq_sng_OBJECTS =  \
 	test_tensor_dq_sng-test_tensor_dq_sng.$(OBJEXT) \
 	$(am__objects_8)
 test_tensor_dq_sng_OBJECTS = $(nodist_test_tensor_dq_sng_OBJECTS)
-test_tensor_dq_sng_DEPENDENCIES = $(am__DEPENDENCIES_6) \
-	$(am__DEPENDENCIES_2)
+test_tensor_dq_sng_DEPENDENCIES = $(am__DEPENDENCIES_3) \
+	$(am__DEPENDENCIES_4)
 am__objects_9 = test_tensor_f_idx-test_tensor_idx.$(OBJEXT) \
 	test_tensor_f_idx-test_tensor_idx1.$(OBJEXT) \
 	test_tensor_f_idx-test_tensor_idx2.$(OBJEXT) \
@@ -111,15 +111,15 @@ am__objects_9 = test_tensor_f_idx-test_tensor_idx.$(OBJEXT) \
 am__objects_10 = test_tensor_f_idx-compare.$(OBJEXT)
 nodist_test_tensor_f_idx_OBJECTS = $(am__objects_9) $(am__objects_10)
 test_tensor_f_idx_OBJECTS = $(nodist_test_tensor_f_idx_OBJECTS)
-test_tensor_f_idx_DEPENDENCIES = $(am__DEPENDENCIES_3) \
-	$(am__DEPENDENCIES_2)
+test_tensor_f_idx_DEPENDENCIES = $(am__DEPENDENCIES_6) \
+	$(am__DEPENDENCIES_4)
 am__objects_11 = test_tensor_f_sng-test_tensor_sng.$(OBJEXT) \
 	test_tensor_f_sng-milc_gamma.$(OBJEXT)
 am__objects_12 = test_tensor_f_sng-compare.$(OBJEXT)
 nodist_test_tensor_f_sng_OBJECTS = $(am__objects_11) $(am__objects_12)
 test_tensor_f_sng_OBJECTS = $(nodist_test_tensor_f_sng_OBJECTS)
-test_tensor_f_sng_DEPENDENCIES = $(am__DEPENDENCIES_3) \
-	$(am__DEPENDENCIES_2)
+test_tensor_f_sng_DEPENDENCIES = $(am__DEPENDENCIES_6) \
+	$(am__DEPENDENCIES_4)
 am__objects_13 = test_tensor_q_idx-test_tensor_idx.$(OBJEXT) \
 	test_tensor_q_idx-test_tensor_idx1.$(OBJEXT) \
 	test_tensor_q_idx-test_tensor_idx2.$(OBJEXT) \
@@ -128,15 +128,15 @@ am__objects_13 = test_tensor_q_idx-test_tensor_idx.$(OBJEXT) \
 am__objects_14 = test_tensor_q_idx-compare.$(OBJEXT)
 nodist_test_tensor_q_idx_OBJECTS = $(am__objects_13) $(am__objects_14)
 test_tensor_q_idx_OBJECTS = $(nodist_test_tensor_q_idx_OBJECTS)
-test_tensor_q_idx_DEPENDENCIES = $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_2)
+test_tensor_q_idx_DEPENDENCIES = $(am__DEPENDENCIES_2) \
+	$(am__DEPENDENCIES_4)
 am__objects_15 = test_tensor_q_sng-test_tensor_sng.$(OBJEXT) \
 	test_tensor_q_sng-milc_gamma.$(OBJEXT)
 am__objects_16 = test_tensor_q_sng-compare.$(OBJEXT)
 nodist_test_tensor_q_sng_OBJECTS = $(am__objects_15) $(am__objects_16)
 test_tensor_q_sng_OBJECTS = $(nodist_test_tensor_q_sng_OBJECTS)
-test_tensor_q_sng_DEPENDENCIES = $(am__DEPENDENCIES_5) \
-	$(am__DEPENDENCIES_2)
+test_tensor_q_sng_DEPENDENCIES = $(am__DEPENDENCIES_2) \
+	$(am__DEPENDENCIES_4)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)/include
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
 am__depfiles_maybe = depfiles
@@ -276,18 +276,18 @@ EXTRA_DIST = $(TESTS)
 # f
 nodist_test_tensor_f_sng_SOURCES = $(SNGSRC) $(CMPSRC)
 test_tensor_f_sng_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'F\' -DQLA_Nc=$(NC)
-test_tensor_f_sng_LDADD = $(QLAF) $(QLAEXTRA)
+test_tensor_f_sng_LDADD = $(QLADF) $(QLAEXTRA)
 nodist_test_tensor_f_idx_SOURCES = $(IDXSRC) $(CMPSRC)
 test_tensor_f_idx_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'F\' -DQLA_Nc=$(NC)
-test_tensor_f_idx_LDADD = $(QLAF) $(QLAEXTRA)
+test_tensor_f_idx_LDADD = $(QLADF) $(QLAEXTRA)
 
 # d
 nodist_test_tensor_d_sng_SOURCES = $(SNGSRC) $(CMPSRC)
 test_tensor_d_sng_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'D\' -DQLA_Nc=$(NC)
-test_tensor_d_sng_LDADD = $(QLAD) $(QLAEXTRA)
+test_tensor_d_sng_LDADD = $(QLADQ) $(QLAEXTRA)
 nodist_test_tensor_d_idx_SOURCES = $(IDXSRC) $(CMPSRC)
 test_tensor_d_idx_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'D\' -DQLA_Nc=$(NC)
-test_tensor_d_idx_LDADD = $(QLAD) $(QLAEXTRA)
+test_tensor_d_idx_LDADD = $(QLADQ) $(QLAEXTRA)
 
 # q
 nodist_test_tensor_q_sng_SOURCES = $(SNGSRC) $(CMPSRC)

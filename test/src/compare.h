@@ -5,17 +5,19 @@
 #include <float.h>
 
 /* Allowed discrepancy */
-#define TOLF 5*FLT_EPSILON
-#define TOLD 5*DBL_EPSILON
-#define TOLQ 5*LDBL_EPSILON
+#define NABS 10
+#define NREL 10
 #if QLA_Precision == 'F'
-#define TOL TOLF
+#define TOLABS NABS*FLT_EPSILON
+#define TOLREL NREL*FLT_EPSILON
 #define PREC "F"
 #elif QLA_Precision == 'D'
-#define TOL TOLD
+#define TOLABS NABS*DBL_EPSILON
+#define TOLREL NREL*DBL_EPSILON
 #define PREC "D"
 #else
-#define TOL TOLQ
+#define TOLABS NABS*LDBL_EPSILON
+#define TOLREL NREL*LDBL_EPSILON
 #define PREC "Q"
 #endif
 
@@ -42,6 +44,9 @@ int checkeqsngFVV(QLA_F_ColorVector *sa, QLA_F_ColorVector *sb, char name[]);
 int checkeqsngDVV(QLA_D_ColorVector *sa, QLA_D_ColorVector *sb, char name[]);
 int checkeqsngQVV(QLA_Q_ColorVector *sa, QLA_Q_ColorVector *sb, char name[]);
 int checkeqsngMM(QLA_ColorMatrix *sa, QLA_ColorMatrix *sb, char name[]);
+int checkeqsngFMM(QLA_F_ColorMatrix *sa, QLA_F_ColorMatrix *sb, char name[]);
+int checkeqsngDMM(QLA_D_ColorMatrix *sa, QLA_D_ColorMatrix *sb, char name[]);
+int checkeqsngQMM(QLA_Q_ColorMatrix *sa, QLA_Q_ColorMatrix *sb, char name[]);
 int checkeqsngPP(QLA_DiracPropagator *sa, QLA_DiracPropagator *sb, char name[]);
 int checkeqsngFPP(QLA_F_DiracPropagator *sa, QLA_F_DiracPropagator *sb, char name[]);
 int checkeqsngDPP(QLA_D_DiracPropagator *sa, QLA_D_DiracPropagator *sb, char name[]);
@@ -70,6 +75,8 @@ int checkeqidxFVV(QLA_F_ColorVector a[], QLA_F_ColorVector b[], char name[]);
 int checkeqidxDVV(QLA_D_ColorVector a[], QLA_D_ColorVector b[], char name[]);
 int checkeqidxQVV(QLA_Q_ColorVector a[], QLA_Q_ColorVector b[], char name[]);
 int checkeqidxMM(QLA_ColorMatrix a[], QLA_ColorMatrix b[], char name[]);
+int checkeqidxFMM(QLA_F_ColorMatrix a[], QLA_F_ColorMatrix b[], char name[]);
+int checkeqidxDMM(QLA_D_ColorMatrix a[], QLA_D_ColorMatrix b[], char name[]);
 int checkeqidxPP(QLA_DiracPropagator a[], QLA_DiracPropagator b[], char name[]);
 int checkeqidxFPP(QLA_F_DiracPropagator a[], QLA_F_DiracPropagator b[], char name[]);
 int checkeqidxDPP(QLA_D_DiracPropagator a[], QLA_D_DiracPropagator b[], char name[]);

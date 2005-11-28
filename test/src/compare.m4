@@ -10,12 +10,14 @@ include(protocol_compare.m4)
 #include "compare.h"
 
 double diff;
+double checkeq1, checkeq2;
 int nc = QLA_Nc;
 int ns = 4;
 
 int report(int status, char *name){
-  if(status)printf("FAIL %s %e\n",name,diff);
-  else printf("OK %s\n",name);
+  if(status) {
+    printf("FAIL %s %e %g %.20g %.20g\n",name,diff,((double)(TOLREL)),checkeq1,checkeq2);
+  } else printf("OK %s\n",name);
   return status;
 }
 '
@@ -30,10 +32,11 @@ checkequalcomplex(C,D)
 checkequalcomplex(C,F)
 `
 int checkequalCRR(QLA_Complex *sa, QLA_Real *sbre, QLA_Real *sbim){
-  diff = fabs(QLA_real(*sa) - *sbre);
-  if(diff > TOL)return (diff > TOL);
-  diff = fabs(QLA_imag(*sa) - *sbim);
-  return (diff > TOL);
+  int status;
+  status = checkequalRR(&QLA_real(*sa), sbre);
+  if(!status)
+    status = checkequalRR(&QLA_imag(*sa), sbim);
+  return status;
 }
 '
 checkequaltensor(H,)
@@ -76,7 +79,7 @@ int checkequalSS(QLA_RandomState *sa, QLA_RandomState *sb){
 	  sa->multiplier != sb->multiplier ||
 	  sa->addend != sb->addend ||
 	  sa->ic_state != sb->ic_state ||
-	  fabs(sa->scale - sb->scale) > TOL);
+	  fabs(sa->scale - sb->scale) > TOLABS);
 }
 '
 

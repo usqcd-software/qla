@@ -25,21 +25,19 @@ int main(){
   QLA_Int nI1[MAX] = { 3, 12, 7, 1, 5, 8, 3, 2, 1, 5};
   QLA_Int zI1[MAX] = { 3, 0, 7, 1, 0, 0, 3, 2, 1, 0};
 
+  int dIx[MAX]  = {8,5,6,7,1,2,9,0,3,4};
   int sI1x[MAX] = {3,0,1,8,2,4,5,9,7,6};
   int sI2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
   int sI3x[MAX] = {8,3,2,5,6,9,7,4,0,1};
 
-  int dIx[MAX]  = {8,5,6,7,1,2,9,0,3,4};
-  int zI1x[MAX] = {8,5,6,7,1,2,9,0,3,4};
-  int nI1x[MAX] = {8,3,2,5,6,9,7,4,0,1};
 
   QLA_Int *sI1p[MAX], *sI2p[MAX], *sI3p[MAX], *nI1p[MAX], *zI1p[MAX];
   
   QLA_Int destI[MAX],chkI[MAX];
-  QLA_Int desti,chki;
 
-  QLA_RandomState destS[MAX],chkS[MAX];
-  int dSx[MAX] =  {1,3,8,5,9,4,7,6,0,2};
+  QLA_RandomState destS[MAX], chkS[MAX];
+  QLA_RandomState sS1[MAX], sS3[MAX], *sS1p[MAX];
+  int sS1x[MAX] = {3,0,1,8,2,4,5,9,7,6};
 
   int i;
 
@@ -51,6 +49,7 @@ int main(){
     sI3p[i] = &sI3[sI1x[i]];
     nI1p[i] = &nI1[sI3x[i]];
     zI1p[i] = &zI1[sI2x[i]];
+    sS1p[i] = &sS1[sS1x[i]];
   }
 
   /* Independent check of vector copy */
@@ -128,6 +127,9 @@ unaryconst(I,eq_i)
 
 unaryseed(S,eq_seed_i,I)
 
+  /* Assignment */
+
+unary(S,eq,S)
 `
   return 0;
 }

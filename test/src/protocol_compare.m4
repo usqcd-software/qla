@@ -81,17 +81,27 @@ rem(`checkequalreal(type,prec)')
 define(checkequalreal,`
 int checkequal$2$1$1(type_$2$1 *sa, type_$2$1 *sb){
   diff = fabs(*sa-*sb);
-  return diff > TOL;
+  if(fabs(*sa-*sb)>TOLABS) {
+    if((*sa+*sb)==0.0) {
+      diff = 0.0;
+    } else {
+      diff = fabs(*sa-*sb)*2.0/(*sa+*sb);
+    }
+  }
+  checkeq1 = *sa;
+  checkeq2 = *sb;
+  return diff > TOLREL;
 }
 ')
 
 rem(`checkequalcomplex(type,prec)')
 define(checkequalcomplex,`
 int checkequal$2$1$1(type_$2$1 *sa, type_$2$1 *sb){
-  type_$2$1 del;
-  QLA_c_eq_c_minus_c(del,*sa,*sb);
-  diff = QLA_norm_c(del);
-  return diff > TOL;
+  int status;
+  status = checkequal$2RR(&QLA_real(*sa), &QLA_real(*sb));
+  if(!status)
+    status = checkequal$2RR(&QLA_imag(*sa), &QLA_imag(*sb));
+  return status;
 }
 ')
 
@@ -124,3 +134,4 @@ int checkeqidx$2$1$1(type_$2$1 sa[], type_$2$1 sb[], char name[]){
   return report(status,name);
 }
 ')
+

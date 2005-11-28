@@ -50,11 +50,15 @@ sub make_code_binary {
 
 sub make_code_binary_dot {
     local($eqop,$imre) = @_;
+    local($global_type);
     local(%src1_mod_def) = %src1_def;
     local(%temp_def) = %dest_def;
 
-#print %dest_def, "\n";
-    # The dot product is accumulated in a complex or real type
+    # The global variable inherits dest attributes, except for type and name
+    # We accumulate global sums in the next higher precision relative to src1
+    local($higher_precision) = $precision_promotion{$precision};
+    $global_type = &datatype_specific($dest_t,$higher_precision);
+    $temp_def{'type'} = $global_type;
     $temp_def{'value'} = $var_x;
 
     # For the dot product the adjoint of src1 is understood
@@ -72,7 +76,7 @@ sub make_code_binary_dot {
 
     # Compute dot product
     &open_brace();
-    &print_val_eqop_val_op_val(*temp_def,$eqop,$imre,*src1_mod_def,
+    &print_val_eqop_val_op_val(*temp_def,$eqop_eq,$imre,*src1_mod_def,
 			       "dot",*src2_def);
     &close_brace();
 

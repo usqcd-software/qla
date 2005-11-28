@@ -16,6 +16,12 @@ int test_tensor_idx2(){
 
   /* Define test data */
 
+#if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
+  int mu,sign;
+
+  QLA_Real sR4       = -6.35;
+#endif
+
 include(tensor_idx_defs.m4);
 
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
@@ -30,9 +36,18 @@ unary(M,eq_spintrace,P)
 
   /* Spin projection/ reconstruction */
 
-unary_spproj(H,eq_spproj,D)
-unary_sprecon(D,eq_sprecon,H)
-unary_sprecon(D,peq_sprecon,H)
+alleqops(`unary_spproj(H,',`_spproj,D)')
+alleqops(`unary_spproj(D,',`_spproj,D)')
+alleqops(`unary_sprecon(D,',`_sprecon,H)')
+
+  /* Spin projection/ reconstruction with matrix multiply */
+
+alleqops(`binary_spproj(H,',`_spproj,M,,times,D)')
+alleqops(`binary_spproj(H,',`_spproj,M,a,times,D)')
+alleqops(`binary_spproj(D,',`_spproj,M,,times,D)')
+alleqops(`binary_spproj(D,',`_spproj,M,a,times,D)')
+alleqops(`binary_spproj(D,',`_sprecon,M,,times,H)')
+alleqops(`binary_spproj(D,',`_sprecon,M,a,times,H)')
 
   /* Multiplication by real/complex constant */
 
@@ -84,17 +99,17 @@ binary(M,meq,V,times,Va,sV1,sV2)
 
   /* Local dot product */
 
-binary(C,eq,H,dot,H,sH1,sH2)
-binary(C,eq,D,dot,D,sD1,sD2)
-binary(C,eq,V,dot,V,sV1,sV2)
-binary(C,eq,P,dot,P,sP1,sP2)
-binary(C,eq,M,dot,M,sM1,sM2)
+alleqops(`binary(C,',`,H,dot,H,sH1,sH2)')
+alleqops(`binary(C,',`,D,dot,D,sD1,sD2)')
+alleqops(`binary(C,',`,V,dot,V,sV1,sV2)')
+alleqops(`binary(C,',`,P,dot,P,sP1,sP2)')
+alleqops(`binary(C,',`,M,dot,M,sM1,sM2)')
 
-binary(R,eq_re,H,dot,H,sH1,sH2)
-binary(R,eq_re,D,dot,D,sD1,sD2)
-binary(R,eq_re,V,dot,V,sV1,sV2)
-binary(R,eq_re,P,dot,P,sP1,sP2)
-binary(R,eq_re,M,dot,M,sM1,sM2)
+alleqops(`binary(R,',`_re,H,dot,H,sH1,sH2)')
+alleqops(`binary(R,',`_re,D,dot,D,sD1,sD2)')
+alleqops(`binary(R,',`_re,V,dot,V,sV1,sV2)')
+alleqops(`binary(R,',`_re,P,dot,P,sP1,sP2)')
+alleqops(`binary(R,',`_re,M,dot,M,sM1,sM2)')
 
 #endif /* QLA_Precision != Q */
 

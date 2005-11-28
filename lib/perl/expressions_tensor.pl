@@ -406,6 +406,40 @@ sub plus_pattern {
     else {""};
 }
 
+sub mult_index {
+  local($pat,$i,$maxi,$j,$maxj,$k,$maxk) = @_;
+
+  if($pat eq "XX"){
+    $i1 = $i;
+    $j1 = $k;
+    $i2 = $k;
+    $j2 = $j;
+    $maxi1 = $maxi;
+    $maxj1 = $maxk;
+    $maxi2 = $maxk;
+    $maxj2 = $maxj;
+  } elsif($pat eq "IX") {
+    $i1 = "";
+    $j1 = "";
+    $i2 = $i;
+    $j2 = $j;
+    $maxi1 = "";
+    $maxj1 = "";
+    $maxi2 = $maxi;
+    $maxj2 = $maxj;
+  } elsif($pat eq "XI") {
+    $i1 = $i;
+    $j1 = $j;
+    $i2 = "";
+    $j2 = "";
+    $maxi1 = $maxi;
+    $maxj1 = $maxj;
+    $maxi2 = "";
+    $maxj2 = "";
+  }
+  return ($i1,$maxi1,$j1,$maxj1,$i2,$maxi2,$j2,$maxj2)
+}
+
 # Construct multiplier and multiplicand for product
 sub mult_terms {
     local($cpat,$spat,*arg1_def,*arg2_def,$ic,$is,$jc,$js) = @_;
@@ -560,173 +594,500 @@ sub print_s_eqop_v_dot_v {
 #  Binary operation between tensors
 #---------------------------------------------------------------------
 
-sub print_MV {
-    local(*dest_def,$eqop,*src1_def,*src2_def) = @_;
+%c_eqop = ( "eq"=>"=", "eqm"=>"=-", "peq"=>"+=", "meq"=>"-=" );
 
-    print QLA_SRC "test\n";
+sub print_array_def($$$$) {
+  local($typeabbr, $var, $ni, $nj) = @_;
+  local $ss = "";
+  $ni0 = -1; $ni1 = 0;
+  $nj0 = -1; $nj1 = 0;
+  if($ni) { $ss .= "[$ni]"; $ni0 = 0; $ni1 = $ni; }
+  if($nj) { $ss .= "[$nj]"; $nj0 = 0; $nj1 = $nj; }
+  if($unroll) {
+    $vt = "";
+    for($ii=$ni0; $ii<$ni1; $ii++) {
+      for($jj=$nj0; $jj<$nj1; $jj++) {
+	if($vt) { $vt .= ", "; }
+	$vt .= "$var";
+	if($ii>=0) { $vt .= $ii; }
+	if($jj>=0) { $vt .= $jj; }
+      }
+    }
+    print_def(datatype_specific($typeabbr),$vt);
+  } else {
+    print_def(datatype_specific($typeabbr),$var.$ss);
+  }
+  return $var.$ss;
+}
+
+sub get_array_val($$$) {
+  local($var, $vi, $vj) = @_;
+  local $ss = "";
+  if($vi) { $ss .= "[$vi]"; }
+  if($vj) { $ss .= "[$vj]"; }
+  return $var.$ss;
+}
+
+sub print_c_eq_zero($) {
+  local($var) = @_;
+  print QLA_SRC @indent, "QLA_c_eq_r($var,0.);\n"
+}
+
+sub print_c_op_c_times_r($$$$$) {
+  local($d,$op,$s1,$conj1,$s2) = @_;
+  if($conj1 eq "") {
+    print QLA_SRC @indent, "QLA_c_".$op."_c_times_r($d,$s1,$s2);\n"
+  } else {
+    local($cop,$copm);
+    $cop = $c_eqop{$op};
+    ($copm = $cop) =~ tr/+-/-+/;
+    print QLA_SRC @indent, "QLA_real($d) $cop  QLA_real($s1) * $s2;\n";
+    print QLA_SRC @indent, "QLA_imag($d) $copm QLA_imag($s1) * $s2;\n";
+  }
+}
+
+sub print_c_op_c_times_ir($$$$$$) {
+  local($d,$op,$s1,$conj1,$s2,$conj2) = @_;
+  local($cop,$copm);
+  local($cop1,$cop2);
+  $cop = $c_eqop{$op};
+  ($copm = $cop) =~ tr/+-/-+/;
+  if($conj2 eq "") { $cop1 = $copm; $cop2 = $cop; }
+  else { $cop1 = $cop; $cop2 = $copm; }
+  if($conj1 ne "") { $cop1 = $cop2; }
+  print QLA_SRC @indent, "QLA_real($d) $cop1 QLA_imag($s1) * $s2;\n";
+  print QLA_SRC @indent, "QLA_imag($d) $cop2 QLA_real($s1) * $s2;\n";
+}
+
+sub print_rr_op_c_times_r($$$$$$) {
+  local($dr,$di,$op,$s1,$conj1,$s2) = @_;
+  local($cop1,$cop2);
+  $cop1 = $c_eqop{$op};
+  if($conj1 eq "") {
+    $cop2 = $cop1;
+  } else {
+    ($cop2 = $cop1) =~ tr/+-/-+/;
+  }
+  print QLA_SRC @indent, "$dr $cop1 QLA_real($s1) * $s2;\n";
+  print QLA_SRC @indent, "$di $cop2 QLA_imag($s1) * $s2;\n";
+}
+
+sub print_rr_op_c_times_ir($$$$$$$) {
+  local($dr,$di,$op,$s1,$conj1,$s2,$conj2) = @_;
+  local($cop,$copm);
+  local($cop1,$cop2);
+  $cop = $c_eqop{$op};
+  ($copm = $cop) =~ tr/+-/-+/;
+  if($conj2 eq "") { $cop1 = $copm; $cop2 = $cop; }
+  else { $cop1 = $cop; $cop2 = $copm; }
+  if($conj1 ne "") { $cop1 = $cop2; }
+  print QLA_SRC @indent, "$dr $cop1 QLA_imag($s1) * $s2;\n";
+  print QLA_SRC @indent, "$di $cop2 QLA_real($s1) * $s2;\n";
+}
+
+sub print_MV {
+  local(*dest_def,$eqop,*src1_def,*src2_def) = @_;
+
+  print QLA_SRC "test\n";
 }
 
 sub print_val_eqop_val_op_val {
-    local(*dest_def,$eqop,$imre,*src1_def,$op,*src2_def) = @_;
+  local(*dest_def,$eqop,$imre,*src1_def,$op,*src2_def) = @_;
 
-    $inline = 0;
-    if($inline) {
+  $inline = 1;
+  if(!$inline) {
 #      if( ($op eq "times") && ($src1_def{t} eq "M") ) {
 #        if($src2_def{t} eq "V") {
 #	  &print_MV(*dest_def,$eqop,*src1_def,*src2_def);
 #          return;
 #        }
 #      }
-      local($func) = "$def{prefix}";
-      $func .= "_$dest_def{t}$dest_def{adj}";
-      $func .= "_$eqop";
-      $func .= "_$src1_def{t}$src1_def{adj}";
-      $func .= "_$op";
-      $func .= "_$src2_def{t}$src2_def{adj}";
-      local($args);
-      $args = "&$dest_def{value}";
-      $args .= ", &$src1_def{value}";
-      $args .= ", &$src2_def{value}";
-      $args =~ s/&\*//g;
-      print QLA_SRC @indent, "$func($args);\n";
-#print "$func($args);\n";
-#print %dest_def, "\n";
-      return;
-    }
+    local($func) = "$def{prefix}";
+    $func .= "_$dest_def{t}$dest_def{adj}";
+    $func .= "_$eqop";
+    $func .= "_$src1_def{t}$src1_def{adj}";
+    $func .= "_$op";
+    $func .= "_$src2_def{t}$src2_def{adj}";
+    local($args);
+    $args = "&$dest_def{value}";
+    $args .= ", &$src1_def{value}";
+    $args .= ", &$src2_def{value}";
+    $args =~ s/&\*//g;
+    print QLA_SRC @indent, "$func($args);\n";
+    #print "$func($args);\n";
+    #print %dest_def, "\n";
+    return;
+  }
 
-    local($dest_elem_value,$src1_elem_value,$src2_elem_value);
-    local($kc);
-    local($rc_d,$rc_s1,$rc_s2) = 
-	($dest_def{'rc'},$src1_def{'rc'},$src2_def{'rc'});
-    local($rc_x);
+  local($dest_elem_value,$src1_elem_value,$src2_elem_value);
+  local($kc);
+  local($rc_d,$rc_s1,$rc_s2) = 
+    ($dest_def{'rc'},$src1_def{'rc'},$src2_def{'rc'});
+  local($rc_x);
 
-    local($mcd,$msd,$ncd,$nsd) = @dest_def{'mc','ms','nc','ns'};
-    local($mc1,$ms1,$nc1,$ns1) = @src1_def{'mc','ms','nc','ns'};
-    local($mc2,$ms2,$nc2,$ns2) = @src2_def{'mc','ms','nc','ns'};
+  local($mcd,$msd,$ncd,$nsd) = @dest_def{'mc','ms','nc','ns'};
+  local($mc1,$ms1,$nc1,$ns1) = @src1_def{'mc','ms','nc','ns'};
+  local($mc2,$ms2,$nc2,$ns2) = @src2_def{'mc','ms','nc','ns'};
 
-    local($ic,$is,$jc,$js);
-    local($maxic,$maxis,$maxjc,$maxjs);
-    local($cpat,$spat);
-    local($pmd);
+  local($ic,$is,$jc,$js);
+  local($maxic,$maxis,$maxjc,$maxjs);
+  local($cpat,$spat);
+  local($pmd);
 
-    local($maxkc,$maxks) = ($nc1,$ns1);
+  local($maxkc,$maxks) = ($nc1,$ns1);
 
-    # Operand color/spin dimension consistency checks
+  # Operand color/spin dimension consistency checks
 
-    if($op eq "times"){
-	$cpat = &times_pattern($mcd,$ncd,$mc1,$nc1,$mc2,$nc2);
-	$spat = &times_pattern($msd,$nsd,$ms1,$ns1,$ms2,$ns2);
-	$cpat ne "" && $spat ne "" || die "incompatible product types\n";
-    }
-    elsif($op eq "dot"){
-	$cpat = &dot_pattern($mcd,$ncd,$mc1,$nc1,$mc2,$nc2);
-	$spat = &dot_pattern($msd,$nsd,$ms1,$ns1,$ms2,$ns2);
-	$cpat eq "XX" && $spat eq "XX" || die "incompatible dot product types\n";
-    }
-    elsif($op eq "plus" || $op eq "minus"){
-	$cpat = &plus_pattern($mcd,$ncd,$mc1,$nc1,$mc2,$nc2);
-	$spat = &plus_pattern($msd,$nsd,$ms1,$ns1,$ms2,$ns2);
-	$cpat eq "XX" && $spat eq "XX" ||
-	    die "incompatible addition/subtraction types\n";
+  if($op eq "times"){
+    $cpat = &times_pattern($mcd,$ncd,$mc1,$nc1,$mc2,$nc2);
+    $spat = &times_pattern($msd,$nsd,$ms1,$ns1,$ms2,$ns2);
+    $cpat ne "" && $spat ne "" || die "incompatible product types\n";
+  }
+  elsif($op eq "dot"){
+    $cpat = &dot_pattern($mcd,$ncd,$mc1,$nc1,$mc2,$nc2);
+    $spat = &dot_pattern($msd,$nsd,$ms1,$ns1,$ms2,$ns2);
+    $cpat eq "XX" && $spat eq "XX" || die "incompatible dot product types\n";
+  }
+  elsif($op eq "plus" || $op eq "minus"){
+    $cpat = &plus_pattern($mcd,$ncd,$mc1,$nc1,$mc2,$nc2);
+    $spat = &plus_pattern($msd,$nsd,$ms1,$ns1,$ms2,$ns2);
+    $cpat eq "XX" && $spat eq "XX" ||
+      die "incompatible addition/subtraction types\n";
+  }
+  elsif($op eq "divide"){
+    # Support division only by real or complex
+    $cpat = &times_pattern($mcd,$ncd,$mc1,$nc1,$mc2,$nc2);
+    $spat = &times_pattern($msd,$nsd,$ms1,$ns1,$ms2,$ns2);
+    $cpat eq "XI" && $spat eq "XI" ||
+      die "incompatible or unsupported division\n";
+  }
 
-    }
-    elsif($op eq "divide"){
-	# Support division only by real or complex
-	$cpat = &times_pattern($mcd,$ncd,$mc1,$nc1,$mc2,$nc2);
-	$spat = &times_pattern($msd,$nsd,$ms1,$ns1,$ms2,$ns2);
-	$cpat eq "XI" && $spat eq "XI" ||
-	    die "incompatible or unsupported division\n";
-    }
+  if($op eq "times") {
 
-    # Open iteration over outer tensor indices (but not for dot product)
+    # Get outer tensor indices
+    ($maxic,$maxis,$maxjc,$maxjs) = ($mcd,$msd,$ncd,$nsd);
+    ($ic,$is,$jc,$js) = &get_color_spin_indices(*dest_def);
 
-    if($op ne "dot"){
+    # Construct multiplier and multiplicand
+    ($kc,$ks,$src1_elem_value,$src2_elem_value) = 
+      &mult_terms($cpat,$spat,*src1_def,*src2_def,$ic,$is,$jc,$js);
 
-	($maxic,$maxis,$maxjc,$maxjs) = ($mcd,$msd,$ncd,$nsd);
-	($ic,$is,$jc,$js) = &get_color_spin_indices(*dest_def);
+    # If we are summing over kc or ks, need to handle the sum
+    if($kc ne "" || $ks ne "") {
 
-	&print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
+      if(0) {
+	print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
 	$dest_elem_value =
-	  &make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
-    }
-
-    if($op eq "times"){
-
-	# Construct multiplier and multiplicand
-
-	($kc,$ks,$src1_elem_value,$src2_elem_value) = 
-	    &mult_terms($cpat,$spat,*src1_def,*src2_def,$ic,$is,$jc,$js);
-
-	# If we are summing over kc or ks, need to handle the sum
-	if($kc ne "" || $ks ne ""){
-	    &print_s_eqop_v_times_v_pm_s(
-				 $rc_d,$dest_def{'t'},$dest_elem_value,
-				 $kc,$maxkc,$ks,$maxks,$eqop,
-				 $rc_s1,$src1_elem_value,$src1_def{'conj'},
-				 $rc_s2,$src2_elem_value,$src2_def{'conj'});
+	  make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
+	print_s_eqop_v_times_v_pm_s($rc_d, $dest_def{'t'}, $dest_elem_value,
+				    $kc, $maxkc, $ks, $maxks, $eqop,
+				    $rc_s1, $src1_elem_value, $src1_def{conj},
+				    $rc_s2, $src2_elem_value, $src2_def{conj});
+	if(!$noclose) {
+	  print_close_iter_list($ic,$is,$jc,$js);
 	}
-	# Otherwise, a simple product
-	else{
-	    &print_s_eqop_s_op_s($rc_d,$dest_elem_value,
-				 $eqop,"",
-				 $rc_s1,$src1_elem_value,$src1_def{'conj'},
-				 '*',
-				 $rc_s2,$src2_elem_value,$src2_def{'conj'});
+      } else {
+	$unroll = 1;
+	$dest_elem_value =
+	  make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
+	if(($eqop eq "eq")||($eqop eq "peq")) { $loop_eqop = "peq"; }
+	else { $loop_eqop = "meq"; }
+	print_def_open_iter_list($jc,$maxjc,$js,$maxjs);
+	#print_array_def("C", "tc", $maxic, $maxis);
+	print_array_def("R", "tr", $maxic, $maxis);
+	print_array_def("R", "ti", $maxic, $maxis);
+	$trdestvala = get_array_val("tr", $ic, $is);
+	$tidestvala = get_array_val("ti", $ic, $is);
+	print_int_def($kc);
+	print_int_def($ks);
+	$nloop1 = 1;
+	$nloop2 = 1;
+	if($unroll) {
+	  if($ic) { $nloop1 = $maxic; }
+	  if($is) { $nloop2 = $maxis; }
+	} else {
+	  $nloop1 = 1;
+	  $nloop2 = 1;
+	  print_int_def($ic);
+	  print_int_def($is);
+	  open_iter($ic,$maxic);
+	  open_iter($is,$maxis);
 	}
-    }
-
-    elsif($op eq "dot"){
-	local($maxic,$maxis,$maxjc,$maxjs) = ($mc2,$ms2,$nc2,$ns2);
-
-	# Destination value (must be scalar, so no indices)
-
-	$dest_elem_value =  &make_accessor(*dest_def,$def{'nc'},"","","","");
-
-	# Construct multiplier and multiplicand
-
-	($ic,$is,$jc,$js,$src1_elem_value,$src2_elem_value) =
-	    &dot_terms(*src1_def,*src2_def);
-
-	# If we are summing over ic, jc, is, or js, need to handle the sum
-	if($ic ne "" || $is ne "" || $jc ne "" || $js ne ""){
-	    &print_s_eqop_v_dot_v(
-				 $rc_d,$dest_def{'t'},$dest_elem_value,
-				 $ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs,
-				 $eqop,$imre,
-				 $rc_s1,$src1_elem_value,$src1_def{'conj'},
-				 $rc_s2,$src2_elem_value,$src2_def{'conj'});
+	for($i1=0; $i1<$nloop1; $i1++) {
+	  for($i2=0; $i2<$nloop2; $i2++) {
+	    $trdestval = $trdestvala;
+	    $tidestval = $tidestvala;
+	    $destval = $dest_elem_value;
+	    if($unroll) {
+	      $trdestval =~ s/\[$ic\]/$i1/;
+	      $trdestval =~ s/\[$is\]/$i2/;
+	      $tidestval =~ s/\[$ic\]/$i1/;
+	      $tidestval =~ s/\[$is\]/$i2/;
+	      $destval =~ s/$ic/$i1/;
+	      $destval =~ s/$is/$i2/;
+	    }
+	    if(($eqop eq "eq")||($eqop eq "eqm")) {
+	      #print_c_eq_zero($tdestval);
+	      print_s_eqop_s("r", $trdestval, $eqop_eq);
+	      print_s_eqop_s("r", $tidestval, $eqop_eq);
+	    } else {
+	      print_s_eqop_s("r", $trdestval, $eqop_eq, "", "r",
+			     "QLA_real($destval)");
+	      print_s_eqop_s("r", $tidestval, $eqop_eq, "", "r",
+			     "QLA_imag($destval)");
+	    }
+	  }
 	}
-	# Otherwise, a simple product
-	else{
-	    &print_s_eqop_s_op_s($rc_d,$dest_elem_value,
-				 $eqop,$imre,
-				 $rc_s1,$src1_elem_value,$src1_def{'conj'},
-				 '*',
-				 $rc_s2,$src2_elem_value,$src2_def{'conj'});
+	if(!$unroll) { print_close_iter_list($is,$ic); }
+	open_iter($kc,$maxkc);
+	open_iter($ks,$maxks);
+	($ic1,$maxic1,$jc1,$maxjc1,$ic2,$maxic2,$jc2,$maxjc2) =
+	  mult_index($cpat, $ic, $maxjc, $jc, $maxjc, $kc, $maxkc);
+	($is1,$maxis1,$js1,$maxjs1,$is2,$maxis2,$js2,$maxjs2) =
+	  mult_index($spat, $is, $maxjs, $js, $maxjs, $ks, $maxks);
+	if($cpat eq "IX") { $xc = $ic; $maxxc = $maxic; }
+	else { $xc = ""; $maxxc = 0; }
+	if($spat eq "IX") { $xs = $is; $maxxs = $maxis; }
+	else { $xs = ""; $maxxs = 0; }
+	print_array_def("R", "xr", $maxxc, $maxxs);
+	$xrvala = get_array_val("xr", $xc, $xs);
+	print_array_def("R", "xi", $maxxc, $maxxs);
+	$xivala = get_array_val("xi", $xc, $xs);
+	$nloop1 = 1;
+	$nloop2 = 1;
+	if($unroll) {
+	  if($xc) { $nloop1 = $maxxc; }
+	  if($xs) { $nloop2 = $maxxs; }
+	} else {
+	  if($xc) { open_iter($xc,$maxxc); }
+	  if($xs) { open_iter($xs,$maxxs); }
 	}
+	for($i1=0; $i1<$nloop1; $i1++) {
+	  for($i2=0; $i2<$nloop2; $i2++) {
+	    $xrval = $xrvala;
+	    $xival = $xivala;
+	    $s2val = $src2_elem_value;
+	    if($unroll) {
+	      $xrval =~ s/\[$xc\]/$i1/;
+	      $xrval =~ s/\[$xs\]/$i2/;
+	      $xival =~ s/\[$xc\]/$i1/;
+	      $xival =~ s/\[$xs\]/$i2/;
+	      $s2val =~ s/$xc/$i1/;
+	      $s2val =~ s/$xs/$i2/;
+	    }
+	    print_s_eqop_s("r", $xrval, $eqop_eq, "", "r",
+			   "QLA_real($s2val)");
+	    print_s_eqop_s("r", $xival, $eqop_eq, "", "r",
+			   "QLA_imag($s2val)");
+	  }
+	}
+	if(!$unroll) {
+	  if($xs) { close_iter($xs); }
+	  if($xc) { close_iter($xc); }
+	}
+	#print_def(datatype_specific($datatype_real_abbrev),"xx");
+	#print_def(datatype_specific($datatype_real_abbrev),"xi");
+	#print QLA_SRC @indent, "xr = QLA_real($src2elem);\n";
+	#print QLA_SRC @indent, "xi = QLA_imag($src2elem);\n";
+	$nloop1 = 1;
+	$nloop2 = 1;
+	if($unroll) {
+	  if($ic) { $nloop1 = $maxic; }
+	  if($is) { $nloop2 = $maxis; }
+	} else {
+	  $nloop1 = 1;
+	  $nloop2 = 1;
+	  open_iter($ic,$maxic);
+	  open_iter($is,$maxis);
+	}
+	for($i1=0; $i1<$nloop1; $i1++) {
+	  for($i2=0; $i2<$nloop2; $i2++) {
+	    $trdestval = $trdestvala;
+	    $tidestval = $tidestvala;
+	    $s1val = $src1_elem_value;
+	    $xrval = $xrvala;
+	    if($unroll) {
+	      $trdestval =~ s/\[$ic\]/$i1/;
+	      $trdestval =~ s/\[$is\]/$i2/;
+	      $tidestval =~ s/\[$ic\]/$i1/;
+	      $tidestval =~ s/\[$is\]/$i2/;
+	      $s1val =~ s/$ic/$i1/;
+	      $s1val =~ s/$is/$i2/;
+	      $xrval =~ s/\[$ic\]/$i1/;
+	      $xrval =~ s/\[$is\]/$i2/;
+	    }
+	    #print QLA_SRC @indent, "xx = QLA_real($src2_elem_value);\n";
+	    #print_c_op_c_times_r($tdestval, $loop_eqop,
+	    #		     $src1_elem_value, $src1_def{conj}, $xrval);
+	    print_rr_op_c_times_r($trdestval, $tidestval, $loop_eqop,
+				  $s1val, $src1_def{conj}, $xrval);
+	  }
+	}
+	if(!$unroll) {
+	  print_close_iter_list($is,$ic);
+	}
+	$nloop1 = 1;
+	$nloop2 = 1;
+	if($unroll) {
+	  if($ic) { $nloop1 = $maxic; }
+	  if($is) { $nloop2 = $maxis; }
+	} else {
+	  $nloop1 = 1;
+	  $nloop2 = 1;
+	  open_iter($ic,$maxic);
+	  open_iter($is,$maxis);
+	}
+	for($i1=0; $i1<$nloop1; $i1++) {
+	  for($i2=0; $i2<$nloop2; $i2++) {
+	    $trdestval = $trdestvala;
+	    $tidestval = $tidestvala;
+	    $xival = $xivala;
+	    $s1val = $src1_elem_value;
+	    if($unroll) {
+	      $trdestval =~ s/\[$ic\]/$i1/;
+	      $trdestval =~ s/\[$is\]/$i2/;
+	      $tidestval =~ s/\[$ic\]/$i1/;
+	      $tidestval =~ s/\[$is\]/$i2/;
+	      $s1val =~ s/$ic/$i1/;
+	      $s1val =~ s/$is/$i2/;
+	      $xival =~ s/\[$ic\]/$i1/;
+	      $xival =~ s/\[$is\]/$i2/;
+	    }
+	    #print QLA_SRC @indent, "xx = QLA_imag($src2_elem_value);\n";
+	    #print_c_op_c_times_ir($tdestval, $loop_eqop,
+	    #		      $src1_elem_value, $src1_def{conj},
+	    #		      $xival, $src2_def{conj});
+	    print_rr_op_c_times_ir($trdestval, $tidestval, $loop_eqop,
+				   $s1val, $src1_def{conj},
+				   $xival, $src2_def{conj});
+	  }
+	}
+	if(!$unroll) {
+	  print_close_iter_list($is,$ic);
+	}
+	print_close_iter_list($ks,$kc);
+	$nloop1 = 1;
+	$nloop2 = 1;
+	if($unroll) {
+	  if($ic) { $nloop1 = $maxic; }
+	  if($is) { $nloop2 = $maxis; }
+	} else {
+	  $nloop1 = 1;
+	  $nloop2 = 1;
+	  open_iter($ic,$maxic);
+	  open_iter($is,$maxis);
+	}
+	for($i1=0; $i1<$nloop1; $i1++) {
+	  for($i2=0; $i2<$nloop2; $i2++) {
+	    $trdestval = $trdestvala;
+	    $tidestval = $tidestvala;
+	    $destval = $dest_elem_value;
+	    if($unroll) {
+	      $trdestval =~ s/\[$ic\]/$i1/;
+	      $trdestval =~ s/\[$is\]/$i2/;
+	      $tidestval =~ s/\[$ic\]/$i1/;
+	      $tidestval =~ s/\[$is\]/$i2/;
+	      $destval =~ s/$ic/$i1/;
+	      $destval =~ s/$is/$i2/;
+	    }
+	    #print_s_eqop_s($rc_d, $dest_elem_value, $eqop_eq,"",$rc_d, $tdestval);
+	    print_s_eqop_s("r", "QLA_real($destval)", $eqop_eq,
+			   "", "r", $trdestval);
+	    print_s_eqop_s("r", "QLA_imag($destval)", $eqop_eq,
+			   "", "r", $tidestval);
+	  }
+	}
+	if(!$unroll) {
+	  print_close_iter_list($is,$ic);
+	}
+	print_close_iter_list($js,$jc);
+	if($noclose) {
+	  print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
+	}
+      }
     }
-
-    # Sum or difference of tensors or division by scalar
-    elsif($op eq "plus" || $op eq "minus" || $op eq "divide"){
-	$src1_elem_value = &make_accessor(*src1_def,$def{'nc'},$ic,$is,$jc,$js);
-	$src2_elem_value = &make_accessor(*src2_def,$def{'nc'},$ic,$is,$jc,$js);
-	if($op eq "plus"){$pmd = '+';} 
-	elsif($op eq "minus"){$pmd = '-';}
-	else{$pmd = '/';}
-	&print_s_eqop_s_op_s($rc_d,$dest_elem_value,
-			     $eqop,"",
-			     $rc_s1,$src1_elem_value,$src1_def{'conj'},
-			     $pmd,
-			     $rc_s2,$src2_elem_value,$src2_def{'conj'});
-    }
-
+    # Otherwise, a simple product
     else{
-	die "Can't do op $op\n";
+
+      # Open iteration over outer tensor indices
+      &print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
+      $dest_elem_value =
+	&make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
+
+      &print_s_eqop_s_op_s($rc_d,$dest_elem_value,
+			   $eqop,"",
+			   $rc_s1,$src1_elem_value,$src1_def{'conj'},
+			   '*',
+			   $rc_s2,$src2_elem_value,$src2_def{'conj'});
+
+      if(!$noclose) {
+	&print_close_iter_list($ic,$is,$jc,$js);
+      }
+
     }
 
-    if(($op ne "dot")&&(!$noclose)){
+  }
+
+  elsif($op eq "dot"){
+    local($maxic,$maxis,$maxjc,$maxjs) = ($mc2,$ms2,$nc2,$ns2);
+
+    # Destination value (must be scalar, so no indices)
+    $dest_elem_value =  &make_accessor(*dest_def,$def{'nc'},"","","","");
+
+    # Construct multiplier and multiplicand
+    ($ic,$is,$jc,$js,$src1_elem_value,$src2_elem_value) =
+      &dot_terms(*src1_def,*src2_def);
+
+    # If we are summing over ic, jc, is, or js, need to handle the sum
+    if($ic ne "" || $is ne "" || $jc ne "" || $js ne ""){
+      &print_s_eqop_v_dot_v(
+			    $rc_d,$dest_def{'t'},$dest_elem_value,
+			    $ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs,
+			    $eqop,$imre,
+			    $rc_s1,$src1_elem_value,$src1_def{'conj'},
+			    $rc_s2,$src2_elem_value,$src2_def{'conj'});
+    }
+    # Otherwise, a simple product
+    else{
+      &print_s_eqop_s_op_s($rc_d,$dest_elem_value,
+			   $eqop,$imre,
+			   $rc_s1,$src1_elem_value,$src1_def{'conj'},
+			   '*',
+			   $rc_s2,$src2_elem_value,$src2_def{'conj'});
+    }
+  }
+
+  # Sum or difference of tensors or division by scalar
+  elsif($op eq "plus" || $op eq "minus" || $op eq "divide"){
+
+    # Open iteration over outer tensor indices
+    ($maxic,$maxis,$maxjc,$maxjs) = ($mcd,$msd,$ncd,$nsd);
+    ($ic,$is,$jc,$js) = &get_color_spin_indices(*dest_def);
+
+    &print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
+    $dest_elem_value =
+      &make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
+
+    $src1_elem_value = &make_accessor(*src1_def,$def{'nc'},$ic,$is,$jc,$js);
+    $src2_elem_value = &make_accessor(*src2_def,$def{'nc'},$ic,$is,$jc,$js);
+    if($op eq "plus"){$pmd = '+';} 
+    elsif($op eq "minus"){$pmd = '-';}
+    else{$pmd = '/';}
+    &print_s_eqop_s_op_s($rc_d,$dest_elem_value,
+			 $eqop,"",
+			 $rc_s1,$src1_elem_value,$src1_def{'conj'},
+			 $pmd,
+			 $rc_s2,$src2_elem_value,$src2_def{'conj'});
+
+    if(!$noclose) {
       &print_close_iter_list($ic,$is,$jc,$js);
     }
+  }
+
+  else{
+    die "Can't do op $op\n";
+  }
+
 }
 
 #---------------------------------------------------------------------

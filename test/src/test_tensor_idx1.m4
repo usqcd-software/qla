@@ -15,6 +15,12 @@ int test_tensor_idx1(){
 '
   /* Define test data */
 
+#if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
+  int nc = QLA_Nc;
+  int ns = QLA_Ns;
+  int ic,jc,is,js;
+#endif
+
 include(tensor_idx_defs.m4);
 
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
@@ -41,17 +47,13 @@ unary(M,meq_transpose,M)
 unary(P,eqm_transpose,P)
 unary(M,eqm_transpose,M)
 
-#endif /* QLA_Precision != Q */
-
   /* Local squared norm */
 
-unary(R,eq_norm2,H);
-unary(R,eq_norm2,D);
-unary(R,eq_norm2,V);
-unary(R,eq_norm2,P);
-unary(R,eq_norm2,M);
-
-#if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
+alleqops(`unary(R,',`_norm2,H)')
+alleqops(`unary(R,',`_norm2,D)')
+alleqops(`unary(R,',`_norm2,V)')
+alleqops(`unary(R,',`_norm2,P)')
+alleqops(`unary(R,',`_norm2,M)')
 
   /* Complex conjugate */
 

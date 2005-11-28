@@ -22,7 +22,10 @@ include(protocol_idx.m4)
 #include "compare.h"
 
 int main(){
-
+'
+#define QLA_PRF(x) QLA_DF_ ## x
+#define QLA_PRD(x) QLA_QD_ ## x
+`
   QLA_Q_Real                destrQ,chkrQ;
   QLA_Q_Complex             destcQ,chkcQ;
   QLA_Q_ColorMatrix         destmQ,chkmQ;
@@ -37,11 +40,11 @@ int main(){
   QLA_Q_ColorVector         sVQ1[MAX],sVQ2[MAX],sVQ3[MAX];
   QLA_Q_DiracPropagator     sPQ1[MAX],sPQ2[MAX],sPQ3[MAX];
 
-  QLA_Q_ColorMatrix         destMQ[MAX],chkMQ[MAX];
-  QLA_Q_HalfFermion         destHQ[MAX],chkHQ[MAX];
-  QLA_Q_DiracFermion        destDQ[MAX],chkDQ[MAX];
-  QLA_Q_ColorVector         destVQ[MAX],chkVQ[MAX];
-  QLA_Q_DiracPropagator     destPQ[MAX],chkPQ[MAX];
+  QLA_Q_ColorMatrix         /*destMQ[MAX],*/chkMQ[MAX];
+  QLA_Q_HalfFermion         /*destHQ[MAX],*/chkHQ[MAX];
+  QLA_Q_DiracFermion        /*destDQ[MAX],*/chkDQ[MAX];
+  QLA_Q_ColorVector         /*destVQ[MAX],*/chkVQ[MAX];
+  QLA_Q_DiracPropagator     /*destPQ[MAX],*/chkPQ[MAX];
 
   QLA_D_ColorMatrix         sMD1[MAX],sMD2[MAX],sMD3[MAX];
   QLA_D_HalfFermion         sHD1[MAX],sHD2[MAX],sHD3[MAX];
@@ -57,28 +60,27 @@ int main(){
 
   QLA_RandomState sS1[MAX];
 
-  QLA_Int sI3[MAX] = { 92,  34, -21, -67, 104,
-		   61, -10,  73, -96,  50};
+  QLA_Int sI3[MAX] = { 92,  34, -21, -67, 104, 61, -10,  73, -96,  50};
 
   QLA_Int sI4      = 5001;
 
-  int dMx[MAX]  = {9,1,8,5,6,0,3,7,2,4};
+  /*int dMx[MAX]  = {9,1,8,5,6,0,3,7,2,4};*/
   int sM1x[MAX] = {0,2,9,7,6,1,4,5,8,3};
   int sM2x[MAX] = {3,6,4,0,1,2,9,7,5,8};
 
-  int dHx[MAX]  = {9,2,6,1,4,5,7,0,8,3};
+  /*int dHx[MAX]  = {9,2,6,1,4,5,7,0,8,3};*/
   int sH1x[MAX] = {4,6,1,2,9,7,0,3,5,8};
   int sH2x[MAX] = {8,1,6,0,3,7,5,9,2,4};
 
-  int dDx[MAX]  = {4,1,2,9,7,5,3,6,0,8};
+  /*int dDx[MAX]  = {4,1,2,9,7,5,3,6,0,8};*/
   int sD1x[MAX] = {8,6,0,3,7,2,9,1,5,4};
   int sD2x[MAX] = {9,6,1,4,5,8,0,2,7,3};
 
-  int dVx[MAX]  = {4,2,5,1,6,0,3,8,9,7};
+  /*int dVx[MAX]  = {4,2,5,1,6,0,3,8,9,7};*/
   int sV1x[MAX] = {6,4,0,2,1,9,7,3,5,8};
   int sV2x[MAX] = {1,9,3,6,2,4,0,8,7,5};
 
-  int dPx[MAX]  = {9,7,3,2,5,8,6,4,0,1};
+  /*int dPx[MAX]  = {9,7,3,2,5,8,6,4,0,1};*/
   int sP1x[MAX] = {3,7,9,0,2,4,1,8,5,6};
   int sP2x[MAX] = {2,9,5,6,7,8,1,0,3,4};
 
@@ -87,7 +89,7 @@ int main(){
   QLA_Q_DiracFermion        *sDQ1p[MAX], *sDQ2p[MAX], *sDQ3p[MAX];
   QLA_Q_ColorVector         *sVQ1p[MAX], *sVQ2p[MAX], *sVQ3p[MAX];
   QLA_Q_DiracPropagator     *sPQ1p[MAX], *sPQ2p[MAX], *sPQ3p[MAX];
-			       		     	       	 	 
+
   QLA_D_ColorMatrix         *sMD1p[MAX], *sMD2p[MAX], *sMD3p[MAX];
   QLA_D_HalfFermion         *sHD1p[MAX], *sHD2p[MAX], *sHD3p[MAX];
   QLA_D_DiracFermion        *sDD1p[MAX], *sDD2p[MAX], *sDD3p[MAX];
@@ -99,7 +101,7 @@ int main(){
   char name[64];
 
   int nc = QLA_Nc;
-  int ns = 4;
+  int ns = QLA_Ns;
 
   for(i = 0; i < MAX; i++){
 

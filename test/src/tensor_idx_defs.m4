@@ -2,10 +2,6 @@ rem(`
      Variable definitions
      (Include file for test_tensor_idx.[1-4].m4)
 ')
-  int nc = QLA_Nc;
-  int ns = 4;
-  int ic,jc,is,js;
-  int mu,sign;
 
   QLA_Real                  sR1[MAX],sR2[MAX],sR3[MAX];
   QLA_Complex               sC1[MAX],sC2[MAX],sC3[MAX];
@@ -24,15 +20,8 @@ rem(`
   QLA_DiracFermion          destD[MAX],chkD[MAX];
   QLA_ColorVector           destV[MAX],chkV[MAX];
   QLA_DiracPropagator       destP[MAX],chkP[MAX];
-			    
-  QLA_Q_Real                chkRQ[MAX];
-  QLA_Q_Complex             chkCQ[MAX];
-  QLA_Q_ColorMatrix         chkMQ[MAX];
-  QLA_Q_HalfFermion         chkHQ[MAX];
-  QLA_Q_DiracFermion        chkDQ[MAX];
-  QLA_Q_ColorVector         chkVQ[MAX];
-  QLA_Q_DiracPropagator     chkPQ[MAX];
-			    
+
+#if 0
   QLA_D_Real                chkRD[MAX];
   QLA_D_Complex             chkCD[MAX];
   QLA_D_ColorMatrix         chkMD[MAX];
@@ -40,15 +29,9 @@ rem(`
   QLA_D_DiracFermion        chkDD[MAX];
   QLA_D_ColorVector         chkVD[MAX];
   QLA_D_DiracPropagator     chkPD[MAX];
+#endif
 			    
-  QLA_Q_Real                chkrQ;
-  QLA_Q_Complex             chkcQ;
-  QLA_Q_ColorMatrix         chkmQ;
-  QLA_Q_HalfFermion         chkhQ;
-  QLA_Q_DiracFermion        chkdQ;
-  QLA_Q_ColorVector         chkvQ;
-  QLA_Q_DiracPropagator     chkpQ;
-
+#if 0
   QLA_D_Real                chkrD;
   QLA_D_Complex             chkcD;
   QLA_D_ColorMatrix         chkmD;
@@ -56,11 +39,10 @@ rem(`
   QLA_D_DiracFermion        chkdD;
   QLA_D_ColorVector         chkvD;
   QLA_D_DiracPropagator     chkpD;
+#endif
 
-  QLA_Real sR4       = -6.35;
-
-  QLA_Real sC4re      = 831.2;
-  QLA_Real sC4im      = -701.;
+  QLA_Real sC4re      = 1.2312;
+  QLA_Real sC4im      = -0.701;
 
   QLA_Complex sC4;
 
@@ -73,47 +55,40 @@ rem(`
   int nI1[MAX] = { 3, 12, 7, 1, 5, 8, 3, 2, 1, 5};
   int zI1[MAX] = { 3, 0, 7, 1, 0, 0, 3, 2, 1, 0};
 
-  QLA_Int sI1[MAX] = { 61, -10,  73, -96,  50,
-		   92,  34, -21, -67, 104};
+  QLA_Int sI1[MAX] = { 61, -10,  73, -96,  50, 92,  34, -21, -67, 104};
 
-  QLA_Int sI3[MAX] = { 92,  34, -21, -67, 104,
-		   61, -10,  73, -96,  50};
+  QLA_Int sI3[MAX] = { 92,  34, -21, -67, 104, 61, -10,  73, -96,  50};
 
   QLA_Int sI4      = 5001;
 
-  int dRx[MAX]  = {8,5,6,7,1,2,9,0,3,4};
+  /*int dRx[MAX]  = {8,5,6,7,1,2,9,0,3,4};*/
   int sR1x[MAX] = {3,0,1,8,2,4,5,9,7,6};
   int sR2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
   int sR3x[MAX] = {8,3,2,5,6,9,7,4,0,1};
 
-  int dCx[MAX]  = {8,3,2,5,6,9,7,4,0,1};
+  /*int dCx[MAX]  = {8,3,2,5,6,9,7,4,0,1};*/
   int sC1x[MAX] = {8,5,6,7,1,2,9,0,3,4};
   int sC2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
 
   int sI1x[MAX] = {4,9,0,2,1,3,7,8,5,6};
-  int sI3x[MAX] = {3,0,1,8,2,4,5,9,7,6};
+  /*int sI3x[MAX] = {3,0,1,8,2,4,5,9,7,6};*/
 
-  int dHx[MAX]  = {9,2,6,1,4,5,7,0,8,3};
   int sH1x[MAX] = {4,6,1,2,9,7,0,3,5,8};
   int sH2x[MAX] = {8,1,6,0,3,7,5,9,2,4};
 
-  int dDx[MAX]  = {4,1,2,9,7,5,3,6,0,8};
   int sD1x[MAX] = {8,6,0,3,7,2,9,1,5,4};
   int sD2x[MAX] = {9,6,1,4,5,8,0,2,7,3};
 
-  int dVx[MAX]  = {4,2,5,1,6,0,3,8,9,7};
   int sV1x[MAX] = {6,4,0,2,1,9,7,3,5,8};
   int sV2x[MAX] = {1,9,3,6,2,4,0,8,7,5};
 
-  int dPx[MAX]  = {9,7,3,2,5,8,6,4,0,1};
   int sP1x[MAX] = {3,7,9,0,2,4,1,8,5,6};
   int sP2x[MAX] = {2,9,5,6,7,8,1,0,3,4};
 
-  int dMx[MAX]  = {1,2,9,7,3,0,4,6,5,8};
   int sM1x[MAX] = {6,0,3,7,9,5,8,1,2,4};
   int sM2x[MAX] = {6,1,4,5,0,7,9,2,8,3};
 
-  int zI1x[MAX] = {8,5,6,7,1,2,9,0,3,4};
+  /*int zI1x[MAX] = {8,5,6,7,1,2,9,0,3,4};*/
 
   int sS1x[MAX] = {1,3,8,5,9,4,7,6,0,2};
 
@@ -127,19 +102,9 @@ rem(`
   QLA_ColorVector    *sV1p[MAX], *sV2p[MAX], *sV3p[MAX], *chkVp[MAX];
   QLA_DiracPropagator     *sP1p[MAX], *sP2p[MAX], *sP3p[MAX];
   QLA_RandomState         *sS1p[MAX];
-  
-  int i;
-  QLA_Real                 destr,chkr;
-  QLA_Complex              destc,chkc;
-  QLA_ColorMatrix          destm,chkm;
-  QLA_HalfFermion          desth,chkh;
-  QLA_DiracFermion         destd,chkd;
-  QLA_ColorVector     destv,chkv;
-  QLA_DiracPropagator      destp,chkp;
- 
-  QLA_Q_Real               destrQ;
-  QLA_Q_Complex            destcQ;
 
+  int i;
+ 
   char name[64];
 
   for(i = 0; i < MAX; i++){
@@ -181,6 +146,10 @@ rem(`
 
     sS1p[i] = &sS1[sS1x[i]];
   }
+
+  destR[0] = 0.;
+  chkR[0] = 0.;
+  QLA_c_eq_r(destC[0], 0.);
 
   QLA_c_eq_r_plus_ir(sC4,sC4re,sC4im);
   /* Preliminary check of vector copy */

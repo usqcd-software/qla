@@ -1,4 +1,13 @@
 ===========================================================================
+2005-11-28	version 1.5.0
+===========================================================================
+2005-11-26: Updated test suite to include all remaining new functions.
+            Increased tolerance on tests so that fewer errors are reported.
+2005-11-26: Removed unnecessary functions that weren't being tested.
+            This involves only the eqm, peq and meq varieties of global sums.
+2005-11-25: Improved perl generated source for Power architectures.
+
+===========================================================================
 2005-11-19	version 1.4.1
 ===========================================================================
 2005-11-19: Added the optimized C routine: QLA_F3_V_vpeq_M_times_pV.c

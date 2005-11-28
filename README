@@ -3,12 +3,9 @@ SciDAC QLA C interface -- Level 1 linear algebra routines
 This package uses the standard GNU configuration script.  See the file
 INSTALL for datails on compiling and installing.  It is recommended that
 QLA be compiled with a C99 compliant compiler (or at least one that
-understands the restrict keyword).  Linking to QLA may also require a C99
-compiler or a redefinition of restrict before including the QLA header.
-If you get errors like 'error: syntax error before "r"' then most likely
-you are not using your compiler in C99 mode.  Check your compiler
-documentation to find the appropriate option (for gcc try -std=c99 or
-for xlc try -qlanglvl=stdc99).
+understands the restrict keyword).  Check your compiler documentation to
+find the appropriate option (for gcc try -std=c99 or for xlc try
+-qlanglvl=stdc99).
 
 Documentation is included in the doc directory.  This is not included in
 the installation.  See the README file in the doc directory for details.
@@ -16,13 +13,14 @@ the installation.  See the README file in the doc directory for details.
 Contents of directories in src
 
   doc		Documentation - Postscript and HTML
+  examples	A simple benchmark routine for a few functions. (make check)
   include	Predefined headers and generated headers
   lib/cmath	Complex arithmetic sources
   lib/perl	Perl script for building the libraries
   lib/random	Random number utilities
   lib/c99	c99 functions for non-c99 compliant compilers.
   lib/qla_*	Contains makefile for each library
-  tests		Test suite
+  tests		Test suite.  This is run with 'make check'.
 
 
 Bugs and suggestions:

@@ -925,8 +925,10 @@ rem(`
      Global dot product for complex values
 ')
 rem(`qla_name2_spec(pd,td,pe,eq,p1,t1,op,p2,t2,spec)')
-define(qla_name2_spec,`SP(shift($@))$1$2_$3$4_$5$6_$7_$8$9')
-define(SP,`QLA$9_')
+define(qla_name2_spec,`SP(shift($@))_$1$2_$3$4_$5$6_$7_$8$9')
+define(SP,`QLA$9')
+define(qla_name2_specPR,`SPPR(shift($@))($1$2_$3$4_$5$6_$7_$8$9)')
+define(SPPR,`QLA_PR$9')
 
 rem(`binaryglobaldot(td,eq,t1,op,t2,spec,precd,prec1,prec2)')
 define(binaryglobaldot,`
@@ -938,74 +940,74 @@ define(binaryglobaldot1,`
   /* qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6) */
 
   strcpy(name,"qla_name2_spec(,$1,v,$2,,$3,$4,,$5,$6)");
-  QLA_c_eq_r(argdQ($1),0); 
+  QLA_c_eq_r(argdP$8($1),0); 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),&arg1$8($3)[i],&arg2$9($5)[i]);
-    QLA_c_peq_c(argdQ($1),argt$7($1));
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),&arg1$8($3)[i],&arg2$9($5)[i]);
+    QLA_c_peq_c(argdP$8($1),argtP$8($1));
   }
-  QLA_c_eq_c(argt$7($1),argdQ($1));
+  QLA_c_eq_c(argt$7($1),argdP$8($1));
   qla_name2_spec(,$1,v,$2,,$3,$4,,$5,$6)(&argd$7($1),arg1$8($3),arg2$9($5),MAX);
   checkeqsng$7CC(&argd$7($1),&argt$7($1),name);
 
   strcpy(name,"qla_name2_spec(,$1,x,$2,,$3,$4,,$5,$6)");
-  QLA_c_eq_r(argdQ($1),0); 
+  QLA_c_eq_r(argdP$8($1),0); 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),&arg1$8($3)[idx1($3)[i]],&arg2$9($5)[idx1($3)[i]]);
-    QLA_c_peq_c(argdQ($1),argt$7($1));
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),&arg1$8($3)[idx1($3)[i]],&arg2$9($5)[idx1($3)[i]]);
+    QLA_c_peq_c(argdP$8($1),argtP$8($1));
   }
-  QLA_c_eq_c(argt$7($1),argdQ($1));
+  QLA_c_eq_c(argt$7($1),argdP$8($1));
   qla_name2_spec(,$1,x,$2,,$3,$4,,$5,$6)(&argd$7($1),arg1$8($3),arg2$9($5),idx1($3),MAX);
   checkeqsng$7CC(&argd$7($1),&argt$7($1),name);
 
 #ifdef QLA_INDEX_ALL
   strcpy(name,"qla_name2_spec(,$1,,$2,x,$3,$4,,$5,$6)");
-  QLA_c_eq_r(argdQ($1),0); 
+  QLA_c_eq_r(argdP$8($1),0); 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),&arg1$8($3)[idx1($3)[i]],&arg2$9($5)[i]);
-    QLA_c_peq_c(argdQ($1),argt$7($1));
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),&arg1$8($3)[idx1($3)[i]],&arg2$9($5)[i]);
+    QLA_c_peq_c(argdP$8($1),argtP$8($1));
   }
-  QLA_c_eq_c(argt$7($1),argdQ($1));
+  QLA_c_eq_c(argt$7($1),argdP$8($1));
   qla_name2_spec(,$1,,$2,x,$3,$4,,$5,$6)(&argd$7($1),arg1$8($3),idx1($3),arg2$9($5),MAX);
   checkeqsng$7CC(&argd$7($1),&argt$7($1),name);
 
   strcpy(name,"qla_name2_spec(,$1,,$2,,$3,$4,x,$5,$6)");
-  QLA_c_eq_r(argdQ($1),0); 
+  QLA_c_eq_r(argdP$8($1),0); 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),&arg1$8($3)[i],&arg2$9($5)[idx2($5)[i]]);
-    QLA_c_peq_c(argdQ($1),argt$7($1));
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),&arg1$8($3)[i],&arg2$9($5)[idx2($5)[i]]);
+    QLA_c_peq_c(argdP$8($1),argtP$8($1));
   }
-  QLA_c_eq_c(argt$7($1),argdQ($1));
+  QLA_c_eq_c(argt$7($1),argdP$8($1));
   qla_name2_spec(,$1,,$2,,$3,$4,x,$5,$6)(&argd$7($1),arg1$8($3),arg2$9($5),idx2($5),MAX);
   checkeqsng$7CC(&argd$7($1),&argt$7($1),name);
 
   strcpy(name,"qla_name2_spec(,$1,,$2,x,$3,$4,x,$5,$6)");
-  QLA_c_eq_r(argdQ($1),0); 
+  QLA_c_eq_r(argdP$8($1),0); 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),&arg1$8($3)[idx1($3)[i]],&arg2$9($5)[idx2($5)[i]]);
-    QLA_c_peq_c(argdQ($1),argt$7($1));
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),&arg1$8($3)[idx1($3)[i]],&arg2$9($5)[idx2($5)[i]]);
+    QLA_c_peq_c(argdP$8($1),argtP$8($1));
   }
-  QLA_c_eq_c(argt$7($1),argdQ($1));
+  QLA_c_eq_c(argt$7($1),argdP$8($1));
   qla_name2_spec(,$1,,$2,x,$3,$4,x,$5,$6)(&argd$7($1),arg1$8($3),idx1($3),arg2$9($5),idx2($5),MAX);
   checkeqsng$7CC(&argd$7($1),&argt$7($1),name);
 #endif
 
   strcpy(name,"qla_name2_spec(,$1,v,$2,p,$3,$4,,$5,$6)");
-  QLA_c_eq_r(argdQ($1),0); 
+  QLA_c_eq_r(argdP$8($1),0); 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),arg1$8p($3)[i],&arg2$9($5)[i]);
-    QLA_c_peq_c(argdQ($1),argt$7($1));
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),arg1$8p($3)[i],&arg2$9($5)[i]);
+    QLA_c_peq_c(argdP$8($1),argtP$8($1));
   }
-  QLA_c_eq_c(argt$7($1),argdQ($1));
+  QLA_c_eq_c(argt$7($1),argdP$8($1));
   qla_name2_spec(,$1,v,$2,p,$3,$4,,$5,$6)(&argd$7($1),arg1$8p($3),arg2$9($5),MAX);
   checkeqsng$7CC(&argd$7($1),&argt$7($1),name);
 
   strcpy(name,"qla_name2_spec(,$1,v,$2,,$3,$4,p,$5,$6)");
-  QLA_c_eq_r(argdQ($1),0); 
+  QLA_c_eq_r(argdP$8($1),0); 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),&arg1$8($3)[i],arg2$9p($5)[i]);
-    QLA_c_peq_c(argdQ($1),argt$7($1));
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),&arg1$8($3)[i],arg2$9p($5)[i]);
+    QLA_c_peq_c(argdP$8($1),argtP$8($1));
   }
-  QLA_c_eq_c(argt$7($1),argdQ($1));
+  QLA_c_eq_c(argt$7($1),argdP$8($1));
   qla_name2_spec(,$1,v,$2,,$3,$4,p,$5,$6)(&argd$7($1),arg1$8($3),arg2$9p($5),MAX);
   checkeqsng$7CC(&argd$7($1),&argt$7($1),name);
 
@@ -1013,42 +1015,42 @@ define(binaryglobaldot1,`
 
 define(binaryglobaldot2,`
   strcpy(name,"qla_name2_spec(,$1,v,$2,p,$3,$4,p,$5,$6)");
-  QLA_c_eq_r(argdQ($1),0); 
+  QLA_c_eq_r(argdP$8($1),0); 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),arg1$8p($3)[i],arg2$9p($5)[i]);
-    QLA_c_peq_c(argdQ($1),argt$7($1));
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),arg1$8p($3)[i],arg2$9p($5)[i]);
+    QLA_c_peq_c(argdP$8($1),argtP$8($1));
   }
-  QLA_c_eq_c(argt$7($1),argdQ($1));
+  QLA_c_eq_c(argt$7($1),argdP$8($1));
   qla_name2_spec(,$1,v,$2,p,$3,$4,p,$5,$6)(&argd$7($1),arg1$8p($3),arg2$9p($5),MAX);
   checkeqsng$7CC(&argd$7($1),&argt$7($1),name);
 
   strcpy(name,"qla_name2_spec(,$1,x,$2,p,$3,$4,,$5,$6)");
-  QLA_c_eq_r(argdQ($1),0); 
+  QLA_c_eq_r(argdP$8($1),0); 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),arg1$8p($3)[idx1($3)[i]],&arg2$9($5)[idx1($3)[i]]);
-    QLA_c_peq_c(argdQ($1),argt$7($1));
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),arg1$8p($3)[idx1($3)[i]],&arg2$9($5)[idx1($3)[i]]);
+    QLA_c_peq_c(argdP$8($1),argtP$8($1));
   }
-  QLA_c_eq_c(argt$7($1),argdQ($1));
+  QLA_c_eq_c(argt$7($1),argdP$8($1));
   qla_name2_spec(,$1,x,$2,p,$3,$4,,$5,$6)(&argd$7($1),arg1$8p($3),arg2$9($5),idx1($3),MAX);
   checkeqsng$7CC(&argd$7($1),&argt$7($1),name);
 
   strcpy(name,"qla_name2_spec(,$1,x,$2,,$3,$4,p,$5,$6)");
-  QLA_c_eq_r(argdQ($1),0); 
+  QLA_c_eq_r(argdP$8($1),0); 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),&arg1$8($3)[idx1($3)[i]],arg2$9p($5)[idx1($3)[i]]);
-    QLA_c_peq_c(argdQ($1),argt$7($1));
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),&arg1$8($3)[idx1($3)[i]],arg2$9p($5)[idx1($3)[i]]);
+    QLA_c_peq_c(argdP$8($1),argtP$8($1));
   }
-  QLA_c_eq_c(argt$7($1),argdQ($1));
+  QLA_c_eq_c(argt$7($1),argdP$8($1));
   qla_name2_spec(,$1,x,$2,,$3,$4,p,$5,$6)(&argd$7($1),arg1$8($3),arg2$9p($5),idx1($3),MAX);
   checkeqsng$7CC(&argd$7($1),&argt$7($1),name);
 
   strcpy(name,"qla_name2_spec(,$1,x,$2,p,$3,$4,p,$5,$6)");
-  QLA_c_eq_r(argdQ($1),0); 
+  QLA_c_eq_r(argdP$8($1),0); 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),arg1$8p($3)[idx1($3)[i]],arg2$9p($5)[idx1($3)[i]]);
-    QLA_c_peq_c(argdQ($1),argt$7($1));
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),arg1$8p($3)[idx1($3)[i]],arg2$9p($5)[idx1($3)[i]]);
+    QLA_c_peq_c(argdP$8($1),argtP$8($1));
   }
-  QLA_c_eq_c(argt$7($1),argdQ($1));
+  QLA_c_eq_c(argt$7($1),argdP$8($1));
   qla_name2_spec(,$1,x,$2,p,$3,$4,p,$5,$6)(&argd$7($1),arg1$8p($3),arg2$9p($5),idx1($3),MAX);
   checkeqsng$7CC(&argd$7($1),&argt$7($1),name);
 
@@ -1058,83 +1060,93 @@ rem(`
      Global dot product for reals and ints
 ')
 rem(`binaryglobaldotreal(td,eq,t1,op,t2,v1,v2,spec,precd,prec1,prec2)')
-define(binaryglobaldotreal,`
+define(binaryglobaldotreal,
+#if '$3' == 'I'
+#define destrP destrD
+#define chkrP chkrD
+#endif
+`
 binaryglobaldotreal1($@)
 binaryglobaldotreal2($@)
-')
+'
+#if '$3' == 'I'
+#undef destrP
+#undef chkrP
+#endif
+)
 
 define(binaryglobaldotreal1,`
   /* qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6) */
 
   strcpy(name,"qla_name2_spec(,$1,v,$2,,$3,$4,,$5,$6)");
-  argdQ($1) = 0; 
+  argdP$8($1) = 0; 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),&arg1$8($3)[i],&arg2$9($5)[i]);
-    argdQ($1) += argt$7($1);
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),&arg1$8($3)[i],&arg2$9($5)[i]);
+    argdP$8($1) += argtP$8($1);
   }
-  argt$7($1) =  argdQ($1);
+  argt$7($1) =  argdP$8($1);
   qla_name2_spec(,$1,v,$2,,$3,$4,,$5,$6)(&argd$7($1),arg1$8($3),arg2$9($5),MAX);
   checkeqsng$7RR(&argd$7($1),&argt$7($1),name);
 
   strcpy(name,"qla_name2_spec(,$1,x,$2,,$3,$4,,$5,$6)");
-  argdQ($1) = 0; 
+  argdP$8($1) = 0; 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),&arg1$8($3)[idx1($3)[i]],&arg2$9($5)[idx1($3)[i]]);
-    argdQ($1) += argt$7($1);
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),&arg1$8($3)[idx1($3)[i]],&arg2$9($5)[idx1($3)[i]]);
+    argdP$8($1) += argtP$8($1);
   }
-  argt$7($1) = argdQ($1);
+  argt$7($1) = argdP$8($1);
   qla_name2_spec(,$1,x,$2,,$3,$4,,$5,$6)(&argd$7($1),arg1$8($3),arg2$9($5),idx1($3),MAX);
   checkeqsng$7RR(&argd$7($1),&argt$7($1),name);
 
 #ifdef QLA_INDEX_ALL
   strcpy(name,"qla_name2_spec(,$1,,$2,x,$3,$4,,$5,$6)");
-  argdQ($1) = 0; 
+  argdP$8($1) = 0; 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),&arg1$8($3)[idx1($3)[i]],&arg2$9($5)[i]);
-    argdQ($1) += argt$7($1);
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),&arg1$8($3)[idx1($3)[i]],&arg2$9($5)[i]);
+    argdP$8($1) += argtP$8($1);
   }
-  argt$7($1) = argdQ($1);
+  argt$7($1) = argdP$8($1);
   qla_name2_spec(,$1,,$2,x,$3,$4,,$5,$6)(&argd$7($1),arg1$8($3),idx1($3),arg2$9($5),MAX);
   checkeqsng$7RR(&argd$7($1),&argt$7($1),name);
 
   strcpy(name,"qla_name2_spec(,$1,,$2,,$3,$4,x,$5,$6)");
-  argdQ($1) = 0; 
+  argdP$8($1) = 0; 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),&arg1$8($3)[i],&arg2$9($5)[idx2($5)[i]]);
-    argdQ($1) += argt$7($1);
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),&arg1$8($3)[i],&arg2$9($5)[idx2($5)[i]]);
+    argdP$8($1) += argtP$8($1);
   }
-  argt$7($1) = argdQ($1);
+  argt$7($1) = argdP$8($1);
   qla_name2_spec(,$1,,$2,,$3,$4,x,$5,$6)(&argd$7($1),arg1$8($3),arg2$9($5),idx2($5),MAX);
   checkeqsng$7RR(&argd$7($1),&argt$7($1),name);
 
   strcpy(name,"qla_name2_spec(,$1,,$2,x,$3,$4,x,$5,$6)");
-  argdQ($1) = 0; 
+  argdP$8($1) = 0; 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),&arg1$8($3)[idx1($3)[i]],&arg2$9($5)[idx2($5)[i]]);
-    argdQ($1) += argt$7($1);
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),&arg1$8($3)[idx1($3)[i]],&arg2$9($5)[idx2($5)[i]]);
+    argdP$8($1) += argtP$8($1);
   }
-  argt$7($1) = argdQ($1);
+  argt$7($1) = argdP$8($1);
   qla_name2_spec(,$1,,$2,x,$3,$4,x,$5,$6)(&argd$7($1),arg1$8($3),idx1($3),arg2$9($5),idx2($5),MAX);
   checkeqsng$7RR(&argd$7($1),&argt$7($1),name);
 #endif
 
   strcpy(name,"qla_name2_spec(,$1,v,$2,p,$3,$4,,$5,$6)");
-  argdQ($1) = 0; 
+  argdP$8($1) = 0; 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),arg1$8p($3)[i],&arg2$9($5)[i]);
-    argdQ($1) += argt$7($1);
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),arg1$8p($3)[i],&arg2$9($5)[i]);
+    argdP$8($1) += argtP$8($1);
   }
-  argt$7($1) = argdQ($1);
+  argt$7($1) = argdP$8($1);
   qla_name2_spec(,$1,v,$2,p,$3,$4,,$5,$6)(&argd$7($1),arg1$8p($3),arg2$9($5),MAX);
   checkeqsng$7RR(&argd$7($1),&argt$7($1),name);
 
   strcpy(name,"qla_name2_spec(,$1,v,$2,,$3,$4,p,$5,$6)");
-  argdQ($1) = 0; 
+  argdP$8($1) = 0; 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),&arg1$8($3)[i],arg2$9p($5)[i]);
-    argdQ($1) += argt$7($1);
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),&arg1$8($3)[i],arg2$9p($5)[i]);
+    argdP$8($1) += argtP$8($1);
   }
-  argt$7($1) = argdQ($1);
+  argt$7($1) = argdP$8($1);
   qla_name2_spec(,$1,v,$2,,$3,$4,p,$5,$6)(&argd$7($1),arg1$8($3),arg2$9p($5),MAX);
   checkeqsng$7RR(&argd$7($1),&argt$7($1),name);
 
@@ -1142,42 +1154,42 @@ define(binaryglobaldotreal1,`
 
 define(binaryglobaldotreal2,`
   strcpy(name,"qla_name2_spec(,$1,v,$2,p,$3,$4,p,$5,$6)");
-  argdQ($1) = 0; 
+  argdP$8($1) = 0; 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),arg1$8p($3)[i],arg2$9p($5)[i]);
-    argdQ($1) += argt$7($1);
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),arg1$8p($3)[i],arg2$9p($5)[i]);
+    argdP$8($1) += argtP$8($1);
   }
-  argt$7($1) = argdQ($1);
+  argt$7($1) = argdP$8($1);
   qla_name2_spec(,$1,v,$2,p,$3,$4,p,$5,$6)(&argd$7($1),arg1$8p($3),arg2$9p($5),MAX);
   checkeqsng$7RR(&argd$7($1),&argt$7($1),name);
 
   strcpy(name,"qla_name2_spec(,$1,x,$2,p,$3,$4,,$5,$6)");
-  argdQ($1) = 0; 
+  argdP$8($1) = 0; 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),arg1$8p($3)[idx1($3)[i]],&arg2$9($5)[idx1($3)[i]]);
-    argdQ($1) += argt$7($1);
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),arg1$8p($3)[idx1($3)[i]],&arg2$9($5)[idx1($3)[i]]);
+    argdP$8($1) += argtP$8($1);
   }
-  argt$7($1) = argdQ($1);
+  argt$7($1) = argdP$8($1);
   qla_name2_spec(,$1,x,$2,p,$3,$4,,$5,$6)(&argd$7($1),arg1$8p($3),arg2$9($5),idx1($3),MAX);
   checkeqsng$7RR(&argd$7($1),&argt$7($1),name);
 
   strcpy(name,"qla_name2_spec(,$1,x,$2,,$3,$4,p,$5,$6)");
-  argdQ($1) = 0; 
+  argdP$8($1) = 0; 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),&arg1$8($3)[idx1($3)[i]],arg2$9p($5)[idx1($3)[i]]);
-    argdQ($1) += argt$7($1);
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),&arg1$8($3)[idx1($3)[i]],arg2$9p($5)[idx1($3)[i]]);
+    argdP$8($1) += argtP$8($1);
   }
-  argt$7($1) = argdQ($1);
+  argt$7($1) = argdP$8($1);
   qla_name2_spec(,$1,x,$2,,$3,$4,p,$5,$6)(&argd$7($1),arg1$8($3),arg2$9p($5),idx1($3),MAX);
   checkeqsng$7RR(&argd$7($1),&argt$7($1),name);
 
   strcpy(name,"qla_name2_spec(,$1,x,$2,p,$3,$4,p,$5,$6)");
-  argdQ($1) = 0; 
+  argdP$8($1) = 0; 
   for(i = 0; i < MAX; i++){
-    qla_name2_spec(,$1,,$2,,$3,$4,,$5,$6)(&argt$7($1),arg1$8p($3)[idx1($3)[i]],arg2$9p($5)[idx1($3)[i]]);
-    argdQ($1) += argt$7($1);
+    qla_name2_specPR(,$1,,$2,,$3,$4,,$5,$8)(&argtP$8($1),arg1$8p($3)[idx1($3)[i]],arg2$9p($5)[idx1($3)[i]]);
+    argdP$8($1) += argtP$8($1);
   }
-  argt$7($1) = argdQ($1);
+  argt$7($1) = argdP$8($1);
   qla_name2_spec(,$1,x,$2,p,$3,$4,p,$5,$6)(&argd$7($1),arg1$8p($3),arg2$9p($5),idx1($3),MAX);
   checkeqsng$7RR(&argd$7($1),&argt$7($1),name);
 
@@ -1440,12 +1452,12 @@ define(unary_set_elem,`
     qla_name1(,$1,v,$2,p,$3)(argd($1),argtp($3),$1_list,MAX);
   }
   /* QLA_$1_eq_x$1(argt($1),arg1($1),idx1($3),MAX); */
-  for(i=0; i<MAX; i++) { QLA_$1_eq_$1(argt($1), arg1($1)+idx1($3)[i]); }
+  for(i=0; i<MAX; i++) { QLA_$1_eq_$1(&argt($1)[i], arg1($1)+idx1($3)[i]); }
   checkeqidx$1$1(argt($1),argd($1),name);
 
   strcpy(name,"qla_name1(,$1,x,$2,p,$3)");
   /* QLA_$1_eq_x$1(argd($1),arg1($1),idx1($3),MAX); */
-  for(i=0; i<MAX; i++) { QLA_$1_eq_$1(argd($1),arg1($1)+idx1($3)[i]); }
+  for(i=0; i<MAX; i++) { QLA_$1_eq_$1(&argd($1)[i],arg1($1)+idx1($3)[i]); }
   QLA_$1_xeq_$1(argt($1),argd($1),idx2($3),MAX);
   QLA_$1_veq_$1(argd($1),arg3($1),MAX);
   for_$1_elem{
@@ -1602,12 +1614,12 @@ define(unary_set_colorvec,`
     qla_name1(,$1,v,$2,p,$3)(argd($1),argtp($3),$1_list_cvec,MAX);
   }
   /* QLA_$1_eq_x$1(argt($1),arg1($1),idx1($3),MAX); */
-  for(i=0; i<MAX; i++) { QLA_$1_eq_$1(argt($1),arg1($1)+idx1($3)[i]); }
+  for(i=0; i<MAX; i++) { QLA_$1_eq_$1(&argt($1)[i],arg1($1)+idx1($3)[i]); }
   checkeqidx$1$1(argt($1),argd($1),name);
 
   strcpy(name,"qla_name1(,$1,x,$2,p,$3)");
   /* QLA_$1_eq_x$1(argd($1),arg1($1),idx1($3),MAX); */
-  for(i=0; i<MAX; i++) { QLA_$1_eq_$1(argd($1),arg1($1)+idx1($3)[i]); }
+  for(i=0; i<MAX; i++) { QLA_$1_eq_$1(&argd($1)[i],arg1($1)+idx1($3)[i]); }
   QLA_$1_xeq_$1(argt($1),argd($1),idx2($3),MAX);
   QLA_$1_veq_$1(argd($1),arg3($1),MAX);
   for_$1_colorvec{
@@ -1765,12 +1777,12 @@ define(unary_set_diracvec,`
     qla_name1(,$1,v,$2,p,$3)(argd($1),argtp($3),$1_list_dvec,MAX);
   }
   /* QLA_$1_eq_x$1(argt($1),arg1($1),idx1($3),MAX); */
-  for(i=0; i<MAX; i++) { QLA_$1_eq_$1(argt($1),arg1($1)+idx1($3)[i]); }
+  for(i=0; i<MAX; i++) { QLA_$1_eq_$1(&argt($1)[i],arg1($1)+idx1($3)[i]); }
   checkeqidx$1$1(argt($1),argd($1),name);
 
   strcpy(name,"qla_name1(,$1,x,$2,p,$3)");
   /* QLA_$1_eq_x$1(argd($1),arg1($1),idx1($3),MAX); */
-  for(i=0; i<MAX; i++) { QLA_$1_eq_$1(argd($1),arg1($1)+idx1($3)[i]); }
+  for(i=0; i<MAX; i++) { QLA_$1_eq_$1(&argd($1)[i],arg1($1)+idx1($3)[i]); }
   QLA_$1_xeq_$1(argt($1),argd($1),idx2($3),MAX);
   QLA_$1_veq_$1(argd($1),arg3($1),MAX);
   for_$1_diracvec{
@@ -1790,7 +1802,7 @@ define(unary_spproj,`
 
   strcpy(name,"qla_name1(,$1,v,$2,,$3)");
   resetdt($1)
-  for(mu=0;mu<4;mu++)for(sign=-1;sign<2;sign+=2){
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
     qla_name1(,$1,v,$2,,$3)(argd($1),arg1($3),mu,sign,MAX);
     for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$3)(&argt($1)[i],&arg1($3)[i],mu,sign);}
     checkeqidx$1$1(argt($1),argd($1),name);
@@ -1798,7 +1810,7 @@ define(unary_spproj,`
 
   strcpy(name,"qla_name1(,$1,x,$2,,$3)");
   resetdt($1)
-  for(mu=0;mu<4;mu++)for(sign=-1;sign<2;sign+=2){
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
     qla_name1(,$1,x,$2,,$3)(argd($1),arg1($3),mu,sign,idx1($3),MAX);
     for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$3)(&argt($1)[idx1($3)[i]],&arg1($3)[idx1($3)[i]],mu,sign);}
     checkeqidx$1$1(argt($1),argd($1),name);
@@ -1807,7 +1819,7 @@ define(unary_spproj,`
 #ifdef QLA_INDEX_ALL
   strcpy(name,"qla_name1(x,$1,,$2,,$3)");
   resetdt($1)
-  for(mu=0;mu<4;mu++)for(sign=-1;sign<2;sign+=2){
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
     qla_name1(x,$1,,$2,,$3)(argd($1),idxd($1),arg1($3),mu,sign,MAX);
     for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$3)(&argt($1)[idxd($1)[i]],&arg1($3)[i],mu,sign);}
     checkeqidx$1$1(argt($1),argd($1),name);
@@ -1815,7 +1827,7 @@ define(unary_spproj,`
 
   strcpy(name,"qla_name1(,$1,,$2,x,$3)");
   resetdt($1)
-  for(mu=0;mu<4;mu++)for(sign=-1;sign<2;sign+=2){
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
     qla_name1(,$1,,$2,x,$3)(argd($1),arg1($3),idx1($3),mu,sign,MAX);
     for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$3)(&argt($1)[i],&arg1($3)[idx1($3)[i]],mu,sign);}
     checkeqidx$1$1(argt($1),argd($1),name);
@@ -1823,7 +1835,7 @@ define(unary_spproj,`
 
   strcpy(name,"qla_name1(x,$1,,$2,x,$3)");
   resetdt($1)
-  for(mu=0;mu<4;mu++)for(sign=-1;sign<2;sign+=2){
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
     qla_name1(x,$1,,$2,x,$3)(argd($1),idxd($1),arg1($3),idx1($3),mu,sign,MAX);
     for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$3)(&argt($1)[idxd($1)[i]],&arg1($3)[idx1($3)[i]],mu,sign);}
     checkeqidx$1$1(argt($1),argd($1),name);
@@ -1832,7 +1844,7 @@ define(unary_spproj,`
 
   strcpy(name,"qla_name1(,$1,v,$2,p,$3)");
   resetdt($1)
-  for(mu=0;mu<4;mu++)for(sign=-1;sign<2;sign+=2){
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
     qla_name1(,$1,v,$2,p,$3)(argd($1),arg1p($3),mu,sign,MAX);
     for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$3)(&argt($1)[i],arg1p($3)[i],mu,sign);}
     checkeqidx$1$1(argt($1),argd($1),name);
@@ -1840,7 +1852,7 @@ define(unary_spproj,`
 
   strcpy(name,"qla_name1(,$1,x,$2,p,$3)");
   resetdt($1)
-  for(mu=0;mu<4;mu++)for(sign=-1;sign<2;sign+=2){
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
     qla_name1(,$1,x,$2,p,$3)(argd($1),arg1p($3),mu,sign,idx1($3),MAX);
     for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$3)(&argt($1)[idx1($3)[i]],arg1p($3)[idx1($3)[i]],mu,sign);}
     checkeqidx$1$1(argt($1),argd($1),name);
@@ -1857,7 +1869,7 @@ define(unary_sprecon,`
 
   strcpy(name,"qla_name1(,$1,v,$2,,$3)");
   resetdt($1)
-  for(mu=0;mu<4;mu++)for(sign=-1;sign<2;sign+=2){
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
     qla_name1(,$1,v,$2,,$3)(argd($1),arg1($3),mu,sign,MAX);
     for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$3)(&argt($1)[i],&arg1($3)[i],mu,sign);}
     checkeqidx$1$1(argt($1),argd($1),name);
@@ -1865,7 +1877,7 @@ define(unary_sprecon,`
 
   strcpy(name,"qla_name1(,$1,x,$2,,$3)");
   resetdt($1)
-  for(mu=0;mu<4;mu++)for(sign=-1;sign<2;sign+=2){
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
     qla_name1(,$1,x,$2,,$3)(argd($1),arg1($3),mu,sign,idx1($3),MAX);
     for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$3)(&argt($1)[idx1($3)[i]],&arg1($3)[idx1($3)[i]],mu,sign);}
     checkeqidx$1$1(argt($1),argd($1),name);
@@ -1874,7 +1886,7 @@ define(unary_sprecon,`
 #ifdef QLA_INDEX_ALL
   strcpy(name,"qla_name1(x,$1,,$2,,$3)");
   resetdt($1)
-  for(mu=0;mu<4;mu++)for(sign=-1;sign<2;sign+=2){
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
     qla_name1(x,$1,,$2,,$3)(argd($1),idxd($1),arg1($3),mu,sign,MAX);
     for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$3)(&argt($1)[idxd($1)[i]],&arg1($3)[i],mu,sign);}
     checkeqidx$1$1(argt($1),argd($1),name);
@@ -1882,7 +1894,7 @@ define(unary_sprecon,`
 
   strcpy(name,"qla_name1(,$1,,$2,x,$3)");
   resetdt($1)
-  for(mu=0;mu<4;mu++)for(sign=-1;sign<2;sign+=2){
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
     qla_name1(,$1,,$2,x,$3)(argd($1),arg1($3),idx1($3),mu,sign,MAX);
     for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$3)(&argt($1)[i],&arg1($3)[idx1($3)[i]],mu,sign);}
     checkeqidx$1$1(argt($1),argd($1),name);
@@ -1890,7 +1902,7 @@ define(unary_sprecon,`
 
   strcpy(name,"qla_name1(x,$1,,$2,x,$3)");
   resetdt($1)
-  for(mu=0;mu<4;mu++)for(sign=-1;sign<2;sign+=2){
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
     qla_name1(x,$1,,$2,x,$3)(argd($1),idxd($1),arg1($3),idx1($3),mu,sign,MAX);
     for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$3)(&argt($1)[idxd($1)[i]],&arg1($3)[idx1($3)[i]],mu,sign);}
     checkeqidx$1$1(argt($1),argd($1),name);
@@ -1899,7 +1911,7 @@ define(unary_sprecon,`
 
   strcpy(name,"qla_name1(,$1,v,$2,p,$3)");
   resetdt($1)
-  for(mu=0;mu<4;mu++)for(sign=-1;sign<2;sign+=2){
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
     qla_name1(,$1,v,$2,p,$3)(argd($1),arg1p($3),mu,sign,MAX);
     for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$3)(&argt($1)[i],arg1p($3)[i],mu,sign);}
     checkeqidx$1$1(argt($1),argd($1),name);
@@ -1907,9 +1919,138 @@ define(unary_sprecon,`
 
   strcpy(name,"qla_name1(,$1,x,$2,p,$3)");
   resetdt($1)
-  for(mu=0;mu<4;mu++)for(sign=-1;sign<2;sign+=2){
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
     qla_name1(,$1,x,$2,p,$3)(argd($1),arg1p($3),mu,sign,idx1($3),MAX);
     for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$3)(&argt($1)[idx1($3)[i]],arg1p($3)[idx1($3)[i]],mu,sign);}
+    checkeqidx$1$1(argt($1),argd($1),name);
+  }
+
+')
+
+rem(`
+     Spin projection with matrix multiply
+')
+rem(`binary_spproj(td,eq,t1,adj,func,t2)')
+define(binary_spproj,`
+  /* qla_name2(,$1,,$2,,$3$4,$5,,$6) */
+
+  strcpy(name,"qla_name2(,$1,v,$2,,$3$4,$5,,$6)");
+  resetdt($1)
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
+    qla_name2(,$1,v,$2,,$3$4,$5,,$6)(argd($1),arg1($3),arg1($6),mu,sign,MAX);
+    for(i = 0; i < MAX; i++) {
+      qla_name2(,$1,,$2,,$3$4,$5,,$6)(&argt($1)[i],&arg1($3)[i],&arg1($6)[i],mu,sign);
+    }
+    checkeqidx$1$1(argt($1),argd($1),name);
+  }
+
+  strcpy(name,"qla_name2(,$1,x,$2,,$3$4,$5,,$6)");
+  resetdt($1)
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
+    qla_name2(,$1,x,$2,,$3$4,$5,,$6)(argd($1),arg1($3),arg1($6),mu,sign,idx1($6),MAX);
+    for(i = 0; i < MAX; i++) {
+      qla_name2(,$1,,$2,,$3$4,$5,,$6)(&argt($1)[idx1($6)[i]],&arg1($3)[idx1($6)[i]],&arg1($6)[idx1($6)[i]],mu,sign);}
+    checkeqidx$1$1(argt($1),argd($1),name);
+  }
+
+#ifdef QLA_INDEX_ALL
+  strcpy(name,"qla_name2(x,$1,,$2,,$3$4,$5,,$6)");
+  resetdt($1)
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
+    qla_name2(x,$1,,$2,,$3$4,$5,,$6)(argd($1),idxd($1),arg1($3),arg1($6),mu,sign,MAX);
+    for(i = 0; i < MAX; i++){
+      qla_name2(,$1,,$2,,$3$4,$5,,$6)(&argt($1)[idxd($1)[i]],&arg1($3)[i],&arg1($6)[i],mu,sign);}
+    checkeqidx$1$1(argt($1),argd($1),name);
+  }
+
+  strcpy(name,"qla_name2(,$1,,$2,x,$3$4,$5,,$6)");
+  resetdt($1)
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
+    qla_name2(,$1,,$2,x,$3$4,$5,,$6)(argd($1),arg1($3),idx1($3),arg1($6),mu,sign,MAX);
+    for(i = 0; i < MAX; i++){
+      qla_name2(,$1,,$2,,$3$4,$5,,$6)(&argt($1)[i],&arg1($3)[idx1($3)[i]],&arg1($6)[i],mu,sign);}
+    checkeqidx$1$1(argt($1),argd($1),name);
+  }
+
+  strcpy(name,"qla_name2(,$1,,$2,,$3$4,$5,x,$6)");
+  resetdt($1)
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
+    qla_name2(,$1,,$2,,$3$4,$5,x,$6)(argd($1),arg1($3),arg1($6),idx1($6),mu,sign,MAX);
+    for(i = 0; i < MAX; i++){
+      qla_name2(,$1,,$2,,$3$4,$5,,$6)(&argt($1)[i],&arg1($3)[i],&arg1($6)[idx1($6)[i]],mu,sign);}
+    checkeqidx$1$1(argt($1),argd($1),name);
+  }
+
+  strcpy(name,"qla_name2(x,$1,,$2,x,$3$4,$5,,$6)");
+  resetdt($1)
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
+    qla_name2(x,$1,,$2,x,$3$4,$5,,$6)(argd($1),idxd($1),arg1($3),idxd($3),arg1($6),mu,sign,MAX);
+    for(i = 0; i < MAX; i++){
+      qla_name2(,$1,,$2,,$3$4,$5,,$6)(&argt($1)[idxd($1)[i]],&arg1($3)[idxd($3)[i]],&arg1($6)[i],mu,sign);}
+    checkeqidx$1$1(argt($1),argd($1),name);
+  }
+
+  strcpy(name,"qla_name2(x,$1,,$2,,$3$4,$5,x,$6)");
+  resetdt($1)
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
+    qla_name2(x,$1,,$2,,$3$4,$5,x,$6)(argd($1),idxd($1),arg1($3),arg1($6),idxd($6),mu,sign,MAX);
+    for(i = 0; i < MAX; i++){
+      qla_name2(,$1,,$2,,$3$4,$5,,$6)(&argt($1)[idxd($1)[i]],&arg1($3)[i],&arg1($6)[idxd($6)[i]],mu,sign);}
+    checkeqidx$1$1(argt($1),argd($1),name);
+  }
+#endif
+
+  strcpy(name,"qla_name2(,$1,v,$2,p,$3$4,$5,,$6)");
+  resetdt($1)
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
+    qla_name2(,$1,v,$2,p,$3$4,$5,,$6)(argd($1),arg1p($3),arg1($6),mu,sign,MAX);
+    for(i = 0; i < MAX; i++){
+      qla_name2(,$1,,$2,,$3$4,$5,,$6)(&argt($1)[i],arg1p($3)[i],&arg1($6)[i],mu,sign);}
+    checkeqidx$1$1(argt($1),argd($1),name);
+  }
+
+  strcpy(name,"qla_name2(,$1,v,$2,,$3$4,$5,p,$6)");
+  resetdt($1)
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
+    qla_name2(,$1,v,$2,,$3$4,$5,p,$6)(argd($1),arg1($3),arg1p($6),mu,sign,MAX);
+    for(i = 0; i < MAX; i++){
+      qla_name2(,$1,,$2,,$3$4,$5,,$6)(&argt($1)[i],&arg1($3)[i],arg1p($6)[i],mu,sign);}
+    checkeqidx$1$1(argt($1),argd($1),name);
+  }
+
+  strcpy(name,"qla_name2(,$1,v,$2,p,$3$4,$5,p,$6)");
+  resetdt($1)
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
+    qla_name2(,$1,v,$2,p,$3$4,$5,p,$6)(argd($1),arg1p($3),arg1p($6),mu,sign,MAX);
+    for(i = 0; i < MAX; i++){
+      qla_name2(,$1,,$2,,$3$4,$5,,$6)(&argt($1)[i],arg1p($3)[i],arg1p($6)[i],mu,sign);}
+    checkeqidx$1$1(argt($1),argd($1),name);
+  }
+
+  strcpy(name,"qla_name2(,$1,x,$2,p,$3$4,$5,,$6)");
+  resetdt($1)
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
+    qla_name2(,$1,x,$2,p,$3$4,$5,,$6)(argd($1),arg1p($3),arg1($6),mu,sign,idx1($6),MAX);
+    for(i = 0; i < MAX; i++){
+      qla_name2(,$1,,$2,,$3$4,$5,,$6)(&argt($1)[idx1($6)[i]],arg1p($3)[idx1($6)[i]],&arg1($6)[idx1($6)[i]],mu,sign);}
+    checkeqidx$1$1(argt($1),argd($1),name);
+  }
+
+  strcpy(name,"qla_name2(,$1,x,$2,,$3$4,$5,p,$6)");
+  resetdt($1)
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
+    qla_name2(,$1,x,$2,,$3$4,$5,p,$6)(argd($1),arg1($3),arg1p($6),mu,sign,idx1($6),MAX);
+    for(i = 0; i < MAX; i++){
+      qla_name2(,$1,,$2,,$3$4,$5,,$6)(&argt($1)[idx1($6)[i]],&arg1($3)[idx1($6)[i]],arg1p($6)[idx1($6)[i]],mu,sign);}
+    checkeqidx$1$1(argt($1),argd($1),name);
+  }
+
+  strcpy(name,"qla_name2(,$1,x,$2,p,$3$4,$5,p,$6)");
+  resetdt($1)
+  for(mu=0;mu<5;mu++)for(sign=-1;sign<2;sign+=2){
+    qla_name2(,$1,x,$2,p,$3$4,$5,p,$6)(argd($1),arg1p($3),arg1p($6),mu,sign,idx1($6),MAX);
+    for(i = 0; i < MAX; i++){
+      qla_name2(,$1,,$2,,$3$4,$5,,$6)(&argt($1)[idx1($6)[i]],arg1p($3)[idx1($6)[i]],arg1p($6)[idx1($6)[i]],mu,sign);}
     checkeqidx$1$1(argt($1),argd($1),name);
   }
 

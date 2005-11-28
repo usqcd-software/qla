@@ -224,6 +224,10 @@ int main(){
   QLA_seed_random(&chkS,sI4,nI1);
   CHECKeqsngSS(&destS,&chkS,name);
 
+  strcpy(name,"QLA_S_eq_S");
+  QLA_S_eq_S(&destS,&chkS);
+  CHECKeqsngSS(&destS,&chkS,name);
+
   return 0;
 }
 

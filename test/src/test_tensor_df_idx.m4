@@ -22,7 +22,10 @@ include(protocol_idx.m4)
 #include "compare.h"
 
 int main(){
- 
+
+#define QLA_PRF(x) QLA_DF_ ## x
+#define QLA_PRD(x) QLA_QD_ ## x
+
   QLA_D_Real                destrD,chkrD;
   QLA_D_Complex             destcD,chkcD;
   QLA_D_ColorMatrix         destmD,chkmD;
@@ -31,13 +34,13 @@ int main(){
   QLA_D_ColorVector         destvD,chkvD;
   QLA_D_DiracPropagator     destpD,chkpD;
 
-  QLA_Q_Real                destrQ,chkrQ;
-  QLA_Q_Complex             destcQ,chkcQ;
-  QLA_Q_ColorMatrix         destmQ,chkmQ;
-  QLA_Q_HalfFermion         desthQ,chkhQ;
-  QLA_Q_DiracFermion        destdQ,chkdQ;
-  QLA_Q_ColorVector         destvQ,chkvQ;
-  QLA_Q_DiracPropagator     destpQ,chkpQ;
+  QLA_Q_Real                /*destrQ,*/chkrQ;
+  /*QLA_Q_Complex             destcQ,chkcQ;*/
+  QLA_Q_ColorMatrix         /*destmQ,*/chkmQ;
+  QLA_Q_HalfFermion         /*desthQ,*/chkhQ;
+  QLA_Q_DiracFermion        /*destdQ,*/chkdQ;
+  QLA_Q_ColorVector         /*destvQ,*/chkvQ;
+  QLA_Q_DiracPropagator     /*destpQ,*/chkpQ;
 
   QLA_D_ColorMatrix         sMD1[MAX],sMD2[MAX],sMD3[MAX];
   QLA_D_HalfFermion         sHD1[MAX],sHD2[MAX],sHD3[MAX];
@@ -45,11 +48,11 @@ int main(){
   QLA_D_ColorVector         sVD1[MAX],sVD2[MAX],sVD3[MAX];
   QLA_D_DiracPropagator     sPD1[MAX],sPD2[MAX],sPD3[MAX];
 
-  QLA_Q_ColorMatrix         destMQ[MAX],chkMQ[MAX];
-  QLA_Q_HalfFermion         destHQ[MAX],chkHQ[MAX];
-  QLA_Q_DiracFermion        destDQ[MAX],chkDQ[MAX];
-  QLA_Q_ColorVector         destVQ[MAX],chkVQ[MAX];
-  QLA_Q_DiracPropagator     destPQ[MAX],chkPQ[MAX];
+  QLA_Q_ColorMatrix         /*destMQ[MAX],*/chkMQ[MAX];
+  QLA_Q_HalfFermion         /*destHQ[MAX],*/chkHQ[MAX];
+  QLA_Q_DiracFermion        /*destDQ[MAX],*/chkDQ[MAX];
+  QLA_Q_ColorVector         /*destVQ[MAX],*/chkVQ[MAX];
+  QLA_Q_DiracPropagator     /*destPQ[MAX],*/chkPQ[MAX];
 
   QLA_D_ColorMatrix         destMD[MAX],chkMD[MAX];
   QLA_D_HalfFermion         destHD[MAX],chkHD[MAX];
@@ -76,23 +79,23 @@ int main(){
 
   QLA_Int sI4      = 5001;
 
-  int dMx[MAX]  = {9,1,8,5,6,0,3,7,2,4};
+  /*int dMx[MAX]  = {9,1,8,5,6,0,3,7,2,4};*/
   int sM1x[MAX] = {0,2,9,7,6,1,4,5,8,3};
   int sM2x[MAX] = {3,6,4,0,1,2,9,7,5,8};
 
-  int dHx[MAX]  = {9,2,6,1,4,5,7,0,8,3};
+  /*int dHx[MAX]  = {9,2,6,1,4,5,7,0,8,3};*/
   int sH1x[MAX] = {4,6,1,2,9,7,0,3,5,8};
   int sH2x[MAX] = {8,1,6,0,3,7,5,9,2,4};
 
-  int dDx[MAX]  = {4,1,2,9,7,5,3,6,0,8};
+  /*int dDx[MAX]  = {4,1,2,9,7,5,3,6,0,8};*/
   int sD1x[MAX] = {8,6,0,3,7,2,9,1,5,4};
   int sD2x[MAX] = {9,6,1,4,5,8,0,2,7,3};
 
-  int dVx[MAX]  = {4,2,5,1,6,0,3,8,9,7};
+  /*int dVx[MAX]  = {4,2,5,1,6,0,3,8,9,7};*/
   int sV1x[MAX] = {6,4,0,2,1,9,7,3,5,8};
   int sV2x[MAX] = {1,9,3,6,2,4,0,8,7,5};
 
-  int dPx[MAX]  = {9,7,3,2,5,8,6,4,0,1};
+  /*int dPx[MAX]  = {9,7,3,2,5,8,6,4,0,1};*/
   int sP1x[MAX] = {3,7,9,0,2,4,1,8,5,6};
   int sP2x[MAX] = {2,9,5,6,7,8,1,0,3,4};
 

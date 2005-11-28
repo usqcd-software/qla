@@ -489,6 +489,7 @@ foreach $assgn ( @assign_list ){
 
 require("make_code_binary.pl");
 
+if(!$quadprecision){
 @assign_list = @eqop_all;
 @data_list   = ($datatype_complex_abbrev,@datatype_array_element_abbrev);
 
@@ -511,6 +512,7 @@ foreach $assgn ( @assign_list ){
 	    }
 	}
     }
+}
 }
 
 #=====================================================================
@@ -1928,7 +1930,7 @@ foreach $assgn ( @assign_list ){
 require("make_code_unary.pl");
 
 if(!$quadprecision){
-@assign_list = @eqop_all;
+@assign_list = ($eqop_eq);
 @data_list   = @datatype_arithmetic_abbrev;
 
 $real_scalar_abbrev = $datatype_scalar_abbrev{$datatype_real_abbrev};
@@ -1959,7 +1961,7 @@ foreach $assgn ( @assign_list ){
 require("make_code_unary.pl");
 
 if(!$quadprecision){
-@assign_list = @eqop_all;
+@assign_list = ($eqop_eq);
 @data_list   = @datatype_arithmetic_abbrev;
 
 $real_scalar_abbrev = $datatype_scalar_abbrev{$datatype_real_abbrev};
@@ -1997,7 +1999,7 @@ foreach $assgn ( @assign_list ){
 require("make_code_unary.pl");
 
 if(!$quadprecision){
-@assign_list = @eqop_all;
+@assign_list = ($eqop_eq);
 @data_list   = @datatype_arithmetic_abbrev;
 
 $real_scalar_abbrev = $datatype_scalar_abbrev{$datatype_real_abbrev};
@@ -2037,7 +2039,7 @@ foreach $assgn ( @assign_list ){
 require("make_code_binary.pl");
 
 if(!$quadprecision){
-@assign_list = @eqop_all;
+@assign_list = ($eqop_eq);
 @data_list   = @datatype_arithmetic_abbrev;
 $complex_scalar_type = &datatype_specific($datatype_complex_abbrev);
 $complex_scalar_abbrev = $datatype_scalar_abbrev{$datatype_complex_abbrev};
@@ -2092,7 +2094,7 @@ foreach $assgn ( @assign_list ){
 require("make_code_binary.pl");
 
 if(!$quadprecision){
-@assign_list = @eqop_all;
+@assign_list = ($eqop_eq);
 @data_list   = @datatype_arithmetic_abbrev;
 $complex_scalar_type = &datatype_specific($datatype_complex_abbrev);
 $complex_scalar_abbrev = $datatype_scalar_abbrev{$datatype_complex_abbrev};
@@ -2154,7 +2156,7 @@ foreach $assgn ( @assign_list ){
 require("make_code_binary.pl");
 
 if(!$quadprecision){
-@assign_list = @eqop_all;
+@assign_list = ($eqop_eq);
 @data_list   = @datatype_arithmetic_abbrev;
 $complex_scalar_type = &datatype_specific($datatype_complex_abbrev);
 $complex_scalar_abbrev = $datatype_scalar_abbrev{$datatype_complex_abbrev};
@@ -2218,7 +2220,7 @@ require("make_code_unary.pl");
 
 if(!$quadprecision){
 
-@assign_list = @eqop_all;
+@assign_list = ($eqop_eq);
 @data_list   = @datatype_arithmetic_abbrev;
 
 $assgn = $eqop_eq;
@@ -2255,7 +2257,7 @@ require("make_code_unary.pl");
 
 if(!$quadprecision){
 
-@assign_list = @eqop_all;
+@assign_list = ($eqop_eq);
 @data_list   = @datatype_arithmetic_abbrev;
 
 $assgn = $eqop_eq;
@@ -2291,7 +2293,7 @@ require("make_code_unary.pl");
 
 if(!$quadprecision){
 
-@assign_list = @eqop_all;
+@assign_list = ($eqop_eq);
 @data_list   = @datatype_arithmetic_abbrev;
 
 $assgn = $eqop_eq;

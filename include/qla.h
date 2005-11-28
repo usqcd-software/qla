@@ -46,6 +46,7 @@
 /* Headers we always define */
 #include <qla_int.h>
 #include <qla_df.h>
+#include <qla_dq.h>
 
 /* Headers we define regardless of precision */
 #if ( QLA_Colors == 3 )
