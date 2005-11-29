@@ -1,6 +1,7 @@
 ===========================================================================
-2005-11-28	version 1.5.0
+2005-11-29	version 1.5.0
 ===========================================================================
+2005-11-29: Removed optimized C routine since generated code is similar now.
 2005-11-26: Updated test suite to include all remaining new functions.
             Increased tolerance on tests so that fewer errors are reported.
 2005-11-26: Removed unnecessary functions that weren't being tested.
