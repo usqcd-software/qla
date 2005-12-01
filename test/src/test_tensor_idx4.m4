@@ -11,8 +11,6 @@ include(protocol_idx.m4)
 #include <math.h>
 #include "compare.h"
 
-int test_tensor_idx4(){
-'
   /* Define test data */
 
 #define QLA_DF_r_eq_I_dot_I QLA_D_r_eq_I_dot_I
@@ -21,7 +19,7 @@ int test_tensor_idx4(){
 #define QLA(x) QLA_ ## x
 #define QLA_DF(x) QLA_DF_ ## x
 #define QLA_QD(x) QLA_QD_ ## x
-
+'
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 
 #if (QLA_Precision == 1) || (QLA_Precision == 'F')
@@ -33,12 +31,12 @@ int test_tensor_idx4(){
   QLA_Q_Real destrP, chkrP;
   QLA_Q_Complex destcP, chkcP;
 #endif
+`
+static  int nc = QLA_Nc;
+static  int ns = QLA_Ns;
+static  int ic,jc,is,js;
 
-  int nc = QLA_Nc;
-  int ns = QLA_Ns;
-  int ic,jc,is,js;
-
-  QLA_Real sR4       = -6.35;
+static  QLA_Real sR4       = -6.35;
 
   /*QLA_Q_Real                chkRQ[MAX];*/
   /*QLA_Q_Complex             chkCQ[MAX];*/
@@ -76,13 +74,12 @@ int test_tensor_idx4(){
   int dVx[MAX]  = {4,2,5,1,6,0,3,8,9,7};
   int dPx[MAX]  = {9,7,3,2,5,8,6,4,0,1};
   int dMx[MAX]  = {1,2,9,7,3,0,4,6,5,8};
-
+'
 include(tensor_idx_defs.m4);
-
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 
   /* Ternary operations */
-
+void do_to(void) {
 ternaryconst(H,eq_r_times,R,H,plus,H)
 ternaryconst(H,eq_r_times,R,H,minus,H)
 ternaryconst(D,eq_r_times,R,D,plus,D)
@@ -104,6 +101,17 @@ ternaryconst(P,eq_c_times,C,P,plus,P)
 ternaryconst(P,eq_c_times,C,P,minus,P)
 ternaryconst(M,eq_c_times,C,M,plus,M)
 ternaryconst(M,eq_c_times,C,M,minus,M)
+}
+
+#endif
+`
+int test_tensor_idx4(){
+  initialize_variables();
+'
+#if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
+
+  /* Ternary operations */
+  do_to();
 
   /* Copymask */
 
@@ -160,7 +168,6 @@ unaryconst(M,eq_m)
 unarydiagconst(M,eq_c)
 
 #endif /* QLA_Precision != Q */
-
 `
   return 0;
 }

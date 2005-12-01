@@ -11,16 +11,14 @@ include(protocol_idx.m4)
 #include <math.h>
 #include "compare.h"
 
-int test_tensor_idx3(){
-'
   /* Define test data */
-
+'
 include(tensor_idx_defs.m4);
 
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 
   /* Right multiply by color matrix */
-
+void do_rmcm(void) {
 binary(H,eq,M,times,H,sM1,sH2)
 binary(D,eq,M,times,D,sM1,sD2)
 binary(V,eq,M,times,V,sM1,sV2)
@@ -37,6 +35,17 @@ binary(H,meq,M,times,H,sM1,sH2)
 binary(D,meq,M,times,D,sM1,sD2)
 binary(V,meq,M,times,V,sM1,sV2)
 binary(P,meq,M,times,P,sM1,sP2)
+}
+
+#endif
+`
+int test_tensor_idx3(){
+  initialize_variables();
+'
+#if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
+
+  /* Right multiply by color matrix */
+  do_rmcm();
 
   /* Adjoint of color matrix times adjoint of color matrix */
 
@@ -100,7 +109,6 @@ binary(P,meq,P,times,Ma,sP1,sM2)
 binary(M,meq,M,times,Ma,sM1,sM2)
 
 #endif /* QLA_Precision != Q */
-
 `
   return 0;
 }

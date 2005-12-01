@@ -787,7 +787,8 @@ sub print_val_eqop_val_op_val {
 	  print_close_iter_list($ic,$is,$jc,$js);
 	}
       } else {
-	$unroll = 1;
+	$unroll = 0;
+	if($maxic>0) { $unroll = 1; }
 	$dest_elem_value =
 	  make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
 	if(($eqop eq "eq")||($eqop eq "peq")) { $loop_eqop = "peq"; }

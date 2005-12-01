@@ -2943,8 +2943,9 @@ if test "X$ac_CFLAGS_not_set" = "X1"; then
     CFLAGS=-O
   fi
 fi
-if test "X$GCC" = "Xyes"; then GNUCC="$CC"; else
-# Extract the first word of "gcc", so it can be a program name with args.
+if test "X$GNUCC" = "X"; then
+  if test "X$GCC" = "Xyes"; then GNUCC="$CC"; else
+    # Extract the first word of "gcc", so it can be a program name with args.
 set dummy gcc; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
@@ -2984,6 +2985,7 @@ else
 echo "${ECHO_T}no" >&6
 fi
 
+  fi
 fi
 
 # Checks for libraries.

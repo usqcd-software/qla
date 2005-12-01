@@ -3,23 +3,23 @@ rem(`
      (Include file for test_tensor_idx.[1-4].m4)
 ')
 
-  QLA_Real                  sR1[MAX],sR2[MAX],sR3[MAX];
-  QLA_Complex               sC1[MAX],sC2[MAX],sC3[MAX];
-  QLA_ColorMatrix           sM1[MAX],sM2[MAX],sM3[MAX];
-  QLA_HalfFermion           sH1[MAX],sH2[MAX],sH3[MAX];
-  QLA_DiracFermion          sD1[MAX],sD2[MAX],sD3[MAX];
-  QLA_ColorVector           sV1[MAX],sV2[MAX],sV3[MAX];
-  QLA_DiracPropagator       sP1[MAX],sP2[MAX],sP3[MAX];
+static  QLA_Real                  sR1[MAX],sR2[MAX],sR3[MAX];
+static  QLA_Complex               sC1[MAX],sC2[MAX],sC3[MAX];
+static  QLA_ColorMatrix           sM1[MAX],sM2[MAX],sM3[MAX];
+static  QLA_HalfFermion           sH1[MAX],sH2[MAX],sH3[MAX];
+static  QLA_DiracFermion          sD1[MAX],sD2[MAX],sD3[MAX];
+static  QLA_ColorVector           sV1[MAX],sV2[MAX],sV3[MAX];
+static  QLA_DiracPropagator       sP1[MAX],sP2[MAX],sP3[MAX];
 
-  QLA_RandomState           sS1[MAX];
+static  QLA_RandomState           sS1[MAX];
 
-  QLA_Real                  destR[MAX],chkR[MAX];
-  QLA_Complex               destC[MAX],chkC[MAX];
-  QLA_ColorMatrix           destM[MAX],chkM[MAX];
-  QLA_HalfFermion           destH[MAX],chkH[MAX];
-  QLA_DiracFermion          destD[MAX],chkD[MAX];
-  QLA_ColorVector           destV[MAX],chkV[MAX];
-  QLA_DiracPropagator       destP[MAX],chkP[MAX];
+static  QLA_Real                  destR[MAX],chkR[MAX];
+static  QLA_Complex               destC[MAX],chkC[MAX];
+static  QLA_ColorMatrix           destM[MAX],chkM[MAX];
+static  QLA_HalfFermion           destH[MAX],chkH[MAX];
+static  QLA_DiracFermion          destD[MAX],chkD[MAX];
+static  QLA_ColorVector           destV[MAX],chkV[MAX];
+static  QLA_DiracPropagator       destP[MAX],chkP[MAX];
 
 #if 0
   QLA_D_Real                chkRD[MAX];
@@ -41,71 +41,73 @@ rem(`
   QLA_D_DiracPropagator     chkpD;
 #endif
 
-  QLA_Real sC4re      = 1.2312;
-  QLA_Real sC4im      = -0.701;
+static  QLA_Real sC4re      = 1.2312;
+static  QLA_Real sC4im      = -0.701;
 
-  QLA_Complex sC4;
+static  QLA_Complex sC4;
 
-  QLA_ColorMatrix sM4;
-  QLA_HalfFermion sH4;
-  QLA_DiracFermion sD4;
-  QLA_ColorVector sV4;
-  QLA_DiracPropagator sP4;
+static  QLA_ColorMatrix sM4;
+static  QLA_HalfFermion sH4;
+static  QLA_DiracFermion sD4;
+static  QLA_ColorVector sV4;
+static  QLA_DiracPropagator sP4;
 
-  int nI1[MAX] = { 3, 12, 7, 1, 5, 8, 3, 2, 1, 5};
-  int zI1[MAX] = { 3, 0, 7, 1, 0, 0, 3, 2, 1, 0};
+static  int nI1[MAX] = { 3, 12, 7, 1, 5, 8, 3, 2, 1, 5};
+static  int zI1[MAX] = { 3, 0, 7, 1, 0, 0, 3, 2, 1, 0};
 
-  QLA_Int sI1[MAX] = { 61, -10,  73, -96,  50, 92,  34, -21, -67, 104};
+static  QLA_Int sI1[MAX] = { 61, -10,  73, -96,  50, 92,  34, -21, -67, 104};
 
-  QLA_Int sI3[MAX] = { 92,  34, -21, -67, 104, 61, -10,  73, -96,  50};
+static  QLA_Int sI3[MAX] = { 92,  34, -21, -67, 104, 61, -10,  73, -96,  50};
 
-  QLA_Int sI4      = 5001;
+static  QLA_Int sI4      = 5001;
 
   /*int dRx[MAX]  = {8,5,6,7,1,2,9,0,3,4};*/
-  int sR1x[MAX] = {3,0,1,8,2,4,5,9,7,6};
-  int sR2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
-  int sR3x[MAX] = {8,3,2,5,6,9,7,4,0,1};
+static  int sR1x[MAX] = {3,0,1,8,2,4,5,9,7,6};
+static  int sR2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
+static  int sR3x[MAX] = {8,3,2,5,6,9,7,4,0,1};
 
   /*int dCx[MAX]  = {8,3,2,5,6,9,7,4,0,1};*/
-  int sC1x[MAX] = {8,5,6,7,1,2,9,0,3,4};
-  int sC2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
+static  int sC1x[MAX] = {8,5,6,7,1,2,9,0,3,4};
+static  int sC2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
 
-  int sI1x[MAX] = {4,9,0,2,1,3,7,8,5,6};
+static  int sI1x[MAX] = {4,9,0,2,1,3,7,8,5,6};
   /*int sI3x[MAX] = {3,0,1,8,2,4,5,9,7,6};*/
 
-  int sH1x[MAX] = {4,6,1,2,9,7,0,3,5,8};
-  int sH2x[MAX] = {8,1,6,0,3,7,5,9,2,4};
+static  int sH1x[MAX] = {4,6,1,2,9,7,0,3,5,8};
+static  int sH2x[MAX] = {8,1,6,0,3,7,5,9,2,4};
 
-  int sD1x[MAX] = {8,6,0,3,7,2,9,1,5,4};
-  int sD2x[MAX] = {9,6,1,4,5,8,0,2,7,3};
+static  int sD1x[MAX] = {8,6,0,3,7,2,9,1,5,4};
+static  int sD2x[MAX] = {9,6,1,4,5,8,0,2,7,3};
 
-  int sV1x[MAX] = {6,4,0,2,1,9,7,3,5,8};
-  int sV2x[MAX] = {1,9,3,6,2,4,0,8,7,5};
+static  int sV1x[MAX] = {6,4,0,2,1,9,7,3,5,8};
+static  int sV2x[MAX] = {1,9,3,6,2,4,0,8,7,5};
 
-  int sP1x[MAX] = {3,7,9,0,2,4,1,8,5,6};
-  int sP2x[MAX] = {2,9,5,6,7,8,1,0,3,4};
+static  int sP1x[MAX] = {3,7,9,0,2,4,1,8,5,6};
+static  int sP2x[MAX] = {2,9,5,6,7,8,1,0,3,4};
 
-  int sM1x[MAX] = {6,0,3,7,9,5,8,1,2,4};
-  int sM2x[MAX] = {6,1,4,5,0,7,9,2,8,3};
+static  int sM1x[MAX] = {6,0,3,7,9,5,8,1,2,4};
+static  int sM2x[MAX] = {6,1,4,5,0,7,9,2,8,3};
 
   /*int zI1x[MAX] = {8,5,6,7,1,2,9,0,3,4};*/
 
-  int sS1x[MAX] = {1,3,8,5,9,4,7,6,0,2};
+static  int sS1x[MAX] = {1,3,8,5,9,4,7,6,0,2};
 
-  QLA_Int *nI1p[MAX], *zI1p[MAX];
-  QLA_Int                 *sI1p[MAX];
-  QLA_Real                *sR1p[MAX], *sR2p[MAX], *sR3p[MAX];
-  QLA_Complex             *sC1p[MAX], *sC2p[MAX], *sC3p[MAX], *chkCp[MAX];
-  QLA_ColorMatrix         *sM1p[MAX], *sM2p[MAX], *sM3p[MAX];
-  QLA_HalfFermion         *sH1p[MAX], *sH2p[MAX], *sH3p[MAX];
-  QLA_DiracFermion        *sD1p[MAX], *sD2p[MAX], *sD3p[MAX], *chkDp[MAX];
-  QLA_ColorVector    *sV1p[MAX], *sV2p[MAX], *sV3p[MAX], *chkVp[MAX];
-  QLA_DiracPropagator     *sP1p[MAX], *sP2p[MAX], *sP3p[MAX];
-  QLA_RandomState         *sS1p[MAX];
+static  QLA_Int *nI1p[MAX], *zI1p[MAX];
+static  QLA_Int                 *sI1p[MAX];
+static  QLA_Real                *sR1p[MAX], *sR2p[MAX], *sR3p[MAX];
+static  QLA_Complex             *sC1p[MAX], *sC2p[MAX], *sC3p[MAX], *chkCp[MAX];
+static  QLA_ColorMatrix         *sM1p[MAX], *sM2p[MAX], *sM3p[MAX];
+static  QLA_HalfFermion         *sH1p[MAX], *sH2p[MAX], *sH3p[MAX];
+static  QLA_DiracFermion        *sD1p[MAX], *sD2p[MAX], *sD3p[MAX], *chkDp[MAX];
+static  QLA_ColorVector    *sV1p[MAX], *sV2p[MAX], *sV3p[MAX], *chkVp[MAX];
+static  QLA_DiracPropagator     *sP1p[MAX], *sP2p[MAX], *sP3p[MAX];
+static  QLA_RandomState         *sS1p[MAX];
 
-  int i;
- 
-  char name[64];
+static  char name[64];
+
+static  int i;
+
+static void initialize_variables(void) {
 
   for(i = 0; i < MAX; i++){
     sR1p[i] = &sR1[sR2x[i]];
@@ -200,6 +202,5 @@ unaryrand(M,eq_gaussian)
     QLA_M_veq_gaussian_S(sM2,sS1,MAX);
     QLA_M_veq_gaussian_S(sM3,sS1,MAX);
   }
-'
 
-
+}'

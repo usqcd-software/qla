@@ -63,8 +63,10 @@ if test "X$ac_CFLAGS_not_set" = "X1"; then
     CFLAGS=-O
   fi
 fi
-if test "X$GCC" = "Xyes"; then GNUCC="$CC"; else
-AC_PATH_PROG([GNUCC], [gcc], [gcc])
+if test "X$GNUCC" = "X"; then
+  if test "X$GCC" = "Xyes"; then GNUCC="$CC"; else
+    AC_PATH_PROG([GNUCC], [gcc], [gcc])
+  fi
 fi
 
 # Checks for libraries.
