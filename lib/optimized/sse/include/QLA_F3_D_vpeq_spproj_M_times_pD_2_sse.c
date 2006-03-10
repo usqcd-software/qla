@@ -42,7 +42,7 @@
       v4sf h1[3], h2[3];
       QLA_F3_DiracFermion *ri = &r[i];
       QLA_F3_ColorMatrix *ai = &a[i];
-      QLA_F3_HalfFermion *bi = b[i];
+      QLA_F3_DiracFermion *bi = b[i];
 
       prefetchnt(b[i+NP]);
       {
@@ -98,7 +98,7 @@
       v4sf h1[3], h2[3];
       QLA_F3_DiracFermion *ri = &r[i];
       QLA_F3_ColorMatrix *ai = &a[i];
-      QLA_F3_HalfFermion *bi = b[i];
+      QLA_F3_DiracFermion *bi = b[i];
 
       prefetchnt(b[i+NP]);
       {
