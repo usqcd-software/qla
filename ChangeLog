@@ -1,6 +1,21 @@
-===========================================================================
+===============================================================================
+2006-03-10	version 1.5.1
+===============================================================================
+2006-03-10:	James Osborn
+	Added TEST_CC and TEST_CFLAGS variables to set compiler and flags
+	used for the test suite.
+
+2006-03-07:	James Osborn
+	Reworked SSE routines to work with both gcc and icc.  This is only
+	for sse not sse2 which will still try to use gcc.
+	Added some more SSE routines.
+	The new routines check for alignment and then call the appropriate
+	routine.  The checking is not perfect and there is still the
+	possibility of an alignment error on poorly aligned data.
+
+===============================================================================
 2005-11-30	version 1.5.0
-===========================================================================
+===============================================================================
 2005-11-29: Removed optimized C routine since generated code is similar now.
 2005-11-26: Updated test suite to include all remaining new functions.
             Increased tolerance on tests so that fewer errors are reported.

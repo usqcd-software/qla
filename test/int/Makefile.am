@@ -1,3 +1,5 @@
+CC = @TEST_CC@
+CFLAGS = @TEST_CFLAGS@
 AM_CFLAGS = -I$(top_srcdir)/test/src -I$(top_srcdir)/include
 LDADD = ../../lib/libqla_int.a ../../lib/libqla_random.a -lm
 

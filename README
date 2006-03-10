@@ -8,23 +8,42 @@ find the appropriate option (for gcc try -std=c99 or for xlc try
 -qlanglvl=stdc99).
 
 Some configuration options to be aware of are:
- --enable-sse	uses optimized SSE routines for some functions (P4 single)
- --enable-sse2	uses optimized SSE2 routines for some functions (P4 double)
+ --enable-sse	uses optimized SSE routines for some functions (single)
+ --enable-sse2	uses optimized SSE2 routines for some functions (double)
+ --enable-sse3	uses optimized SSE3 routines for some functions
  --enable-440	uses optimized 440 routines for some functions (QCDOC/BGL)
  --enable-nc=[2,3,n]	build only the 2, 3, or arbitrary (n) color libraries
 			leave this out to build all libraries
 
-Right now the SSE code requires gcc version < 4.0.  The compiler used for
-the SSE code can be specified separately from the compiler used for the
-rest of the library.  This is done with the GNUCC environment variable.
+The sse options are cumulative so that sse2 also includes sse and sse3
+includes sse and sse2.
+
+The sse (not sse2) code now works with both gcc and icc.  It will just use
+the same compiler as used for the rest of the code.  You may have to give
+it the appropriate commands (like -msse or -msse2) for it to compile the
+sse code.
+
+The sse2 code still requires gcc version < 4.0.  If the main compiler is gcc
+then it will use that otherwise it will default to just using the 'gcc'
+command found in the path.  You can specify the correct location of the needed
+gcc compiler by setting the GNUCC environment variable.  This will only be
+used for the sse2 code.  Note however that icc can emulate gcc in some cases
+and may actually be able to compile this code fine.
+
+There are now variables TEST_CC and TEST_CFLAGS which are used only for
+compiling the test suite.  Since the test sources are very large you
+may want to disable optimizations here to reduce compile time.
+
 An example configure command is:
 
 configure \
   --prefix=$HOME/scidac/install/qla \
   --enable-nc=3 \
-  --enable-sse2 \
-  CC=gcc \
-  CFLAGS="-std=c99 -O3 -march=pentium4" \
+  --enable-sse3 \
+  CC=icc \
+  CFLAGS="-c99 -O2 -xN -fno-alias -unroll -fp-model fast" \
+  TEST_CFLAGS="-c99 -O0 -xN" \
+  LDFLAGS="-static" \
   GNUCC=gcc-3.4
 
 Documentation is included in the doc directory.  This is not included in

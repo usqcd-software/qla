@@ -2,9 +2,11 @@
 
 #include <qla_types.h>
 #include <qla_cmath.h>
+#include <qla_sse.h>
 #include <math.h>
 #include <stdlib.h>
 
+#if 0
 typedef int v2si __attribute__ ((mode(V2SI)));
 typedef int v4si __attribute__ ((mode(V4SI)));
 typedef float v4sf __attribute__ ((mode(V4SF)));
@@ -20,9 +22,10 @@ typedef float v4sf __attribute__ ((mode(V4SF)));
 #define storehps(a,b) __builtin_ia32_storehps((v2si *)(a),b)
 
 #define foff(a,n) (((float *)(a))+(n))
+#endif
 
 void
-QLA_F3_V_vmeq_pV( QLA_F3_ColorVector *__restrict__ r,
+QLA_F3_V_vmeq_pV( QLA_F3_ColorVector *restrict r,
 		  QLA_F3_ColorVector **a,
 		  int n )
 {
@@ -51,49 +54,49 @@ QLA_F3_V_vmeq_pV( QLA_F3_ColorVector *__restrict__ r,
 
   for(i=0; i<nb; i++) {
     v4sf r0, r1;
-    r0 = loadups(foff(&r[i],0)) - loadups(foff(a[i],0));
+    r0 = subps( loadups(foff(&r[i],0)), loadups(foff(a[i],0)) );
     storeups(foff(&r[i],0),r0);
-    r1 = loadups(foff(&r[i],2)) - loadups(foff(a[i],2));
+    r1 = subps( loadups(foff(&r[i],2)), loadups(foff(a[i],2)) );
     storehps(foff(&r[i],4),r1);
   }
 
   if(u8) {
+    v4sf r0,r1=setss(0),r2;
     for( ; i<nn; i+=2) {
-      v4sf r0,r1,r2;
 
-      r0 = loadups(foff(&r[i],0)) - loadups(foff(a[i],0));
+      r0 = subps( loadups(foff(&r[i],0)), loadups(foff(a[i],0)) );
       storeups(foff(&r[i],0),r0);
 
       r1 = loadlps(r1,foff(a[i],4));
       r1 = loadhps(r1,foff(a[i+1],0));
-      r1 = loadups(foff(&r[i],4)) - r1;
+      r1 = subps( loadups(foff(&r[i],4)), r1 );
       storeups(foff(&r[i],4),r1);
 
-      r2 = loadups(foff(&r[i],8)) - loadups(foff(a[i+1],2));
+      r2 = subps( loadups(foff(&r[i],8)), loadups(foff(a[i+1],2)) );
       storeups(foff(&r[i],8),r2);
     }
   } else {
+    v4sf r0,r1=setss(0),r2;
     for( ; i<nn; i+=2) {
-      v4sf r0,r1,r2;
 
-      r0 = loadaps(foff(&r[i],0)) - loadups(foff(a[i],0));
+      r0 = subps( loadaps(foff(&r[i],0)), loadups(foff(a[i],0)) );
       storeaps(foff(&r[i],0),r0);
 
       r1 = loadlps(r1,foff(a[i],4));
       r1 = loadhps(r1,foff(a[i+1],0));
-      r1 = loadaps(foff(&r[i],4)) - r1;
+      r1 = subps( loadaps(foff(&r[i],4)), r1 );
       storeaps(foff(&r[i],4),r1);
 
-      r2 = loadaps(foff(&r[i],8)) - loadups(foff(a[i+1],2));
+      r2 = subps( loadaps(foff(&r[i],8)), loadups(foff(a[i+1],2)) );
       storeaps(foff(&r[i],8),r2);
     }
   }
 
   for( ; i<n; i++) {
     v4sf r0, r1;
-    r0 = loadups(foff(&r[i],0)) - loadups(foff(a[i],0));
+    r0 = subps( loadups(foff(&r[i],0)), loadups(foff(a[i],0)) );
     storeups(foff(&r[i],0),r0);
-    r1 = loadups(foff(&r[i],2)) - loadups(foff(a[i],2));
+    r1 = subps( loadups(foff(&r[i],2)), loadups(foff(a[i],2)) );
     storehps(foff(&r[i],4),r1);
   }
 }

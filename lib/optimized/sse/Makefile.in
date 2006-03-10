@@ -93,6 +93,7 @@ OPT_SSE = @OPT_SSE@
 OPT_SSE2 = @OPT_SSE2@
 OPT_SSE2_FALSE = @OPT_SSE2_FALSE@
 OPT_SSE2_TRUE = @OPT_SSE2_TRUE@
+OPT_SSE3 = @OPT_SSE3@
 OPT_SSE_FALSE = @OPT_SSE_FALSE@
 OPT_SSE_TRUE = @OPT_SSE_TRUE@
 PACKAGE = @PACKAGE@
@@ -106,7 +107,11 @@ PERL = @PERL@
 RANLIB = @RANLIB@
 SET_MAKE = @SET_MAKE@
 SHELL = @SHELL@
+SSE_CC = @SSE_CC@
+SSE_CFLAGS = @SSE_CFLAGS@
 STRIP = @STRIP@
+TEST_CC = @TEST_CC@
+TEST_CFLAGS = @TEST_CFLAGS@
 VERSION = @VERSION@
 ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
@@ -139,7 +144,6 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-GCC = @GNUCC@
 OPTLIBS = $(am__append_1)
 EXTRA_DIST = include src
 all: all-am
@@ -299,7 +303,7 @@ all: $(OPTLIBS)
 libf3:
 	for f in $(srcdir)/src/*.c; do \
 	  echo compiling $$f; \
-	  $(GCC) -O3 -msse -DSSE_INLINE -I$(top_srcdir)/include -I$(srcdir)/include -c $$f; \
+	  $(SSE_CC) $(SSE_CFLAGS) -I$(top_srcdir)/include -I$(top_builddir)/include -I$(srcdir)/include -c $$f; \
 	done
 	mv -f *.o ../../qla_f3
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

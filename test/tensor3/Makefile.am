@@ -1,5 +1,7 @@
 c = 3
 NC = 3
+CC = @TEST_CC@
+CFLAGS = @TEST_CFLAGS@
 AM_CFLAGS = -I$(top_srcdir)/test/src -I$(top_srcdir)/include
 SRCDIR = ../../lib
 QLAEXTRA = $(SRCDIR)/libqla_int.a \

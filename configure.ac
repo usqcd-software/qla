@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([qla],[1.5.0],[detar@physics.utah.edu])
+AC_INIT([qla],[1.5.1],[detar@physics.utah.edu])
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE
 
@@ -12,7 +12,7 @@ dnl --enable-sse
 AC_ARG_ENABLE(
   sse,
   AC_HELP_STRING([--enable-sse],
-    [use SSE instructions in certain routines (requires gcc)]),
+    [use SSE instructions in certain routines (requires icc or gcc)]),
   AC_SUBST(OPT_SSE, [$enableval]),
   AC_SUBST(OPT_SSE, [no])
 )
@@ -21,11 +21,31 @@ dnl --enable-sse2
 AC_ARG_ENABLE(
   sse2,
   AC_HELP_STRING([--enable-sse2],
-    [use SSE and SSE2 instructions in certain routines (requires gcc)]),
+    [use SSE and SSE2 instructions in certain routines (requires icc or gcc)]),
   AC_SUBST(OPT_SSE2, [$enableval]),
   AC_SUBST(OPT_SSE2, [no])
 )
+
+dnl --enable-sse3
+AC_ARG_ENABLE(
+  sse3,
+  AC_HELP_STRING([--enable-sse3],
+    [use SSE, SSE2 and SSE3 instructions in certain routines (requires icc or gcc)]),
+  AC_SUBST(OPT_SSE3, [$enableval]),
+  AC_SUBST(OPT_SSE3, [no])
+)
+if test "X$OPT_SSE3" != "Xno"; then OPT_SSE2="yes"; fi
 if test "X$OPT_SSE2" != "Xno"; then OPT_SSE="yes"; fi
+if test "X$OPT_SSE3" != "Xno"; then
+  AC_DEFINE_UNQUOTED(QLA_SSE_LEVEL, 3, [SSE level])
+elif test "X$OPT_SSE2" != "Xno"; then
+  AC_DEFINE_UNQUOTED(QLA_SSE_LEVEL, 2, [SSE level])
+elif test "X$OPT_SSE" != "Xno"; then
+  AC_DEFINE_UNQUOTED(QLA_SSE_LEVEL, 1, [SSE level])
+else
+  AC_DEFINE_UNQUOTED(QLA_SSE_LEVEL, 0, [SSE level])
+fi
+
 
 dnl --enable-440
 AC_ARG_ENABLE(
@@ -63,10 +83,29 @@ if test "X$ac_CFLAGS_not_set" = "X1"; then
     CFLAGS=-O
   fi
 fi
+
+AC_ARG_VAR(SSE_CC, [CC used for generating optimized SSE routines])
+AC_ARG_VAR(SSE_CFLAGS, [CFLAGS used for generating optimized SSE routines])
+AC_ARG_VAR(GNUCC, [CC used for compiling older double precision SSE routines (sse2)])
+AC_ARG_VAR(TEST_CC, [CC used for library tests])
+AC_ARG_VAR(TEST_CFLAGS, [CFLAGS used for library tests])
+
+if test "X$SSE_CC" = "X"; then
+  SSE_CC="$CC"
+fi
+if test "X$SSE_CFLAGS" = "X"; then
+  SSE_CFLAGS="$CFLAGS"
+fi
 if test "X$GNUCC" = "X"; then
   if test "X$GCC" = "Xyes"; then GNUCC="$CC"; else
     AC_PATH_PROG([GNUCC], [gcc], [gcc])
   fi
+fi
+if test "X$TEST_CC" = "X"; then
+  TEST_CC="$CC"
+fi
+if test "X$TEST_CFLAGS" = "X"; then
+  TEST_CFLAGS="$CFLAGS"
 fi
 
 # Checks for libraries.
