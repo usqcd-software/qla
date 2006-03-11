@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([qla],[1.5.1],[detar@physics.utah.edu])
+AC_INIT([qla],[1.5.1],[josborn at physics.bu.edu])
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE
 

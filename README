@@ -18,21 +18,22 @@ Some configuration options to be aware of are:
 The sse options are cumulative so that sse2 also includes sse and sse3
 includes sse and sse2.
 
-The sse (not sse2) code now works with both gcc and icc.  It will just use
-the same compiler as used for the rest of the code.  You may have to give
-it the appropriate commands (like -msse or -msse2) for it to compile the
-sse code.
+The sse (not sse2) code now works with both gcc and icc.  It will just
+use the same compiler as used for the rest of the code.  You may have
+to give it the appropriate commands (like -msse or -msse2) for it to
+compile the sse code.
 
-The sse2 code still requires gcc version < 4.0.  If the main compiler is gcc
-then it will use that otherwise it will default to just using the 'gcc'
-command found in the path.  You can specify the correct location of the needed
-gcc compiler by setting the GNUCC environment variable.  This will only be
-used for the sse2 code.  Note however that icc can emulate gcc in some cases
-and may actually be able to compile this code fine.
+The sse2 code still requires gcc.  If the main compiler is gcc then it
+will use that otherwise it will default to just using the 'gcc'
+command found in the path.  You can specify the correct location of
+the needed gcc compiler by setting the GNUCC environment variable.
+This will only be used for the sse2 code.  Note however that icc can
+emulate gcc in some cases and may actually be able to compile this
+code fine.
 
-There are now variables TEST_CC and TEST_CFLAGS which are used only for
-compiling the test suite.  Since the test sources are very large you
-may want to disable optimizations here to reduce compile time.
+There are now variables TEST_CC and TEST_CFLAGS which are used only
+for compiling the test suite.  Since the test sources are very large
+you may want to disable optimizations here to reduce compile time.
 
 An example configure command is:
 
@@ -43,8 +44,7 @@ configure \
   CC=icc \
   CFLAGS="-c99 -O2 -xN -fno-alias -unroll -fp-model fast" \
   TEST_CFLAGS="-c99 -O0 -xN" \
-  LDFLAGS="-static" \
-  GNUCC=gcc-3.4
+  LDFLAGS="-static"
 
 Documentation is included in the doc directory.  This is not included in
 the installation.  See the README file in the doc directory for details.
@@ -64,6 +64,6 @@ Contents of directories in src
 
 
 Bugs and suggestions:
-C. DeTar
-University of Utah
-detar@physics.utah.edu
+James C. Osborn
+Boston University
+josborn at physics.bu.edu
