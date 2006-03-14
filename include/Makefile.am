@@ -6,3 +6,4 @@ include_HEADERS = qla.h \
         qla_complex.h \
         qla_random.h
 
+EXTRA_DIST = qla_sse.h
