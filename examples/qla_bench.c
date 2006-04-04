@@ -122,6 +122,19 @@ main(int argc, char *argv[])
   printf("%-32s: ", "QLA_V_vpeq_M_times_pV");
   printf("time=%6.2f mem=%8.2f mflops=%8.2f\n", time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
 
+  mem = 120;
+  flop = 66;
+  c = cf/(flop+mem);
+  c = cf/200;
+  time1 = -clock();
+  for(i=0; i<c; ++i) {
+    QLA_V_veq_Ma_times_V(v1, m1, v2, n);
+  }
+  time1 += clock();
+  time1 /= CLOCKS_PER_SEC;
+  printf("%-32s: ", "QLA_V_veq_Ma_times_V");
+  printf("time=%6.2f mem=%8.2f mflops=%8.2f\n", time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
+
   mem = 48;
   flop = 6;
   c = cf/(flop+mem);
