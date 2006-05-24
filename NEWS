@@ -1,55 +1,201 @@
-===========================================================================
-SciDAC QLA C interface
-===========================================================================
-Version 1.5.0
-November 30, 2005
+===============================================================================
+2006-05-23	version 1.5.3
+===============================================================================
+2006-05-23:	James Osborn
+	Fix compilation on Mac OS/X.
+	Source file names are now mangled to prevent clashes due to case.
+	Lower case types now have the abbreviation doubled in the file name.
+	The API is not affected.
 
+2006-04-03:	James Osborn
+	Added some more SSE routines.
+
+===============================================================================
+2006-03-13	version 1.5.2
+===============================================================================
+2006-03-13:	James Osborn
+	Added qla_sse.h to include/Makefile.am.
+
+===============================================================================
+2006-03-10	version 1.5.1
+===============================================================================
+2006-03-10:	James Osborn
+	Added TEST_CC and TEST_CFLAGS variables to set compiler and flags
+	used for the test suite.
+
+2006-03-07:	James Osborn
+	Reworked SSE routines to work with both gcc and icc.  This is only
+	for sse not sse2 which will still try to use gcc.
+	Added some more SSE routines.
+	The new routines check for alignment and then call the appropriate
+	routine.  The checking is not perfect and there is still the
+	possibility of an alignment error on poorly aligned data.
+
+===============================================================================
+2005-11-30	version 1.5.0
+===============================================================================
 Some functions involving the eqm, peq, and meq varieties of global sums
 have been removed.  Use the eq form and then accumulate separately.
-===========================================================================
-Version 1.4
-November 10, 2005
 
-See Changelog for changes.
+2005-11-29: Removed optimized C routine since generated code is similar now.
+2005-11-26: Updated test suite to include all remaining new functions.
+            Increased tolerance on tests so that fewer errors are reported.
+2005-11-26: Removed unnecessary functions that weren't being tested.
+            This involves only the eqm, peq and meq varieties of global sums.
+2005-11-25: Improved perl generated source for Power architectures.
+
+===========================================================================
+2005-11-19	version 1.4.1
+===========================================================================
+2005-11-19: Added the optimized C routine: QLA_F3_V_vpeq_M_times_pV.c
+2005-11-19: Removed restrict from the headers so C99 isn't necessary to link.
+
+===========================================================================
+2005-11-10	version 1.4
+===========================================================================
 Note that the internal layout for some fields has changed so all codes
 linking to QLA should be recompiled for this version.
-===========================================================================
-Version 1.3
-April 27, 2005
 
+2005-11-10: Changed layout of spin objects to better accommodate SSE.
+2005-10-08: Improved perl generated source.
+2005-10-03: Added some functions to help with Wilson type fermions.
+
+===========================================================================
+2005-06-15	version 1.3.1
+===========================================================================
+Improved some of the SSE routines.
+
+===========================================================================
+2005-04-27	version 1.3
+===========================================================================
 Rearranged directories to have a top level lib and include.
 Now available from Jlab CVS.
-===========================================================================
-Version 1.2
-September 4, 2003
 
+===========================================================================
+2003-09-04	version 1.2
+===========================================================================
 This is the third beta release of the QLA C library.  Again it has passed
 many tests and is coming closer to having a stable interface.
 
 The major changes are:
-1.	Conversion to use autoconf and automake.
-2.	Inclusion of a few optimized routines for specific architectures.
-3.	A few new functions (see ChangeLog for details).
-===========================================================================
-Version 1.1
-February 4, 2003
+Conversion to use autoconf and automake.
+Added macro QLA_Ns in qla_types.h set to the number of spins (default 4).
+Added functions QLA_S_eq_S with all indexing varieties.
+Inclusion of a few optimized routines for specific architectures.
 
+===========================================================================
+2003-02-04	version 1.1 released
+===========================================================================
 This is a second beta release of the QLA C library.  Like version 1.0
 it has passed a battery of tests, but should still be used with caution.
 
-The major changes are:
-1.	Dropped the equivalent Gauge and StaggeredPropagator types and
-	consolidated to a "ColorMatrix" type with type code "M" (which
-	was previously used for StaggeredPropagator).
-2.	Changed StaggeredFermion to ColorVector.
-3.	A new long double type with code "Q" has been introduced.
-	This is currently only used in a small set of functions.
-4.	Several more new or changed functions.  See the ChangeLog file
-	for a detailed list.
-===========================================================================
-Version 1.0
-November 10, 2002
+1. Dropped the equivalent Gauge and StaggeredPropagator types and
+   consolidated to a "ColorMatrix" type with type code "M" (which
+   was previously used for StaggeredPropagator).
 
+2. Changed StaggeredFermion to ColorVector.
+
+3. Introduced enhanced precision for the result of global reductions.
+
+   A new long double type with code "Q" has been introduced.
+   Its use is limited to returning results from global reductions
+   and to type conversion back to double.
+
+   Global reductions may now produce results in the same precision
+   as the source, or in the next higher precision.
+
+   e.g. QLA_QD3_m_eq_sum_M gives result as type QLA_Q3_ColorMatrix
+
+   The addition of long double results requires the possibility of
+   conversion from long double back to double.  e.g. QLA_DQ3_M_veq_M
+
+   This change adds new libraries and headers with identifiers qla_dq,
+   qla_dq3, qla_dq2, qla_dqn, qla_q, qla_q2, qla_q3, qla_qn, and new
+   accessors, e.g. QLA_Q_elem_M.
+
+4. New elementary unary functions:
+
+    ceil, floor, cosh, sinh, tanh, log10
+
+5. New elementary binary functions added to mod, min, max
+  
+    ldexp, pow, atan2
+
+   The naming conventions may seem a bit idiosyncratic...
+
+    QLA_F_R_eq_R_atan2_R, QLA_F_R_eq_R_pow_R, QLA_F_R_eq_R_ldexp_I
+
+6. Local squared norm and local inner product
+
+   Rather than performing a reduction, these operations generate
+   a Real or Complex array.  e.g.
+
+    QLA_F3_R_xeq_norm2_M, QLA_D2_C_veq_D_dot_D
+
+   We also include the real part of the inner product, as in
+
+    QLA_D3_R_veq_re_V_dot_V
+
+   The allowed source types now include matrices as well as vectors,
+   as illustrated.  The meaning of inner product for matrices A, B is
+   the natural choice: Tr (A^\dagger B)
+
+   We have tried to maintain the parallelism in reduction operations:
+
+     QLA_D3_r_veq_re_D_dot_D
+
+   The change to lowercase r distinguishes global from local
+   operation.
+
+7. Real to integer conversion...
+
+   We now distinguish truncation and rounding.  Previously we had
+   only truncation, so we change the name
+
+      QLA_F_I_eqop_R -> QLA_F_I_eqop_trunc_R
+
+   and introduce
+
+      QLA_F_I_eqop_round_R
+
+   Since "round" was first introduced in the standard C library in C99,
+   we provide a version of "round" for older compilers.  The source
+   code is in the subdirectory c99-src and the library is libqla_c99.a
+   (just one module for now!).
+
+8. Other added functions
+
+    M_eqop_spintrace_P
+    T_eqop_i_T (multiplication by i for all complex types)
+    C_eq_C_divide_C
+    I_eq_I_divide_I   
+
+9. Integer reductions now produce only a Real type result:
+
+    i_eqop_sum_I -> r_eqop_sum_I
+    i_eqop_I_dot_I -> r_eqop_I_dot_I
+    i_eqop_norm2_I -> r_eqop_norm2_I
+
+10. A new real part of the global inner product
+
+    e.g. QLA_F3_r_veq_re_D_dot_D
+
+11. Miscellaneous name changes
+
+      plus_i_times_R -> plus_i_R
+      realtrace_M -> re_trace_M
+      imagtrace_M -> im_trace_M
+      Re -> re
+      Im -> im
+
+12. New complex macros for computing the real and imaginary parts
+    of products:
+
+      e.g. QLA_r_peq_Re_ca_times_c for Re(a^* * b)
+
+===========================================================================
+2002-11-10	Initial release - version 1.0
+===========================================================================
 This is the first beta release of the QLA C library.  It has passed a
 battery of tests, but should be used with caution in production running
 until we have had more experience with it.
@@ -59,4 +205,5 @@ straightforward workable code is produced with no particular effort
 made to help the compiler with optimization.
 
 Future releases will feature selected performance tests.
+
 ===========================================================================

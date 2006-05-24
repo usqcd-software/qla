@@ -95,13 +95,13 @@ require("operatortypes.pl");
 #---------------------------------------------------------------------
 #
 #  Same keys as dest, but with "dest" -> "src2"
-#  
+#
 #---------------------------------------------------------------------
 #      Source argument 3
 #---------------------------------------------------------------------
 #
 #  Same keys as dest, but with "dest" -> "src3"
-#  
+#
 #---------------------------------------------------------------------
 
 
@@ -412,7 +412,10 @@ sub make_prototype {
     local($func_name,$declaration);
     local($arg,$v);
     local(%argstring);
-    
+    # need to mangle file names on case-insensitive file systems
+    local($func_name_mangled);
+    local(%argstring_mangled);
+
     ############################################################
     # Function name
     ############################################################
@@ -442,13 +445,13 @@ sub make_prototype {
 
     # Stop here if prefix does not match target or its alternate
     return 0 if ($def{'prefix'} ne $target && $def{'prefix'} ne $target2);
-    
+
     #----------------------------------------
     # Build strings for each argument in use
     # Set transpose, complex conjugate, real-complex
     #----------------------------------------
     # e.g.  "pGa"
-    
+
     foreach $arg ( 'dest','src1','src2','src3' ){
 	if(defined($def{$arg.'_t'})){
 
@@ -456,6 +459,14 @@ sub make_prototype {
 	    $def{$arg.'_idx_pfx'} = $ind_idx_prefix{"$arg,$indexing"};
 	    $argstring{$arg} = $def{$arg.'_ptr_pfx'}.$def{$arg.'_idx_pfx'}.
 		$def{$arg.'_t'}.$def{$arg.'_adj'}.$def{$arg.'_sfx'};
+
+	    $mangled_t = $def{$arg.'_t'};
+	    if($mangled_t =~ /[a-z]/) {
+	      $mangled_t .= $mangled_t;
+	    }
+	    $argstring_mangled{$arg} = $def{$arg.'_ptr_pfx'}.
+	      $def{$arg.'_idx_pfx'}.$mangled_t.
+		$def{$arg.'_adj'}.$def{$arg.'_sfx'};
 
 	    # Adjoint forces transpose and complex conjugate
 	    if($def{$arg.'_adj'} eq $suffix_adjoint){
@@ -473,23 +484,29 @@ sub make_prototype {
     #---------------------------------------------------
     # Build dest and assignment part of the function name
     #---------------------------------------------------
-    
+
     $func_name = $argstring{'dest'};
+    $func_name_mangled = $argstring_mangled{'dest'};
     $func_name .= $dash.$ind_assignop_prefix{$indexing}.$assgn;
+    $func_name_mangled .= $dash.$ind_assignop_prefix{$indexing}.$assgn;
     if($def{'qualifier'} ne ""){$func_name .= $dash.$def{'qualifier'};}
-    
+    if($def{'qualifier'} ne ""){$func_name_mangled .= $dash.$def{'qualifier'};}
+
     #----------------------------------------
     # Append source parts (with ops)
     #----------------------------------------
 
     if(defined($def{'src1_t'})){
 	$func_name .= $dash.$argstring{'src1'};
+	$func_name_mangled .= $dash.$argstring_mangled{'src1'};
     }
     if(defined($def{'src2_t'})){
 	$func_name .= $dash.$def{'op'}.$dash.$argstring{'src2'};
+	$func_name_mangled .= $dash.$def{'op'}.$dash.$argstring_mangled{'src2'};
     }
     if(defined($def{'src3_t'})){
 	$func_name .= $dash.$def{'op2'}.$dash.$argstring{'src3'};
+	$func_name_mangled .= $dash.$def{'op2'}.$dash.$argstring_mangled{'src3'};
     }
 
     # The generic name leaves off the color and precision label.
@@ -511,19 +528,20 @@ sub make_prototype {
     # The specific function name has the full prefix
 
     $func_name = $def{'prefix'}.$dash.$func_name;
+    $func_name_mangled = $def{'prefix'}.$dash.$func_name_mangled;
 
     # Save completed function name 
 
     $def{'func_name'} = $func_name;
-    
+
     ############################################################
     # Declaration
     ############################################################
-    
+
     $declaration = "void $func_name ( ";
-    
+
     # Add nc argument if needed
-    
+
     if($colors eq $colors_n && $colorful > 0){
 	$declaration .= "int $arg_nc, ";
 	$def{'nc'} = $arg_nc;
@@ -531,21 +549,21 @@ sub make_prototype {
     else{
 	$def{'nc'} = $colors;
     }
-    
+
     #---------------------------------------------------------------
     # Generate destination and source arguments and array dimensions
     #---------------------------------------------------------------
-    
+
     foreach $arg ( 'dest','src1','src2','src3' ){
 	if(defined($def{$arg.'_t'})){
 	    # Use standard type, if not specified
 	    if( $def{$arg.'_type'} eq "" ) { 
 		$def{$arg.'_type'} = &datatype_specific($def{$arg.'_t'}); }
-	    
+
 	    # Use default names of arguments, if not specified.
 	    if( $def{$arg.'_name'} eq "" ){ 
 		$def{$arg.'_name'} = $arg_name{$arg}; }
-	    
+
 	    # Use default names of extra index arguments, if needed.
 	    if( $def{$arg.'_idx_pfx'} eq $index_pfx ){ 
 		$def{$arg.'_index_name'} = $arg_index_name{$arg}; }
@@ -569,7 +587,7 @@ sub make_prototype {
     $declaration .= $def{'dest_extra_arg'};
 
     # Source arguments
-    
+
     foreach $arg ( 'src1', 'src2', 'src3' ){
 	if(defined($def{$arg.'_t'})){
 	    $v = $def{$arg.'_type'};
@@ -579,29 +597,29 @@ sub make_prototype {
 				      $def{$arg.'_index_name'});
 	}
 	$declaration .= $def{$arg.'_extra_arg'};
-    }    
-    
+    }
+
     #---------------------------------------------
     # Add gang index array argument, if called for
     #---------------------------------------------
-    
+
     if($ind_needs_gang_index{$indexing} == 1){
 	$declaration .= ", int *$arg_gang_index ";
 	$def{'gang_index_name'} = $arg_gang_index;
     }
-    
+
     #--------------------------------------------
     # Add array dimension argument, if called for
     #--------------------------------------------
-    
+
     if($ind_needs_dim{$indexing} == 1){
 	$declaration .= ", int $arg_dim ";
 	$def{'dim_name'} = $arg_dim;
     }
-    
+
     # Close parenthesis
     $declaration .= ")";
-    
+
     ############################################################
     # Print the prototype with comments
     ############################################################
@@ -636,17 +654,17 @@ sub make_prototype {
     ############################################################
     # Build names of indexed, dereferenced values for code
     ############################################################
-    
+
     foreach $arg ( 'dest','src1','src2','src3' ){
 	$def{$arg.'_value'} = &make_atomic_value(
              @def{$arg.'_ptr_pfx',$arg.'_t',$arg.'_name',
 		  $arg.'_index_name','gang_index_name','dim_name'});
     }
-    
+
     ############################################################
     # Load individual hash tables for arguments
     ############################################################
-    
+
     %dest_def = (); &load_arg_hash(*dest_def,'dest');
     %src1_def = (); &load_arg_hash(*src1_def,'src1');
     %src2_def = (); &load_arg_hash(*src2_def,'src2');
@@ -655,7 +673,8 @@ sub make_prototype {
     ############################################################
     # Open source file. Name is function name dot c
     ############################################################
-    $def{'src_filename'} = $def{'func_name'}.'.c';
+#    $def{'src_filename'} = $def{'func_name'}.'.c';
+    $def{'src_filename'} = $func_name_mangled.'.c';
 
     return 1;
 }
