@@ -462,7 +462,7 @@ sub make_prototype {
 
 	    $mangled_t = $def{$arg.'_t'};
 	    if($mangled_t =~ /[a-z]/) {
-	      $mangled_t .= $mangled_t;
+	      $mangled_t = $mangled_t."1";
 	    }
 	    $argstring_mangled{$arg} = $def{$arg.'_ptr_pfx'}.
 	      $def{$arg.'_idx_pfx'}.$mangled_t.
