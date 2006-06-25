@@ -2,12 +2,11 @@
 
 LATEX = @LATEX@
 
-VER     = 1p1
 HTMLDIR = html
-PS      = qla_${VER}.ps
-SRC     = qla_${VER}.tex
-DSRC    = $(srcdir)/qla_${VER}.tex
-DVI     = qla_${VER}.dvi
+PS      = qla.ps
+SRC     = qla.tex
+DSRC    = $(srcdir)/qla.tex
+DVI     = qla.dvi
 
 .PHONY: ps
 ps: ${PS}
@@ -35,4 +34,4 @@ doc-distclean: doc-clean
 clean-local: doc-clean
 distclean-local: doc-distclean
 
-EXTRA_DIST = qla_1p1.tex README
+EXTRA_DIST = qla.tex

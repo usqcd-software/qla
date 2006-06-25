@@ -452,21 +452,21 @@ rem(`chkGammamult')
 define(chkGammamult,`
   /* Implementation dependent! */
   strcpy(name,"QLA_P_eq_gamma_times_P");
-  for(mu=-1;mu<4;mu++){
+  for(mu=0;mu<16;mu++){
     QLA_P_eq_gamma_times_P(&argd(P),&arg1(P),mu);
     mult_by_gamma_left(&argt(P),&arg1(P),mu);
     checkeqsngPP(&argd(P),&argt(P),name);
   }
 
   strcpy(name,"QLA_D_eq_gamma_times_D");
-  for(mu=-1;mu<4;mu++){
+  for(mu=0;mu<16;mu++){
     QLA_D_eq_gamma_times_D(&argd(D),&arg1(D),mu);
     mult_wv_by_gamma_left(&argt(D),&arg1(D),mu);
     checkeqsngDD(&argd(D),&argt(D),name);
   }
 
   strcpy(name,"QLA_P_eq_P_times_gamma");
-  for(mu=-1;mu<4;mu++){
+  for(mu=0;mu<16;mu++){
     QLA_P_eq_P_times_gamma(&argd(P),&arg1(P),mu);
     mult_by_gamma_right(&argt(P),&arg1(P),mu);
     checkeqsngPP(&argd(P),&argt(P),name);

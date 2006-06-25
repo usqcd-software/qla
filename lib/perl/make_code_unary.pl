@@ -182,13 +182,13 @@ sub make_code_spproj_sprecon {
     local($eqop,$mu,$sign,$qualifier) = @_;
 
     &print_very_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
+
     if($def{'qualifier'} eq "spproj") {
-      #&print_val_assign_spproj(*dest_def,$eqop,*src1_def,$mu,$sign);
       &print_val_assign_spin($eqop, $mu, $sign, \&spproj_func);
     } else {
-      #&print_val_assign_sprecon(*dest_def,$eqop,*src1_def,$mu,$sign);
       &print_val_assign_spin($eqop, $mu, $sign, \&sprecon_func);
     }
+
     &print_very_end_matter($var_i,$def{'dim_name'});
 }
 
@@ -227,24 +227,6 @@ sub make_code_wilsonspin {
 
     &print_very_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
 
-#    print_def($mytemp{type}, $mytemp{value});
-
-#    if($def{dim_name} ne "") {
-#      make_temp_ptr(%dest_def,$def{dest_name});
-#      make_temp_ptr(%src1_def,$def{src1_name});
-#    }
-
-#    print QLA_SRC @indent, "{\n";
-#    push @indent, "  ";
-#    &print_val_assign_spproj( *mytemp, "eq", *src1_def, $mu, $sign );
-#    pop @indent;
-#    print QLA_SRC @indent, "}\n";
-
-#    print QLA_SRC @indent, "{\n";
-#    push @indent, "  ";
-#    &print_val_assign_sprecon( *dest_def, $eqop, *mytemp, $mu, $sign );
-#    pop @indent;
-#    print QLA_SRC @indent, "}\n";
     &print_val_assign_spin($eqop, $mu, $sign, \&wilsonspin_func);
 
     &print_very_end_matter($var_i,$def{'dim_name'});
@@ -254,11 +236,27 @@ sub make_code_wilsonspin {
 # Code for left or right multiplication by gamma matrix
 #---------------------------------------------------------------------
 
+sub mult_gamma_func {
+  local($eqop, $leftright, $g) = @_;
+
+  &print_def_open_iter($var_i,$def{'dim_name'});
+  if($def{dim_name} ne "") {
+    make_temp_ptr(*dest_def,$def{dest_name});
+    make_temp_ptr(*src1_def,$def{src1_name});
+  }
+
+  print_val_assign_gamma_times_dirs(*dest_def,*src1_def,$eqop,$leftright,$g);
+
+  if($def{'dim_name'} ne "") {
+    &close_iter($var_i);
+  }
+}
+
 sub make_code_mult_gamma {
     local($eqop,$mu,$leftright) = @_;
 
     &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
-    &print_val_assign_gamma_times(*dest_def,$eqop,*src1_def,$mu,$leftright);
+    &print_val_assign_gamma_times($eqop, $mu, $leftright, \&mult_gamma_func);
     &print_end_matter($var_i,$def{'dim_name'});
 }
 
@@ -283,7 +281,7 @@ sub make_code_norm2_global_sum {
     &print_function_def($def{'declaration'});
     &print_nonregister_def($global_type,$var_global_sum);
     &print_fill(*global_def,"zero");
-    
+
     &open_brace();
     &open_block();
     &print_def_open_iter($var_i,$def{'dim_name'});

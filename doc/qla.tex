@@ -1,4 +1,4 @@
-% -*-LaTeX-*- document QLA API (C Language Binding) version 1.1
+% -*-LaTeX-*- document QLA API (C Language Binding) version 1.2
 %
 \documentclass{article}
 
@@ -243,7 +243,7 @@ The scalar variants of the reduction functions are equivalent to an assignment.
 
 \begin{document}
 \title{
-   QLA Linear Algebra Interface for QCD \\{\large Version 1.1}
+   QLA Linear Algebra Interface for QCD \\{\large Version 1.2}
 }
 \author{ SciDAC Software Coordinating Committee}
 
@@ -1058,8 +1058,71 @@ except that the arguments are all values, rather than pointers.
 
 \subsection{Gamma matrices}
 
-Until we have decided on a standard, gamma matrices are numbered from
-$\mu = -1$ to $3$ with $\mu = -1$ specifying $\gamma_5$.
+The gamma matrix basis used is:
+
+\[
+\begin{array}{ccccccc}
+\gamma_1
+ &=& \left(\begin{array}{rrrr}
+   0&0&0&i\\
+   0&0&i&0\\
+   0&-i&0&0\\
+   -i&0&0&0\\
+ \end{array}\right)
+ &=& \left(\begin{array}{rr}
+   0&i\sigma_1\\
+   -i\sigma_1&0
+ \end{array}\right)
+ &=& -\sigma_2\!\otimes\!\sigma_1\\
+\gamma_2
+ &=& \left(\begin{array}{rrrr}
+   0&0&0&-1\\
+   0&0&1&0\\
+   0&1&0&0\\
+   -1&0&0&0\\
+ \end{array}\right)
+ &=& \left(\begin{array}{rr}
+   0&-i\sigma_2\\
+   i\sigma_2&0
+ \end{array}\right)
+ &=& \sigma_2\!\otimes\!\sigma_2\\
+\gamma_3
+ &=& \left(\begin{array}{rrrr}
+   0&0&i&0\\
+   0&0&0&-i\\
+   -i&0&0&0\\
+   0&i&0&0\\
+ \end{array}\right)
+ &=& \left(\begin{array}{rr}
+   0&i\sigma_3\\
+   -i\sigma_3&0
+ \end{array}\right)
+ &=& -\sigma_2\!\otimes\!\sigma_3\\
+\gamma_4
+ &=& \left(\begin{array}{rrrr}
+   0&0&1&0\\
+   0&0&0&1\\
+   1&0&0&0\\
+   0&1&0&0\\
+ \end{array}\right)
+ &=& \left(\begin{array}{rr}
+   0&\mathbf{1}\\
+   \mathbf{1}&0
+ \end{array}\right)
+ &=& \sigma_1\!\otimes\!1\\
+\end{array}
+\]
+
+This is a chiral basis and is the same basis currently used in QDP++.
+
+For functions that multiply by a gamma matrix the gamma matrix is
+specified by an integer between 0 and 15.  The mapping from the integer
+to a general gamma matrix is:
+ \[
+\Gamma(n) = \gamma_1^{n_0} \gamma_2^{n_1} \gamma_3^{n_2} \gamma_4^{n_3}
+\]
+where the binary representation of $n$ is $n_3 n_2 n_1 n_0$.
+
 
 \subsection{Random numbers}
 

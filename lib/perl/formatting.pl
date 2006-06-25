@@ -72,9 +72,9 @@ sub open_iter {
     local($i,$max)= @_;
 
     if($i ne ""){
-	print QLA_SRC @indent,"for($i=0;$i<$max;$i++)\n";
+	print QLA_SRC @indent,"for($i=0; $i<$max; $i++) {\n";
 	&open_block();
-	&open_brace();
+#	&open_brace();
     }
 }
 
@@ -83,7 +83,7 @@ sub close_iter {
 
     if($i ne ""){
 	&close_brace();
-	&close_block();
+#	&close_block();
     }
 }
 

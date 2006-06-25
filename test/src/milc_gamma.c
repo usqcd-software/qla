@@ -1,5 +1,8 @@
 /* MILC convention gamma matrix algebra
 
+  Changed back to old MILC (and curent Chroma) convention of -gamma(YUP).
+  J. Osborn 6/35/06
+
   Adapted from MILC code for use in verifying the QLA gamma matrix
   operations.  Uses standard sign convention for gamma(YUP).
   C. DeTar 10/23/02
@@ -68,10 +71,10 @@
            -i  0  0  0		( 0, 1,+i, 0)	-1
 
  gamma(YUP)			eigenvectors	eigenvalue
- 	    0  0  0  1		( 1, 0, 0, 1)	+1
-            0  0 -1  0		( 0, 1,-1, 0)	+1
-            0 -1  0  0		( 1, 0, 0,-1)	-1
-            1  0  0  0		( 0, 1, 1, 0)	-1
+ 	    0  0  0 -1		( 1, 0, 0,-1)	+1
+            0  0  1  0		( 0, 1, 1, 0)	+1
+            0  1  0  0		( 1, 0, 0, 1)	-1
+           -1  0  0  0		( 0, 1,-1, 0)	-1
 
  gamma(ZUP)			eigenvectors	eigenvalue
  	    0  0  i  0		( 1, 0,-i, 0)	+1
@@ -126,18 +129,6 @@ void wp_shrink( QLA_HalfFermion *dest, QLA_DiracFermion *src,
   case YUP:
     for(i=0;i<nc;i++){
       QLA_real(QLA_elem_H(*dest,i,0)) = QLA_real(QLA_elem_D(*src,i,0)) 
-	+ QLA_real(QLA_elem_D(*src,i,3));
-      QLA_imag(QLA_elem_H(*dest,i,0)) = QLA_imag(QLA_elem_D(*src,i,0)) 
-	+ QLA_imag(QLA_elem_D(*src,i,3));
-      QLA_real(QLA_elem_H(*dest,i,1)) = QLA_real(QLA_elem_D(*src,i,1)) 
-	- QLA_real(QLA_elem_D(*src,i,2));
-      QLA_imag(QLA_elem_H(*dest,i,1)) = QLA_imag(QLA_elem_D(*src,i,1)) 
-	- QLA_imag(QLA_elem_D(*src,i,2));
-    }
-    break;
-  case YDOWN:
-    for(i=0;i<nc;i++){
-      QLA_real(QLA_elem_H(*dest,i,0)) = QLA_real(QLA_elem_D(*src,i,0)) 
 	- QLA_real(QLA_elem_D(*src,i,3));
       QLA_imag(QLA_elem_H(*dest,i,0)) = QLA_imag(QLA_elem_D(*src,i,0)) 
 	- QLA_imag(QLA_elem_D(*src,i,3));
@@ -145,6 +136,18 @@ void wp_shrink( QLA_HalfFermion *dest, QLA_DiracFermion *src,
 	+ QLA_real(QLA_elem_D(*src,i,2));
       QLA_imag(QLA_elem_H(*dest,i,1)) = QLA_imag(QLA_elem_D(*src,i,1)) 
 	+ QLA_imag(QLA_elem_D(*src,i,2));
+    }
+    break;
+  case YDOWN:
+    for(i=0;i<nc;i++){
+      QLA_real(QLA_elem_H(*dest,i,0)) = QLA_real(QLA_elem_D(*src,i,0)) 
+	+ QLA_real(QLA_elem_D(*src,i,3));
+      QLA_imag(QLA_elem_H(*dest,i,0)) = QLA_imag(QLA_elem_D(*src,i,0)) 
+	+ QLA_imag(QLA_elem_D(*src,i,3));
+      QLA_real(QLA_elem_H(*dest,i,1)) = QLA_real(QLA_elem_D(*src,i,1)) 
+	- QLA_real(QLA_elem_D(*src,i,2));
+      QLA_imag(QLA_elem_H(*dest,i,1)) = QLA_imag(QLA_elem_D(*src,i,1)) 
+	- QLA_imag(QLA_elem_D(*src,i,2));
     }
     break;
   case ZUP:
@@ -280,16 +283,16 @@ void wp_grow(  QLA_DiracFermion *dest, QLA_HalfFermion *src,
 	for(i=0;i<nc;i++){
 	    QLA_elem_D(*dest,i,0)      = QLA_elem_H(*src,i,0);
 	    QLA_elem_D(*dest,i,1)      = QLA_elem_H(*src,i,1);
-	    QLA_c_eq_c(QLA_elem_D(*dest,i,3) , QLA_elem_H(*src,i,0));
-	    QLA_c_eqm_c(QLA_elem_D(*dest,i,2) ,  QLA_elem_H(*src,i,1));
+	    QLA_c_eqm_c(QLA_elem_D(*dest,i,3) ,  QLA_elem_H(*src,i,0));
+	    QLA_c_eq_c(QLA_elem_D(*dest,i,2) , QLA_elem_H(*src,i,1));
 	}
 	break;
     case YDOWN:
 	for(i=0;i<nc;i++){
 	    QLA_elem_D(*dest,i,0)      = QLA_elem_H(*src,i,0);
 	    QLA_elem_D(*dest,i,1)      = QLA_elem_H(*src,i,1);
-	    QLA_c_eqm_c(QLA_elem_D(*dest,i,3) ,  QLA_elem_H(*src,i,0));
-	    QLA_c_eq_c(QLA_elem_D(*dest,i,2) , QLA_elem_H(*src,i,1));
+	    QLA_c_eq_c(QLA_elem_D(*dest,i,3) , QLA_elem_H(*src,i,0));
+	    QLA_c_eqm_c(QLA_elem_D(*dest,i,2) ,  QLA_elem_H(*src,i,1));
 	}
 	break;
     case ZUP:
@@ -354,7 +357,23 @@ void wp_grow(  QLA_DiracFermion *dest, QLA_HalfFermion *src,
 
 */
 
-void mult_by_gamma_left(  QLA_DiracPropagator *dest, QLA_DiracPropagator *src,  int dir ){
+void
+mult_by_gamma_left(QLA_DiracPropagator *dest, QLA_DiracPropagator *src,
+		   int dir )
+{
+  QLA_DiracPropagator p;
+  int i;
+
+  memcpy(dest, src, sizeof(QLA_DiracPropagator));
+  for(i=3; i>=0; i--) {
+    if((dir>>i)&1) {
+      memcpy(&p, dest, sizeof(QLA_DiracPropagator));
+      mult_by_gamma_left2(dest, &p, i);
+    }
+  }
+}
+
+void mult_by_gamma_left2(  QLA_DiracPropagator *dest, QLA_DiracPropagator *src,  int dir ){
   register int i; /*color*/
   register int c2,s2;	/* column indices, color and spin */
   int nc = QLA_Nc;
@@ -379,16 +398,16 @@ void mult_by_gamma_left(  QLA_DiracPropagator *dest, QLA_DiracPropagator *src,  
     break;
   case YUP:
     for(i=0;i<nc;i++)for(s2=0;s2<ns;s2++)for(c2=0;c2<nc;c2++){
-      QLA_c_eq_c(
+      QLA_c_eqm_c(
 		  QLA_elem_P(*dest,i,0,c2,s2),
 		  QLA_elem_P(*src,i,3,c2,s2));
-      QLA_c_eqm_c(
+      QLA_c_eq_c(
 		 QLA_elem_P(*dest,i,1,c2,s2),
 		 QLA_elem_P(*src,i,2,c2,s2));
-      QLA_c_eqm_c(
+      QLA_c_eq_c(
 		 QLA_elem_P(*dest,i,2,c2,s2),
 		 QLA_elem_P(*src,i,1,c2,s2));
-      QLA_c_eq_c(
+      QLA_c_eqm_c(
 		  QLA_elem_P(*dest,i,3,c2,s2),
 		  QLA_elem_P(*src,i,0,c2,s2));
     }
@@ -455,7 +474,23 @@ void mult_by_gamma_left(  QLA_DiracPropagator *dest, QLA_DiracPropagator *src,  
 
 */
 
-void mult_wv_by_gamma_left(  QLA_DiracFermion *dest, QLA_DiracFermion *src,  int dir ){
+void
+mult_wv_by_gamma_left(QLA_DiracFermion *dest, QLA_DiracFermion *src,
+		      int dir )
+{
+  QLA_DiracFermion p;
+  int i;
+
+  memcpy(dest, src, sizeof(QLA_DiracFermion));
+  for(i=3; i>=0; i--) {
+    if((dir>>i)&1) {
+      memcpy(&p, dest, sizeof(QLA_DiracFermion));
+      mult_wv_by_gamma_left2(dest, &p, i);
+    }
+  }
+}
+
+void mult_wv_by_gamma_left2(  QLA_DiracFermion *dest, QLA_DiracFermion *src,  int dir ){
   register int i; /*color*/
   int nc = QLA_Nc;
   
@@ -478,16 +513,16 @@ void mult_wv_by_gamma_left(  QLA_DiracFermion *dest, QLA_DiracFermion *src,  int
     break;
   case YUP:
     for(i=0;i<nc;i++){
-      QLA_c_eq_c(
+      QLA_c_eqm_c(
 		  QLA_elem_D(*dest,i,0),
 		  QLA_elem_D(*src,i,3));
-      QLA_c_eqm_c(
+      QLA_c_eq_c(
 		 QLA_elem_D(*dest,i,1),
 		 QLA_elem_D(*src,i,2));
-      QLA_c_eqm_c(
+      QLA_c_eq_c(
 		 QLA_elem_D(*dest,i,2),
 		 QLA_elem_D(*src,i,1));
-      QLA_c_eq_c(
+      QLA_c_eqm_c(
 		  QLA_elem_D(*dest,i,3),
 		  QLA_elem_D(*src,i,0));
     }
@@ -555,6 +590,22 @@ void mult_wv_by_gamma_left(  QLA_DiracFermion *dest, QLA_DiracFermion *src,  int
    dir = XUP, YUP, ZUP, TUP or GAMMAFIVE
 */   
 
+void
+mult_by_gamma_right(QLA_DiracPropagator *dest, QLA_DiracPropagator *src,
+		    int dir )
+{
+  QLA_DiracPropagator p;
+  int i;
+
+  memcpy(dest, src, sizeof(QLA_DiracPropagator));
+  for(i=0; i<4; i++) {
+    if((dir>>i)&1) {
+      memcpy(&p, dest, sizeof(QLA_DiracPropagator));
+      mult_by_gamma_right2(dest, &p, i);
+    }
+  }
+}
+
 void mult_by_gamma_right( QLA_DiracPropagator *dest, QLA_DiracPropagator *src, int dir ){
   register int i; /*color*/
   register int c1,s1;	/* row indices, color and spin */
@@ -580,16 +631,16 @@ void mult_by_gamma_right( QLA_DiracPropagator *dest, QLA_DiracPropagator *src, i
     break;
   case YUP:
     for(i=0;i<nc;i++)for(s1=0;s1<ns;s1++)for(c1=0;c1<nc;c1++){
-      QLA_c_eq_c(
+      QLA_c_eqm_c(
 		  QLA_elem_P(*dest,c1,s1,i,0),
 		  QLA_elem_P(*src,c1,s1,i,3));
-      QLA_c_eqm_c(
+      QLA_c_eq_c(
 		 QLA_elem_P(*dest,c1,s1,i,1),
 		 QLA_elem_P(*src,c1,s1,i,2));
-      QLA_c_eqm_c(
+      QLA_c_eq_c(
 		 QLA_elem_P(*dest,c1,s1,i,2),
 		 QLA_elem_P(*src,c1,s1,i,1));
-      QLA_c_eq_c(
+      QLA_c_eqm_c(
 		  QLA_elem_P(*dest,c1,s1,i,3),
 		  QLA_elem_P(*src,c1,s1,i,0));
     }
