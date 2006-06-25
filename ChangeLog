@@ -1,3 +1,11 @@
+2006-06-25 01:50  osborn
+
+	* doc/Makefile.am, doc/README, doc/qla.tex,
+	  lib/perl/expressions_gamma.pl, lib/perl/formatting.pl,
+	  lib/perl/make_code_binary.pl, lib/perl/make_code_unary.pl,
+	  test/src/milc_gamma.c, test/src/protocol_tensor_sng.m4: Working
+	  on changing gamma matrix conventions to agree with QDP++.
+
 2006-05-25 01:24  tag qla1-5-4
 
 2006-05-25 01:24  osborn
@@ -415,7 +423,7 @@
 
 	* config/compile, config/depcomp, config/install-sh,
 	  config/missing, config/mkinstalldirs, doc/Makefile.am,
-	  doc/README, doc/qla_1p1.tex, include/Makefile.am, include/qla.h,
+	  doc/README, doc/qla.tex, include/Makefile.am, include/qla.h,
 	  include/qla_cmath.h, include/qla_complex.h,
 	  include/qla_config.h.in, include/qla_random.h,
 	  include/qla_types.h: Still adding initial files.
