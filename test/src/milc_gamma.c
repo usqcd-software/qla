@@ -9,6 +9,7 @@
 
 */
 
+#include <string.h>
 #include <stdio.h>
 #include <qla.h>
 
@@ -357,22 +358,6 @@ void wp_grow(  QLA_DiracFermion *dest, QLA_HalfFermion *src,
 
 */
 
-void
-mult_by_gamma_left(QLA_DiracPropagator *dest, QLA_DiracPropagator *src,
-		   int dir )
-{
-  QLA_DiracPropagator p;
-  int i;
-
-  memcpy(dest, src, sizeof(QLA_DiracPropagator));
-  for(i=3; i>=0; i--) {
-    if((dir>>i)&1) {
-      memcpy(&p, dest, sizeof(QLA_DiracPropagator));
-      mult_by_gamma_left2(dest, &p, i);
-    }
-  }
-}
-
 void mult_by_gamma_left2(  QLA_DiracPropagator *dest, QLA_DiracPropagator *src,  int dir ){
   register int i; /*color*/
   register int c2,s2;	/* column indices, color and spin */
@@ -465,6 +450,22 @@ void mult_by_gamma_left2(  QLA_DiracPropagator *dest, QLA_DiracPropagator *src, 
   }
 }
 
+void
+mult_by_gamma_left(QLA_DiracPropagator *dest, QLA_DiracPropagator *src,
+		   int dir )
+{
+  QLA_DiracPropagator p;
+  int i;
+
+  memcpy(dest, src, sizeof(QLA_DiracPropagator));
+  for(i=3; i>=0; i--) {
+    if((dir>>i)&1) {
+      memcpy(&p, dest, sizeof(QLA_DiracPropagator));
+      mult_by_gamma_left2(dest, &p, i);
+    }
+  }
+}
+
 /************* mwvb_gamma_l.c  ************************************/
 /* 
   Multiply a Wilson matrix by a gamma matrix acting on the row index
@@ -473,22 +474,6 @@ void mult_by_gamma_left2(  QLA_DiracPropagator *dest, QLA_DiracPropagator *src, 
 	dir = XUP, YUP, ZUP, TUP or GAMMAFIVE
 
 */
-
-void
-mult_wv_by_gamma_left(QLA_DiracFermion *dest, QLA_DiracFermion *src,
-		      int dir )
-{
-  QLA_DiracFermion p;
-  int i;
-
-  memcpy(dest, src, sizeof(QLA_DiracFermion));
-  for(i=3; i>=0; i--) {
-    if((dir>>i)&1) {
-      memcpy(&p, dest, sizeof(QLA_DiracFermion));
-      mult_wv_by_gamma_left2(dest, &p, i);
-    }
-  }
-}
 
 void mult_wv_by_gamma_left2(  QLA_DiracFermion *dest, QLA_DiracFermion *src,  int dir ){
   register int i; /*color*/
@@ -580,6 +565,22 @@ void mult_wv_by_gamma_left2(  QLA_DiracFermion *dest, QLA_DiracFermion *src,  in
   }
 }
 
+void
+mult_wv_by_gamma_left(QLA_DiracFermion *dest, QLA_DiracFermion *src,
+		      int dir )
+{
+  QLA_DiracFermion p;
+  int i;
+
+  memcpy(dest, src, sizeof(QLA_DiracFermion));
+  for(i=3; i>=0; i--) {
+    if((dir>>i)&1) {
+      memcpy(&p, dest, sizeof(QLA_DiracFermion));
+      mult_wv_by_gamma_left2(dest, &p, i);
+    }
+  }
+}
+
 /************* mb_gamma_r.c  ************************************/
 /* 
    Multiply a Wilson matrix by a gamma matrix acting on the column index
@@ -590,23 +591,7 @@ void mult_wv_by_gamma_left2(  QLA_DiracFermion *dest, QLA_DiracFermion *src,  in
    dir = XUP, YUP, ZUP, TUP or GAMMAFIVE
 */   
 
-void
-mult_by_gamma_right(QLA_DiracPropagator *dest, QLA_DiracPropagator *src,
-		    int dir )
-{
-  QLA_DiracPropagator p;
-  int i;
-
-  memcpy(dest, src, sizeof(QLA_DiracPropagator));
-  for(i=0; i<4; i++) {
-    if((dir>>i)&1) {
-      memcpy(&p, dest, sizeof(QLA_DiracPropagator));
-      mult_by_gamma_right2(dest, &p, i);
-    }
-  }
-}
-
-void mult_by_gamma_right( QLA_DiracPropagator *dest, QLA_DiracPropagator *src, int dir ){
+void mult_by_gamma_right2( QLA_DiracPropagator *dest, QLA_DiracPropagator *src, int dir ){
   register int i; /*color*/
   register int c1,s1;	/* row indices, color and spin */
   int nc = QLA_Nc;
@@ -695,6 +680,22 @@ void mult_by_gamma_right( QLA_DiracPropagator *dest, QLA_DiracPropagator *src, i
     break;
   default:
     printf("BAD CALL TO MULT_BY_GAMMA_RIGHT()\n");
+  }
+}
+
+void
+mult_by_gamma_right(QLA_DiracPropagator *dest, QLA_DiracPropagator *src,
+		    int dir )
+{
+  QLA_DiracPropagator p;
+  int i;
+
+  memcpy(dest, src, sizeof(QLA_DiracPropagator));
+  for(i=0; i<4; i++) {
+    if((dir>>i)&1) {
+      memcpy(&p, dest, sizeof(QLA_DiracPropagator));
+      mult_by_gamma_right2(dest, &p, i);
+    }
   }
 }
 

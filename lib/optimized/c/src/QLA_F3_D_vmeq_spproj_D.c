@@ -42,14 +42,14 @@ void QLA_F3_D_vmeq_spproj_D ( QLA_F3_DiracFermion *restrict r, QLA_F3_DiracFermi
           for(i_c=0;i_c<3;i_c++)
             {
               QLA_F3_HalfFermion t;
-              QLA_c_eq_c_plus_c(QLA_F3_elem_H(t,i_c,0),
+              QLA_c_eq_c_minus_c(QLA_F3_elem_H(t,i_c,0),
                     QLA_F3_elem_D(*ai,i_c,0),QLA_F3_elem_D(*ai,i_c,3));
-              QLA_c_eq_c_minus_c(QLA_F3_elem_H(t,i_c,1),
+              QLA_c_eq_c_plus_c(QLA_F3_elem_H(t,i_c,1),
                     QLA_F3_elem_D(*ai,i_c,1),QLA_F3_elem_D(*ai,i_c,2));
               QLA_c_meq_c(QLA_F3_elem_D(*ri,i_c,0),QLA_F3_elem_H(t,i_c,0));
               QLA_c_meq_c(QLA_F3_elem_D(*ri,i_c,1),QLA_F3_elem_H(t,i_c,1));
-              QLA_c_peq_c(QLA_F3_elem_D(*ri,i_c,2),QLA_F3_elem_H(t,i_c,1));
-              QLA_c_meq_c(QLA_F3_elem_D(*ri,i_c,3),QLA_F3_elem_H(t,i_c,0));
+              QLA_c_meq_c(QLA_F3_elem_D(*ri,i_c,2),QLA_F3_elem_H(t,i_c,1));
+              QLA_c_peq_c(QLA_F3_elem_D(*ri,i_c,3),QLA_F3_elem_H(t,i_c,0));
             }
         }
       } break;
@@ -144,14 +144,14 @@ void QLA_F3_D_vmeq_spproj_D ( QLA_F3_DiracFermion *restrict r, QLA_F3_DiracFermi
           for(i_c=0;i_c<3;i_c++)
             {
               QLA_F3_HalfFermion t;
-              QLA_c_eq_c_minus_c(QLA_F3_elem_H(t,i_c,0),
+              QLA_c_eq_c_plus_c(QLA_F3_elem_H(t,i_c,0),
                     QLA_F3_elem_D(*ai,i_c,0),QLA_F3_elem_D(*ai,i_c,3));
-              QLA_c_eq_c_plus_c(QLA_F3_elem_H(t,i_c,1),
+              QLA_c_eq_c_minus_c(QLA_F3_elem_H(t,i_c,1),
                     QLA_F3_elem_D(*ai,i_c,1),QLA_F3_elem_D(*ai,i_c,2));
               QLA_c_meq_c(QLA_F3_elem_D(*ri,i_c,0),QLA_F3_elem_H(t,i_c,0));
               QLA_c_meq_c(QLA_F3_elem_D(*ri,i_c,1),QLA_F3_elem_H(t,i_c,1));
-              QLA_c_meq_c(QLA_F3_elem_D(*ri,i_c,2),QLA_F3_elem_H(t,i_c,1));
-              QLA_c_peq_c(QLA_F3_elem_D(*ri,i_c,3),QLA_F3_elem_H(t,i_c,0));
+              QLA_c_peq_c(QLA_F3_elem_D(*ri,i_c,2),QLA_F3_elem_H(t,i_c,1));
+              QLA_c_meq_c(QLA_F3_elem_D(*ri,i_c,3),QLA_F3_elem_H(t,i_c,0));
             }
         }
       } break;

@@ -90,10 +90,10 @@ static const v4sf _sse_sign_0123 = {-1,-1,-1,-1};
     r = subps(d0, sign13(shufps(d1, d1, 0x1b))); }
 
 #define spproj1p(r,p) {	v4sf d0, d1; d0=loadaps(p); d1=loadaps(foff(p,4)); \
-    r = addps(d0, sign01(shufps(d1, d1, 0x4e))); }
+    r = subps(d0, sign01(shufps(d1, d1, 0x4e))); }
 
 #define spproj1m(r,p) {	v4sf d0, d1; d0=loadaps(p); d1=loadaps(foff(p,4)); \
-    r = subps(d0, sign01(shufps(d1, d1, 0x4e))); }
+    r = addps(d0, sign01(shufps(d1, d1, 0x4e))); }
 
 #define spproj2p(r,p) {	v4sf d0, d1; d0=loadaps(p); d1=loadaps(foff(p,4)); \
     r = addps(d0, sign03(shufps(d1, d1, 0xb1))); }
@@ -113,8 +113,8 @@ static const v4sf _sse_sign_0123 = {-1,-1,-1,-1};
 
 #define sprecon0p(r,h) { r = sign02(shufps(h, h, 0x1b)); }
 #define sprecon0m(r,h) { r = sign13(shufps(h, h, 0x1b)); }
-#define sprecon1p(r,h) { r = sign23(shufps(h, h, 0x4e)); }
-#define sprecon1m(r,h) { r = sign01(shufps(h, h, 0x4e)); }
+#define sprecon1p(r,h) { r = sign01(shufps(h, h, 0x4e)); }
+#define sprecon1m(r,h) { r = sign23(shufps(h, h, 0x4e)); }
 #define sprecon2p(r,h) { r = sign12(shufps(h, h, 0xb1)); }
 #define sprecon2m(r,h) { r = sign03(shufps(h, h, 0xb1)); }
 #define sprecon3p(r,h) { r = h; }

@@ -1,4 +1,13 @@
 ===============================================================================
+2006-06-25	version 1.6.0
+===============================================================================
+2006-06-25:	James Osborn
+	*** Changed gamma matrix conventions. ***
+	The spin projection and gamma multiplication routines now agree with
+	the conventions of QDP++.  Programs using these must be changed
+	accordingly.  Updated documentation with conventions.
+
+===============================================================================
 2006-05-24	version 1.5.4
 ===============================================================================
 2006-05-24:	James Osborn

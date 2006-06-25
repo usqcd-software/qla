@@ -51,7 +51,7 @@ the installation.  See the README file in the doc directory for details.
 
 Contents of directories in src
 
-  doc		Documentation - GNU info, Postscript and HTML
+  doc		Documentation - Postscript and HTML
   examples	A simple benchmark routine for a few functions. (make check)
   include	Predefined headers and generated headers
   lib/cmath	Complex arithmetic sources
