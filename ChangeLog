@@ -1,3 +1,10 @@
+2006-06-29 22:57  osborn
+
+	* NEWS, aclocal.m4, configure, configure.ac,
+	  lib/optimized/Makefile.am, lib/optimized/440d/Makefile.am,
+	  lib/optimized/440d/src/QLA_F3_V_vpeq_M_times_pV.s: Added 440d
+	  optimization option for BG/L.
+
 2006-06-25 02:51  tag qla1-6-0
 
 2006-06-25 02:51  osborn
