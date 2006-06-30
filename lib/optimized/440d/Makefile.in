@@ -34,7 +34,7 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 @NC3_TRUE@am__append_1 = libf3
-subdir = lib/optimized/c
+subdir = lib/optimized/440d
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -145,9 +145,8 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-CINC = -I$(top_builddir)/include -I$(top_srcdir)/include -I$(srcdir)/include
 OPTLIBS = $(am__append_1)
-EXTRA_DIST = include src
+EXTRA_DIST = src
 all: all-am
 
 .SUFFIXES:
@@ -160,9 +159,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  lib/optimized/c/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu  lib/optimized/440d/Makefile'; \
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu  lib/optimized/c/Makefile
+	  $(AUTOMAKE) --gnu  lib/optimized/440d/Makefile
 .PRECIOUS: Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
@@ -303,13 +302,11 @@ all: $(OPTLIBS)
 
 .PHONY: libf3
 libf3:
-	-for f in $(srcdir)/src/*.c; do \
-	  if [ -f $f ]; then \
-	    echo compiling $$f; \
-	    $(CC) $(CFLAGS) $(CINC) -c $$f; \
-	  fi; \
+	for f in $(srcdir)/src/*.s; do \
+	  echo compiling $$f; \
+	  $(CC) $(CFLAGS) -I$(top_srcdir)/include -c $$f; \
 	done
-	-mv -f *.o ../../qla_f3
+	mv -f *.o ../../qla_f3
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

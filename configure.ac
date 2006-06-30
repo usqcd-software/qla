@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([qla],[1.6.0],[josborn at physics.bu.edu])
+AC_INIT([qla],[1.6.1],[josborn at physics.bu.edu])
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE
 
@@ -54,6 +54,15 @@ AC_ARG_ENABLE(
     [use PPC 440 instructions in certain routines (for QCDOC and BlueGene/L)]),
   AC_SUBST(OPT_440, [$enableval]),
   AC_SUBST(OPT_440, [no])
+)
+
+dnl --enable-440d
+AC_ARG_ENABLE(
+  440d,
+  AC_HELP_STRING([--enable-440d],
+    [use PPC 440d instructions in certain routines (for BlueGene/L)]),
+  AC_SUBST(OPT_440d, [$enableval]),
+  AC_SUBST(OPT_440d, [no])
 )
 
 dnl --enable-nc=<ColorLib>
@@ -122,6 +131,7 @@ AC_C_RESTRICT
 AM_CONDITIONAL(OPT_SSE, [test "X$OPT_SSE" != "Xno"])
 AM_CONDITIONAL(OPT_SSE2, [test "X$OPT_SSE2" != "Xno"])
 AM_CONDITIONAL(OPT_440, [test "X$OPT_440" != "Xno"])
+AM_CONDITIONAL(OPT_440d, [test "X$OPT_440d" != "Xno"])
 AM_CONDITIONAL(NC2, [test "X$NC" = "X2" -o "X$NC" = "Xall"])
 AM_CONDITIONAL(NC3, [test "X$NC" = "X3" -o "X$NC" = "Xall"])
 AM_CONDITIONAL(NCN, [test "X$NC" = "XN" -o "X$NC" = "Xall"])
@@ -163,6 +173,7 @@ AC_CONFIG_FILES(lib/optimized/c/Makefile)
 AC_CONFIG_FILES(lib/optimized/sse/Makefile)
 AC_CONFIG_FILES(lib/optimized/sse2/Makefile)
 AC_CONFIG_FILES(lib/optimized/440/Makefile)
+AC_CONFIG_FILES(lib/optimized/440d/Makefile)
 AC_CONFIG_FILES(test/Makefile)
 AC_CONFIG_FILES(test/src/Makefile)
 AC_CONFIG_FILES(test/int/Makefile)

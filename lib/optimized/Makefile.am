@@ -8,6 +8,9 @@ endif
 if OPT_440
   ARCH_DIRS += 440
 endif
+if OPT_440d
+  ARCH_DIRS += 440d
+endif
 
 SUBDIRS = c $(ARCH_DIRS)
 
