@@ -69,6 +69,7 @@ set_M(QLA_ColorMatrix *m, int i)
 int
 main(int argc, char *argv[])
 {
+  QLA_Real r1;
   QLA_ColorMatrix *m1;
   QLA_ColorVector *v1, *v2, **vp1;
   QLA_HalfFermion *h1, *h2, **hp1;
@@ -93,6 +94,7 @@ main(int argc, char *argv[])
   d2 = myalloc(QLA_DiracFermion, n);
   dp1 = myalloc(QLA_DiracFermion *, n);
 
+  r1 = 1.23;
   for(i=0; i<n; ++i) {
     set_M(&m1[i], i);
     set_V(&v1[i], i);
@@ -108,6 +110,18 @@ main(int argc, char *argv[])
   }
 
   printf("len = %i\n", n);
+
+  mem = 192;
+  flop = 24;
+  c = cf/(flop+mem);
+  time1 = -clock();
+  for(i=0; i<c; ++i) {
+    QLA_D_veq_r_times_D(d1, &r1, d2, n);
+  }
+  time1 += clock();
+  time1 /= CLOCKS_PER_SEC;
+  printf("%-32s: ", "QLA_D_veq_r_times_D");
+  printf("time=%6.2f mem=%8.2f mflops=%8.2f\n", time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
 
   mem = 120;
   flop = 72;
