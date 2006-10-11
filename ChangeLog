@@ -1,3 +1,10 @@
+2006-10-10 20:57  osborn
+
+	* NEWS, configure, configure.ac, examples/Makefile.am,
+	  examples/qla_bench.c, lib/perl/make_code_unary.pl: Removed extra
+	  loop in gamma multiplication functions.  Added checksum to
+	  benchmark routine.
+
 2006-08-03 14:34  tag qla1-6-1
 
 2006-08-03 14:34  osborn
