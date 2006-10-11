@@ -33,7 +33,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-check_PROGRAMS = qla_bench_f3$(EXEEXT)
+check_PROGRAMS = qla_bench_f3$(EXEEXT) qla_bench_d3$(EXEEXT)
 subdir = examples
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -43,10 +43,13 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 mkinstalldirs = $(SHELL) $(top_srcdir)/config/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/include/qla_config.h
 CONFIG_CLEAN_FILES =
-am_qla_bench_f3_OBJECTS = qla_bench_f3-qla_bench.$(OBJEXT)
-qla_bench_f3_OBJECTS = $(am_qla_bench_f3_OBJECTS)
+am_qla_bench_d3_OBJECTS = qla_bench_d3-qla_bench.$(OBJEXT)
+qla_bench_d3_OBJECTS = $(am_qla_bench_d3_OBJECTS)
 am__DEPENDENCIES_1 =
 am__DEPENDENCIES_2 = $(am__DEPENDENCIES_1)
+qla_bench_d3_DEPENDENCIES = $(am__DEPENDENCIES_2)
+am_qla_bench_f3_OBJECTS = qla_bench_f3-qla_bench.$(OBJEXT)
+qla_bench_f3_OBJECTS = $(am_qla_bench_f3_OBJECTS)
 qla_bench_f3_DEPENDENCIES = $(am__DEPENDENCIES_2)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)/include
 depcomp = $(SHELL) $(top_srcdir)/config/depcomp
@@ -55,8 +58,8 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(qla_bench_f3_SOURCES)
-DIST_SOURCES = $(qla_bench_f3_SOURCES)
+SOURCES = $(qla_bench_d3_SOURCES) $(qla_bench_f3_SOURCES)
+DIST_SOURCES = $(qla_bench_d3_SOURCES) $(qla_bench_f3_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -165,9 +168,14 @@ ALL_CFLAGS = -I$(top_srcdir)/include -I$(top_builddir)/include
 ALL_LDADD = -L$(top_builddir)/lib -lqla_int -lqla_random -lm
 F3_CFLAGS = -DQLA_Precision=1 -DQLA_Nc=3 $(ALL_CFLAGS)
 F3_LDADD = -lqla_f -lqla_f3 -lqla_d -lqla_d3 -lqla_df -lqla_df3 $(ALL_LDADD)
+D3_CFLAGS = -DQLA_Precision=2 -DQLA_Nc=3 $(ALL_CFLAGS)
+D3_LDADD = -lqla_d -lqla_d3 -lqla_q -lqla_q3 -lqla_dq -lqla_dq3 $(ALL_LDADD)
 qla_bench_f3_SOURCES = qla_bench.c
 qla_bench_f3_CFLAGS = $(F3_CFLAGS)
 qla_bench_f3_LDADD = $(F3_LDADD)
+qla_bench_d3_SOURCES = qla_bench.c
+qla_bench_d3_CFLAGS = $(D3_CFLAGS)
+qla_bench_d3_LDADD = $(D3_LDADD)
 all: all-am
 
 .SUFFIXES:
@@ -204,6 +212,9 @@ $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 
 clean-checkPROGRAMS:
 	-test -z "$(check_PROGRAMS)" || rm -f $(check_PROGRAMS)
+qla_bench_d3$(EXEEXT): $(qla_bench_d3_OBJECTS) $(qla_bench_d3_DEPENDENCIES) 
+	@rm -f qla_bench_d3$(EXEEXT)
+	$(LINK) $(qla_bench_d3_LDFLAGS) $(qla_bench_d3_OBJECTS) $(qla_bench_d3_LDADD) $(LIBS)
 qla_bench_f3$(EXEEXT): $(qla_bench_f3_OBJECTS) $(qla_bench_f3_DEPENDENCIES) 
 	@rm -f qla_bench_f3$(EXEEXT)
 	$(LINK) $(qla_bench_f3_LDFLAGS) $(qla_bench_f3_OBJECTS) $(qla_bench_f3_LDADD) $(LIBS)
@@ -214,6 +225,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/qla_bench_d3-qla_bench.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/qla_bench_f3-qla_bench.Po@am__quote@
 
 .c.o:
@@ -229,6 +241,20 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(COMPILE) -c `$(CYGPATH_W) '$<'`
+
+qla_bench_d3-qla_bench.o: qla_bench.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(qla_bench_d3_CFLAGS) $(CFLAGS) -MT qla_bench_d3-qla_bench.o -MD -MP -MF "$(DEPDIR)/qla_bench_d3-qla_bench.Tpo" -c -o qla_bench_d3-qla_bench.o `test -f 'qla_bench.c' || echo '$(srcdir)/'`qla_bench.c; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/qla_bench_d3-qla_bench.Tpo" "$(DEPDIR)/qla_bench_d3-qla_bench.Po"; else rm -f "$(DEPDIR)/qla_bench_d3-qla_bench.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='qla_bench.c' object='qla_bench_d3-qla_bench.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(qla_bench_d3_CFLAGS) $(CFLAGS) -c -o qla_bench_d3-qla_bench.o `test -f 'qla_bench.c' || echo '$(srcdir)/'`qla_bench.c
+
+qla_bench_d3-qla_bench.obj: qla_bench.c
+@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(qla_bench_d3_CFLAGS) $(CFLAGS) -MT qla_bench_d3-qla_bench.obj -MD -MP -MF "$(DEPDIR)/qla_bench_d3-qla_bench.Tpo" -c -o qla_bench_d3-qla_bench.obj `if test -f 'qla_bench.c'; then $(CYGPATH_W) 'qla_bench.c'; else $(CYGPATH_W) '$(srcdir)/qla_bench.c'; fi`; \
+@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/qla_bench_d3-qla_bench.Tpo" "$(DEPDIR)/qla_bench_d3-qla_bench.Po"; else rm -f "$(DEPDIR)/qla_bench_d3-qla_bench.Tpo"; exit 1; fi
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='qla_bench.c' object='qla_bench_d3-qla_bench.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(qla_bench_d3_CFLAGS) $(CFLAGS) -c -o qla_bench_d3-qla_bench.obj `if test -f 'qla_bench.c'; then $(CYGPATH_W) 'qla_bench.c'; else $(CYGPATH_W) '$(srcdir)/qla_bench.c'; fi`
 
 qla_bench_f3-qla_bench.o: qla_bench.c
 @am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(qla_bench_f3_CFLAGS) $(CFLAGS) -MT qla_bench_f3-qla_bench.o -MD -MP -MF "$(DEPDIR)/qla_bench_f3-qla_bench.Tpo" -c -o qla_bench_f3-qla_bench.o `test -f 'qla_bench.c' || echo '$(srcdir)/'`qla_bench.c; \

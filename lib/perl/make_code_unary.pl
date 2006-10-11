@@ -255,9 +255,9 @@ sub mult_gamma_func {
 sub make_code_mult_gamma {
     local($eqop,$mu,$leftright) = @_;
 
-    &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
+    &print_very_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
     &print_val_assign_gamma_times($eqop, $mu, $leftright, \&mult_gamma_func);
-    &print_end_matter($var_i,$def{'dim_name'});
+    &print_very_end_matter($var_i,$def{'dim_name'});
 }
 
 #---------------------------------------------------------------------
