@@ -1,3 +1,19 @@
+2008-02-06 13:29  osborn
+
+	* NEWS, aclocal.m4, configure, configure.ac,
+	  include/qla_config.h.in, lib/make_qla_dirs,
+	  lib/qla_d/Makefile.am, lib/qla_d2/Makefile.am,
+	  lib/qla_d3/Makefile.am, lib/qla_df/Makefile.am,
+	  lib/qla_df2/Makefile.am, lib/qla_df3/Makefile.am,
+	  lib/qla_dfn/Makefile.am, lib/qla_dn/Makefile.am,
+	  lib/qla_dq/Makefile.am, lib/qla_dq2/Makefile.am,
+	  lib/qla_dq3/Makefile.am, lib/qla_dqn/Makefile.am,
+	  lib/qla_f/Makefile.am, lib/qla_f2/Makefile.am,
+	  lib/qla_f3/Makefile.am, lib/qla_fn/Makefile.am,
+	  lib/qla_int/Makefile.am, lib/qla_q/Makefile.am,
+	  lib/qla_q2/Makefile.am, lib/qla_q3/Makefile.am,
+	  lib/qla_qn/Makefile.am: Fixed Makefiles to allow parallel makes.
+
 2006-10-10 20:57  tag qla1-6-2
 
 2006-10-10 20:57  osborn
