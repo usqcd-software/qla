@@ -5149,8 +5149,25 @@ nodist____libqla_d2_a_SOURCES = QLA_D2_c1_eq_D_dot_D.c
 
 nodist_include_HEADERS = $(top_builddir)/include/qla_d2.h $(top_builddir)/include/qla_d2_generic.h $(top_builddir)/include/qla_d2_color_generic.h
 
-$(QLASRC): $(BUILD_DEPS)
+source-stamp: $(BUILD_DEPS) 
+	@rm -f source-temp
+	@touch source-temp
 	$(PERL) $(BUILD_SCRIPT) QLA_D2 $(top_builddir)/include/qla_d2.h .
+	@mv -f source-temp $@
+
+$(QLASRC) $(nodist_include_HEADERS): source-stamp
+	## Recover from the removal of $@
+	@if test -f $@; then :; else \
+	  trap 'rm -rf source-lock source-stamp' 1 2 13 15; \
+	  if mkdir source-lock 2>/dev/null; then \
+	    rm -f source-stamp; \
+	    $(MAKE) $(AM_MAKEFLAGS) source-stamp; \
+	    rmdir source-lock; \
+	  else \
+	    while test -d source-lock; do sleep 1; done; \
+	    test -f source-stamp; exit $$?; \
+	  fi; \
+	fi
 
 ../libqla_d2.a: $(QLAOBJ) ../optimized/Makefile
 	-rm -f ../libqla_d2.a
@@ -5163,7 +5180,7 @@ $(QLASRC): $(BUILD_DEPS)
 	$(RANLIB) ../libqla_d2.a
 
 clean-local:
-	-rm -f $(top_builddir)/include/qla_d2.h $(top_builddir)/include/qla_d2_generic.h $(top_builddir)/include/qla_d2_color_generic.h
+	-rm -f $(nodist_include_HEADERS)
 	-rm -f $(QLASRC1)
 	-rm -f $(QLAOBJ1)
 	-rm -f $(QLASRC2)

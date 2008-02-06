@@ -1,3 +1,9 @@
+2008-02-05: James Osborn
+	Fixed Makefiles to allow parallel makes.
+
+2007-11-28: James Osborn
+        Fixed "expr" expression in configure.ac to work with Macs.
+
 ===============================================================================
 2006-10-10	version 1.6.2
 ===============================================================================

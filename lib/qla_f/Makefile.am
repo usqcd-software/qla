@@ -1653,8 +1653,25 @@ nodist____libqla_f_a_SOURCES = QLA_F_c1_eq_C_dot_C.c
 
 nodist_include_HEADERS = $(top_builddir)/include/qla_f.h $(top_builddir)/include/qla_f_generic.h
 
-$(QLASRC): $(BUILD_DEPS)
+source-stamp: $(BUILD_DEPS) 
+	@rm -f source-temp
+	@touch source-temp
 	$(PERL) $(BUILD_SCRIPT) QLA_F $(top_builddir)/include/qla_f.h .
+	@mv -f source-temp $@
+
+$(QLASRC) $(nodist_include_HEADERS): source-stamp
+	## Recover from the removal of $@
+	@if test -f $@; then :; else \
+	  trap 'rm -rf source-lock source-stamp' 1 2 13 15; \
+	  if mkdir source-lock 2>/dev/null; then \
+	    rm -f source-stamp; \
+	    $(MAKE) $(AM_MAKEFLAGS) source-stamp; \
+	    rmdir source-lock; \
+	  else \
+	    while test -d source-lock; do sleep 1; done; \
+	    test -f source-stamp; exit $$?; \
+	  fi; \
+	fi
 
 ../libqla_f.a: $(QLAOBJ) ../optimized/Makefile
 	-rm -f ../libqla_f.a
@@ -1663,7 +1680,7 @@ $(QLASRC): $(BUILD_DEPS)
 	$(RANLIB) ../libqla_f.a
 
 clean-local:
-	-rm -f $(top_builddir)/include/qla_f.h $(top_builddir)/include/qla_f_generic.h
+	-rm -f $(nodist_include_HEADERS)
 	-rm -f $(QLASRC1)
 	-rm -f $(QLAOBJ1)
 	-rm -f $(QLASRC2)

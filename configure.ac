@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([qla],[1.6.2],[josborn at physics.bu.edu])
+AC_INIT([qla],[1.6.3],[josborn at physics.bu.edu])
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE
 
@@ -74,7 +74,7 @@ AC_ARG_ENABLE(
   AC_SUBST(NC, [all])
 )
 if test "X$NC" = Xn -o "X$NC" = X1; then NC="N"; fi
-if test `expr match $NC '[0-9]*$' \& $NC \> 3` -ne 0; then NC="N"; fi
+if test `expr $NC : '[0-9]*$' \& $NC \> 3` -ne 0; then NC="N"; fi
 if test "X$NC" != X2 -a "X$NC" != X3 -a "X$NC" != XN; then NC="all"; fi 
 
 # Checks for programs.
@@ -116,6 +116,7 @@ fi
 if test "X$TEST_CFLAGS" = "X"; then
   TEST_CFLAGS="$CFLAGS"
 fi
+AM_PROG_CC_C_O
 
 # Checks for libraries.
 

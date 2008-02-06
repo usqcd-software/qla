@@ -115,8 +115,25 @@ nodist____${lib}_a_SOURCES = $src1
 
 nodist_include_HEADERS = $hdrs
 
-\$(QLASRC): \$(BUILD_DEPS)
+source-stamp: \$(BUILD_DEPS) 
+	@rm -f source-temp
+	@touch source-temp
 	\$(PERL) \$(BUILD_SCRIPT) $tag $hdr .
+	@mv -f source-temp \$@
+
+\$(QLASRC) \$(nodist_include_HEADERS): source-stamp
+	## Recover from the removal of \$@
+	@if test -f \$@; then :; else \\
+	  trap 'rm -rf source-lock source-stamp' 1 2 13 15; \\
+	  if mkdir source-lock 2>/dev/null; then \\
+	    rm -f source-stamp; \\
+	    \$(MAKE) \$(AM_MAKEFLAGS) source-stamp; \\
+	    rmdir source-lock; \\
+	  else \\
+	    while test -d source-lock; do sleep 1; done; \\
+	    test -f source-stamp; exit \$\$?; \\
+	  fi; \\
+	fi
 
 ../${lib}.a: \$(QLAOBJ) ../optimized/Makefile
 	-rm -f ../${lib}.a
@@ -134,7 +151,7 @@ EOF
 	\$(RANLIB) ../${lib}.a
 
 clean-local:
-	-rm -f $hdrs
+	-rm -f \$(nodist_include_HEADERS)
 EOF
 ###  make clean commands
 
