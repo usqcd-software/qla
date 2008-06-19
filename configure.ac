@@ -83,15 +83,15 @@ AC_PROG_RANLIB
 AC_PATH_PROG([PERL], [perl], [perl])
 AC_PATH_PROG([M4], [m4], [m4])
 AC_PATH_PROGS([LATEX], [latex2e latex], [latex])
-if ! set | grep '^CFLAGS='; then ac_CFLAGS_not_set=1; fi
-AC_PROG_CC([c99 gcc])
-if test "X$ac_CFLAGS_not_set" = "X1"; then
-  if test "X$GCC" = "Xyes"; then
-    CFLAGS="-std=c99 -O2"
-  else
-    CFLAGS=-O
-  fi
-fi
+#if ! set | grep '^CFLAGS='; then ac_CFLAGS_not_set=1; fi
+AC_PROG_CC([c99 cc gcc])
+#if test "X$ac_CFLAGS_not_set" = "X1"; then
+#  if test "X$GCC" = "Xyes"; then
+#    CFLAGS="-std=c99 -O2"
+#  else
+#    CFLAGS=-O
+#  fi
+#fi
 
 AC_ARG_VAR(SSE_CC, [CC used for generating optimized SSE routines])
 AC_ARG_VAR(SSE_CFLAGS, [CFLAGS used for generating optimized SSE routines])
@@ -124,6 +124,7 @@ AM_PROG_CC_C_O
 
 # Checks for typedefs, structures, and compiler characteristics.
 
+AC_PROG_CC_C99
 AC_C_RESTRICT
 
 # Checks for library functions.

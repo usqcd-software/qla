@@ -1,3 +1,12 @@
+===============================================================================
+2006-06-19	version 1.6.3
+===============================================================================
+2008-02-18: James Osborn
+	Added AC_PROG_CC_C99 to configure.ac. (not autoreconfed)
+
+2008-02-06: James Osborn
+	Added OpenMP directives in some places.
+
 2008-02-05: James Osborn
 	Fixed Makefiles to allow parallel makes.
 

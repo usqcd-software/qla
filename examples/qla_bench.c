@@ -1,10 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <sys/time.h>
 #include <math.h>
 #include <qla.h>
 
 #define myalloc(type, n) (type *) aligned_malloc(n*sizeof(type))
+#define clock qtime
 
 #define ALIGN 16
 void *
@@ -14,6 +16,14 @@ aligned_malloc(size_t n)
   size_t r = m % ALIGN;
   if(r) m += (ALIGN - r);
   return (void *)m;
+}
+
+inline double
+qtime(void)
+{
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  return CLOCKS_PER_SEC*(tv.tv_sec + 1e-6*tv.tv_usec);
 }
 
 void

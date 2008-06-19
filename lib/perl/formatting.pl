@@ -147,11 +147,15 @@ sub print_function_def {
 }
 
 sub print_top_matter {
-    local($declaration,$i,$dim_name) = @_;
+  local($declaration,$i,$dim_name) = @_;
 
-    &open_src_file;
-    &print_function_def($declaration);
-    &print_def_open_iter($i,$dim_name);
+  &open_src_file;
+  &print_function_def($declaration);
+  if($i ne "" && $dim_name ne ""){
+    &print_int_def($i);
+    print QLA_SRC "#pragma omp parallel for\n" if($i eq $var_i);
+    &open_iter($i,$dim_name);
+  }
 }
 
 sub print_end_matter {
