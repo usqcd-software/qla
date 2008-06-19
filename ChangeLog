@@ -1,3 +1,11 @@
+2008-06-19 13:42  osborn
+
+	* NEWS, configure, configure.ac, examples/qla_bench.c,
+	  lib/perl/formatting.pl: Added AC_PROG_CC_C99 to configure.ac.
+	  Added OpenMP directives in some places.  Fixed Makefiles to allow
+	  parallel makes.  Fixed "expr" expression in configure.ac to work
+	  with Macs.
+
 2008-02-06 13:29  osborn
 
 	* NEWS, aclocal.m4, configure, configure.ac,
