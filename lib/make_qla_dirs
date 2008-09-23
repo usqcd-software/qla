@@ -151,7 +151,7 @@ EOF
 	\$(RANLIB) ../${lib}.a
 
 clean-local:
-	-rm -f \$(nodist_include_HEADERS)
+	-rm -f \$(nodist_include_HEADERS) source-stamp
 EOF
 ###  make clean commands
 

@@ -1,8 +1,11 @@
 ===============================================================================
-2006-06-19	version 1.6.3
+2008-09-22	version 1.6.3
 ===============================================================================
+2008-09-22: James Osborn
+	Added source-stamp to clean targets.
+
 2008-02-18: James Osborn
-	Added AC_PROG_CC_C99 to configure.ac. (not autoreconfed)
+	Added AC_PROG_CC_C99 to configure.ac.
 
 2008-02-06: James Osborn
 	Added OpenMP directives in some places.

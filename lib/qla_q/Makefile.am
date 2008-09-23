@@ -177,6 +177,6 @@ $(QLASRC) $(nodist_include_HEADERS): source-stamp
 	$(RANLIB) ../libqla_q.a
 
 clean-local:
-	-rm -f $(nodist_include_HEADERS)
+	-rm -f $(nodist_include_HEADERS) source-stamp
 	-rm -f $(QLASRC1)
 	-rm -f $(QLAOBJ1)
