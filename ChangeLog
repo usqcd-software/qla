@@ -1,3 +1,51 @@
+2009-04-30 21:22  osborn
+
+	* NEWS, README, aclocal.m4, configure, configure.ac,
+	  examples/qla_bench.c, include/qla.h, include/qla_cmath.h,
+	  include/qla_complex.h, include/qla_config.h.in,
+	  include/qla_types.h, lib/Makefile.am,
+	  lib/optimized/440d/Makefile.am,
+	  lib/optimized/440d/src/QLA_F3_V_vpeq_M_times_pV.s,
+	  lib/optimized/sse/include/QLA_F3_V_vpeq_M_times_pV_1_sse.c,
+	  lib/optimized/sse/include/QLA_F3_V_vpeq_M_times_pV_2_sse.c,
+	  lib/optimized/sse2/include/QLA_D3_V_eq_M_times_V.h,
+	  lib/optimized/sse2/include/QLA_D3_V_peq_M_times_V.h,
+	  lib/optimized/sse2/include/bin/nasm2c.pl, lib/perl/build_qla.pl,
+	  lib/perl/datatypes.pl, lib/perl/expressions_gamma.pl,
+	  lib/perl/expressions_scalar.pl, lib/perl/expressions_tensor.pl,
+	  lib/perl/formatting.pl, lib/perl/make_code_binary.pl,
+	  lib/perl/make_code_unary.pl, lib/perl/prototype.pl,
+	  test/Makefile.am, test/check_all, test/checkcomplete.pl,
+	  test/int/Makefile.am, test/int/check_int,
+	  test/scalar/Makefile.am, test/scalar/check_d,
+	  test/scalar/check_df, test/scalar/check_dq, test/scalar/check_f,
+	  test/scalar/check_macros, test/scalar/check_q,
+	  test/src/Makefile.am, test/src/compare.h, test/src/compare.m4,
+	  test/src/milc_gamma.c, test/src/protocol_compare.m4,
+	  test/src/protocol_idx.m4, test/src/protocol_tensor_sng.m4,
+	  test/src/tensor_idx_defs.m4, test/src/test_int_idx.m4,
+	  test/src/test_int_sng.c, test/src/test_macros.c,
+	  test/src/test_scalar_df_idx.m4, test/src/test_scalar_df_sng.c,
+	  test/src/test_scalar_dq_idx.m4, test/src/test_scalar_dq_sng.c,
+	  test/src/test_scalar_idx.m4, test/src/test_scalar_sng.c,
+	  test/src/test_tensor_df_idx.m4, test/src/test_tensor_df_sng.m4,
+	  test/src/test_tensor_dq_idx.m4, test/src/test_tensor_dq_sng.m4,
+	  test/src/test_tensor_idx.c, test/src/test_tensor_idx1.m4,
+	  test/src/test_tensor_idx2.m4, test/src/test_tensor_idx3.m4,
+	  test/src/test_tensor_idx4.m4, test/src/test_tensor_sng.m4,
+	  test/tensor2/Makefile.am, test/tensor2/check_d,
+	  test/tensor2/check_df, test/tensor2/check_dq,
+	  test/tensor2/check_f, test/tensor2/check_q,
+	  test/tensor3/Makefile.am, test/tensor3/check_d,
+	  test/tensor3/check_df, test/tensor3/check_dq,
+	  test/tensor3/check_f, test/tensor3/check_q,
+	  test/tensorN/Makefile.am, test/tensorN/check_d,
+	  test/tensorN/check_df, test/tensorN/check_dq,
+	  test/tensorN/check_f, test/tensorN/check_q: Added extern "C" to
+	  qla.h.  Changed 'N' color types to be any size and only as large
+	  as needed.  Merged --enable-backend-test-cmd option from bgl
+	  fork.  Merged --enable-temp-precision option from bgl fork.
+
 2008-09-23 00:25  tag qla1-6-3
 
 2008-09-23 00:25  osborn
