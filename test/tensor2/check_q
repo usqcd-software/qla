@@ -1,5 +1,0 @@
-outfile=results.check_q
-rm -f $outfile
-./test_tensor_q_sng > $outfile
-./test_tensor_q_idx >> $outfile
-perl ../checkcomplete.pl $outfile ../../include/qla_q2.h Q2

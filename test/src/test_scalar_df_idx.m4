@@ -12,7 +12,7 @@ include(protocol_idx.m4)
 #include <math.h>
 #include "compare.h"
 
-int main(){
+int main(int argc, char *argv[]){
 
 #define QLA_PRF(x) QLA_DF_ ## x
 #define QLA_PRD(x) QLA_QD_ ## x
@@ -102,6 +102,14 @@ int main(){
   QLA_F_Complex *sCF1p[MAX],*sCF2p[MAX];
 
   char name[64];
+  FILE *fp;
+
+  char *test_program_name= basename(argv[0]); 
+  test_program_name = strcat(test_program_name, ".result");
+  if (NULL == (fp = fopen(test_program_name,"w"))) {
+    fprintf(stderr, "Error in report function - cannot create \"%s\"\n", test_program_name);
+    exit(-1);
+  }
 
   int i;
 
@@ -143,4 +151,3 @@ unarysum(c,eq_sum,C,_DF,D,F)
   return 0;
 }
 '
-

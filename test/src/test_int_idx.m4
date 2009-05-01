@@ -10,7 +10,7 @@ include(protocol_idx.m4)
 #include <string.h>
 #include "compare.h"
 
-int main(){
+int main(int argc, char *argv[]){
 
   QLA_Int sI1[MAX] = { 6188, -1038,  7359, -9607,  5032,
 		9237,   3458, -2110, -6705, 10401};
@@ -42,6 +42,14 @@ int main(){
   int i;
 
   char name[64];
+  FILE *fp;
+
+  char *test_program_name= basename(argv[0]); 
+  test_program_name = strcat(test_program_name, ".result");
+  if (NULL == (fp = fopen(test_program_name,"w"))) {
+    fprintf(stderr, "Error in report function - cannot create \"%s\"\n", test_program_name);
+    exit(-1);
+  }
 
   for(i = 0; i < MAX; i++){
     sI1p[i] = &sI1[sI2x[i]];
@@ -57,7 +65,7 @@ int main(){
   strcpy(name,"QLA_I_veq_I");
   QLA_I_veq_I(destI,sI1,MAX);
   for(i = 0; i < MAX; i++){QLA_I_eq_I(&chkI[i],&sI1[i]);}
-  checkeqidxII(chkI,destI,name);
+  checkeqidxII(chkI,destI,name,fp);
 
 '
 
@@ -134,4 +142,3 @@ unary(S,eq,S)
   return 0;
 }
 '
-

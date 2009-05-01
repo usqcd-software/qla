@@ -56,12 +56,20 @@ sub print_int_def {
 sub print_def {
     local($type,$k) = @_;
     #print QLA_SRC @indent,"register $type $k;\n";
-    print QLA_SRC @indent,"$type $k;\n";
+    if($type =~ /QLA_.N/) {
+	print QLA_SRC @indent,"$type($arg_nc, ($k));\n";
+    } else {
+	print QLA_SRC @indent,"$type $k;\n";
+    }
 }
 
 sub print_nonregister_def {
     local($type,$k) = @_;
-    print QLA_SRC @indent,"$type $k;\n";
+    if($type =~ /QLA_.N/) {
+	print QLA_SRC @indent,"$type($arg_nc, ($k));\n";
+    } else {
+	print QLA_SRC @indent,"$type $k;\n";
+    }
 }
 
 #--------------------------------------------------
@@ -146,27 +154,32 @@ sub print_function_def {
     &open_brace();
 }
 
-sub print_top_matter {
-  local($declaration,$i,$dim_name) = @_;
-
-  &open_src_file;
-  &print_function_def($declaration);
-  if($i ne "" && $dim_name ne ""){
-    &print_int_def($i);
-    print QLA_SRC "#pragma omp parallel for\n" if($i eq $var_i);
-    &open_iter($i,$dim_name);
+sub print_align_top {
+  foreach $arg ( 'dest','src1','src2','src3' ) {
+    if(defined($def{$arg.'_t'})) {
+      if($def{$arg.'_ptr_pfx'} ne $pointer_pfx) {
+	#print QLA_SRC "#ifdef __xlc__\n";
+	print QLA_SRC @indent,"__alignx(16,$def{$arg.'_name'});\n";
+	#print QLA_SRC "#endif\n";
+      }
+    }
   }
 }
 
-sub print_end_matter {
-    local($i,$dim_name) = @_;
-
-    if($dim_name ne ""){
-	&close_iter($i);
+sub print_align_indx {
+  foreach $arg ( 'dest','src1','src2','src3' ) {
+    if(defined($def{$arg.'_t'})) {
+      if($def{$arg.'_ptr_pfx'} eq $pointer_pfx) {
+	$value = $def{$arg.'_value'};
+	if( !($value =~ s/^\*//) ) {
+	  $value = "&".$value;
+	}
+	print QLA_SRC "#ifdef HAVE_XLC\n";
+	print QLA_SRC @indent,"__alignx(16,$value);\n";
+	print QLA_SRC "#endif\n";
+      }
     }
-    
-    &close_brace();
-    &close_src_file;
+  }
 }
 
 sub print_very_top_matter {
@@ -174,7 +187,36 @@ sub print_very_top_matter {
 
     &open_src_file;
     &print_function_def($declaration);
+    #if($prec ne "") {
+      print QLA_SRC "#ifdef HAVE_XLC\n";
+      print QLA_SRC "#pragma disjoint($disjoint_list)\n";
+      &print_align_top();
+      print QLA_SRC "#endif\n";
+    #}
+    if(($src1_def{'t'} ne '') && ($datatype_scalar{$src1_def{'t'}})) {
+      &make_temp(*src1_def);
+    }
 #    &print_def_open_iter($i,$dim_name);
+}
+
+sub print_top_matter {
+  local($declaration,$i,$dim_name) = @_;
+
+  &print_very_top_matter($declaration,$i,$dim_name);
+  #&open_src_file;
+  #&print_function_def($declaration);
+  #print QLA_SRC "#ifdef HAVE_XLC\n";
+  #print QLA_SRC "#pragma disjoint($disjoint_list)\n";
+  #&print_align_top();
+  #print QLA_SRC "#endif\n";
+  if($i ne "" && $dim_name ne ""){
+    &print_int_def($i);
+    if($have_openmp eq "1" && $i eq $var_i) {
+      print QLA_SRC "#pragma omp parallel for\n"
+    }
+    &open_iter($i,$dim_name);
+  }
+  &print_align_indx();
 }
 
 sub print_very_end_matter {
@@ -188,15 +230,50 @@ sub print_very_end_matter {
     &close_src_file;
 }
 
+sub print_end_matter {
+    local($i,$dim_name) = @_;
+
+    if($dim_name ne ""){
+	&close_iter($i);
+    }
+    
+    &close_brace();
+    &close_src_file;
+}
+
 sub get_var_dec($$$) {
   my($type,$name,$value) = @_;
   if( !($value =~ s/^\*//) ) {
     $value = "&".$value;
   }
-  return "$type $name = $value;\n";
+  if($type =~ /QLA_.N/) {
+      return "$type($arg_nc, ($name)) = $value;\n";
+  } else {
+      return "$type $name = $value;\n";
+  }
+}
+
+sub make_temp(\%) {
+  my($tdef) = @_;
+  my($old_value) = $tdef->{value};
+  my($name) = "$tdef->{name}t";
+
+  if( ($def{dim_name} ne "") &&
+      (($tdef->{t} eq "r") || ($tdef->{t} eq "c")) &&
+      (!$tdef->{temp}) ) {
+    $tdef->{value} = $name;
+    $tdef->{old_value} = $old_value;
+    $tdef->{temp} = 1;
+    $tdef->{type} = &datatype_specific($tdef->{t}, $temp_precision);
+  }
+  if($tdef->{temp}) {
+    &print_def($tdef->{type}, $name);
+    &print_s_eqop_s($tdef->{rc}, $name, $eqop_eq, "", $tdef->{rc}, $old_value, "", $temp_precision, $precision);
+  }
 }
 
 sub make_temp_ptr(\%$) {
+  return;
   my($tdef,$name) = @_;
   my($old_value) = $tdef->{value};
 
@@ -211,6 +288,37 @@ sub make_temp_ptr(\%$) {
   if($tdef->{temp_ptr}) {
     print QLA_SRC @indent, get_var_dec($tdef->{type}, $tdef->{value},
 				       $tdef->{old_value});
+  }
+}
+
+sub make_cast($$$$) {
+  local ($v, $rc, $np, $op) = @_;
+  local $p = $op;
+  if($op eq '') { $op = $precision; }
+  if( ($np ne '') && ($np ne $op) ) {
+    $v = "QLA_${np}${op}_${rc}($v)";
+    $p = $np;
+  }
+  return ($v,$p);
+}
+
+sub print_prec_conv_macro($$$$$$) {
+  local ($m1, $d, $m2, $t, $pd, $ps) = @_;
+  if($pd eq '') { $pd = $precision; }
+  if( ($ps ne '') && ($pd ne $ps) ) {
+    local $tt = &datatype_element_specific($t, $ps);
+    local $tv = $var_x;
+    local $rc = $datatype_rc{$t};
+    &open_brace;
+    &print_def($tt, $tv);
+    if($m1=~/_peq_/ || $m1=~/_meq_/) {
+      &print_s_eqop_s($rc, $tv, $eqop_eq, "", $rc, $d, "", $ps, $pd);
+    }
+    print QLA_SRC @indent, "${m1}_t$m2\n";
+    &print_s_eqop_s($rc, $d, $eqop_eq, "", $rc, $tv, "", $pd, $ps);
+    &close_brace;
+  } else {
+    print QLA_SRC @indent, $m1, $d, $m2, "\n";
   }
 }
 

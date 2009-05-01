@@ -1,5 +1,0 @@
-outfile=results.check_df
-rm -f $outfile
-./test_tensor_df_sng > $outfile
-./test_tensor_df_idx >> $outfile
-perl ../checkcomplete.pl $outfile ../../include/qla_df2.h 2

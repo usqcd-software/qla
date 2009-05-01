@@ -18,7 +18,7 @@ aligned_malloc(size_t n)
   return (void *)m;
 }
 
-inline double
+double
 qtime(void)
 {
   struct timeval tv;

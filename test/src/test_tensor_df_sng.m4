@@ -20,7 +20,7 @@ include(protocol_tensor_sng.m4)
 #include <math.h>
 #include "compare.h"
 
-int main(){
+int main(int argc, char * argv[]){
 
   int nc = QLA_Nc;
   int ns = 4;
@@ -57,6 +57,15 @@ int main(){
   QLA_RandomState sS1;
 
   char name[64];
+  FILE *fp;
+
+  char *test_program_name= basename(argv[0]); 
+  test_program_name = strcat(test_program_name, ".result");
+  if (NULL == (fp = fopen(test_program_name,"w"))) {
+    fprintf(stderr, "Error in report function - cannot create \"%s\"\n", test_program_name);
+    exit(-1);
+  }
+
   int ic,jc,is,js;
 
   /* Use random number fills to create the test fields */

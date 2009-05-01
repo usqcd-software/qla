@@ -1,4 +1,4 @@
-#! /usr/bin/perl
+#!/usr/bin/env perl
 
 ######################################################################
 # SciDAC Software Project
@@ -26,7 +26,6 @@
 # need to work out conventions for paths to headers
 # scalar constant multiplies look just like scalar multiplies - keep?
 # summing a scalar does nothing - drop this?
-# add other Gamma matrices for left and right multiplication ?
 # need proper runtime error handling (e.g. gamma matrix routines)
 #	
 #
@@ -101,6 +100,7 @@ $path = "./";
 $path = $1 if ( $0 =~ m|(.*/)[^/]*| );
 push @INC, $path;
 
+require("../perl/defines.pl");
 require($path."datatypes.pl");
 require($path."operatortypes.pl");
 require($path."indirection.pl");

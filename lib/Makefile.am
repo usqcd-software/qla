@@ -16,6 +16,7 @@ if NCN
 endif
 
 SUBDIRS = \
+	perl \
 	c99 \
 	cmath \
 	random \
@@ -23,5 +24,5 @@ SUBDIRS = \
 	optimized \
 	$(QLA_DIRS)
 
-EXTRA_DIST = make_qla_dirs perl
+EXTRA_DIST = make_qla_dirs
 

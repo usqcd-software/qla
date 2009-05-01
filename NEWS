@@ -1,3 +1,17 @@
+2009-04-20: James Osborn
+	Changed 'N' color types to be any size and only as large as needed.
+	The QLA_[DF]N_... type is now a macro taking Nc and the variable
+	as arguments, i.e.
+	  QLA_FN_ColorMatrix(10,foo);
+	declares 'foo' as a 10x10 color matrix.  To create a new type of a
+	specific Nc you can do
+	  typedef QLA_FN_ColorMatrix(12,CM12);
+	  CM12 foo;
+	  CM12 *bar = (CM12 *) malloc(nmat*sizeof(CM12));
+
+2008-10-06: James Osborn
+	Added extern "C" to qla.h.
+
 ===============================================================================
 2008-09-22	version 1.6.3
 ===============================================================================

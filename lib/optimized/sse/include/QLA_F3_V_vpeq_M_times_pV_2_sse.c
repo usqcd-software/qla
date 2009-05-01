@@ -8,6 +8,7 @@
 #endif
   int i;
 
+#pragma omp parallel for
   for(i=0; i<n; i+=2) {
     //prefetchnt(&r[i+NP]);
     //prefetchnt(&a[i+NP]);

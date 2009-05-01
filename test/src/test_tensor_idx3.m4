@@ -18,7 +18,7 @@ include(tensor_idx_defs.m4);
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 
   /* Right multiply by color matrix */
-void do_rmcm(void) {
+void do_rmcm(FILE *fp) {
 binary(H,eq,M,times,H,sM1,sH2)
 binary(D,eq,M,times,D,sM1,sD2)
 binary(V,eq,M,times,V,sM1,sV2)
@@ -39,13 +39,13 @@ binary(P,meq,M,times,P,sM1,sP2)
 
 #endif
 `
-int test_tensor_idx3(){
-  initialize_variables();
+int test_tensor_idx3(FILE *fp){
+  initialize_variables(fp);
 '
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 
   /* Right multiply by color matrix */
-  do_rmcm();
+  do_rmcm(fp);
 
   /* Adjoint of color matrix times adjoint of color matrix */
 

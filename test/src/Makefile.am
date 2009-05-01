@@ -14,7 +14,7 @@ CSRC  = compare.c test_int_idx.c test_scalar_idx.c \
         test_tensor_dq_sng.c test_tensor_dq_idx.c
 
 check-local: $(CSRC)
-	-cp -fp $(srcdir)/../checkcomplete.pl ..
+#	-cp -fp $(srcdir)/../checkcomplete.pl ..
 
 CLEANFILES = $(CSRC)
 

@@ -79,7 +79,7 @@ include(tensor_idx_defs.m4);
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 
   /* Ternary operations */
-void do_to(void) {
+void do_to(FILE *fp) {
 ternaryconst(H,eq_r_times,R,H,plus,H)
 ternaryconst(H,eq_r_times,R,H,minus,H)
 ternaryconst(D,eq_r_times,R,D,plus,D)
@@ -105,13 +105,13 @@ ternaryconst(M,eq_c_times,C,M,minus,M)
 
 #endif
 `
-int test_tensor_idx4(){
-  initialize_variables();
+int test_tensor_idx4(FILE *fp){
+  initialize_variables(fp);
 '
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 
   /* Ternary operations */
-  do_to();
+  do_to(fp);
 
   /* Copymask */
 

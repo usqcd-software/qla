@@ -34,10 +34,10 @@ sub make_code_unary {
   local($eqop,$qualifier) = @_;
 
   &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
-  if($def{dim_name} ne "") {
-    make_temp_ptr(*dest_def,$def{dest_name});
-    make_temp_ptr(*src1_def,$def{src1_name});
-  }
+  #if($def{dim_name} ne "") {
+  #  make_temp_ptr(*dest_def,$def{dest_name});
+  #  make_temp_ptr(*src1_def,$def{src1_name});
+  #}
   &print_val_eqop_op_val(*dest_def,$eqop,*src1_def,$qualifier);
   &print_end_matter($var_i,$def{'dim_name'});
 }
@@ -145,6 +145,7 @@ sub make_code_unary_fcn {
 sub spproj_func {
   local($sign, $dir, $eqop) = @_;
   &print_def_open_iter($var_i,$def{'dim_name'});
+  &print_align_indx();
   if($def{dim_name} ne "") {
     make_temp_ptr(*dest_def,$def{dest_name});
     make_temp_ptr(*src1_def,$def{src1_name});
@@ -163,6 +164,7 @@ sub spproj_func {
 sub sprecon_func {
   local($sign, $dir, $eqop) = @_;
   &print_def_open_iter($var_i,$def{'dim_name'});
+  &print_align_indx();
   if($def{dim_name} ne "") {
     make_temp_ptr(*dest_def,$def{dest_name});
     make_temp_ptr(*src1_def,$def{src1_name});
@@ -199,6 +201,7 @@ sub make_code_spproj_sprecon {
 sub wilsonspin_func {
   local($sign, $dir, $eqop) = @_;
   &print_def_open_iter($var_i,$def{'dim_name'});
+  &print_align_indx();
   if($def{dim_name} ne "") {
     make_temp_ptr(*dest_def,$def{dest_name});
     make_temp_ptr(*src1_def,$def{src1_name});
@@ -207,9 +210,13 @@ sub wilsonspin_func {
   &print_int_def($ic);
   $maxic = $src1_def{'mc'};
   &open_iter($ic,$maxic);
-  print_def($mytemp{type}, $mytemp{value});
-  print_val_assign_spproj_dirs(*mytemp, *src1_def, $sign, $dir, "eq");
-  print_val_assign_sprecon_dirs(*dest_def, *mytemp, $sign, $dir, $eqop);
+  if($dir<4) {
+    print_def($mytemp{type}, $mytemp{value});
+    print_val_assign_spproj_dirs(*mytemp, *src1_def, $sign, $dir, "eq");
+    print_val_assign_sprecon_dirs(*dest_def, *mytemp, $sign, $dir, $eqop);
+  } else {
+    print_val_assign_spproj_dirs(*dest_def, *src1_def, $sign, $dir, $eqop);
+  }
   &close_iter($ic);
   if($def{'dim_name'} ne "") {
     &close_iter($var_i);
@@ -222,8 +229,9 @@ sub make_code_wilsonspin {
 
     &load_arg_hash(*mytemp,'src1');
     $mytemp{t} = $datatype_halffermion_abbrev;
-    $mytemp{type} = &datatype_specific($mytemp{t});
+    $mytemp{type} = &datatype_specific($mytemp{t}, $temp_precision);
     $mytemp{value} = "t";
+    $mytemp{precision} = $temp_precision;
 
     &print_very_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
 
@@ -253,11 +261,11 @@ sub mult_gamma_func {
 }
 
 sub make_code_mult_gamma {
-    local($eqop,$mu,$leftright) = @_;
+  local($eqop,$mu,$leftright) = @_;
 
-    &print_very_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
-    &print_val_assign_gamma_times($eqop, $mu, $leftright, \&mult_gamma_func);
-    &print_very_end_matter($var_i,$def{'dim_name'});
+  &print_very_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
+  &print_val_assign_gamma_times($eqop, $mu, $leftright, \&mult_gamma_func);
+  &print_very_end_matter($var_i,$def{'dim_name'});
 }
 
 #---------------------------------------------------------------------
@@ -276,6 +284,7 @@ sub make_code_norm2_global_sum {
     $global_type = &datatype_specific($dest_t,$higher_precision);
     $global_def{'type'} = $global_type;
     $global_def{'value'} = $var_global_sum;
+    $global_def{'precision'} = $higher_precision;
 
     &open_src_file;
     &print_function_def($def{'declaration'});

@@ -15,9 +15,9 @@ rem(`
 rem(`makeGaussianQ(t1,name)')
 define(makeGaussianQ,`
   for_$1_elem{
-    QLA_real(argdQ(C)) = (QLA_Q_Real)QLA_gaussian(&sS1)/3.;
-    QLA_imag(argdQ(C)) = (QLA_Q_Real)QLA_gaussian(&sS1)/3.;
-    QLA_c_eq_c($1_elem($2),argdQ(C));
+    arg1Q(R) = (QLA_Q_Real)QLA_gaussian(&sS1)/3.;
+    arg2Q(R) = (QLA_Q_Real)QLA_gaussian(&sS1)/3.;
+    QLA_c_eq_r_plus_ir($1_elem($2),arg1Q(R),arg2Q(R));
   }
 ')
 
@@ -31,11 +31,11 @@ define(chkGaussian,`
   QLA_$1_eq_gaussian_S(&argt($1),&sS1);
   QLA_seed_random(&sS1,sI2,sI3);
   for_$1_elem{
-    QLA_real(argd(C)) = QLA_gaussian(&sS1);
-    QLA_imag(argd(C)) = QLA_gaussian(&sS1);
-    QLA_c_eq_c($1_elem(argd($1)),argd(C));
+    arg1(R) = QLA_gaussian(&sS1);
+    arg2(R) = QLA_gaussian(&sS1);
+    QLA_c_eq_r_plus_ir($1_elem(argd($1)),arg1(R),arg2(R));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 rem(`
@@ -51,7 +51,7 @@ define(chkAssign,`
     QLA_c_eq_c($1_elem(argt($1)),$1_elem(arg2($1)));
     QLA_c_$2_c($1_elem(argt($1)),$1_elem(arg1($1)));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 rem(`
@@ -78,7 +78,7 @@ define(chkAssignDF,`
     QLA_c_eq_c($1_elem(argtD($1)),$1_elem(arg2D($1)));
     QLA_c_eq_c($1_elem(argtD($1)),$1_elem(arg1F($1)));
   }
-  checkeqsngD$1$1(&argdD($1),&argtD($1),name);
+  checkeqsngD$1$1(&argdD($1),&argtD($1),name,fp);
 ')
 
 rem(`
@@ -94,7 +94,7 @@ define(chkAssignFD,`
     QLA_c_eq_c($1_elem(argtF($1)),$1_elem(arg2F($1)));
     QLA_c_eq_c($1_elem(argtF($1)),$1_elem(arg1D($1)));
   }
-  checkeqsngF$1$1(&argdF($1),&argtF($1),name);
+  checkeqsngF$1$1(&argdF($1),&argtF($1),name,fp);
 ')
 
 rem(`
@@ -110,7 +110,7 @@ define(chkAssignDQ,`
     QLA_c_eq_c($1_elem(argtD($1)),$1_elem(arg2D($1)));
     QLA_c_eq_c($1_elem(argtD($1)),$1_elem(arg1Q($1)));
   }
-  checkeqsngD$1$1(&argdD($1),&argtD($1),name);
+  checkeqsngD$1$1(&argdD($1),&argtD($1),name,fp);
 ')
 
 rem(`
@@ -125,7 +125,7 @@ define(chkAssignHconj,`
   for_$1_elem{
     QLA_c_$2_ca($1_elem(argt($1)),$1t_elem(arg1($1)));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 rem(`
@@ -151,7 +151,7 @@ define(chkAssignTranspose,`
   for_$1_elem{
     QLA_c_$2_c($1_elem(argt($1)),$1t_elem(arg1($1)));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 rem(`
@@ -175,7 +175,7 @@ define(chkAssignConj,`
   for_$1_elem{
     QLA_c_$2_ca($1_elem(argt($1)),$1_elem(arg1($1)));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 rem(`
@@ -204,7 +204,7 @@ define(chkLocalNorm2eqop,`
   argt(R) eqop$2 argdP(R);
   QLA_R_eq_R(&argd(R),&arg1(R));
   QLA_R_$2_norm2_$1(&argd(R),&arg1($1));
-  checkeqsngRR(&argd(R),&argt(R),name);
+  checkeqsngRR(&argd(R),&argt(R),name,fp);
 ')
 
 rem(`chkLocalNorm2(t1)')
@@ -225,7 +225,7 @@ define(chkExtractElem,`
     QLA_C_eq_elem_$1(&argd(C),&arg1($1),$1_list);
     QLA_c_eq_c($1_elem(argt($1)),argd(C));
   }
-  checkeqsng$1$1(&argt($1),&arg1($1),name);
+  checkeqsng$1$1(&argt($1),&arg1($1),name,fp);
 ')
 
 rem(`
@@ -240,7 +240,7 @@ define(chkInsertElem,`
     QLA_c_eq_c(argd(C),$1_elem(arg1($1)));
     QLA_$1_eq_elem_C(&argd($1),&argd(C),$1_list);
   }
-  checkeqsng$1$1(&argd($1),&arg1($1),name);
+  checkeqsng$1$1(&argd($1),&arg1($1),name,fp);
 ')
 
 rem(`
@@ -256,7 +256,7 @@ define(chkExtractColorvec,`
       QLA_c_eq_c($1_elem(argt($1)),argd(C));
     }
   }
-  checkeqsng$1$1(&argt($1),&arg1($1),name);
+  checkeqsng$1$1(&argt($1),&arg1($1),name,fp);
 ')
 
 rem(`
@@ -274,7 +274,7 @@ define(chkInsertColorvec,`
       QLA_$1_eq_colorvec_V(&argd($1),&argd(V),$1_list_cvec);
     }
   }
-  checkeqsng$1$1(&argd($1),&arg1($1),name);
+  checkeqsng$1$1(&argd($1),&arg1($1),name,fp);
 ')
 
 rem(`
@@ -290,7 +290,7 @@ define(chkExtractDiracvec,`
       QLA_c_eq_c($1_elem(argt($1)),argd(C));
     }
   }
-  checkeqsng$1$1(&argt($1),&arg1($1),name);
+  checkeqsng$1$1(&argt($1),&arg1($1),name,fp);
 ')
 
 rem(`
@@ -308,7 +308,7 @@ define(chkInsertDiracvec,`
       QLA_$1_eq_diracvec_D(&argd($1),&argd(D),$1_list_dvec);
     }
   }
-  checkeqsng$1$1(&argd($1),&arg1($1),name);
+  checkeqsng$1$1(&argd($1),&arg1($1),name,fp);
 ')
 
 rem(`
@@ -320,7 +320,7 @@ define(chkRealtrace,`
   QLA_R_eq_re_trace_M(&argd(R),&arg1(M));
   argt(R) = 0;
   for(ic=0;ic<nc;ic++)argt(R)+=QLA_real(QLA_elem_M(arg1(M),ic,ic));
-  checkeqsngRR(&argt(R),&argd(R),name);
+  checkeqsngRR(&argt(R),&argd(R),name,fp);
 ')
 
 rem(`chkImagtrace')
@@ -329,7 +329,7 @@ define(chkImagtrace,`
   QLA_R_eq_im_trace_M(&argd(R),&arg1(M));
   argt(R) = 0;
   for(ic=0;ic<nc;ic++)argt(R)+=QLA_imag(QLA_elem_M(arg1(M),ic,ic));
-  checkeqsngRR(&argt(R),&argd(R),name);
+  checkeqsngRR(&argt(R),&argd(R),name,fp);
 ')
 
 rem(`chkTrace')
@@ -338,7 +338,7 @@ define(chkTrace,`
   QLA_C_eq_trace_M(&argd(C),&arg1(M));
   QLA_c_eq_r(argt(C),0.);
   for(ic=0;ic<nc;ic++)QLA_c_peq_c(argt(C),QLA_elem_M(arg1(M),ic,ic));
-  checkeqsngCC(&argt(C),&argd(C),name);
+  checkeqsngCC(&argt(C),&argd(C),name,fp);
 ')
 
 rem(`
@@ -354,7 +354,7 @@ define(chkSpintrace,`
        QLA_c_peq_c(QLA_elem_M(argt(M),ic,jc),
          QLA_elem_P(arg1(P),ic,is,jc,is));
   }
-  checkeqsngMM(&argt(M),&argd(M),name);
+  checkeqsngMM(&argt(M),&argd(M),name,fp);
 ')
 
 rem(`
@@ -372,7 +372,7 @@ define(chkAntiherm,`
   }
   QLA_R_eq_im_trace_M(&argt(R),&argt(M));
   for(ic=0;ic<nc;ic++)QLA_c_meq_r_plus_ir(QLA_elem_M(argt(M),ic,ic),0,argt(R)/nc);
-  checkeqsngMM(&argd(M),&argt(M),name);
+  checkeqsngMM(&argd(M),&argt(M),name,fp);
 ')
 
 rem(`
@@ -389,7 +389,7 @@ define(chkSpproj,`
     QLA_$1_$2_$1(&argt($1),&argd($1));
     QLA_$1_eq_$1(&argd($1),&arg2($1));
     QLA_$1_$2_spproj_D(&argd($1),&arg1(D),mu,sign);
-    checkeqsng$1$1(&argd($1),&argt($1),name);
+    checkeqsng$1$1(&argd($1),&argt($1),name,fp);
   }
 ')
 
@@ -406,7 +406,7 @@ define(chkSprecon,`
     QLA_D_$1_D(&argt(D),&argd(D));
     QLA_D_eq_D(&argd(D),&arg2(D));
     QLA_D_$1_sprecon_H(&argd(D),&arg1(H),mu,sign);
-    checkeqsngDD(&argd(D),&argt(D),name);
+    checkeqsngDD(&argd(D),&argt(D),name,fp);
   }
 ')
 
@@ -424,7 +424,7 @@ define(chkSpprojMult,`
     QLA_$1_$2_M$3_times_$1(&argt($1),&arg1(M),&argd($1));
     QLA_$1_eq_$1(&argd($1),&arg2($1));
     QLA_$1_$2_spproj_M$3_times_D(&argd($1),&arg1(M),&arg1(D),mu,sign);
-    checkeqsng$1$1(&argd($1),&argt($1),name);
+    checkeqsng$1$1(&argd($1),&argt($1),name,fp);
   }
 ')
 
@@ -441,7 +441,7 @@ define(chkSpreconMult,`
     QLA_D_$1_M$2_times_D(&argt(D),&arg1(M),&argd(D));
     QLA_D_eq_D(&argd(D),&arg2(D));
     QLA_D_$1_sprecon_M$2_times_H(&argd(D),&arg1(M),&arg1(H),mu,sign);
-    checkeqsngDD(&argd(D),&argt(D),name);
+    checkeqsngDD(&argd(D),&argt(D),name,fp);
   }
 ')
 
@@ -455,21 +455,21 @@ define(chkGammamult,`
   for(mu=0;mu<16;mu++){
     QLA_P_eq_gamma_times_P(&argd(P),&arg1(P),mu);
     mult_by_gamma_left(&argt(P),&arg1(P),mu);
-    checkeqsngPP(&argd(P),&argt(P),name);
+    checkeqsngPP(&argd(P),&argt(P),name,fp);
   }
 
   strcpy(name,"QLA_D_eq_gamma_times_D");
   for(mu=0;mu<16;mu++){
     QLA_D_eq_gamma_times_D(&argd(D),&arg1(D),mu);
     mult_wv_by_gamma_left(&argt(D),&arg1(D),mu);
-    checkeqsngDD(&argd(D),&argt(D),name);
+    checkeqsngDD(&argd(D),&argt(D),name,fp);
   }
 
   strcpy(name,"QLA_P_eq_P_times_gamma");
   for(mu=0;mu<16;mu++){
     QLA_P_eq_P_times_gamma(&argd(P),&arg1(P),mu);
     mult_by_gamma_right(&argt(P),&arg1(P),mu);
-    checkeqsngPP(&argd(P),&argt(P),name);
+    checkeqsngPP(&argd(P),&argt(P),name,fp);
   }
 ')
 
@@ -485,7 +485,7 @@ define(chkAssignrMult,`
   for_$1_elem{
     QLA_c_$2_r_times_c($1_elem(argt($1)),sR1,$1_elem(arg1($1)));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 rem(`chkrMult(td)')
@@ -508,7 +508,7 @@ define(chkAssigncMult,`
   for_$1_elem{
     QLA_c_$2_c_times_c($1_elem(argt($1)),sC1,$1_elem(arg1($1)));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 rem(`chkcMult(td)')
@@ -531,7 +531,7 @@ define(chkAssigniMult,`
   for_$1_elem{
     QLA_c_$2_ic($1_elem(argt($1)),$1_elem(arg1($1)));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 rem(`chkiMult(td)')
@@ -552,7 +552,7 @@ define(chkPlus,`
   for_$1_elem{
     QLA_c_eq_c_plus_c($1_elem(argt($1)),$1_elem(arg1($1)),$1_elem(arg2($1)));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 rem(`
@@ -565,7 +565,7 @@ define(chkMinus,`
   for_$1_elem{
     QLA_c_eq_c_minus_c($1_elem(argt($1)),$1_elem(arg1($1)),$1_elem(arg2($1)));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 rem(`
@@ -585,7 +585,7 @@ define(chkAssignUniformMult,`
     }
    QLA_c_$2_c($1_elem(argt($1)),argt(C));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 
@@ -609,7 +609,7 @@ define(chkAssignOuterprod,`
   for_$1_elem{
     QLA_c_$2_c_times_ca($1_elem(argt($1)),QLA_elem_V(arg1(V),ic),QLA_elem_V(arg2(V),jc));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 rem(`chkOuterprod')
@@ -634,7 +634,7 @@ define(chkLocalDoteqop,`
   QLA_c_$2_c(argt(C), argdP(C));
   QLA_c_eq_c(argd(C), arg1(C));
   QLA_C_$2_$1_dot_$1(&argd(C),&arg1($1),&arg2($1));
-  checkeqsngCC(&argd(C),&argt(C),name);
+  checkeqsngCC(&argd(C),&argt(C),name,fp);
 ')
 
 rem(`chkLocalDot(t1)')
@@ -659,7 +659,7 @@ define(chkLocalRealDoteqop,`
   argt(R) eqop$2 argdP(R);
   argd(R) = arg1(R);
   QLA_R_$2_re_$1_dot_$1(&argd(R),&arg1($1),&arg2($1));
-  checkeqsngRR(&argd(R),&argt(R),name);
+  checkeqsngRR(&argd(R),&argt(R),name,fp);
 ')
 
 rem(`chkLocalRealDot(t1)')
@@ -687,7 +687,7 @@ define(chkAssignLeftMultM,`
     }
    QLA_c_$2_c($1_elem(argt($1)),argt(C));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 
@@ -716,7 +716,7 @@ define(chkAssignMultMaMa,`
     }
    QLA_c_$2_c($1_elem(argt($1)),argt(C));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 rem(`chkMultMaMa(td)')
@@ -744,7 +744,7 @@ define(chkAssignLeftMultMa,`
     }
    QLA_c_$2_c($1_elem(argt($1)),argt(C));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 
@@ -773,7 +773,7 @@ define(chkAssignRightMultM,`
     }
    QLA_c_$2_c($1_elem(argt($1)),argt(C));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 
@@ -802,7 +802,7 @@ define(chkAssignRightMultMa,`
     }
    QLA_c_$2_c($1_elem(argt($1)),argt(C));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 
@@ -825,7 +825,7 @@ define(chkrMultPM,`
   for_$1_elem{
     QLA_c_eq_r_times_c_$2_c($1_elem(argt($1)),sR1,$1_elem(arg1($1)),$1_elem(arg2($1)));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 rem(`chkrMultAdd(td)')
@@ -844,7 +844,7 @@ define(chkcMultPM,`
   for_$1_elem{
     QLA_c_eq_c_times_c_$2_c($1_elem(argt($1)),sC1,$1_elem(arg1($1)),$1_elem(arg2($1)));
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 rem(`chkcMultAdd(td)')
@@ -861,13 +861,13 @@ define(chkMask,`
   strcpy(name,"QLA_$1_eq_$1_mask_I");
   QLA_$1_eq_$1(&argd($1),&arg2($1));
   QLA_$1_eq_$1_mask_I(&argd($1),&arg1($1),&arg1(I));
-  if(arg1(I))checkeqsng$1$1(&argd($1),&arg1($1),name);
-  else checkeqsng$1$1(&argd($1),&arg2($1),name);
+  if(arg1(I))checkeqsng$1$1(&argd($1),&arg1($1),name,fp);
+  else checkeqsng$1$1(&argd($1),&arg2($1),name,fp);
 
   QLA_$1_eq_$1(&argd($1),&arg2($1));
   QLA_$1_eq_$1_mask_I(&argd($1),&arg1($1),&arg2(I));
-  if(arg2(I))checkeqsng$1$1(&argd($1),&arg1($1),name);
-  else checkeqsng$1$1(&argd($1),&arg2($1),name);
+  if(arg2(I))checkeqsng$1$1(&argd($1),&arg1($1),name,fp);
+  else checkeqsng$1$1(&argd($1),&arg2($1),name,fp);
 ')
 
 rem(`
@@ -882,7 +882,7 @@ define(chkNorm2,`
     argtQ(R) += QLA_norm2_c($1_elem(arg1($1)));
   }
   argt(R) = argtQ(R);
-  checkeqsngRR(&argd(R),&argt(R),name);
+  checkeqsngRR(&argd(R),&argt(R),name,fp);
 ')
 
 rem(`
@@ -896,7 +896,7 @@ define(chkNorm2DF,`
   for_$1_elem{
     argtD(R) += QLA_norm2_c($1_elem(arg1F($1)));
   }
-  checkeqsngDRR(&argdD(R),&argtD(R),name);
+  checkeqsngDRR(&argdD(R),&argtD(R),name,fp);
 ')
 
 rem(`
@@ -910,7 +910,7 @@ define(chkNorm2QD,`
   for_$1_elem{
     argtQ(R) += QLA_norm2_c($1_elem(arg1D($1)));
   }
-  checkeqsngQRR(&argdQ(R),&argtQ(R),name);
+  checkeqsngQRR(&argdQ(R),&argtQ(R),name,fp);
 ')
 
 rem(`
@@ -925,7 +925,7 @@ define(chkDot,`
     QLA_c_peq_ca_times_c(argtQ(C),$1_elem(arg1($1)),$1_elem(arg2($1)));
   }
   QLA_c_eq_c(argt(C), argtQ(C));
-  checkeqsngCC(&argd(C),&argt(C),name);
+  checkeqsngCC(&argd(C),&argt(C),name,fp);
 ')
 
 rem(`
@@ -940,7 +940,7 @@ define(chkRealDot,`
     QLA_r_peq_Re_ca_times_c(argtQ(R),$1_elem(arg1($1)),$1_elem(arg2($1)));
   }
   argt(R) = argtQ(R);
-  checkeqsngRR(&argd(R),&argt(R),name);
+  checkeqsngRR(&argd(R),&argt(R),name,fp);
 ')
 
 rem(`
@@ -954,7 +954,7 @@ define(chkDotDF,`
   for_$1_elem{
     QLA_c_peq_ca_times_c(argtD(C),$1_elem(arg1F($1)),$1_elem(arg2F($1)));
   }
-  checkeqsngDCC(&argdD(C),&argtD(C),name);
+  checkeqsngDCC(&argdD(C),&argtD(C),name,fp);
 ')
 
 rem(`
@@ -968,7 +968,7 @@ define(chkRealDotDF,`
   for_$1_elem{
     QLA_r_peq_Re_ca_times_c(argtD(R),$1_elem(arg1F($1)),$1_elem(arg2F($1)));
   }
-  checkeqsngDRR(&argdD(R),&argtD(R),name);
+  checkeqsngDRR(&argdD(R),&argtD(R),name,fp);
 ')
 
 rem(`
@@ -982,7 +982,7 @@ define(chkDotQD,`
   for_$1_elem{
     QLA_c_peq_ca_times_c(argtQ(C),$1_elem(arg1D($1)),$1_elem(arg2D($1)));
   }
-  checkeqsngQCC(&argdQ(C),&argtQ(C),name);
+  checkeqsngQCC(&argdQ(C),&argtQ(C),name,fp);
 ')
 
 rem(`
@@ -996,7 +996,7 @@ define(chkRealDotQD,`
   for_$1_elem{
     QLA_r_peq_Re_ca_times_c(argtQ(R),$1_elem(arg1D($1)),$1_elem(arg2D($1)));
   }
-  checkeqsngQRR(&argdQ(R),&argtQ(R),name);
+  checkeqsngQRR(&argdQ(R),&argtQ(R),name,fp);
 ')
 
 rem(`
@@ -1007,7 +1007,7 @@ define(chkSumDest,`
   strcpy(name,"QLA_$1_eq_sum_$2");
   QLA_$2_eq_$2(&argt($2),&arg1($2));
   QLA_$1_eq_sum_$2(&argd($2),&arg1($2));
-  checkeqsng$2$2(&argd($2),&argt($2),name);
+  checkeqsng$2$2(&argd($2),&argt($2),name,fp);
 ')
 
 rem(`chkSum(t1)')
@@ -1023,7 +1023,7 @@ define(chkSumDestDF,`
   strcpy(name,"QLA_DF_$1_eq_sum_$2");
   QLA_DF_$2_eq_$2(&argtD($2),&arg1F($2));
   QLA_DF_$1_eq_sum_$2(&argdD($2),&arg1F($2));
-  checkeqsngD$2$2(&argdD($2),&argtD($2),name);
+  checkeqsngD$2$2(&argdD($2),&argtD($2),name,fp);
 ')
 
 rem(`chkSumDF(t1)')
@@ -1042,7 +1042,7 @@ define(chkSumDestQD,`
      QLA_c_eq_c($2_elem(argtQ($2)),$2_elem(arg1D($2)));
   }
   QLA_QD_$1_eq_sum_$2(&argdQ($2),&arg1D($2));
-  checkeqsngQ$2$2(&argdQ($2),&argtQ($2),name);
+  checkeqsngQ$2$2(&argdQ($2),&argtQ($2),name,fp);
 ')
 
 rem(`chkSumQD(t1)')
@@ -1061,7 +1061,7 @@ define(chkZero,`
   for_$1_elem {
     QLA_c_eq_r($1_elem(argt($1)),0.);
   }
-  checkeqsng$1$1(&argd($1),&argt($1),name);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 rem(`
@@ -1072,7 +1072,7 @@ define(chkConstDest,`
   strcpy(name,"QLA_$1_eq_$2");
   QLA_$1_eq_$1(&argd($1),&arg2($1));
   QLA_$1_eq_$2(&argd($1),&arg1($1));
-  checkeqsng$1$1(&argd($1),&arg1($1),name);
+  checkeqsng$1$1(&argd($1),&arg1($1),name,fp);
 ')
 
 rem(`chkConst(t1)')
@@ -1090,5 +1090,5 @@ define(chkMConst,`
   QLA_M_eq_c(&argd(M),&arg1(C));
   QLA_M_eq_zero(&argt(M));
   for(ic=0;ic<nc;ic++)QLA_elem_M(argt(M),ic,ic) = arg1(C);
-  checkeqsngMM(&argd(M),&argt(M),name);
+  checkeqsngMM(&argd(M),&argt(M),name,fp);
 ')

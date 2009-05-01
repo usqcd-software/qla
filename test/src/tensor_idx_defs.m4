@@ -107,7 +107,7 @@ static  char name[64];
 
 static  int i;
 
-static void initialize_variables(void) {
+static void initialize_variables(FILE *fp) {
 
   for(i = 0; i < MAX; i++){
     sR1p[i] = &sR1[sR2x[i]];

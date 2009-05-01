@@ -32,11 +32,11 @@ sub make_code_binary {
 
     &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
 
-    if($def{dim_name} ne "") {
-      make_temp_ptr(%dest_def,$def{dest_name});
-      make_temp_ptr(%src1_def,$def{src1_name});
-      make_temp_ptr(%src2_def,$def{src2_name});
-    }
+    #if($def{dim_name} ne "") {
+    #  make_temp_ptr(%dest_def,$def{dest_name});
+    #  make_temp_ptr(%src1_def,$def{src1_name});
+    #  make_temp_ptr(%src2_def,$def{src2_name});
+    #}
 
     &print_val_eqop_val_op_val(*dest_def,$eqop,"",
 			       *src1_def,$def{'op'},*src2_def);
@@ -60,6 +60,7 @@ sub make_code_binary_dot {
     $global_type = &datatype_specific($dest_t,$higher_precision);
     $temp_def{'type'} = $global_type;
     $temp_def{'value'} = $var_x;
+    $temp_def{'precision'} = $higher_precision;
 
     # For the dot product the adjoint of src1 is understood
     $src1_mod_def{'adj'} = "a";
@@ -102,6 +103,7 @@ sub make_code_binary_dot_global {
     $global_type = &datatype_specific($dest_t,$higher_precision);
     $global_def{'type'} = $global_type;
     $global_def{'value'} = $var_x;
+    $global_def{'precision'} = $higher_precision;
 
     # For the dot product the adjoint of src1 is understood
     $src1_mod_def{'adj'} = "a";
@@ -158,6 +160,7 @@ sub make_code_binary_elementary {
 sub spproj_mult_func {
   local($sign, $dir, $eqop) = @_;
   &print_def_open_iter($var_i,$def{'dim_name'});
+  &print_align_indx();
   print_def($mytemp{type}, $mytemp{value});
   if($def{dim_name} ne "") {
     make_temp_ptr(%dest_def,$def{dest_name});
@@ -184,6 +187,7 @@ sub spproj_mult_func {
 sub sprecon_mult_func {
   local($sign, $dir, $eqop) = @_;
   &print_def_open_iter($var_i,$def{'dim_name'});
+  &print_align_indx();
   print_def($mytemp{type}, $mytemp{value});
   if($def{dim_name} ne "") {
     make_temp_ptr(%dest_def,$def{dest_name});
@@ -216,13 +220,17 @@ sub make_code_spproj_sprecon_mult {
     %mytemp = ();
     if($def{'qualifier'} eq "spproj") { &load_arg_hash(*mytemp,'dest'); }
     else { &load_arg_hash(*mytemp,'src2'); }
+    $mytemp{type} = &datatype_specific($mytemp{t}, $temp_precision);
     $mytemp{value} = "t";
+    $mytemp{precision} = $temp_precision;
 
+    $dest_prec = $temp_precision;
     if($def{'qualifier'} eq "spproj") {
       &print_val_assign_spin($eqop, $mu, $sign, \&spproj_mult_func);
     } else {
       &print_val_assign_spin($eqop, $mu, $sign, \&sprecon_mult_func);
     }
+    $dest_prec = '';
 
     &print_very_end_matter($var_i,$def{'dim_name'});
 }
@@ -234,6 +242,7 @@ sub make_code_spproj_sprecon_mult {
 sub wilsonspin_mult_func {
   local($sign, $dir, $eqop) = @_;
   &print_def_open_iter($var_i,$def{'dim_name'});
+  &print_align_indx();
   print_def($mytemp1{type}, $mytemp1{value});
   print_def($mytemp2{type}, $mytemp2{value});
   if($def{dim_name} ne "") {
@@ -277,14 +286,17 @@ sub make_code_wilsonspin_mult {
     &max_color_spin_dim('t1','');
     &load_arg_hash(*mytemp1,'t1');
     $mytemp1{t} = $datatype_halffermion_abbrev;
-    $mytemp1{type} = &datatype_specific($mytemp1{t});
+    $mytemp1{type} = &datatype_specific($mytemp1{t}, $temp_precision);
+    $mytemp1{precision} = $temp_precision;
     %mytemp2 = %mytemp1;
     $mytemp1{value} = "t1";
     $mytemp2{value} = "t2";
 
     &print_very_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
 
+    $dest_prec = $temp_precision;
     &print_val_assign_spin($eqop, $mu, $sign, \&wilsonspin_mult_func);
+    $dest_prec = '';
 
     &print_very_end_matter($var_i,$def{'dim_name'});
 }

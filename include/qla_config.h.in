@@ -1,5 +1,14 @@
 /* include/qla_config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* compiling for 440d */
+#undef HAVE_440D
+
+/* using openmp */
+#undef HAVE_OPENMP
+
+/* using xlc */
+#undef HAVE_XLC
+
 /* Define to 1 if your C compiler doesn't accept -c and -o together. */
 #undef NO_MINUS_C_MINUS_O
 
@@ -27,6 +36,15 @@
 /* Version number of package */
 #undef VERSION
 
-/* Define to equivalent of C99 restrict keyword, or to nothing if this is not
-   supported. Do not define if restrict is supported directly. */
+/* Define to the equivalent of the C99 'restrict' keyword, or to
+   nothing if this is not supported.  Do not define if restrict is
+   supported directly.  */
 #undef restrict
+/* Work around a bug in Sun C++: it does not support _Restrict, even
+   though the corresponding Sun C compiler does, which causes
+   "#define restrict _Restrict" in the previous line.  Perhaps some future
+   version of Sun C++ will work with _Restrict; if so, it'll probably
+   define __RESTRICT, just as Sun C does.  */
+#if defined __SUNPRO_CC && !defined __RESTRICT
+# define _Restrict
+#endif

@@ -7,6 +7,50 @@ understands the restrict keyword).  Check your compiler documentation to
 find the appropriate option (for gcc try -std=c99 or for xlc try
 -qlanglvl=stdc99).
 
+**** BG/L config notes ****
+
+The recommended configure line for BG/L is
+
+./configure \
+  --prefix=$INSTALL_DIR \
+  --enable-nc=3 \
+  --enable-440d \
+  --enable-xlc \
+  --enable-temp-precision=D \
+  --enable-backend-test-cmd="$RUN_COMMAND" \
+  --host=blrts --build=none \
+  CC=blrts_c99 \
+  CFLAGS="-O3 -qarch=440d" \
+  TEST_CFLAGS="-O2"
+
+Where $INSTALL_DIR is the directory you want it installed in and
+$RUN_COMMAND is a command that can be used to run an executable on the
+backend.  For cobalt this can simply be "cqsub -t 5 -n 1 -c 1 -m co".
+If you can run mpirun directly to submit jobs on the backend then
+something like "mpirun -np 1" might work depending on the setup.
+Otherwise for loadleveler you need to make a script like the one
+below, make sure it is executable and in your path and then pass that
+as the run command.
+
+#!/bin/sh
+llsubmit - <<EOF
+# @ job_type = parallel
+# @ executable = /bgl/BlueLight/ppcfloor/bglsys/bin/mpirun
+# @ arguments = -np 1 -connect MESH -mode CO -cwd `pwd` -exe $1
+# @ wall_clock_limit = 10
+# @ queue
+EOF
+
+
+If all goes well then you can do the usual "make && make install" then
+"cd test" and do "make check".  This should start the tests running on
+the backend.  When all the tests are finished you can do "make check-TESTS"
+from the same directory (test) and that will give a summary of the tests.
+You can also look at the various */*.result files directly.
+
+
+**** below are the original notes ****
+
 Some configuration options to be aware of are:
  --enable-sse	uses optimized SSE routines for some functions (single)
  --enable-sse2	uses optimized SSE2 routines for some functions (double)

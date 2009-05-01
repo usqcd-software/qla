@@ -4,77 +4,104 @@ echo "************************************************************************"
 echo "**********************  Summary of test results  ***********************"
 echo "************************************************************************"
 
-for f in int/*; do
-  case $f in
-    (int/results.check_int)
-      perl ./checkcomplete.pl $f ../include/qla_int.h
-    ;;
-    (*results*) echo WARNING: not summarized: $f ;;
-  esac
+exists() {
+  status=0
+  for f in $*; do
+    if [ ! -f $f ]; then
+      echo "Result file $f not found."
+      status=1
+    fi
+  done
+  return $status
+}
+
+warn_rest() {
+  dir="$1"
+  shift
+  for f in `\ls -1 $dir/*.result 2>/dev/null`; do
+    if ! echo "$*" |grep -q "$f"; then
+      echo WARNING: not summarized: $f
+    fi
+  done
+}
+
+intfiles="int/test_int_sng.result int/test_int_idx.result"
+if exists $intfiles; then
+  perl $srcdir/checkcomplete.pl 0 ../include/qla_int.h $intfiles
+fi
+
+warn_rest int $intfiles
+
+
+mfiles="scalar/test_macros.result"
+if exists $mfiles; then
+  perl $srcdir/checkcomplete.pl 0 $srcdir/../include/qla_complex.h $mfiles
+fi
+
+sfiles=""
+for p in f d q df dq; do
+  files="scalar/test_scalar_${p}_sng.result scalar/test_scalar_${p}_idx.result"
+  if exists $files; then
+    pc=`echo $p |tr 'a-z' 'A-Z'`
+    if [ $pc = DF -o $pc = DQ ]; then pc="0"; fi
+    perl $srcdir/checkcomplete.pl $pc ../include/qla_${p}.h $files
+  fi
+  sfiles="$sfiles $files"
 done
 
-for f in scalar/*; do
-  case $f in
-    (scalar/results.check_macros)
-      grep -v OK $f
-    ;;
-    (scalar/results.check_[dfq])
-      lib=`echo $f |sed s/.*check_//`
-      ulib=`echo $lib |tr 'a-z' 'A-Z'`
-      perl ./checkcomplete.pl $f ../include/qla_$lib.h $ulib
-    ;;
-    (scalar/results.check_d[fq])
-      lib=`echo $f |sed s/.*check_//`
-      perl ./checkcomplete.pl $f ../include/qla_$lib.h
-    ;;
-    (*results*) echo WARNING: not summarized: $f ;;
-  esac
+warn_rest scalar $mfiles $sfiles
+
+
+t2files=""
+for p in f d q df dq; do
+  hdr="../include/qla_${p}2.h"
+  if [ -f $hdr ]; then
+    files="tensor2/test_tensor_${p}_sng.result tensor2/test_tensor_${p}_idx.result"
+    if exists $files; then
+      pc=`echo $p |tr 'a-z' 'A-Z'`
+      if [ $pc = DF -o $pc = DQ ]; then pc=""; fi
+      perl $srcdir/checkcomplete.pl ${pc}2 $hdr $files
+    fi
+    t2files="$t2files $files"
+  fi
 done
 
-for f in tensor2/*; do
-  case $f in
-    (tensor2/results.check_[dfq])
-      lib=`echo $f |sed s/.*check_//`"2"
-      ulib=`echo $lib |tr 'a-z' 'A-Z'`
-      perl ./checkcomplete.pl $f ../include/qla_$lib.h $ulib
-    ;;
-    (tensor2/results.check_d[fq])
-      lib=`echo $f |sed s/.*check_//`"2"
-      perl ./checkcomplete.pl $f ../include/qla_$lib.h 2
-    ;;
-    (*results*) echo WARNING: not summarized: $f ;;
-  esac
+warn_rest tensor2 $t2files
+
+
+t3files=""
+for p in f d q df dq; do
+  hdr="../include/qla_${p}3.h"
+  if [ -f $hdr ]; then
+    files="tensor3/test_tensor_${p}_sng.result tensor3/test_tensor_${p}_idx.result"
+    if exists $files; then
+      pc=`echo $p |tr 'a-z' 'A-Z'`
+      if [ $pc = DF -o $pc = DQ ]; then pc=""; fi
+      perl $srcdir/checkcomplete.pl ${pc}3 $hdr $files
+    fi
+    t3files="$t3files $files"
+  fi
 done
 
-for f in tensor3/*; do
-  case $f in
-    (tensor3/results.check_[dfq])
-      lib=`echo $f |sed s/.*check_//`"3"
-      ulib=`echo $lib |tr 'a-z' 'A-Z'`
-      perl ./checkcomplete.pl $f ../include/qla_$lib.h $ulib
-    ;;
-    (tensor3/results.check_d[fq])
-      lib=`echo $f |sed s/.*check_//`"3"
-      perl ./checkcomplete.pl $f ../include/qla_$lib.h 3
-    ;;
-    (*results*) echo WARNING: not summarized: $f ;;
-  esac
+warn_rest tensor3 $t3files
+
+
+tNfiles=""
+for p in f d q df dq; do
+  hdr="../include/qla_${p}n.h"
+  if [ -f $hdr ]; then
+    files="tensorN/test_tensor_${p}_sng.result tensorN/test_tensor_${p}_idx.result"
+    if exists $files; then
+      pc=`echo $p |tr 'a-z' 'A-Z'`
+      if [ $pc = DF -o $pc = DQ ]; then pc=""; fi
+      perl $srcdir/checkcomplete.pl ${pc}N $hdr $files
+    fi
+    tNfiles="$tNfiles $files"
+  fi
 done
 
-for f in tensorN/*; do
-  case $f in
-    (tensorN/results.check_[dfq])
-      lib=`echo $f |sed s/.*check_//`"n"
-      ulib=`echo $lib |tr 'a-z' 'A-Z'`
-      perl ./checkcomplete.pl $f ../include/qla_$lib.h $ulib
-    ;;
-    (tensorN/results.check_d[fq])
-      lib=`echo $f |sed s/.*check_//`"n"
-      perl ./checkcomplete.pl $f ../include/qla_$lib.h N
-    ;;
-    (*results*) echo WARNING: not summarized: $f ;;
-  esac
-done
+warn_rest tensorN $tNfiles
+
 
 echo "************************************************************************"
 echo "****************************  End of summary  **************************"

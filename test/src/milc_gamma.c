@@ -105,6 +105,9 @@ void wp_shrink( QLA_HalfFermion *dest, QLA_DiracFermion *src,
   switch(dir){
   case XUP:
     for(i=0;i<nc;i++){
+      QLA_c_eq_c_plus_ic(QLA_elem_H(*dest,i,0), QLA_elem_D(*src,i,0), QLA_elem_D(*src,i,3));
+      QLA_c_eq_c_plus_ic(QLA_elem_H(*dest,i,1), QLA_elem_D(*src,i,1), QLA_elem_D(*src,i,2));
+#if 0
       QLA_real(QLA_elem_H(*dest,i,0)) = QLA_real(QLA_elem_D(*src,i,0)) 
 	- QLA_imag(QLA_elem_D(*src,i,3));
       QLA_imag(QLA_elem_H(*dest,i,0)) = QLA_imag(QLA_elem_D(*src,i,0)) 
@@ -113,10 +116,14 @@ void wp_shrink( QLA_HalfFermion *dest, QLA_DiracFermion *src,
 	- QLA_imag(QLA_elem_D(*src,i,2));
       QLA_imag(QLA_elem_H(*dest,i,1)) = QLA_imag(QLA_elem_D(*src,i,1)) 
 	+ QLA_real(QLA_elem_D(*src,i,2));
+#endif
     }
     break;
   case XDOWN:
     for(i=0;i<nc;i++){
+      QLA_c_eq_c_minus_ic(QLA_elem_H(*dest,i,0), QLA_elem_D(*src,i,0), QLA_elem_D(*src,i,3));
+      QLA_c_eq_c_minus_ic(QLA_elem_H(*dest,i,1), QLA_elem_D(*src,i,1), QLA_elem_D(*src,i,2));
+#if 0
       QLA_real(QLA_elem_H(*dest,i,0)) = QLA_real(QLA_elem_D(*src,i,0)) 
 	+ QLA_imag(QLA_elem_D(*src,i,3));
       QLA_imag(QLA_elem_H(*dest,i,0)) = QLA_imag(QLA_elem_D(*src,i,0)) 
@@ -125,10 +132,14 @@ void wp_shrink( QLA_HalfFermion *dest, QLA_DiracFermion *src,
 	+ QLA_imag(QLA_elem_D(*src,i,2));
       QLA_imag(QLA_elem_H(*dest,i,1)) = QLA_imag(QLA_elem_D(*src,i,1)) 
 	- QLA_real(QLA_elem_D(*src,i,2));
+#endif
     }
     break;
   case YUP:
     for(i=0;i<nc;i++){
+      QLA_c_eq_c_minus_c(QLA_elem_H(*dest,i,0), QLA_elem_D(*src,i,0), QLA_elem_D(*src,i,3));
+      QLA_c_eq_c_plus_c(QLA_elem_H(*dest,i,1), QLA_elem_D(*src,i,1), QLA_elem_D(*src,i,2));
+#if 0
       QLA_real(QLA_elem_H(*dest,i,0)) = QLA_real(QLA_elem_D(*src,i,0)) 
 	- QLA_real(QLA_elem_D(*src,i,3));
       QLA_imag(QLA_elem_H(*dest,i,0)) = QLA_imag(QLA_elem_D(*src,i,0)) 
@@ -137,10 +148,14 @@ void wp_shrink( QLA_HalfFermion *dest, QLA_DiracFermion *src,
 	+ QLA_real(QLA_elem_D(*src,i,2));
       QLA_imag(QLA_elem_H(*dest,i,1)) = QLA_imag(QLA_elem_D(*src,i,1)) 
 	+ QLA_imag(QLA_elem_D(*src,i,2));
+#endif
     }
     break;
   case YDOWN:
     for(i=0;i<nc;i++){
+      QLA_c_eq_c_plus_c(QLA_elem_H(*dest,i,0), QLA_elem_D(*src,i,0), QLA_elem_D(*src,i,3));
+      QLA_c_eq_c_minus_c(QLA_elem_H(*dest,i,1), QLA_elem_D(*src,i,1), QLA_elem_D(*src,i,2));
+#if 0
       QLA_real(QLA_elem_H(*dest,i,0)) = QLA_real(QLA_elem_D(*src,i,0)) 
 	+ QLA_real(QLA_elem_D(*src,i,3));
       QLA_imag(QLA_elem_H(*dest,i,0)) = QLA_imag(QLA_elem_D(*src,i,0)) 
@@ -149,10 +164,14 @@ void wp_shrink( QLA_HalfFermion *dest, QLA_DiracFermion *src,
 	- QLA_real(QLA_elem_D(*src,i,2));
       QLA_imag(QLA_elem_H(*dest,i,1)) = QLA_imag(QLA_elem_D(*src,i,1)) 
 	- QLA_imag(QLA_elem_D(*src,i,2));
+#endif
     }
     break;
   case ZUP:
     for(i=0;i<nc;i++){
+      QLA_c_eq_c_plus_ic(QLA_elem_H(*dest,i,0), QLA_elem_D(*src,i,0), QLA_elem_D(*src,i,2));
+      QLA_c_eq_c_minus_ic(QLA_elem_H(*dest,i,1), QLA_elem_D(*src,i,1), QLA_elem_D(*src,i,3));
+#if 0
       QLA_real(QLA_elem_H(*dest,i,0)) = QLA_real(QLA_elem_D(*src,i,0)) 
 	- QLA_imag(QLA_elem_D(*src,i,2));
       QLA_imag(QLA_elem_H(*dest,i,0)) = QLA_imag(QLA_elem_D(*src,i,0)) 
@@ -161,10 +180,14 @@ void wp_shrink( QLA_HalfFermion *dest, QLA_DiracFermion *src,
 	+ QLA_imag(QLA_elem_D(*src,i,3));
       QLA_imag(QLA_elem_H(*dest,i,1)) = QLA_imag(QLA_elem_D(*src,i,1)) 
 	- QLA_real(QLA_elem_D(*src,i,3));
+#endif
     }
     break;
   case ZDOWN:
     for(i=0;i<nc;i++){
+      QLA_c_eq_c_minus_ic(QLA_elem_H(*dest,i,0), QLA_elem_D(*src,i,0), QLA_elem_D(*src,i,2));
+      QLA_c_eq_c_plus_ic(QLA_elem_H(*dest,i,1), QLA_elem_D(*src,i,1), QLA_elem_D(*src,i,3));
+#if 0
       QLA_real(QLA_elem_H(*dest,i,0)) = QLA_real(QLA_elem_D(*src,i,0)) 
 	+ QLA_imag(QLA_elem_D(*src,i,2));
       QLA_imag(QLA_elem_H(*dest,i,0)) = QLA_imag(QLA_elem_D(*src,i,0)) 
@@ -173,10 +196,14 @@ void wp_shrink( QLA_HalfFermion *dest, QLA_DiracFermion *src,
 	- QLA_imag(QLA_elem_D(*src,i,3));
       QLA_imag(QLA_elem_H(*dest,i,1)) = QLA_imag(QLA_elem_D(*src,i,1)) 
 	+ QLA_real(QLA_elem_D(*src,i,3));
+#endif
     }
     break;
   case TUP:
     for(i=0;i<nc;i++){
+      QLA_c_eq_c_plus_c(QLA_elem_H(*dest,i,0), QLA_elem_D(*src,i,0), QLA_elem_D(*src,i,2));
+      QLA_c_eq_c_plus_c(QLA_elem_H(*dest,i,1), QLA_elem_D(*src,i,1), QLA_elem_D(*src,i,3));
+#if 0
       QLA_real(QLA_elem_H(*dest,i,0)) = QLA_real(QLA_elem_D(*src,i,0)) 
 	+ QLA_real(QLA_elem_D(*src,i,2));
       QLA_imag(QLA_elem_H(*dest,i,0)) = QLA_imag(QLA_elem_D(*src,i,0)) 
@@ -185,10 +212,14 @@ void wp_shrink( QLA_HalfFermion *dest, QLA_DiracFermion *src,
 	+ QLA_real(QLA_elem_D(*src,i,3));
       QLA_imag(QLA_elem_H(*dest,i,1)) = QLA_imag(QLA_elem_D(*src,i,1)) 
 	+ QLA_imag(QLA_elem_D(*src,i,3));
+#endif
     }
     break;
   case TDOWN:
     for(i=0;i<nc;i++){
+      QLA_c_eq_c_minus_c(QLA_elem_H(*dest,i,0), QLA_elem_D(*src,i,0), QLA_elem_D(*src,i,2));
+      QLA_c_eq_c_minus_c(QLA_elem_H(*dest,i,1), QLA_elem_D(*src,i,1), QLA_elem_D(*src,i,3));
+#if 0
       QLA_real(QLA_elem_H(*dest,i,0)) = QLA_real(QLA_elem_D(*src,i,0)) 
 	- QLA_real(QLA_elem_D(*src,i,2));
       QLA_imag(QLA_elem_H(*dest,i,0)) = QLA_imag(QLA_elem_D(*src,i,0)) 
@@ -197,22 +228,31 @@ void wp_shrink( QLA_HalfFermion *dest, QLA_DiracFermion *src,
 	- QLA_real(QLA_elem_D(*src,i,3));
       QLA_imag(QLA_elem_H(*dest,i,1)) = QLA_imag(QLA_elem_D(*src,i,1)) 
 	- QLA_imag(QLA_elem_D(*src,i,3));
+#endif
     }
     break;
   case SUP:
     for(i=0;i<nc;i++){
+      QLA_c_eq_c(QLA_elem_H(*dest,i,0), QLA_elem_D(*src,i,0));
+      QLA_c_eq_c(QLA_elem_H(*dest,i,1), QLA_elem_D(*src,i,1));
+#if 0
       QLA_real(QLA_elem_H(*dest,i,0)) = QLA_real(QLA_elem_D(*src,i,0));
       QLA_imag(QLA_elem_H(*dest,i,0)) = QLA_imag(QLA_elem_D(*src,i,0));
       QLA_real(QLA_elem_H(*dest,i,1)) = QLA_real(QLA_elem_D(*src,i,1));
       QLA_imag(QLA_elem_H(*dest,i,1)) = QLA_imag(QLA_elem_D(*src,i,1));
+#endif
     }
     break;
   case SDOWN:
     for(i=0;i<nc;i++){
+      QLA_c_eq_c(QLA_elem_H(*dest,i,0), QLA_elem_D(*src,i,2));
+      QLA_c_eq_c(QLA_elem_H(*dest,i,1), QLA_elem_D(*src,i,3));
+#if 0
       QLA_real(QLA_elem_H(*dest,i,0)) = QLA_real(QLA_elem_D(*src,i,2));
       QLA_imag(QLA_elem_H(*dest,i,0)) = QLA_imag(QLA_elem_D(*src,i,2));
       QLA_real(QLA_elem_H(*dest,i,1)) = QLA_real(QLA_elem_D(*src,i,3));
       QLA_imag(QLA_elem_H(*dest,i,1)) = QLA_imag(QLA_elem_D(*src,i,3));
+#endif
     }
     break;
   default:

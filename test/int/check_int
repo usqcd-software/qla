@@ -1,5 +1,0 @@
-outfile=results.check_int
-rm -f $outfile
-./test_int_sng > $outfile
-./test_int_idx >> $outfile
-perl ../checkcomplete.pl $outfile ../../include/qla_int.h

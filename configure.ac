@@ -1,12 +1,47 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([qla],[1.6.3],[josborn at physics.bu.edu])
+AC_INIT([qla],[1.7.0],[josborn at physics.bu.edu])
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE
 
 AC_CONFIG_SRCDIR(include/qla.h)
 AC_CONFIG_SRCDIR(lib/random/QLA_random.c)
 AC_CONFIG_HEADERS([include/qla_config.h])
+
+
+# library options
+
+dnl --enable-nc=<ColorLib>
+AC_ARG_ENABLE(
+  nc,
+  AC_HELP_STRING([--enable-nc],
+    [make just the libraries necessary for the given color]),
+  AC_SUBST(NC, [$enableval]),
+  AC_SUBST(NC, [all])
+)
+if test "X$NC" = Xn -o "X$NC" = X1; then NC="N"; fi
+if test `expr $NC : '[0-9]*$' \& $NC \> 3` -ne 0; then NC="N"; fi
+if test "X$NC" != X2 -a "X$NC" != X3 -a "X$NC" != XN; then NC="all"; fi 
+
+
+# code options
+
+dnl --enable-backend-test-cmd
+AC_ARG_ENABLE(
+  backend_test_cmd,
+  AC_HELP_STRING([--enable-backend-test-cmd=string],[specify the full command to submit test jobs to your system backend otherwise they will run on the frontend]),
+  AC_SUBST(BACKEND_TEST_CMD, [$enableval])
+  echo "using $BACKEND_TEST_CMD for submitting backend test runs",
+)
+
+dnl --enable-temp-precision
+AC_ARG_ENABLE(
+  temp-precision,
+  AC_HELP_STRING([--enable-temp-precision={F|D|Q}],
+    [set internal precision for all compuations]),
+  AC_SUBST(TEMP_PRECISION, [$enableval])
+  echo "using $TEMP_PRECISION precision for temporaries",
+)
 
 dnl --enable-sse
 AC_ARG_ENABLE(
@@ -46,7 +81,6 @@ else
   AC_DEFINE_UNQUOTED(QLA_SSE_LEVEL, 0, [SSE level])
 fi
 
-
 dnl --enable-440
 AC_ARG_ENABLE(
   440,
@@ -64,20 +98,39 @@ AC_ARG_ENABLE(
   AC_SUBST(OPT_440d, [$enableval]),
   AC_SUBST(OPT_440d, [no])
 )
+if test "X$OPT_440d" != "Xno"; then
+  AC_DEFINE_UNQUOTED(HAVE_440D, 1, [compiling for 440d])
+fi
 
-dnl --enable-nc=<ColorLib>
+dnl --enable-openmp
 AC_ARG_ENABLE(
-  nc,
-  AC_HELP_STRING([--enable-nc],
-    [make just the libraries necessary for the given color]),
-  AC_SUBST(NC, [$enableval]),
-  AC_SUBST(NC, [all])
+  openmp,
+  AC_HELP_STRING([--enable-openmp],
+    [generate OpenMP pragmas]),
+  AC_SUBST(OPT_OPENMP, [$enableval]),
+  AC_SUBST(OPT_OPENMP, [no])
 )
-if test "X$NC" = Xn -o "X$NC" = X1; then NC="N"; fi
-if test `expr $NC : '[0-9]*$' \& $NC \> 3` -ne 0; then NC="N"; fi
-if test "X$NC" != X2 -a "X$NC" != X3 -a "X$NC" != XN; then NC="all"; fi 
+if test "X$OPT_OPENMP" != "Xno"; then
+  AC_DEFINE_UNQUOTED(HAVE_OPENMP, 1, [using openmp])
+fi
+
+# compiler options
+
+dnl --enable-xlc
+AC_ARG_ENABLE(
+  xlc,
+  AC_HELP_STRING([--enable-xlc],
+    [use XLC specific optimization features]),
+  AC_SUBST(OPT_XLC, [$enableval]),
+  AC_SUBST(OPT_XLC, [no])
+)
+if test "X$OPT_XLC" != "Xno"; then
+  AC_DEFINE_UNQUOTED(HAVE_XLC, 1, [using xlc])
+fi
+
 
 # Checks for programs.
+
 AC_CHECK_TOOL(AR, ar, [ar])
 AC_PROG_RANLIB
 AC_PATH_PROG([PERL], [perl], [perl])
@@ -148,7 +201,14 @@ AC_CONFIG_FILES(include/Makefile)
 AC_CONFIG_FILES(lib/Makefile)
 AC_CONFIG_FILES(lib/c99/Makefile)
 AC_CONFIG_FILES(lib/cmath/Makefile)
-AC_CONFIG_FILES(lib/random/Makefile)
+AC_CONFIG_FILES(lib/optimized/Makefile)
+AC_CONFIG_FILES(lib/optimized/c/Makefile)
+AC_CONFIG_FILES(lib/optimized/sse/Makefile)
+AC_CONFIG_FILES(lib/optimized/sse2/Makefile)
+AC_CONFIG_FILES(lib/optimized/440/Makefile)
+AC_CONFIG_FILES(lib/optimized/440d/Makefile)
+AC_CONFIG_FILES(lib/perl/defines.pl)
+AC_CONFIG_FILES(lib/perl/Makefile)
 AC_CONFIG_FILES(lib/qla_int/Makefile)
 AC_CONFIG_FILES(lib/qla_f/Makefile)
 AC_CONFIG_FILES(lib/qla_f2/Makefile)
@@ -170,12 +230,7 @@ AC_CONFIG_FILES(lib/qla_dq/Makefile)
 AC_CONFIG_FILES(lib/qla_dq2/Makefile)
 AC_CONFIG_FILES(lib/qla_dq3/Makefile)
 AC_CONFIG_FILES(lib/qla_dqn/Makefile)
-AC_CONFIG_FILES(lib/optimized/Makefile)
-AC_CONFIG_FILES(lib/optimized/c/Makefile)
-AC_CONFIG_FILES(lib/optimized/sse/Makefile)
-AC_CONFIG_FILES(lib/optimized/sse2/Makefile)
-AC_CONFIG_FILES(lib/optimized/440/Makefile)
-AC_CONFIG_FILES(lib/optimized/440d/Makefile)
+AC_CONFIG_FILES(lib/random/Makefile)
 AC_CONFIG_FILES(test/Makefile)
 AC_CONFIG_FILES(test/src/Makefile)
 AC_CONFIG_FILES(test/int/Makefile)

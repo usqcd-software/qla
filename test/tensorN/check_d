@@ -1,5 +1,0 @@
-outfile=results.check_d
-rm -f $outfile
-./test_tensor_d_sng > $outfile
-./test_tensor_d_idx >> $outfile
-perl ../checkcomplete.pl $outfile ../../include/qla_dn.h DN

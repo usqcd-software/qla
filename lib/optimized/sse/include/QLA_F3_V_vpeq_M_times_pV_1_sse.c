@@ -4,6 +4,7 @@
   v4sf r0r, r0i;
   int i;
 
+#pragma omp parallel for
   for(i=0; i<n; i++) {
     a0 = loadups(foff(&a[i],0));
     a0 = loadhps(a0,foff(&a[i],6));

@@ -3,6 +3,7 @@ NC = 4
 CC = @TEST_CC@
 CFLAGS = @TEST_CFLAGS@
 AM_CFLAGS = -I$(top_srcdir)/test/src -I$(top_srcdir)/include
+
 SRCDIR = ../../lib
 QLAEXTRA = $(SRCDIR)/libqla_int.a \
            $(SRCDIR)/libqla_random.a \
@@ -14,24 +15,23 @@ QLAQ = $(SRCDIR)/libqla_q.a $(SRCDIR)/libqla_q$(c).a
 QLADF = $(QLAD) $(QLAF) $(SRCDIR)/libqla_df$(c).a
 QLADQ = $(QLAD) $(QLAQ) $(SRCDIR)/libqla_dq$(c).a
 
-CMPSRC = ../src/compare.c
-SNGSRC = ../src/test_tensor_sng.c ../src/milc_gamma.c
-IDXSRC = ../src/test_tensor_idx.c \
-         ../src/test_tensor_idx1.c ../src/test_tensor_idx2.c \
-         ../src/test_tensor_idx3.c ../src/test_tensor_idx4.c
-
 check_PROGRAMS = test_tensor_f_sng test_tensor_f_idx \
                  test_tensor_d_sng test_tensor_d_idx \
                  test_tensor_q_sng test_tensor_q_idx \
                  test_tensor_df_sng test_tensor_df_idx \
                  test_tensor_dq_sng test_tensor_dq_idx
 
-TESTS = check_f check_d check_q check_df check_dq
-
-EXTRA_DIST = $(TESTS)
+TESTS_ENVIRONMENT = @BACKEND_TEST_CMD@
+TESTS = $(check_PROGRAMS)
 
 distclean-local:
-	-rm -f results.*
+	-rm -f *.result
+
+CMPSRC = ../src/compare.c
+SNGSRC = ../src/test_tensor_sng.c ../src/milc_gamma.c
+IDXSRC = ../src/test_tensor_idx.c \
+         ../src/test_tensor_idx1.c ../src/test_tensor_idx2.c \
+         ../src/test_tensor_idx3.c ../src/test_tensor_idx4.c
 
 # f
 nodist_test_tensor_f_sng_SOURCES = $(SNGSRC) $(CMPSRC)

@@ -3,35 +3,35 @@
 __asm__ __volatile__ ("movupd %0, %%xmm0" \
                       : \
                       : \
-                      "m" ((bb)->c[0])); \
+                      "m" (QLA_elem_V(*bb,0))); \
 __asm__ __volatile__ ("movupd %0, %%xmm1" \
                       : \
                       : \
-                      "m" ((bb)->c[1])); \
+                      "m" (QLA_elem_V(*bb,1))); \
 __asm__ __volatile__ ("movupd %0, %%xmm2" \
                       : \
                       : \
-                      "m" ((bb)->c[2])); \
+                      "m" (QLA_elem_V(*bb,2))); \
 __asm__ __volatile__ ("movsd %0, %%xmm3" \
                       : \
                       : \
-                      "m" ((aa)->e[0][0].real)); \
+                      "m" (QLA_real(QLA_elem_M(*aa,0,0)))); \
 __asm__ __volatile__ ("movsd %0, %%xmm6" \
                       : \
                       : \
-                      "m" ((aa)->e[0][1].real)); \
+                      "m" (QLA_real(QLA_elem_M(*aa,0,1)))); \
 __asm__ __volatile__ ("movsd %0, %%xmm4" \
                       : \
                       : \
-                      "m" ((aa)->e[1][0].real)); \
+                      "m" (QLA_real(QLA_elem_M(*aa,1,0)))); \
 __asm__ __volatile__ ("movsd %0, %%xmm7" \
                       : \
                       : \
-                      "m" ((aa)->e[1][2].real)); \
+                      "m" (QLA_real(QLA_elem_M(*aa,1,2)))); \
 __asm__ __volatile__ ("movsd %0, %%xmm5" \
                       : \
                       : \
-                      "m" ((aa)->e[2][0].real)); \
+                      "m" (QLA_real(QLA_elem_M(*aa,2,0)))); \
 __asm__ __volatile__ ("unpcklpd %%xmm3, %%xmm3 \n\t" \
                       "unpcklpd %%xmm6, %%xmm6 \n\t" \
                       "unpcklpd %%xmm4, %%xmm4 \n\t" \
@@ -47,11 +47,11 @@ __asm__ __volatile__ ("unpcklpd %%xmm3, %%xmm3 \n\t" \
                       "movsd %0, %%xmm6" \
                       : \
                       : \
-                      "m" ((aa)->e[2][1].real)); \
+                      "m" (QLA_real(QLA_elem_M(*aa,2,1)))); \
 __asm__ __volatile__ ("movsd %0, %%xmm7" \
                       : \
                       : \
-                      "m" ((aa)->e[0][2].real)); \
+                      "m" (QLA_real(QLA_elem_M(*aa,0,2)))); \
 __asm__ __volatile__ ("unpcklpd %%xmm6, %%xmm6 \n\t" \
                       "unpcklpd %%xmm7, %%xmm7 \n\t" \
                       "mulpd %%xmm1, %%xmm6 \n\t" \
@@ -61,11 +61,11 @@ __asm__ __volatile__ ("unpcklpd %%xmm6, %%xmm6 \n\t" \
                       "movsd %0, %%xmm6" \
                       : \
                       : \
-                      "m" ((aa)->e[1][1].real)); \
+                      "m" (QLA_real(QLA_elem_M(*aa,1,1)))); \
 __asm__ __volatile__ ("movsd %0, %%xmm7" \
                       : \
                       : \
-                      "m" ((aa)->e[2][2].real)); \
+                      "m" (QLA_real(QLA_elem_M(*aa,2,2)))); \
 __asm__ __volatile__ ("unpcklpd %%xmm6, %%xmm6 \n\t" \
                       "unpcklpd %%xmm7, %%xmm7 \n\t" \
                       "mulpd %%xmm1, %%xmm6 \n\t" \
@@ -75,11 +75,11 @@ __asm__ __volatile__ ("unpcklpd %%xmm6, %%xmm6 \n\t" \
                       "movsd %0, %%xmm6" \
                       : \
                       : \
-                      "m" ((aa)->e[0][0].imag)); \
+                      "m" (QLA_imag(QLA_elem_M(*aa,0,0)))); \
 __asm__ __volatile__ ("movsd %0, %%xmm7" \
                       : \
                       : \
-                      "m" ((aa)->e[1][1].imag)); \
+                      "m" (QLA_imag(QLA_elem_M(*aa,1,1)))); \
 __asm__ __volatile__ ("shufpd $0x1, %%xmm0, %%xmm0 \n\t" \
                       "shufpd $0x1, %%xmm1, %%xmm1 \n\t" \
                       "shufpd $0x1, %%xmm2, %%xmm2 \n\t" \
@@ -104,11 +104,11 @@ __asm__ __volatile__ ("mulpd %%xmm0, %%xmm6 \n\t" \
                       "movsd %0, %%xmm6" \
                       : \
                       : \
-                      "m" ((aa)->e[2][2].imag)); \
+                      "m" (QLA_imag(QLA_elem_M(*aa,2,2)))); \
 __asm__ __volatile__ ("movsd %0, %%xmm7" \
                       : \
                       : \
-                      "m" ((aa)->e[1][0].imag)); \
+                      "m" (QLA_imag(QLA_elem_M(*aa,1,0)))); \
 __asm__ __volatile__ ("unpcklpd %%xmm6, %%xmm6 \n\t" \
                       "unpcklpd %%xmm7, %%xmm7 \n\t" \
                       "mulpd %%xmm2, %%xmm6 \n\t" \
@@ -118,11 +118,11 @@ __asm__ __volatile__ ("unpcklpd %%xmm6, %%xmm6 \n\t" \
                       "movsd %0, %%xmm6" \
                       : \
                       : \
-                      "m" ((aa)->e[0][1].imag)); \
+                      "m" (QLA_imag(QLA_elem_M(*aa,0,1)))); \
 __asm__ __volatile__ ("movsd %0, %%xmm7" \
                       : \
                       : \
-                      "m" ((aa)->e[2][0].imag)); \
+                      "m" (QLA_imag(QLA_elem_M(*aa,2,0)))); \
 __asm__ __volatile__ ("unpcklpd %%xmm6, %%xmm6 \n\t" \
                       "unpcklpd %%xmm7, %%xmm7 \n\t" \
                       "mulpd %%xmm1, %%xmm6 \n\t" \
@@ -132,15 +132,15 @@ __asm__ __volatile__ ("unpcklpd %%xmm6, %%xmm6 \n\t" \
                       "movsd %0, %%xmm0" \
                       : \
                       : \
-                      "m" ((aa)->e[0][2].imag)); \
+                      "m" (QLA_imag(QLA_elem_M(*aa,0,2)))); \
 __asm__ __volatile__ ("movsd %0, %%xmm6" \
                       : \
                       : \
-                      "m" ((aa)->e[2][1].imag)); \
+                      "m" (QLA_imag(QLA_elem_M(*aa,2,1)))); \
 __asm__ __volatile__ ("movsd %0, %%xmm7" \
                       : \
                       : \
-                      "m" ((aa)->e[1][2].imag)); \
+                      "m" (QLA_imag(QLA_elem_M(*aa,1,2)))); \
 __asm__ __volatile__ ("unpcklpd %%xmm0, %%xmm0 \n\t" \
                       "unpcklpd %%xmm6, %%xmm6 \n\t" \
                       "unpcklpd %%xmm7, %%xmm7 \n\t" \
@@ -150,28 +150,28 @@ __asm__ __volatile__ ("unpcklpd %%xmm0, %%xmm0 \n\t" \
                       "movupd %0, %%xmm1" \
                       : \
                       : \
-                      "m" ((cc)->c[0])); \
+                      "m" (QLA_elem_V(*cc,0))); \
 __asm__ __volatile__ ("addpd %%xmm0, %%xmm3 \n\t" \
                       "movupd %0, %%xmm2" \
                       : \
                       : \
-                      "m" ((cc)->c[1])); \
+                      "m" (QLA_elem_V(*cc,1))); \
 __asm__ __volatile__ ("addpd %%xmm7, %%xmm4 \n\t" \
                       "addpd %%xmm1, %%xmm3 \n\t" \
                       "movupd %0, %%xmm0" \
                       : \
                       : \
-                      "m" ((cc)->c[2])); \
+                      "m" (QLA_elem_V(*cc,2))); \
 __asm__ __volatile__ ("addpd %%xmm6, %%xmm5 \n\t" \
                       "addpd %%xmm2, %%xmm4 \n\t" \
                       "addpd %%xmm0, %%xmm5 \n\t" \
                       "movupd %%xmm3, %0" \
                       : \
-                      "=m" ((cc)->c[0])); \
+                      "=m" (QLA_elem_V(*cc,0))); \
 __asm__ __volatile__ ("movupd %%xmm4, %0" \
                       : \
-                      "=m" ((cc)->c[1])); \
+                      "=m" (QLA_elem_V(*cc,1))); \
 __asm__ __volatile__ ("movupd %%xmm5, %0" \
                       : \
-                      "=m" ((cc)->c[2])); \
+                      "=m" (QLA_elem_V(*cc,2))); \
 }

@@ -11,7 +11,7 @@ include(protocol_idx.m4)
 #include <math.h>
 #include "compare.h"
 
-int main(){
+int main(int argc, char *argv[]){
 
 #define QLA_DF_r_eq_I_dot_I QLA_D_r_eq_I_dot_I
 #define QLA_QD_r_eq_I_dot_I QLA_D_r_eq_I_dot_I
@@ -126,6 +126,14 @@ int main(){
   int i;
 
   char name[64];
+  FILE *fp;
+
+  char *test_program_name= basename(argv[0]); 
+  test_program_name = strcat(test_program_name, ".result");
+  if (NULL == (fp = fopen(test_program_name,"w"))) {
+    fprintf(stderr, "Error in report function - cannot create \"%s\"\n", test_program_name);
+    exit(-1);
+  }
 
   /* Create pointer lists */
 
@@ -162,12 +170,12 @@ int main(){
   strcpy(name,"QLA_R_veq_R");
   QLA_R_veq_R(destR,sR1,MAX);
   for(i = 0; i < MAX; i++){QLA_R_eq_R(&chkR[i],&sR1[i]);}
-  checkeqidxRR(chkR,destR,name);
+  checkeqidxRR(chkR,destR,name,fp);
 
   strcpy(name,"QLA_C_veq_C");
   QLA_C_veq_C(destC,sC1,MAX);
   for(i = 0; i < MAX; i++){QLA_C_eq_C(&chkC[i],&sC1[i]);}
-  checkeqidxCC(chkC,destC,name);
+  checkeqidxCC(chkC,destC,name,fp);
 
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 
@@ -354,5 +362,3 @@ unaryrand(C,eq_gaussian)
 
   return 0;
 }
-
-

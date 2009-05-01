@@ -20,13 +20,16 @@ include(protocol_tensor_sng.m4)
 #include <math.h>
 #include "compare.h"
 
-int main(){
+int main(int argc, char * argv[]){
 
   int nc = QLA_Nc;
   int ns = 4;
 
   QLA_Int sI2 = 0;
   QLA_Int sI3 = 7032;
+
+  QLA_Q_Real sRQ1 =  0.17320508075688772;
+  QLA_Q_Real sRQ2 =  0.28723479823477934;
 
   QLA_Q_ColorMatrix         sMQ1,sMQ2,sMQ3;
   QLA_Q_HalfFermion         sHQ1,sHQ2,sHQ3;
@@ -56,8 +59,17 @@ int main(){
 
   QLA_RandomState sS1;
 
-  char name[64];
   int ic,jc,is,js;
+
+  char name[64];
+  FILE *fp;
+
+  char *test_program_name= basename(argv[0]); 
+  test_program_name = strcat(test_program_name, ".result");
+  if (NULL == (fp = fopen(test_program_name,"w"))) {
+    fprintf(stderr, "Error in report function - cannot create \"%s\"\n", test_program_name);
+    exit(-1);
+  }
 
   /* Use random number fills to create the test fields */
 

@@ -5,12 +5,11 @@ LDADD = ../../lib/libqla_int.a ../../lib/libqla_random.a -lm
 
 check_PROGRAMS = test_int_sng test_int_idx
 
-TESTS = check_int
-
-EXTRA_DIST = $(TESTS)
+TESTS_ENVIRONMENT = @BACKEND_TEST_CMD@
+TESTS = $(check_PROGRAMS)
 
 distclean-local:
-	-rm -f results.*
+	-rm -f *.result
 
 CMPSRC = ../src/compare.c
 

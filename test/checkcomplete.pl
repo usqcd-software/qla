@@ -4,23 +4,26 @@
 # Does not work with results of macro tests
 
 # Arguments
-($testresultfile,$headerfile,$pc) = @ARGV;
+$pc = shift;
+$headerfile = shift;
+# the rest of @ARGV is the result files
+$pc = "" if($pc eq "0");
 
 # Usage
-defined($testresultfile) && defined($headerfile) || 
-    die "Usage $0 <testresultfile> <headerfile> \n";
-
-open(TESTRESULT,$testresultfile) || die "Can't open $testresultfile\n";
+if($#ARGV<0) { die "Usage $0 <pc> <headerfile> <testresultfiles>\n"; }
 
 # Build hash table with module names and results
 $n = 0;
 %result = (); %error = (); %tols = ();
-while(<TESTRESULT>){
+
+for $testresultfile (@ARGV) {
+  open(TESTRESULT,$testresultfile) || die "Can't open $testresultfile\n";
+  while(<TESTRESULT>){
     # Parse line
     # Mostly OK/FAIL name
     # Exception OK MACRO name
     ($ok,$name,$diff,$tol) = split(" ",$_);
-    if($name eq "MACRO"){next;}
+    if($name eq "MACRO") { ($ok,$macro,$name,$diff,$tol) = split(" ",$_); }
     # Convert generic name to specific name
     # by adding color-precision label, if it was specified on the command line
     if($pc ne ""){
@@ -57,17 +60,19 @@ while(<TESTRESULT>){
 	    $tols{$name} = $tol;
 	}
     }
+  }
+  close(TESTRESULT);
 }
-
-close(TESTRESULT);
 
 open(HEADER,$headerfile) || die "Can't open $headerfile\n";
 
+$begin_macros = 0;
 while(<HEADER>){
     # Parse line
     ($void,$prototype) = split(" ",$_);
     # Look only at lines beginning with "void"
-    if($void ne "void"){next;}
+    $begin_macros = 1 if($prototype eq "BEGIN_MACROS");
+    next if( ($void ne "void") && (($void ne "#define")||(!$begin_macros)) );
     # Parse prototype
     # Strip argument list, leaving specific function name
     ($name) = split('\(',$prototype);

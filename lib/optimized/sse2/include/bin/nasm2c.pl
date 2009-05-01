@@ -38,6 +38,8 @@ while (<>) {
   # get any parameters embedded in comments
   if ($l =~ m/<(.*)>/o) {
     $param = $1;
+    $param =~ s/\((.*)\)->c\[(.*)\]/QLA_elem_V(*$1,$2)/;
+    $param =~ s/\((.*)\)->e\[(.*)\]\[(.*)\].(.*)/QLA_$4(QLA_elem_M(*$1,$2,$3))/;
   } else {
     undef $param;
   }

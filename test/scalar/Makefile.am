@@ -20,12 +20,11 @@ check_PROGRAMS = test_macros \
                  test_scalar_df_sng test_scalar_df_idx \
                  test_scalar_dq_sng test_scalar_dq_idx
 
-TESTS = check_macros check_f check_d check_q check_df check_dq
-
-EXTRA_DIST = $(TESTS)
+TESTS_ENVIRONMENT = @BACKEND_TEST_CMD@
+TESTS = $(check_PROGRAMS)
 
 distclean-local:
-	-rm -f results.*
+	-rm -f *.result
 
 CMPSRC = ../src/compare.c
 SNGSRC = ../src/test_scalar_sng.c

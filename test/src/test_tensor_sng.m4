@@ -11,7 +11,7 @@ include(protocol_tensor_sng.m4)
 #include "compare.h"
 #include "milc_gamma.h"
 
-int main(){
+int main(int argc, char *argv[]){
 '
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 #if (QLA_Precision == 1) || (QLA_Precision == 'F')
@@ -25,7 +25,6 @@ int main(){
   int kc, ks;
 
   QLA_Int sI1 = -4123;
-  QLA_Real sR1 =  0.17320508075688772;
 
   /*QLA_D_Real              chkRD;*/
   QLA_Q_Real              chkRQ;
@@ -39,6 +38,11 @@ int main(){
 
   QLA_Int sI2 = 0;
   QLA_Int sI3 = 7032;
+
+  QLA_Real sR1 =  0.17320508075688772;
+  QLA_Real sR2 =  0.28723479823477934;
+  QLA_Q_Real sRQ1 =  0.17320508075688772;
+  QLA_Q_Real sRQ2 =  0.28723479823477934;
 
   QLA_Real sC1re = -8.8000370811461867;
   QLA_Real sC1im =  5.7248575675626134;
@@ -66,7 +70,15 @@ int main(){
   QLA_DiracPropagator     destP,chkP;
 
   char name[64];
-  
+  FILE *fp;
+
+  char *test_program_name= basename(argv[0]); 
+  test_program_name = strcat(test_program_name, ".result");
+  if (NULL == (fp = fopen(test_program_name,"w"))) {
+    fprintf(stderr, "Error in report function - cannot create \"%s\"\n", test_program_name);
+    exit(-1);
+  }
+
   destR = 0.;
   chkR = 0.;
   QLA_c_eq_r(chkC, 0.);

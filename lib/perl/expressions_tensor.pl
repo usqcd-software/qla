@@ -97,13 +97,15 @@ sub print_val_eqop_op_val {
     # Special case, multiply by i
     elsif($qualifier eq "i"){
 	&print_s_eqop_s($rc_d,$dest_elem_value,$eqop,"i",
-			$rc_s1,$src1_elem_value,$src1_def{'conj'});
+			$rc_s1,$src1_elem_value,$src1_def{'conj'},
+			$dest_def{'precision'}, $src1_def{'precision'});
     }
 
     # Standard case
     else{
 	&print_s_eqop_s($rc_d,$dest_elem_value,$eqop,"",
-			$rc_s1,$src1_elem_value,$src1_def{'conj'});
+			$rc_s1,$src1_elem_value,$src1_def{'conj'},
+			$dest_def{'precision'}, $src1_def{'precision'});
     }
 
     # Close inner tensor index loops
@@ -442,30 +444,30 @@ sub mult_index {
 
 # Construct multiplier and multiplicand for product
 sub mult_terms {
-    local($cpat,$spat,*arg1_def,*arg2_def,$ic,$is,$jc,$js) = @_;
+  local($cpat,$spat,*arg1_def,*arg2_def,$ic,$is,$jc,$js) = @_;
 
-    local($arg1_elem_value,$arg2_elem_value);
-    local($ic1,$is1,$jc1,$js1);
-    local($ic2,$is2,$jc2,$js2);
-    local($kc,$ks);
+  local($arg1_elem_value,$arg2_elem_value);
+  local($ic1,$is1,$jc1,$js1);
+  local($ic2,$is2,$jc2,$js2);
+  local($kc,$ks);
 
-    $kc = &get_col_color_index2(*arg1_def);
-    $ks = &get_col_spin_index2(*arg1_def);
+  $kc = &get_col_color_index2(*arg1_def);
+  $ks = &get_col_spin_index2(*arg1_def);
 
-    if($cpat eq "XX"){ $ic1=$ic; $jc1=$kc; $ic2=$kc; $jc2=$jc;}
-    elsif($cpat eq "IX"){$ic1=""; $jc1=""; $ic2=$ic; $jc2=$jc; $kc = "";}
-    elsif($cpat eq "XI"){$ic1=$ic; $jc1=$jc; $ic2=""; $jc2=""; $kc = "";}
+  if($cpat eq "XX"){ $ic1=$ic; $jc1=$kc; $ic2=$kc; $jc2=$jc;}
+  elsif($cpat eq "IX"){$ic1=""; $jc1=""; $ic2=$ic; $jc2=$jc; $kc = "";}
+  elsif($cpat eq "XI"){$ic1=$ic; $jc1=$jc; $ic2=""; $jc2=""; $kc = "";}
 
-    if($spat eq "XX"){ $is1=$is; $js1=$ks; $is2=$ks; $js2=$js;}
-    elsif($spat eq "IX"){$is1=""; $js1=""; $is2=$is; $js2=$js; $ks = "";}
-    elsif($spat eq "XI"){$is1=$is; $js1=$js; $is2=""; $js2=""; $ks = "";}
+  if($spat eq "XX"){ $is1=$is; $js1=$ks; $is2=$ks; $js2=$js;}
+  elsif($spat eq "IX"){$is1=""; $js1=""; $is2=$is; $js2=$js; $ks = "";}
+  elsif($spat eq "XI"){$is1=$is; $js1=$js; $is2=""; $js2=""; $ks = "";}
 
-    $arg1_elem_value = &make_accessor(*arg1_def,$def{'nc'},
-				      $ic1,$is1,$jc1,$js1);
-    $arg2_elem_value = &make_accessor(*arg2_def,$def{'nc'},
-				      $ic2,$is2,$jc2,$js2);
+  $arg1_elem_value = &make_accessor(*arg1_def,$def{'nc'},
+				    $ic1,$is1,$jc1,$js1);
+  $arg2_elem_value = &make_accessor(*arg2_def,$def{'nc'},
+				    $ic2,$is2,$jc2,$js2);
 
-    ($kc,$ks,$arg1_elem_value,$arg2_elem_value);
+  ($kc,$ks,$arg1_elem_value,$arg2_elem_value);
 }
 
 # Construct multiplier and multiplicand for product with trace (dot product)
@@ -484,83 +486,88 @@ sub dot_terms {
 
 # Do row-column product
 sub print_s_eqop_v_times_v_pm_s {
-    local($rc_d,$dest_t,$dest_elem_value,
-	  $kc,$maxkc,$ks,$maxks,$eqop,
-	  $rc_s1,$src1_elem_value,$conj1,
-	  $rc_s2,$src2_elem_value,$conj2,
-	  $pm,
-	  $rc_s3,$src3_elem_value,$conj3) = @_;
+  local($rc_d,$dest_t,$dest_elem_value,
+	$kc,$maxkc,$ks,$maxks,$eqop,
+	$rc_s1,$src1_elem_value,$conj1,
+	$rc_s2,$src2_elem_value,$conj2,
+	$pm,
+	$rc_s3,$src3_elem_value,$conj3) = @_;
 
-    local($rc_x) = $rc_d;
+  local($rc_x) = $rc_d;
 
-    local($unroll) = 0;
-    local($nout) = 1;
-    &print_int_def($kc);
-    #if( ($maxkc==2) || ($maxkc==3) ) {
-    if(0) {
-      $unroll = 1;
-      $nout = $maxks;
-    } else {
-      &print_int_def($ks);
+  local($unroll) = 0;
+  local($nout) = 1;
+
+  &print_int_def($kc);
+  #if( ($maxkc==2) || ($maxkc==3) ) {
+  if(0) {
+    $unroll = 1;
+    $nout = $maxks;
+  } else {
+    &print_int_def($ks);
+  }
+
+  # Define and zero intermediate variable for accumulating sum
+  $prec = $dest_prec;
+  $prec = $precision if($prec eq '');
+  $rc_x = $rc_d;
+  $d_dt = &datatype_element_specific($dest_t, $prec);
+  $x_dt = &datatype_element_specific($dest_t, $temp_precision);
+  &print_def($x_dt, $var_x);
+
+  my($loop_eqop);
+  if(!defined($src3_elem_value)){
+    # Assign accumulated result to dest
+    if($eqop eq $eqop_eq) {
+      &print_s_eqop_s($rc_x, $var_x, $eqop_eq);
+      $loop_eqop = $eqop_peq;
+    } elsif($eqop eq $eqop_peq) {
+      &print_s_eqop_s($rc_x, $var_x, $eqop_eq, "", $rc_d, $dest_elem_value, "", $temp_precision, $prec);
+      $loop_eqop = $eqop_peq;
+    } elsif($eqop eq $eqop_meq) {
+      &print_s_eqop_s($rc_x, $var_x, $eqop_eq, "", $rc_d, $dest_elem_value, "", $temp_precision, $prec);
+      $loop_eqop = $eqop_meq;
+    } elsif($eqop eq $eqop_eqm) {
+      &print_s_eqop_s($rc_x, $var_x, $eqop_eq);
+      $loop_eqop = $eqop_meq;
+    }
+  }
+  else{
+    die("ternary tensor operations not done!\n");
+
+    # Add or subtract src3 and assign result to dest element
+    &print_s_eqop_s_op_s($rc_d,$dest_elem_value,
+			 $eqop,"",
+			 $rc_x,$var_x,"",
+			 $pm,
+			 $rc_s3,$src3_elem_value,$conj3);
+  }
+
+  &open_iter($kc,$maxkc);
+  if(!$unroll) {
+    &open_iter($ks,$maxks);
+  }
+  for(my $i=0; $i<$nout; $i++) {
+    local($s1) = $src1_elem_value;
+    local($s2) = $src2_elem_value;
+    if($unroll) {
+      $s1 =~ s/$ks/$i/;
+      $s2 =~ s/$ks/$i/;
     }
 
-    # Define and zero intermediate variable for accumulating sum
-    $rc_x = $rc_d;
-    &print_def(&datatype_element_specific($dest_t), $var_x);
+    # Accumulate product
+    &print_s_eqop_s_op_s($rc_x, $var_x,
+			 $loop_eqop, "",
+			 $rc_s1, $s1, $conj1,
+			 '*',
+			 $rc_s2, $s2, $conj2);
 
-    my($loop_eqop);
-    if(!defined($src3_elem_value)){
-      # Assign accumulated result to dest
-      if($eqop eq $eqop_eq) {
-	&print_s_eqop_s($rc_x, $var_x, $eqop_eq);
-	$loop_eqop = $eqop_peq;
-      } elsif($eqop eq $eqop_peq) {
-	&print_s_eqop_s($rc_x, $var_x, $eqop_eq, "", $rc_d, $dest_elem_value);
-	$loop_eqop = $eqop_peq;
-      } elsif($eqop eq $eqop_meq) {
-	&print_s_eqop_s($rc_x, $var_x, $eqop_eq, "", $rc_d, $dest_elem_value);
-	$loop_eqop = $eqop_meq;
-      } elsif($eqop eq $eqop_eqm) {
-	&print_s_eqop_s($rc_x, $var_x, $eqop_eq);
-	$loop_eqop = $eqop_meq;
-      }
-    }
-    else{
-      die("ternary tensor operations not done!\n");
-
-	# Add or subtract src3 and assign result to dest element
-	&print_s_eqop_s_op_s($rc_d,$dest_elem_value,
-			     $eqop,"",
-			     $rc_x,$var_x,"",
-			     $pm,
-			     $rc_s3,$src3_elem_value,$conj3);
-    }
-
-    &open_iter($kc,$maxkc);
-    if(!$unroll) {
-      &open_iter($ks,$maxks);
-    }
-    for(my $i=0; $i<$nout; $i++) {
-      local($s1) = $src1_elem_value;
-      local($s2) = $src2_elem_value;
-      if($unroll) {
-	$s1 =~ s/$ks/$i/;
-	$s2 =~ s/$ks/$i/;
-      }
-
-      # Accumulate product
-      &print_s_eqop_s_op_s($rc_x, $var_x,
-			   $loop_eqop, "",
-			   $rc_s1, $s1, $conj1,
-			   '*',
-			   $rc_s2, $s2, $conj2);
-
-    }
-    if(!$unroll) {
-      &close_iter($ks);
-    }
-    &close_iter($kc);
-    &print_s_eqop_s($rc_d, $dest_elem_value, $eqop_eq, "", $rc_x, $var_x);
+  }
+  if(!$unroll) {
+    &close_iter($ks);
+  }
+  &close_iter($kc);
+  &print_s_eqop_s($rc_d, $dest_elem_value, $eqop_eq, "", $rc_x, $var_x, "", $prec, $temp_precision);
 }
 
 # Do row-column dot product with trace
@@ -775,7 +782,7 @@ sub print_val_eqop_val_op_val {
     # If we are summing over kc or ks, need to handle the sum
     if($kc ne "" || $ks ne "") {
 
-      if(0) {
+      if(1) {
 	print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
 	$dest_elem_value =
 	  make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
@@ -1012,15 +1019,35 @@ sub print_val_eqop_val_op_val {
 
       # Open iteration over outer tensor indices
       &print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
+
       $dest_elem_value =
 	&make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
 
-      &print_s_eqop_s_op_s($rc_d,$dest_elem_value,
+      if( ($temp_precision ne '') && ($prec ne $temp_precision) && ($prec ne "") ) {
+	$rc_t = $rc_d;
+	$var_t = $var_x;
+	$prec_t = $temp_precision;
+	$dt_t = &datatype_element_specific($dest_def{'t'}, $prec_t);
+
+        # Define and prepare temporary variable
+	&print_def($dt_t, $var_t);
+	if( ($eqop eq $eqop_peq) || ($eqop eq $eqop_meq) ) {
+	  &print_s_eqop_s($rc_t, $var_t, $eqop_eq, "", $rc_d, $dest_elem_value, "", $prec_t, $precision);
+	}
+      } else {
+	$rc_t = $rc_d;
+	$var_t = $dest_elem_value;
+      }
+
+      &print_s_eqop_s_op_s($rc_t,$var_t,
 			   $eqop,"",
 			   $rc_s1,$src1_elem_value,$src1_def{'conj'},
 			   '*',
 			   $rc_s2,$src2_elem_value,$src2_def{'conj'});
 
+      if( ($temp_precision ne '') && ($prec ne $temp_precision) && ($prec ne "") ) {
+	&print_s_eqop_s($rc_d, $dest_elem_value, $eqop_eq, "", $rc_t, $var_t, "", $precision, $prec_t);
+      }
       if(!$noclose) {
 	&print_close_iter_list($ic,$is,$jc,$js);
       }
@@ -1152,7 +1179,11 @@ sub print_val_eqop_val_op_val_elementary {
 		  "($src1_def{'value'} > $src2_def{'value'} ? $src2_def{'value'} : $src1_def{'value'})");
     }
     elsif($op eq "mask"){
-	print QLA_SRC @indent,"if($src2_def{'value'})$dest_def{'value'} = $src1_def{'value'};\n";
+	print QLA_SRC @indent,"if($src2_def{'value'}) {\n";
+	open_block();
+	&print_val_eqop_op_val(*dest_def,$eqop,*src1_def,"");
+	close_block();
+	print QLA_SRC @indent,"}\n";
     }
     else{
 	$sym = $bool_binary_op{$op};

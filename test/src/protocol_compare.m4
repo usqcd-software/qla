@@ -98,9 +98,15 @@ rem(`checkequalcomplex(type,prec)')
 define(checkequalcomplex,`
 int checkequal$2$1$1(type_$2$1 *sa, type_$2$1 *sb){
   int status;
-  status = checkequal$2RR(&QLA_real(*sa), &QLA_real(*sb));
-  if(!status)
-    status = checkequal$2RR(&QLA_imag(*sa), &QLA_imag(*sb));
+  type_$2R ta, tb;
+  ta = QLA_real(*sa);
+  tb = QLA_real(*sb);
+  status = checkequal$2RR(&ta, &tb);
+  if(!status) {
+    ta = QLA_imag(*sa);
+    tb = QLA_imag(*sb);
+    status = checkequal$2RR(&ta, &tb);
+  }
   return status;
 }
 ')
@@ -119,19 +125,18 @@ int checkequal$2$1$1(type_$2$1 *sa, type_$2$1 *sb){
 
 rem(`checkequalsng(type,prec)')
 define(checkequalsng,`
-int checkeqsng$2$1$1(type_$2$1 *sa, type_$2$1 *sb, char name[]){
-  return report(checkequal$2$1$1(sa,sb),name);
+int checkeqsng$2$1$1(type_$2$1 *sa, type_$2$1 *sb, char name[], FILE *fp){
+  return report(checkequal$2$1$1(sa,sb),name, fp);
 }
 ')
 
 rem(`checkequalidx(type,prec)')
 define(checkequalidx,`
-int checkeqidx$2$1$1(type_$2$1 sa[], type_$2$1 sb[], char name[]){
+int checkeqidx$2$1$1(type_$2$1 sa[], type_$2$1 sb[], char name[], FILE *fp){
   int i,status=0;
   for(i = 0; i < MAX; i++){
     if((status = checkequal$2$1$1(&sa[i],&sb[i])))break;
   }
-  return report(status,name);
+  return report(status,name, fp);
 }
 ')
-

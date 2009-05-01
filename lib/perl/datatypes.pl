@@ -370,8 +370,8 @@ sub datatype_specific {
     $type = $datatype_generic_name{$t};
     $pc = "";
     if($datatype_floatpt{$t} == 1){
-	if(defined($force_precision)){$pc = $force_precision;}
-	else {$pc = $precision;}
+	if($force_precision ne "") { $pc = $force_precision; }
+	else { $pc = $precision; }
     }
     if($datatype_row_color_dim{$t} ne "0"){
 	$pc .= $colors;
@@ -391,8 +391,8 @@ sub datatype_element_specific_abbr {
 }
 
 sub datatype_element_specific {
-    local($t) = @_;
-    return &datatype_specific(&datatype_element_specific_abbr($t));
+    local($t,$force_precision) = @_;
+    return &datatype_specific(&datatype_element_specific_abbr($t),$force_precision);
 }
 
 1;

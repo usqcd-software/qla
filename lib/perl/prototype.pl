@@ -104,7 +104,6 @@ require("operatortypes.pl");
 #
 #---------------------------------------------------------------------
 
-
 ######################################################################
 #   Table of keys for %dest_def, %src1_def, %src2_def, %src3_def
 ######################################################################
@@ -323,10 +322,14 @@ sub func_prefix {
 sub make_arg {
     local($type,$ptr,$arg,$index_name) = @_;
     local($string);
+    local($Ncolor) = 0;
+    if($type =~ /QLA_.N/) { $Ncolor = 1; }
 
     $string = $type;
+    if($Ncolor) { $string .= "($arg_nc, ("; }
     if($ptr eq $pointer_pfx){$string = $string." *restrict *$arg";}
     else {$string = $string." *restrict $arg";}
+    if($Ncolor) { $string .= "))"; }
     if($index_name ne ""){$string = $string.", int *$index_name";}
     $string;
 }
@@ -385,11 +388,13 @@ sub make_define_map {
     # Map only the name unless we require an extra color argument
     if($def{'nc'} eq $arg_nc){
 	# Count arguments by counting commas (don't count 1st arg)
-	$nargs = split(',',$declaration) - 1;
-	@arglist = ();
-	for($i=1;$i<=$nargs;$i++){push(@arglist,"x$i");}
-	$argstring = join(',',@arglist);
-	("$name_generic($argstring)","$name($macro_nc,$argstring)");
+#	$nargs = split(',',$declaration) - 1;
+#	@arglist = ();
+#	for($i=1;$i<=$nargs;$i++){push(@arglist,"x$i");}
+#	$argstring = join(',',@arglist);
+#	("$name_generic($argstring)","$name($macro_nc,$argstring)");
+# use C99 variadic macros
+	("$name_generic(...)","$name($macro_nc,__VA_ARGS__)");
     }
     else{
 	($name_generic,$name);
@@ -586,6 +591,10 @@ sub make_prototype {
 			      $def{'dest_index_name'});
     $declaration .= $def{'dest_extra_arg'};
 
+    $disjoint_list = "";
+    if($def{'dest_ptr_pfx'} eq $pointer_pfx) { $disjoint_list .= "*"; }
+    $disjoint_list .= "*$def{'dest_name'}";
+
     # Source arguments
 
     foreach $arg ( 'src1', 'src2', 'src3' ){
@@ -595,6 +604,10 @@ sub make_prototype {
 				      $def{$arg.'_ptr_pfx'},
                                       $def{$arg.'_name'},
 				      $def{$arg.'_index_name'});
+
+	    $disjoint_list .= ", ";
+	    if($def{$arg.'_ptr_pfx'} eq $pointer_pfx) { $disjoint_list .= "*"; }
+	    $disjoint_list .= "*$def{$arg.'_name'}";
 	}
 	$declaration .= $def{$arg.'_extra_arg'};
     }
@@ -669,6 +682,18 @@ sub make_prototype {
     %src1_def = (); &load_arg_hash(*src1_def,'src1');
     %src2_def = (); &load_arg_hash(*src2_def,'src2');
     %src3_def = (); &load_arg_hash(*src3_def,'src3');
+
+    if($def{'precision'} ne "") {
+      $pd = substr($def{'precision'},0,1);
+      $ps = substr($def{'precision'},-1,1);
+    } else {
+      $pd = substr($precision,0,1);
+      $ps = substr($precision,-1,1);
+    }
+    $dest_def{'precision'} = $pd if($datatype_floatpt{$dest_def{'t'}});
+    $src1_def{'precision'} = $ps if($datatype_floatpt{$src1_def{'t'}});
+    $src2_def{'precision'} = $ps if($datatype_floatpt{$src2_def{'t'}});
+    $src3_def{'precision'} = $ps if($datatype_floatpt{$src3_def{'t'}});
 
     ############################################################
     # Open source file. Name is function name dot c

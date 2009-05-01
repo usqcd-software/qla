@@ -5,7 +5,6 @@
 include(protocol_compare.m4)
 `
 #include <qla.h>
-#include <stdio.h>
 #include <math.h>
 #include "compare.h"
 
@@ -14,10 +13,13 @@ double checkeq1, checkeq2;
 int nc = QLA_Nc;
 int ns = 4;
 
-int report(int status, char *name){
+
+int
+report(int status, char *name, FILE *fp)
+{
   if(status) {
-    printf("FAIL %s %e %g %.20g %.20g\n",name,diff,((double)(TOLREL)),checkeq1,checkeq2);
-  } else printf("OK %s\n",name);
+    fprintf(fp, "FAIL %s %e %g %.20g %.20g\n",name,diff,((double)(TOLREL)),checkeq1,checkeq2);
+  } else fprintf(fp, "OK %s\n",name);
   return status;
 }
 '
@@ -33,9 +35,13 @@ checkequalcomplex(C,F)
 `
 int checkequalCRR(QLA_Complex *sa, QLA_Real *sbre, QLA_Real *sbim){
   int status;
-  status = checkequalRR(&QLA_real(*sa), sbre);
-  if(!status)
-    status = checkequalRR(&QLA_imag(*sa), sbim);
+  QLA_Real t;
+  t = QLA_real(*sa);
+  status = checkequalRR(&t, sbre);
+  if(!status) {
+    t = QLA_imag(*sa);
+    status = checkequalRR(&t, sbim);
+  }
   return status;
 }
 '
@@ -93,8 +99,8 @@ checkequalsng(C,F)
 checkequalsng(C,D)
 checkequalsng(C,Q)
 `
-int checkeqsngCRR(QLA_Complex *sa, QLA_Real *sbre, QLA_Real *sbim, char name[]){
-  return report(checkequalCRR(sa,sbre,sbim),name);
+int checkeqsngCRR(QLA_Complex *sa, QLA_Real *sbre, QLA_Real *sbim, char name[], FILE *fp){
+  return report(checkequalCRR(sa,sbre,sbim),name, fp);
 }
 '
 checkequalsng(H,)
@@ -123,8 +129,8 @@ checkequalsng(M,D)
 checkequalsng(M,F)
 
 `
-int checkeqsngSS(QLA_RandomState *sa, QLA_RandomState *sb, char name[]){
-  return report(checkequalSS(sa,sb),name);
+int checkeqsngSS(QLA_RandomState *sa, QLA_RandomState *sb, char name[], FILE *fp){
+  return report(checkequalSS(sa,sb),name, fp);
 }
 '
 
@@ -165,11 +171,11 @@ checkequalidx(M,Q)
 checkequalidx(M,D)
 checkequalidx(M,F)
 `
-int checkeqidxSS(QLA_RandomState a[], QLA_RandomState b[], char name[]){
+int checkeqidxSS(QLA_RandomState a[], QLA_RandomState b[], char name[], FILE *fp){
   int i,status=0;
   for(i = 0; i < MAX; i++){
     if((status = checkequalSS(&a[i],&b[i])))break;
   }
-  return report(status,name);
+  return report(status,name, fp);
 }
 '

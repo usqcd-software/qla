@@ -1,6 +1,10 @@
 #ifndef _QLA_H
 #define _QLA_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* The following macros specify the prevailing color and precision */
 /* Defaults to SU(3) single precision */
 #ifndef QLA_Nc
@@ -70,7 +74,7 @@ NONSTANDARD_QLA_Colors
 #elif ( QLA_Precision == 'Q' )
 #include <qla_q.h>
 #else
-NONSTANDARD_QLA_Precision
+#error "unrecognized QLA_Precision"
 #endif
 
 /* Headers specific to color and precision */
@@ -106,5 +110,9 @@ NONSTANDARD_QLA_Precision
 #endif
 
 #endif /* QLA_Precision */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _QLA_H */

@@ -1,5 +1,0 @@
-outfile=results.check_dq
-rm -f $outfile
-./test_tensor_dq_sng > $outfile
-./test_tensor_dq_idx >> $outfile
-perl ../checkcomplete.pl $outfile ../../include/qla_dq2.h 2

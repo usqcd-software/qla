@@ -1,5 +1,0 @@
-outfile=results.check_f
-rm -f $outfile
-./test_tensor_f_sng > $outfile
-./test_tensor_f_idx >> $outfile
-perl ../checkcomplete.pl $outfile ../../include/qla_f3.h F3

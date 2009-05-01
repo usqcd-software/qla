@@ -21,7 +21,7 @@ include(protocol_idx.m4)
 #include <math.h>
 #include "compare.h"
 
-int main(){
+int main(int argc, char * argv[]){
 '
 #define QLA_PRF(x) QLA_DF_ ## x
 #define QLA_PRD(x) QLA_QD_ ## x
@@ -64,6 +64,9 @@ int main(){
 
   QLA_Int sI4      = 5001;
 
+  QLA_Q_Real sRQ1 =  0.17320508075688772;
+  QLA_Q_Real sRQ2 =  0.28723479823477934;
+
   /*int dMx[MAX]  = {9,1,8,5,6,0,3,7,2,4};*/
   int sM1x[MAX] = {0,2,9,7,6,1,4,5,8,3};
   int sM2x[MAX] = {3,6,4,0,1,2,9,7,5,8};
@@ -98,10 +101,19 @@ int main(){
 
   int i;
   int ic,jc,is,js;
-  char name[64];
 
   int nc = QLA_Nc;
   int ns = QLA_Ns;
+
+  char name[64];
+  FILE *fp;
+
+  char *test_program_name= basename(argv[0]); 
+  test_program_name = strcat(test_program_name, ".result");
+  if (NULL == (fp = fopen(test_program_name,"w"))) {
+    fprintf(stderr, "Error in report function - cannot create \"%s\"\n", test_program_name);
+    exit(-1);
+  }
 
   for(i = 0; i < MAX; i++){
 
@@ -237,4 +249,3 @@ unarysum(m,eq_sum,M,_QD,Q,D)
   return 0;
 }
 '
-
