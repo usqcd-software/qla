@@ -1,3 +1,9 @@
+2009-05-02 11:23  osborn
+
+	* lib/perl/: expressions_gamma.pl, expressions_scalar.pl,
+	  expressions_tensor.pl, formatting.pl: improvements to code
+	  generation
+
 2009-05-01 23:42  osborn
 
 	* include/qla_complex_c99.h, lib/perl/Makefile.am,
