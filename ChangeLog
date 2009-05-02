@@ -1,3 +1,14 @@
+2009-05-01 23:42  osborn
+
+	* include/qla_complex_c99.h, lib/perl/Makefile.am,
+	  lib/perl/defines.pl.in: added missing files
+
+2009-05-01 23:40  osborn
+
+	* configure, configure.ac, include/qla_complex.h,
+	  include/qla_config.h.in, include/qla_types.h: added
+	  --enable-c99-complex option
+
 2009-04-30 21:22  osborn
 
 	* NEWS, README, aclocal.m4, configure, configure.ac,
