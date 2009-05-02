@@ -652,8 +652,9 @@ OPT_SSE3
 OPT_SSE2
 OPT_SSE
 TEMP_PRECISION
-BACKEND_TEST_CMD
+OPT_C99_COMPLEX
 NC
+BACKEND_TEST_CMD
 am__untar
 am__tar
 AMTAR
@@ -717,8 +718,9 @@ SHELL'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
-enable_nc
 enable_backend_test_cmd
+enable_nc
+enable_c99_complex
 enable_temp_precision
 enable_sse
 enable_sse2
@@ -1368,12 +1370,14 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
-  --enable-nc             make just the libraries necessary for the given
-                          color
   --enable-backend-test-cmd=string
                           specify the full command to submit test jobs to your
                           system backend otherwise they will run on the
                           frontend
+  --enable-nc             make just the libraries necessary for the given
+                          color
+  --enable-c99-complex    define QLA_Complex types to be corresponding C99
+                          complex type
   --enable-temp-precision={F|D|Q}
                           set internal precision for all compuations
   --enable-sse            use SSE instructions in certain routines (requires
@@ -2350,6 +2354,17 @@ ac_config_headers="$ac_config_headers include/qla_config.h"
 
 
 
+# build environment options
+
+# Check whether --enable-backend_test_cmd was given.
+if test "${enable_backend_test_cmd+set}" = set; then
+  enableval=$enable_backend_test_cmd; BACKEND_TEST_CMD=$enableval
+
+  echo "using $BACKEND_TEST_CMD for submitting backend test runs"
+fi
+
+
+
 # library options
 
 # Check whether --enable-nc was given.
@@ -2369,13 +2384,23 @@ if test "X$NC" != X2 -a "X$NC" != X3 -a "X$NC" != XN; then NC="all"; fi
 
 # code options
 
-# Check whether --enable-backend_test_cmd was given.
-if test "${enable_backend_test_cmd+set}" = set; then
-  enableval=$enable_backend_test_cmd; BACKEND_TEST_CMD=$enableval
+# Check whether --enable-c99-complex was given.
+if test "${enable_c99_complex+set}" = set; then
+  enableval=$enable_c99_complex; OPT_C99_COMPLEX=$enableval
 
-  echo "using $BACKEND_TEST_CMD for submitting backend test runs"
+else
+  OPT_C99_COMPLEX=no
+
+
 fi
 
+if test "X$OPT_C99_COMPLEX" != "Xno"; then
+
+cat >>confdefs.h <<_ACEOF
+#define USE_C99_COMPLEX 1
+_ACEOF
+
+fi
 
 # Check whether --enable-temp-precision was given.
 if test "${enable_temp_precision+set}" = set; then
@@ -2416,6 +2441,7 @@ else
 
 
 fi
+
 
 if test "X$OPT_SSE3" != "Xno"; then OPT_SSE2="yes"; fi
 if test "X$OPT_SSE2" != "Xno"; then OPT_SSE="yes"; fi
@@ -2491,6 +2517,7 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 fi
+
 
 # compiler options
 

@@ -9,6 +9,17 @@ AC_CONFIG_SRCDIR(lib/random/QLA_random.c)
 AC_CONFIG_HEADERS([include/qla_config.h])
 
 
+# build environment options
+
+dnl --enable-backend-test-cmd
+AC_ARG_ENABLE(
+  backend_test_cmd,
+  AC_HELP_STRING([--enable-backend-test-cmd=string],[specify the full command to submit test jobs to your system backend otherwise they will run on the frontend]),
+  AC_SUBST(BACKEND_TEST_CMD, [$enableval])
+  echo "using $BACKEND_TEST_CMD for submitting backend test runs",
+)
+
+
 # library options
 
 dnl --enable-nc=<ColorLib>
@@ -26,13 +37,17 @@ if test "X$NC" != X2 -a "X$NC" != X3 -a "X$NC" != XN; then NC="all"; fi
 
 # code options
 
-dnl --enable-backend-test-cmd
+dnl --enable-c99-complex
 AC_ARG_ENABLE(
-  backend_test_cmd,
-  AC_HELP_STRING([--enable-backend-test-cmd=string],[specify the full command to submit test jobs to your system backend otherwise they will run on the frontend]),
-  AC_SUBST(BACKEND_TEST_CMD, [$enableval])
-  echo "using $BACKEND_TEST_CMD for submitting backend test runs",
+  c99-complex,
+  AC_HELP_STRING([--enable-c99-complex],
+    [define QLA_Complex types to be corresponding C99 complex type]),
+  AC_SUBST(OPT_C99_COMPLEX, [$enableval]),
+  AC_SUBST(OPT_C99_COMPLEX, [no])
 )
+if test "X$OPT_C99_COMPLEX" != "Xno"; then
+  AC_DEFINE_UNQUOTED(USE_C99_COMPLEX, 1, [using C99 complex types])
+fi
 
 dnl --enable-temp-precision
 AC_ARG_ENABLE(
@@ -69,6 +84,7 @@ AC_ARG_ENABLE(
   AC_SUBST(OPT_SSE3, [$enableval]),
   AC_SUBST(OPT_SSE3, [no])
 )
+
 if test "X$OPT_SSE3" != "Xno"; then OPT_SSE2="yes"; fi
 if test "X$OPT_SSE2" != "Xno"; then OPT_SSE="yes"; fi
 if test "X$OPT_SSE3" != "Xno"; then
@@ -113,6 +129,7 @@ AC_ARG_ENABLE(
 if test "X$OPT_OPENMP" != "Xno"; then
   AC_DEFINE_UNQUOTED(HAVE_OPENMP, 1, [using openmp])
 fi
+
 
 # compiler options
 

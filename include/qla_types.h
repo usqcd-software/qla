@@ -1,7 +1,7 @@
 #ifndef _QLA_TYPES_H
 #define _QLA_TYPES_H
 
-/* real and complex */
+/* int, real and complex types */
 #include <qla_complex.h>
 
 /* Number of spins */

@@ -33,6 +33,12 @@
 #
 # Revision History:
 #   $Log$
+#   Revision 1.3  2009/05/01 01:23:01  osborn
+#   Added extern "C" to qla.h.
+#   Changed 'N' color types to be any size and only as large as needed.
+#   Merged --enable-backend-test-cmd option from bgl fork.
+#   Merged --enable-temp-precision option from bgl fork.
+#
 #   Revision 1.2  2005/11/28 22:18:28  osborn
 #   Changes to perl code and test suite.  Preparing for 1.5.0.
 #
@@ -125,6 +131,7 @@ NC = @NC@
 OBJEXT = @OBJEXT@
 OPT_440 = @OPT_440@
 OPT_440d = @OPT_440d@
+OPT_C99_COMPLEX = @OPT_C99_COMPLEX@
 OPT_OPENMP = @OPT_OPENMP@
 OPT_SSE = @OPT_SSE@
 OPT_SSE2 = @OPT_SSE2@

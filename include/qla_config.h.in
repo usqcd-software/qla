@@ -33,6 +33,9 @@
 /* SSE level */
 #undef QLA_SSE_LEVEL
 
+/* using C99 complex types */
+#undef USE_C99_COMPLEX
+
 /* Version number of package */
 #undef VERSION
 

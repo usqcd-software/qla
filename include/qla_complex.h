@@ -1,11 +1,16 @@
 #ifndef _QLA_COMPLEX_H
 #define _QLA_COMPLEX_H
 
-typedef int QLA_Int;
+typedef int         QLA_Int;
 
-typedef float QLA_F_Real;
-typedef double QLA_D_Real;
+typedef float       QLA_F_Real;
+typedef double      QLA_D_Real;
 typedef long double QLA_Q_Real;
+
+#ifdef USE_C99_COMPLEX
+#undef _QLA_COMPLEX_H
+#include <qla_complex_c99.h>
+#else
 
 typedef struct {
    QLA_F_Real real;	
@@ -21,26 +26,6 @@ typedef struct {
    QLA_Q_Real real;	
    QLA_Q_Real imag;
 } QLA_Q_Complex;
-
-/* Translation of generic to specific types */
-/* Works only if QLA_Precision is defined */
-
-#if ( QLA_Precision == 'F' )
-
-typedef QLA_F_Real QLA_Real;
-typedef QLA_F_Complex QLA_Complex;
-
-#elif ( QLA_Precision == 'D' )
-
-typedef QLA_D_Real QLA_Real;
-typedef QLA_D_Complex QLA_Complex;
-
-#elif ( QLA_Precision == 'Q' )
-
-typedef QLA_Q_Real QLA_Real;
-typedef QLA_Q_Complex QLA_Complex;
-
-#endif
 
 
 /* the following line is used by the test suite */
@@ -376,39 +361,58 @@ typedef QLA_Q_Complex QLA_Complex;
                                           - QLA_real(a)*QLA_imag(b))/t; }
 
 /* Ternary operations */
+
 #define QLA_c_eq_c_times_c_plus_c(c,a,x,b) \
                       {QLA_real(c) = QLA_real(a)*QLA_real(x)\
                                    - QLA_imag(a)*QLA_imag(x) + QLA_real(b); \
 		       QLA_imag(c) = QLA_real(a)*QLA_imag(x)\
                                    + QLA_imag(a)*QLA_real(x) + QLA_imag(b);}
-                                 
 
 #define QLA_c_eq_c_times_c_minus_c(c,a,x,b) \
                       {QLA_real(c) = QLA_real(a)*QLA_real(x)\
                                    - QLA_imag(a)*QLA_imag(x) - QLA_real(b); \
 		       QLA_imag(c) = QLA_real(a)*QLA_imag(x)\
                                    + QLA_imag(a)*QLA_real(x) - QLA_imag(b);}
-                                 
 
 #define QLA_c_eq_c_times_r_plus_r(c,a,x,b) \
                       {QLA_real(c) = QLA_real(a)*(x) + (b); \
 		       QLA_imag(c) = QLA_imag(a)*(x);}
-                                 
 
 #define QLA_c_eq_c_times_r_minus_r(c,a,x,b) \
                       {QLA_real(c) = QLA_real(a)*(x) - (b); \
 		       QLA_imag(c) = QLA_imag(a)*(x);}
 
-                                 
-
 #define QLA_c_eq_r_times_c_plus_c(c,a,x,b) \
                       {QLA_real(c) = (a)*QLA_real(x) + QLA_real(b); \
 		       QLA_imag(c) = (a)*QLA_imag(x) + QLA_imag(b);}
-                                 
 
 #define QLA_c_eq_r_times_c_minus_c(c,a,x,b) \
                       {QLA_real(c) = (a)*QLA_real(x) - QLA_real(b); \
 		       QLA_imag(c) = (a)*QLA_imag(x) - QLA_imag(b);}
-                                 
+
+#endif /* USE_C99_COMPLEX */
+
+/* the following line is used by the test suite */
+/* END_MACROS */
+
+/* Translation of generic to specific types */
+/* Works only if QLA_Precision is defined */
+
+#if ( QLA_Precision == 'F' )
+
+typedef QLA_F_Real QLA_Real;
+typedef QLA_F_Complex QLA_Complex;
+
+#elif ( QLA_Precision == 'D' )
+
+typedef QLA_D_Real QLA_Real;
+typedef QLA_D_Complex QLA_Complex;
+
+#elif ( QLA_Precision == 'Q' )
+
+typedef QLA_Q_Real QLA_Real;
+typedef QLA_Q_Complex QLA_Complex;
+
+#endif
 
 #endif	/* _QLA_COMPLEX_H */
