@@ -1,0 +1,5 @@
+$have_openmp = "@HAVE_OPENMP@";
+$have_xlc = "@HAVE_XLC@";
+$temp_precision = "@TEMP_PRECISION@";
+
+1;
