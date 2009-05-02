@@ -30,36 +30,40 @@ require("operatortypes.pl");
 
 sub print_s_eqop_s {
   local($rc_d,$dest,$eqop,$imre,$rc_s,$srce,$conj_s,$prec_d,$prec_s) = @_;
-  local($key);
 
   # If srce is undefined, assign zero.
   if(!defined($srce)){$rc_s = "r"; $srce = "0.";}
   if($rc_s eq "r"){$conj_s = ""; $imre = "";}
+  if($prec_d eq '') { $prec_d = $precision; }
+  if($prec_s eq '') { $prec_s = $precision; }
 
-  $key = $eqop.$imre.$rc_s.$conj_s;
-  if( $rc_d eq "c" && $rc_s eq "c"  && ($key eq "peq" || $key eq "meq") ) {
+  if($rc_d eq "r" && $rc_s eq "r") {
+    print QLA_SRC @indent,"$dest $eqop_notation{$eqop} $srce;\n";
+  } else {
+    local($key) = $eqop.$imre.$rc_s.$conj_s;
     local($macro) = $carith1{$key};
     defined($macro) || die "no carith1 for $key\n";
-    ($srce, $prec_s) = &make_cast($srce, 'c', $temp_precision, $prec_s);
-    &print_prec_conv_macro("$macro(", $dest, ", $srce);", 'c', $prec_d, $prec_s);
-  } else {
-    # Case complex eqop real  or complex eqop complex (*)
-    if($rc_d eq "c"  || $imre eq "R" || $imre eq "I"){
-      local($macro) = $carith1{$key};
-      defined($macro) || die "no carith1 for $key\n";
-#      if( ($prec_d ne '') && ($prec_s ne '') && ($prec_d ne $prec_s) )
-#      { $macro =~ s/QLA/QLA_$prec_d$prec_s/; }
-      print QLA_SRC @indent,"$macro($dest,$srce);\n";
-    }
 
-    # Case real eqop real
-    else{
-      if($rc_s eq "r"){
-	print QLA_SRC @indent,"$dest $eqop_notation{$eqop} $srce;\n";
+    if( $rc_d eq "c" && $rc_s eq "c" ) {
+      if( $key eq "peqc" || $key eq "meqc" ) {
+	if($temp_precision ne '' && $temp_precision ne $prec_s) {
+	  ($srce, $prec_s) = &make_cast($srce, 'c', $temp_precision, $prec_s);
+	}
       }
-      else{
-	die "print_s_eqop_s: can't assign complex to real\n";
+      if( $prec_d ne $prec_s && $key eq "eqc" ) {
+	$macro =~ s/QLA/QLA_$prec_d$prec_s/;
       }
+      if( $prec_d ne $prec_s && ($key eq "peqc" || $key eq "meqc" || $key eq "eqmc") ) {
+	&print_prec_conv_macro("$macro(", $dest, ", $srce);", 'C', $prec_d, $prec_s);
+      } else {
+	print QLA_SRC @indent,"$macro($dest,$srce);\n";
+      }
+    }
+    elsif($rc_d eq "c" || $imre eq "R" || $imre eq "I") {
+      print QLA_SRC @indent,"$macro($dest,$srce);\n";
+    } else {
+      print "$rc_d $dest $key $rc_s $srce $prec_d $prec_s\n";
+      die "print_s_eqop_s: can't assign complex to real\n";
     }
   }
 }
@@ -79,6 +83,9 @@ sub print_s_eqop_s_op_s {
 
     if($rc_s1 eq "r"){$conj_s1 = "";}
     if($rc_s2 eq "r"){$conj_s2 = "";}
+
+    ($src1, $prec_s1) = &make_cast($src1, 'c', $temp_precision, $precision) if($rc_s1 eq 'c');
+    ($src2, $prec_s2) = &make_cast($src2, 'c', $temp_precision, $precision) if($rc_s2 eq 'c');
 
     # Case complex eqop real  or complex eqop complex (*)
     # or real eq real part or imag part of complex

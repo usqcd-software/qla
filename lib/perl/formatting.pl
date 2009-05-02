@@ -305,16 +305,21 @@ sub make_cast($$$$) {
 sub print_prec_conv_macro($$$$$$) {
   local ($m1, $d, $m2, $t, $pd, $ps) = @_;
   if($pd eq '') { $pd = $precision; }
-  if( ($ps ne '') && ($pd ne $ps) ) {
+  if($ps eq '') { $ps = $precision; }
+  if( $pd ne $ps ) {
     local $tt = &datatype_element_specific($t, $ps);
-    local $tv = $var_x;
+    local $tv = "_t";
     local $rc = $datatype_rc{$t};
     &open_brace;
     &print_def($tt, $tv);
     if($m1=~/_peq_/ || $m1=~/_meq_/) {
+      #local ($dc, $pdc) = &make_cast($d, 'c', $ps, $pd);
+      #&print_s_eqop_s($rc, $tv, $eqop_eq, "", $rc, $dc, "", $ps, $pdc);
       &print_s_eqop_s($rc, $tv, $eqop_eq, "", $rc, $d, "", $ps, $pd);
     }
-    print QLA_SRC @indent, "${m1}_t$m2\n";
+    print QLA_SRC @indent, "${m1}${tv}$m2\n";
+    #local ($tvc, $psc) = &make_cast($tv, 'c', $pd, $ps);
+    #&print_s_eqop_s($rc, $d, $eqop_eq, "", $rc, $tvc, "", $pd, $psc);
     &print_s_eqop_s($rc, $d, $eqop_eq, "", $rc, $tv, "", $pd, $ps);
     &close_brace;
   } else {

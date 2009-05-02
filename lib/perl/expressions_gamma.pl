@@ -209,7 +209,7 @@ sub print_spproj_c_eqop_c_op_c {
 
   $dest_elem_value = &make_accessor(*dest_def,$def{'nc'},$ic,$dest_s,"","");
   $src1_elem_value = &make_accessor(*src1_def,$def{'nc'},$ic,$src1_s,"","");
-  $src2_elem_value = &make_accessor(*src1_def,$def{'nc'},$ic,$src2_s,"",""); #yes 1
+  $src2_elem_value = &make_accessor(*src1_def,$def{'nc'},$ic,$src2_s,"",""); #yes src1
 
   $macro = $carith2{$eqop.$op};
   #defined($macro) || die "no carith2 macro for $eqop$op\n";
