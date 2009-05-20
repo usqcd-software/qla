@@ -1,3 +1,10 @@
+2009-05-20 12:48  tag qla1-7-0-a1
+
+2009-05-20 12:48  osborn
+
+	* NEWS, configure, configure.ac, lib/cmath/QLA_cexpi.c: first alpha
+	  release of 1.7.0
+
 2009-05-02 11:23  osborn
 
 	* lib/perl/: expressions_gamma.pl, expressions_scalar.pl,
