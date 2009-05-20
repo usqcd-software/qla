@@ -3,8 +3,9 @@
 /* Subroutines for operations on complex numbers */
 /* exp( i*theta ) */
 
-#include <math.h>
+#include <qla_config.h>
 #include <qla_complex.h>
+#include <math.h>
 
 QLA_D_Complex QLA_cexpi( QLA_D_Real theta ){
     QLA_D_Complex c;

@@ -1,3 +1,9 @@
+===============================================================================
+2009-05-20	version 1.7.0-a1 (first alpha release of 1.7.0)
+===============================================================================
+2009-05-02: James Osborn
+	Added more configure/code generation options mainly related to BG/L&P.
+
 2009-04-20: James Osborn
 	Changed 'N' color types to be any size and only as large as needed.
 	The QLA_[DF]N_... type is now a macro taking Nc and the variable
