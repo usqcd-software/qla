@@ -1,3 +1,12 @@
+2009-08-24 12:49  osborn
+
+	* AUTHORS, include/qla_types.h,
+	  lib/optimized/sse/include/QLA_F3_D_vpeq_spproj_M_times_pD_1_sse.c,
+	  lib/optimized/sse/include/QLA_F3_D_vpeq_spproj_M_times_pD_2_sse.c,
+	  lib/optimized/sse/include/QLA_F3_D_vpeq_sprecon_M_times_pH_1_sse.c,
+	  lib/optimized/sse/include/QLA_F3_D_vpeq_sprecon_M_times_pH_2_sse.c:
+	  fixed bug in sse code
+
 2009-05-20 12:48  tag qla1-7-0-a1
 
 2009-05-20 12:48  osborn
