@@ -1,3 +1,10 @@
+2009-08-24 15:43  osborn
+
+	* configure, configure.ac,
+	  lib/optimized/c/src/QLA_F3_D_vmeq_spproj_D.c,
+	  lib/optimized/c/src/QLA_F3_D_vpeq_spproj_D.c: removed unnecessary
+	  optimized/c sources prepare for 1.7.0-a2
+
 2009-08-24 12:49  osborn
 
 	* AUTHORS, include/qla_types.h,
