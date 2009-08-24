@@ -45,7 +45,7 @@
       QLA_F3_ColorMatrix *ai = &a[i];
       QLA_F3_HalfFermion *bi = b[i];
 
-      prefetchnt(b[i+NP]);
+      //prefetchnt(b[i+NP]);
       {
 	int i_c;
 	for(i_c=0; i_c<3; i_c++) {
@@ -101,7 +101,7 @@
       QLA_F3_ColorMatrix *ai = &a[i];
       QLA_F3_HalfFermion *bi = b[i];
 
-      prefetchnt(b[i+NP]);
+      //prefetchnt(b[i+NP]);
       {
 	int i_c;
 	for(i_c=0; i_c<3; i_c++) {

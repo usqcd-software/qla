@@ -11,7 +11,7 @@
 /* Implementation-specific data layout */
 /****************************************************************************/
 #define QLA_cvdef(P,C,NC,V) QLA_##P##_Complex V[NC]                     /* ColorVector */
-#define QLA_hfdef(P,C,NC,V) QLA_##P##_Complex V[NC][((QLA_Ns)/2)]       /* HalfFermion */
+#define QLA_hfdef(P,C,NC,V) QLA_##P##_Complex V[NC][(QLA_Ns)/2]         /* HalfFermion */
 #define QLA_dfdef(P,C,NC,V) QLA_##P##_Complex V[NC][QLA_Ns]             /* DiracFermion */
 #define QLA_cmdef(P,C,NC,V) QLA_##P##_Complex V[NC][NC]                 /* ColorMatrix */
 #define QLA_dpdef(P,C,NC,V) QLA_##P##_Complex V[NC][QLA_Ns][NC][QLA_Ns] /* DiracPropagator */
@@ -19,11 +19,11 @@
 #define QLA_elem_I(a) (a)
 #define QLA_elem_R(a) (a)
 #define QLA_elem_C(a) (a)
-#define QLA_elem_V(a,ic) (a)[ic]
-#define QLA_elem_H(a,ic,is) (a)[ic][is]
-#define QLA_elem_D(a,ic,is) (a)[ic][is]
-#define QLA_elem_M(a,ic,jc) (a)[ic][jc]
-#define QLA_elem_P(a,ic,is,jc,js) (a)[ic][is][jc][js]
+#define QLA_elem_V(a,ic) ((a)[ic])
+#define QLA_elem_H(a,ic,is) ((a)[ic][is])
+#define QLA_elem_D(a,ic,is) ((a)[ic][is])
+#define QLA_elem_M(a,ic,jc) ((a)[ic][jc])
+#define QLA_elem_P(a,ic,is,jc,js) ((a)[ic][is][jc][js])
 
 /* everything below here is determined from the above macros */
 
