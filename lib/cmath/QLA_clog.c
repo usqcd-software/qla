@@ -3,8 +3,10 @@
 /* Subroutines for operations on complex numbers */
 /* complex logarithm */
 
+#include <qla_config.h>
+#include <qla_types.h>
+#include <qla_cmath.h>
 #include <math.h>
-#include <qla_complex.h>
 
 QLA_D_Complex QLA_clog( QLA_D_Complex *a ){
     QLA_D_Complex c;

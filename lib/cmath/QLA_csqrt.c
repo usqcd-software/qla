@@ -3,9 +3,10 @@
 /* Subroutines for operations on complex numbers */
 /* complex square root */
 
-#include <math.h>
-#include <qla_complex.h>
+#include <qla_config.h>
+#include <qla_types.h>
 #include <qla_cmath.h>
+#include <math.h>
 
 QLA_D_Complex QLA_csqrt( QLA_D_Complex *z ){
   QLA_D_Complex c;

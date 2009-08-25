@@ -4,7 +4,8 @@
 /* exp( i*theta ) */
 
 #include <qla_config.h>
-#include <qla_complex.h>
+#include <qla_types.h>
+#include <qla_cmath.h>
 #include <math.h>
 
 QLA_D_Complex QLA_cexpi( QLA_D_Real theta ){

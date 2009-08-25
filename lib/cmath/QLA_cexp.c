@@ -3,7 +3,9 @@
 /* Subroutines for operations on complex numbers */
 /* complex exponential */
 
-#include <qla_complex.h>
+#include <qla_config.h>
+#include <qla_types.h>
+#include <qla_cmath.h>
 #include <math.h>
 
 QLA_D_Complex QLA_cexp( QLA_D_Complex *a ){
