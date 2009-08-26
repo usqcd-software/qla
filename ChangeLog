@@ -1,3 +1,9 @@
+2009-08-25 17:01  osborn
+
+	* NEWS, lib/cmath/QLA_cexp.c, lib/cmath/QLA_cexpi.c,
+	  lib/cmath/QLA_clog.c, lib/cmath/QLA_csqrt.c: fixed issue with
+	  cmath routines with xlc
+
 2009-08-24 15:43  osborn
 
 	* configure, configure.ac,
