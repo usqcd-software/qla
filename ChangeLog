@@ -1,3 +1,8 @@
+2009-08-27 23:59  osborn
+
+	* lib/perl/expressions_tensor.pl: improvements to code generation
+	  with temp_precision=D
+
 2009-08-25 17:01  osborn
 
 	* NEWS, lib/cmath/QLA_cexp.c, lib/cmath/QLA_cexpi.c,
