@@ -1,3 +1,8 @@
+2009-08-28 14:40  osborn
+
+	* lib/perl/expressions_gamma.pl: more fixes to code generation with
+	  temp-precision=D
+
 2009-08-27 23:59  osborn
 
 	* lib/perl/expressions_tensor.pl: improvements to code generation
