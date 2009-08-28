@@ -214,12 +214,15 @@ sub print_spproj_c_eqop_c_op_c {
   $macro = $carith2{$eqop.$op};
   #defined($macro) || die "no carith2 macro for $eqop$op\n";
   if(defined($macro)) {
-    local $tp = $dest_def{precision};
+    local $prec = $dest_def{'precision'};
+    $prec = $precision if($prec eq '');
+    local $tp = $temp_precision;
+    $tp = $precision if($tp eq '');
     local $s1ev, $s2ev;
     ($s1ev, $tp) = make_cast($src1_elem_value, 'c', $tp, $src1_def{precision});
     ($s2ev, $tp) = make_cast($src2_elem_value, 'c', $tp, $src1_def{precision});
     print_prec_conv_macro("$macro(", $dest_elem_value, ", $s1ev, $s2ev);",
-			  $dest_def{'t'}, $dest_def{precision}, $tp);
+			  $dest_def{'t'}, $prec, $tp);
   } else {
     $macro = $carith1{$eqop.$op};
     if(defined($macro)) {
@@ -291,12 +294,12 @@ sub print_sprecon_c_eqop_op_c {
   } else {
     $macro = $carith1{$eqop.$op};
     defined($macro) || die "no carith1 macro for $eqop$op.\n";
-    print QLA_SRC @indent, "$macro($dest_elem_value,$src1_elem_value);\n";
+#    print QLA_SRC @indent, "$macro($dest_elem_value,$src1_elem_value);\n";
 
-#    local ($sev,$sp) = &make_cast($src1_elem_value, 'c',
-#			    $temp_precision, $src_def{precision});
-#    &print_prec_conv_macro("$macro(", $dest_elem_value, ", $sev);",
-#			   'c', $dest_def{precision}, $sp);
+    local ($sev,$sp) = &make_cast($src1_elem_value, 'c',
+				  $temp_precision, $src_def{precision});
+    &print_prec_conv_macro("$macro(", $dest_elem_value, ", $sev);",
+			   'c', $dest_def{precision}, $sp);
   }
 }
 
