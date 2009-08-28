@@ -313,25 +313,33 @@ sub print_val_assign_tr {
     local($rc_d,$rc_s1) = ($dest_def{'rc'},$src1_def{'rc'});
     local($rc_x) = $rc_d;
 
-    &print_int_def($ic);
-
     # Define and zero intermediate variable for accumulating trace
-    &print_def($dest_def{'type'},$var_x);
+    local($prec, $px, $dest_t, $d_dt, $x_dt);
+    $prec = $dest_def{'precision'};
+    $prec = $precision if($prec eq '');
+    $px = $temp_precision;
+    $px = $precision if($px eq '');
+    $dest_t = $dest_def{'type'};
+    $d_dt = &datatype_element_specific($dest_t, $prec);
+    $x_dt = &datatype_element_specific($dest_t, $px);
+    &print_def($x_dt, $var_x);
+
     &print_s_eqop_s($rc_x,$var_x,$eqop_eq);
 
+    &print_int_def($ic);
     &open_iter($ic,$maxic);
 
     &print_int_def($is); &open_iter($is,$maxis);
 
     # Accumulate trace
     $src1_elem_value = &make_accessor(*src1_def,$def{'nc'},$ic,$is,$ic,$is);
-    &print_s_eqop_s($rc_x,$var_x,$eqop_peq,$imre,$rc_s1,$src1_elem_value);
+    &print_s_eqop_s($rc_x,$var_x,$eqop_peq,$imre,$rc_s1,$src1_elem_value,'',$px);
 
     &close_iter($is);
     &close_iter($ic);
 
     # Assign result to dest
-    &print_s_eqop_s($rc_d,$dest_def{'value'},$eqop,"",$rc_x,$var_x,"");
+    &print_s_eqop_s($rc_d,$dest_def{'value'},$eqop,"",$rc_x,$var_x,"",$prec,$px);
 }
 
 #---------------------------------------------------------------------
@@ -803,7 +811,10 @@ sub print_val_eqop_val_op_val {
       $dest_elem_value =
 	&make_accessor(*dest_def,$def{'nc'},$ic,$is,$jc,$js);
 
+      $prec = $precision;
+
       if( ($temp_precision ne '') && ($prec ne $temp_precision) && ($prec ne "") ) {
+
 	$rc_t = $rc_d;
 	$var_t = $var_x;
 	$prec_t = $temp_precision;
