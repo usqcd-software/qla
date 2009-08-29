@@ -27,9 +27,9 @@ require("expressions_scalar.pl");
 #---------------------------------------------------------------------
 
 sub make_code_real2complex {
-    local($eqop) = @_;
+    my($eqop) = @_;
     
-    local($dest_value,$src1_value,$src2_value) = 
+    my($dest_value,$src1_value,$src2_value) = 
 	($dest_def{'value'},$src1_def{'value'},$src2_def{'value'});
 
     &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
@@ -43,10 +43,10 @@ sub make_code_real2complex {
 #---------------------------------------------------------------------
 
 sub make_code_imre_part {
-    local($eqop,$imre) = @_;
+    my($eqop,$imre) = @_;
     
-    local($dest_value,$src1_value) = ($dest_def{'value'},$src1_def{'value'});
-    local($rc_d,$rc_s1) = ($dest_def{'rc'},$src1_def{'rc'});
+    my($dest_value,$src1_value) = ($dest_def{'value'},$src1_def{'value'});
+    my($rc_d,$rc_s1) = ($dest_def{'rc'},$src1_def{'rc'});
 
     &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
     &print_s_eqop_s($rc_d,$dest_value,$eqop,$imre,$rc_s1,$src1_value,"");
@@ -58,7 +58,7 @@ sub make_code_imre_part {
 #---------------------------------------------------------------------
 
 sub make_code_colormatrix_trace {
-    local($eqop,$imre) = @_;
+    my($eqop,$imre) = @_;
 
     &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
     &print_val_assign_tr(*dest_def,$eqop,$imre,*src1_def);
@@ -70,7 +70,7 @@ sub make_code_colormatrix_trace {
 #---------------------------------------------------------------------
 
 sub make_code_spin_trace {
-    local($eqop,$imre) = @_;
+    my($eqop,$imre) = @_;
 
     &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
     &print_val_assign_spin_tr(*dest_def,$eqop,$imre,*src1_def);

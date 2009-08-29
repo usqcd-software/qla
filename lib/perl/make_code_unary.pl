@@ -150,11 +150,11 @@ sub spproj_func {
     make_temp_ptr(*dest_def,$def{dest_name});
     make_temp_ptr(*src1_def,$def{src1_name});
   }
-  $ic = &get_row_color_index(*src1_def);
+  local $ic = &get_row_color_index(*src1_def);
   &print_int_def($ic);
-  $maxic = $src1_def{'mc'};
+  local $maxic = $src1_def{'mc'};
   &open_iter($ic,$maxic);
-  print_val_assign_spproj_dirs(*dest_def, *src1_def, $sign, $dir, $eqop);
+  print_val_assign_spproj_dirs(\%dest_def, \%src1_def, $ic, $sign, $dir, $eqop);
   &close_iter($ic);
   if($def{'dim_name'} ne "") {
     &close_iter($var_i);
@@ -173,7 +173,7 @@ sub sprecon_func {
   &print_int_def($ic);
   $maxic = $src1_def{'mc'};
   &open_iter($ic,$maxic);
-  print_val_assign_sprecon_dirs(*dest_def, *src1_def, $sign, $dir, $eqop);
+  print_val_assign_sprecon_dirs(\%dest_def, \%src1_def, $ic, $sign, $dir, $eqop);
   &close_iter($ic);
   if($def{'dim_name'} ne "") {
     &close_iter($var_i);
@@ -212,10 +212,10 @@ sub wilsonspin_func {
   &open_iter($ic,$maxic);
   if($dir<4) {
     print_def($mytemp{type}, $mytemp{value});
-    print_val_assign_spproj_dirs(*mytemp, *src1_def, $sign, $dir, "eq");
-    print_val_assign_sprecon_dirs(*dest_def, *mytemp, $sign, $dir, $eqop);
+    print_val_assign_spproj_dirs(\%mytemp, \%src1_def, $ic, $sign, $dir, "eq");
+    print_val_assign_sprecon_dirs(\%dest_def, \%mytemp, $ic, $sign, $dir, $eqop);
   } else {
-    print_val_assign_spproj_dirs(*dest_def, *src1_def, $sign, $dir, $eqop);
+    print_val_assign_spproj_dirs(\%dest_def, \%src1_def, $ic, $sign, $dir, $eqop);
   }
   &close_iter($ic);
   if($def{'dim_name'} ne "") {

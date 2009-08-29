@@ -319,7 +319,7 @@ sub print_val_assign_tr {
     $prec = $precision if($prec eq '');
     $px = $temp_precision;
     $px = $precision if($px eq '');
-    $dest_t = $dest_def{'type'};
+    $dest_t = $dest_def{'t'};
     $d_dt = &datatype_element_specific($dest_t, $prec);
     $x_dt = &datatype_element_specific($dest_t, $px);
     &print_def($x_dt, $var_x);

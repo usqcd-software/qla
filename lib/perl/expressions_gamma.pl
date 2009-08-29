@@ -203,32 +203,30 @@ sub get_gamma_col($$) {
 # Note a complex conjugate is required for projection
 
 sub print_spproj_c_eqop_c_op_c {
-  local($ic,$eqop,$op,$dest_s,$src1_s,$src2_s) = @_;
-  local($dest_elem_value,$src1_elem_value,$src2_elem_value);
-  local($macro);
+  my($ddef,$sdef,$ic,$eqop,$op,$dest_s,$src1_s,$src2_s) = @_;
+  my($dest_elem_value,$src1_elem_value,$src2_elem_value);
+  my($macro);
 
-  $dest_elem_value = &make_accessor(*dest_def,$def{'nc'},$ic,$dest_s,"","");
-  $src1_elem_value = &make_accessor(*src1_def,$def{'nc'},$ic,$src1_s,"","");
-  $src2_elem_value = &make_accessor(*src1_def,$def{'nc'},$ic,$src2_s,"",""); #yes src1
+  $dest_elem_value = &make_accessor($ddef,$def{nc},$ic,$dest_s,'','');
+  $src1_elem_value = &make_accessor($sdef,$def{nc},$ic,$src1_s,'','');
+  $src2_elem_value = &make_accessor($sdef,$def{nc},$ic,$src2_s,'','');
 
   $macro = $carith2{$eqop.$op};
-  #defined($macro) || die "no carith2 macro for $eqop$op\n";
   if(defined($macro)) {
-    local $prec = $dest_def{'precision'};
-    $prec = $precision if($prec eq '');
-    local $tp = $temp_precision;
-    $tp = $precision if($tp eq '');
-    local $s1ev, $s2ev;
-    ($s1ev, $tp) = make_cast($src1_elem_value, 'c', $tp, $src1_def{precision});
-    ($s2ev, $tp) = make_cast($src2_elem_value, 'c', $tp, $src1_def{precision});
+    my $s1ev, $s2ev, $tp;
+    ($s1ev, $tp) = make_cast($src1_elem_value, 'c', $temp_precision, $$sdef{precision});
+    ($s2ev, $tp) = make_cast($src2_elem_value, 'c', $temp_precision, $$sdef{precision});
     print_prec_conv_macro("$macro(", $dest_elem_value, ", $s1ev, $s2ev);",
-			  $dest_def{'t'}, $prec, $tp);
+			  $$ddef{t}, $$ddef{precision}, $tp);
   } else {
     $macro = $carith1{$eqop.$op};
     if(defined($macro)) {
-      print QLA_SRC @indent,"$macro($dest_elem_value,$src1_elem_value);\n";
+      my $s1ev, $tp;
+      ($s1ev, $tp) = make_cast($src1_elem_value, 'c', $temp_precision, $$sdef{precision});
+      print_prec_conv_macro("$macro(", $dest_elem_value, ", $s1ev);",
+			    $$ddef{t}, $$ddef{precision}, $tp);
     } elsif( ($eqop.$op eq "eq0") || ($eqop.$op eq "eqm0") ) {
-      $macro = $carith1{"eqr"};
+      $macro = $carith1{eqr};
       print QLA_SRC @indent,"$macro($dest_elem_value,0);\n";
     } else {
       die "no carith2 or carith1 macro for $eqop$op\n";
@@ -237,54 +235,54 @@ sub print_spproj_c_eqop_c_op_c {
 }
 
 sub print_spproj_dirs {
-  local($ic,$eqop,$dir,$op0,$src01_s,$src02_s,$op1,$src11_s,$src12_s) = @_;
+  my($ddef,$sdef,$ic,$eqop,$dir,$op0,$src01_s,$src02_s,$op1,$src11_s,$src12_s) = @_;
 
-  &print_spproj_c_eqop_c_op_c($ic,$eqop,$op0,0,$src01_s,$src02_s);
-  &print_spproj_c_eqop_c_op_c($ic,$eqop,$op1,1,$src11_s,$src12_s);
+  &print_spproj_c_eqop_c_op_c($ddef,$sdef,$ic,$eqop,$op0,0,$src01_s,$src02_s);
+  &print_spproj_c_eqop_c_op_c($ddef,$sdef,$ic,$eqop,$op1,1,$src11_s,$src12_s);
 }
 
 sub print_val_assign_spproj_dirs {
-  local(*dest_def, *src1_def, $sign, $dir, $eqop) = @_;
+  my($ddef, $sdef, $ic, $sign, $dir, $eqop) = @_;
   if($sign==$sign_PLUS) {
-    &print_spproj_dirs($ic,$eqop,$dir_X,'c+ic',0,3,'c+ic',1,2) if($dir==$dir_X);
-    &print_spproj_dirs($ic,$eqop,$dir_Y,'c-c' ,0,3,'c+c' ,1,2) if($dir==$dir_Y);
-    &print_spproj_dirs($ic,$eqop,$dir_Z,'c+ic',0,2,'c-ic',1,3) if($dir==$dir_Z);
-    &print_spproj_dirs($ic,$eqop,$dir_T,'c+c' ,0,2,'c+c' ,1,3) if($dir==$dir_T);
+    &print_spproj_dirs($ddef,$sdef,$ic,$eqop,$dir_X,'c+ic',0,3,'c+ic',1,2) if($dir==$dir_X);
+    &print_spproj_dirs($ddef,$sdef,$ic,$eqop,$dir_Y,'c-c' ,0,3,'c+c' ,1,2) if($dir==$dir_Y);
+    &print_spproj_dirs($ddef,$sdef,$ic,$eqop,$dir_Z,'c+ic',0,2,'c-ic',1,3) if($dir==$dir_Z);
+    &print_spproj_dirs($ddef,$sdef,$ic,$eqop,$dir_T,'c+c' ,0,2,'c+c' ,1,3) if($dir==$dir_T);
     if($dir==$dir_S) {
-      &print_spproj_dirs($ic,$eqop,$dir_S,'c'   ,0,0,'c'   ,1,1);
-      if( ($dest_def{t} eq 'D') && ($eqop eq "eq" || $eqop eq "eqm") ) {
-        &print_spproj_c_eqop_c_op_c($ic,$eqop,'0',2,2,2);
-        &print_spproj_c_eqop_c_op_c($ic,$eqop,'0',3,3,3);
+      &print_spproj_dirs($ddef,$sdef,$ic,$eqop,$dir_S,'c'   ,0,0,'c'   ,1,1);
+      if( ($$ddef{t} eq 'D') && ($eqop eq "eq" || $eqop eq "eqm") ) {
+        &print_spproj_c_eqop_c_op_c($ddef,$sdef,$ic,$eqop,'0',2,2,2);
+        &print_spproj_c_eqop_c_op_c($ddef,$sdef,$ic,$eqop,'0',3,3,3);
       }
     }
   } else {
-    &print_spproj_dirs($ic,$eqop,$dir_X,'c-ic',0,3,'c-ic',1,2) if($dir==$dir_X);
-    &print_spproj_dirs($ic,$eqop,$dir_Y,'c+c' ,0,3,'c-c' ,1,2) if($dir==$dir_Y);
-    &print_spproj_dirs($ic,$eqop,$dir_Z,'c-ic',0,2,'c+ic',1,3) if($dir==$dir_Z);
-    &print_spproj_dirs($ic,$eqop,$dir_T,'c-c' ,0,2,'c-c' ,1,3) if($dir==$dir_T);
+    &print_spproj_dirs($ddef,$sdef,$ic,$eqop,$dir_X,'c-ic',0,3,'c-ic',1,2) if($dir==$dir_X);
+    &print_spproj_dirs($ddef,$sdef,$ic,$eqop,$dir_Y,'c+c' ,0,3,'c-c' ,1,2) if($dir==$dir_Y);
+    &print_spproj_dirs($ddef,$sdef,$ic,$eqop,$dir_Z,'c-ic',0,2,'c+ic',1,3) if($dir==$dir_Z);
+    &print_spproj_dirs($ddef,$sdef,$ic,$eqop,$dir_T,'c-c' ,0,2,'c-c' ,1,3) if($dir==$dir_T);
     if($dir==$dir_S) {
-      if( $dest_def{t} eq 'D' ) {
-        &print_spproj_c_eqop_c_op_c($ic,$eqop,'c',2,2);
-        &print_spproj_c_eqop_c_op_c($ic,$eqop,'c',3,3);
+      if( $$ddef{t} eq 'D' ) {
+        &print_spproj_c_eqop_c_op_c($ddef,$sdef,$ic,$eqop,'c',2,2);
+        &print_spproj_c_eqop_c_op_c($ddef,$sdef,$ic,$eqop,'c',3,3);
         if( $eqop eq "eq" || $eqop eq "eqm" ) {
-          &print_spproj_c_eqop_c_op_c($ic,$eqop,'0',0,0,0);
-          &print_spproj_c_eqop_c_op_c($ic,$eqop,'0',1,1,1);
+          &print_spproj_c_eqop_c_op_c($ddef,$sdef,$ic,$eqop,'0',0,0,0);
+          &print_spproj_c_eqop_c_op_c($ddef,$sdef,$ic,$eqop,'0',1,1,1);
         }
       } else {
-        &print_spproj_dirs($ic,$eqop,$dir_S,'c'   ,2,2,'c'   ,3,3);
+        &print_spproj_dirs($ddef,$sdef,$ic,$eqop,$dir_S,'c'   ,2,2,'c'   ,3,3);
       }
     }
   }
 }
 
 sub print_sprecon_c_eqop_op_c {
-  local($ic,$maxic,$eqop,$op,$dest_s,$src1_s) = @_;
+  my($ddef,$sdef,$ic,$maxic,$eqop,$op,$dest_s,$src_s) = @_;
 
-  local($dest_elem_value,$src1_elem_value);
-  local($macro);
+  my($dest_elem_value,$src_elem_value);
+  my($macro);
 
-  $dest_elem_value = &make_accessor(*dest_def,$def{'nc'},$ic,$dest_s,"","");
-  $src1_elem_value = &make_accessor(*src1_def,$def{'nc'},$ic,$src1_s,"","");
+  $dest_elem_value = &make_accessor($ddef,$def{'nc'},$ic,$dest_s,"","");
+  $src_elem_value  = &make_accessor($sdef,$def{'nc'},$ic,$src_s ,"","");
 
   if( $op eq '0' ) {
     if( ($eqop eq "eq") || ($eqop eq "eqm") ) {
@@ -293,55 +291,53 @@ sub print_sprecon_c_eqop_op_c {
     }
   } else {
     $macro = $carith1{$eqop.$op};
-    defined($macro) || die "no carith1 macro for $eqop$op.\n";
-#    print QLA_SRC @indent, "$macro($dest_elem_value,$src1_elem_value);\n";
-
-    local ($sev,$sp) = &make_cast($src1_elem_value, 'c',
-				  $temp_precision, $src_def{precision});
+    defined($macro) || die "print_sprecon_c_eqop_op_c: no carith1 macro for $eqop$op.\n";
+    my ($sev,$sp) = &make_cast($src_elem_value, 'c',
+			       $temp_precision, $$sdef{precision});
     &print_prec_conv_macro("$macro(", $dest_elem_value, ", $sev);",
-			   'c', $dest_def{precision}, $sp);
+			   'c', $$ddef{precision}, $sp);
   }
 }
 
 sub print_sprecon_dirs {
-    local($ic,$maxic,$eqop,$dir,$op0,$op1,$op2,$op3,$h0,$h1,$h2,$h3) = @_;
+    my($ddef,$sdef,$ic,$maxic,$eqop,$dir,$op0,$op1,$op2,$op3,$h0,$h1,$h2,$h3) = @_;
 
-    &print_sprecon_c_eqop_op_c($ic,$maxic,$eqop,$op0,0,$h0);
-    &print_sprecon_c_eqop_op_c($ic,$maxic,$eqop,$op1,1,$h1);
-    &print_sprecon_c_eqop_op_c($ic,$maxic,$eqop,$op2,2,$h2);
-    &print_sprecon_c_eqop_op_c($ic,$maxic,$eqop,$op3,3,$h3);
+    &print_sprecon_c_eqop_op_c($ddef,$sdef,$ic,$maxic,$eqop,$op0,0,$h0);
+    &print_sprecon_c_eqop_op_c($ddef,$sdef,$ic,$maxic,$eqop,$op1,1,$h1);
+    &print_sprecon_c_eqop_op_c($ddef,$sdef,$ic,$maxic,$eqop,$op2,2,$h2);
+    &print_sprecon_c_eqop_op_c($ddef,$sdef,$ic,$maxic,$eqop,$op3,3,$h3);
 }
 
 sub print_val_assign_sprecon_dirs {
-  local(*dest_def, *src1_def, $sign, $dir, $eqop) = @_;
+  my($ddef, $sdef, $ic, $sign, $dir, $eqop) = @_;
   if($sign==$sign_PLUS) {
-    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_X, 'c', 'c', '-ic', '-ic',
+    &print_sprecon_dirs($ddef,$sdef,$ic,$maxic,$eqop,$dir_X, 'c', 'c', '-ic', '-ic',
 			0, 1, 1, 0) if($dir==$dir_X);
-    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_Y, 'c', 'c', 'c'  , '-c',
+    &print_sprecon_dirs($ddef,$sdef,$ic,$maxic,$eqop,$dir_Y, 'c', 'c', 'c'  , '-c',
 			0, 1, 1, 0) if($dir==$dir_Y);
-    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_Z, 'c', 'c', '-ic', 'ic',
+    &print_sprecon_dirs($ddef,$sdef,$ic,$maxic,$eqop,$dir_Z, 'c', 'c', '-ic', 'ic',
 			0, 1, 0, 1) if($dir==$dir_Z);
-    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_T, 'c', 'c', 'c'  , 'c',
+    &print_sprecon_dirs($ddef,$sdef,$ic,$maxic,$eqop,$dir_T, 'c', 'c', 'c'  , 'c',
 			0, 1, 0, 1) if($dir==$dir_T);
-    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_S, 'c', 'c', '0'  , '0',
+    &print_sprecon_dirs($ddef,$sdef,$ic,$maxic,$eqop,$dir_S, 'c', 'c', '0'  , '0',
 			0, 1, 0, 1) if($dir==$dir_S);
   } else {
-    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_X, 'c', 'c', 'ic' , 'ic',
+    &print_sprecon_dirs($ddef,$sdef,$ic,$maxic,$eqop,$dir_X, 'c', 'c', 'ic' , 'ic',
 			0, 1, 1, 0) if($dir==$dir_X);
-    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_Y, 'c', 'c', '-c' , 'c',
+    &print_sprecon_dirs($ddef,$sdef,$ic,$maxic,$eqop,$dir_Y, 'c', 'c', '-c' , 'c',
 			0, 1, 1, 0) if($dir==$dir_Y);
-    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_Z, 'c', 'c', 'ic' , '-ic',
+    &print_sprecon_dirs($ddef,$sdef,$ic,$maxic,$eqop,$dir_Z, 'c', 'c', 'ic' , '-ic',
 			0, 1, 0, 1) if($dir==$dir_Z);
-    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_T, 'c', 'c', '-c' , '-c',
+    &print_sprecon_dirs($ddef,$sdef,$ic,$maxic,$eqop,$dir_T, 'c', 'c', '-c' , '-c',
 			0, 1, 0, 1) if($dir==$dir_T);
-    &print_sprecon_dirs($ic,$maxic,$eqop,$dir_S, '0', '0', 'c'  , 'c',
+    &print_sprecon_dirs($ddef,$sdef,$ic,$maxic,$eqop,$dir_S, '0', '0', 'c'  , 'c',
 			0, 1, 0, 1) if($dir==$dir_S);
 
   }
 }
 
 sub print_spin_dir {
-  local($sign, $dir, $eqop, $spfunc) = @_;
+  my($sign, $dir, $eqop, $spfunc) = @_;
 
   print QLA_SRC @indent,"case $dir: {\n";
   &open_block();
@@ -351,7 +347,7 @@ sub print_spin_dir {
 }
 
 sub print_val_assign_spin {
-  local($eqop,$mu,$sign,$spfunc) = @_;
+  my($eqop,$mu,$sign,$spfunc) = @_;
 
   print QLA_SRC @indent,"if($sign==$sign_PLUS) {\n";
 
@@ -389,22 +385,22 @@ sub print_val_assign_spin {
 ######################################################################
 
 sub print_mult_gamma_c_eqop_op_c {
-    local($eqop,$op,$ic,$jc,$dest_is,$dest_js,$src1_is,$src1_js) = @_;
+    my($eqop,$op,$ic,$jc,$dest_is,$dest_js,$src1_is,$src1_js) = @_;
 
     $dest_elem_value = &make_accessor(*dest_def,$def{'nc'},
 				      $ic,$dest_is,$jc,$dest_js);
     $src1_elem_value = &make_accessor(*src1_def,$def{'nc'},
 				      $ic,$src1_is,$jc,$src1_js);
-    local($macro) = $carith1{$eqop.$op};
+    my($macro) = $carith1{$eqop.$op};
     defined($macro) || die "No carith1 macro for $macro\n";
     print QLA_SRC @indent,"$macro($dest_elem_value,$src1_elem_value);\n";
 }
 
 sub print_val_assign_gamma_times_dirs {
-  local(*dest_def, *src1_def, $eqop, $leftright, $g) = @_;
+  my($dest_def, $src1_def, $eqop, $leftright, $g) = @_;
 
-  local($ic,$is,$jc,$js) = &get_color_spin_indices(*dest_def);
-  local($maxic,$maxis,$maxjc,$maxjs) = @dest_def{'mc','ms','nc','ns'};
+  my($ic,$is,$jc,$js) = &get_color_spin_indices(*dest_def);
+  my($maxic,$maxis,$maxjc,$maxjs) = @dest_def{'mc','ms','nc','ns'};
 
   if($leftright eq "right") {
 
@@ -446,7 +442,7 @@ sub print_val_assign_gamma_times_dirs {
 }
 
 sub print_gamma_times {
-  local($eqop, $leftright, $g, $gfunc) = @_;
+  my($eqop, $leftright, $g, $gfunc) = @_;
 
   print QLA_SRC @indent,"case $g: {\n";
   &open_block();
@@ -456,7 +452,7 @@ sub print_gamma_times {
 }
 
 sub print_val_assign_gamma_times {
-  local($eqop,$mu,$leftright,$gfunc) = @_;
+  my($eqop,$mu,$leftright,$gfunc) = @_;
 
   print QLA_SRC @indent,"switch($mu) {\n";
 

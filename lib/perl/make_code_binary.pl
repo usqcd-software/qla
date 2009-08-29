@@ -172,7 +172,7 @@ sub spproj_mult_func {
   &open_brace();
   &print_int_def($ic);
   &open_iter($ic,$maxic);
-  print_val_assign_spproj_dirs(*mytemp, *src2_def, $sign, $dir, "eq");
+  print_val_assign_spproj_dirs(*mytemp, *src2_def, $ic, $sign, $dir, "eq");
   &close_iter($ic);
   &close_brace();
   &open_brace();
@@ -203,7 +203,7 @@ sub sprecon_mult_func {
   &open_brace();
   &print_int_def($ic);
   &open_iter($ic,$maxic);
-  print_val_assign_sprecon_dirs(*dest_def, *mytemp, $sign, $dir, $eqop);
+  print_val_assign_sprecon_dirs(\%dest_def, \%mytemp, $ic, $sign, $dir, $eqop);
   &close_iter($ic);
   &close_brace();
   if($def{'dim_name'} ne "") {
@@ -255,7 +255,7 @@ sub wilsonspin_mult_func {
   &open_brace();
   &print_int_def($ic);
   &open_iter($ic,$maxic);
-  print_val_assign_spproj_dirs(*mytemp1, *src2_def, $sign, $dir, "eq");
+  print_val_assign_spproj_dirs(*mytemp1, *src2_def, $ic, $sign, $dir, "eq");
   &close_iter($ic);
   &close_brace();
   &open_brace();
@@ -268,7 +268,7 @@ sub wilsonspin_mult_func {
   &open_brace();
   &print_int_def($ic);
   &open_iter($ic,$maxic);
-  print_val_assign_sprecon_dirs(*dest_def, *mytemp2, $sign, $dir, $eqop);
+  print_val_assign_sprecon_dirs(\%dest_def, \%mytemp2, $ic, $sign, $dir, $eqop);
   &close_iter($ic);
   &close_brace();
   if($def{'dim_name'} ne "") {
