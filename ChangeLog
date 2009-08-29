@@ -1,3 +1,9 @@
+2009-08-29 02:46  osborn
+
+	* lib/perl/: expressions_gamma.pl, expressions_tensor.pl,
+	  make_code_binary.pl, make_code_real_complex.pl,
+	  make_code_unary.pl: more fixes to code generation
+
 2009-08-28 14:40  osborn
 
 	* lib/perl/expressions_gamma.pl: more fixes to code generation with
