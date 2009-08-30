@@ -1,3 +1,9 @@
+2009-08-29 22:50  osborn
+
+	* lib/perl/: expressions_tensor.pl, make_code_binary.pl,
+	  make_code_real_complex.pl, make_code_unary.pl: more code
+	  generation fixes and cleanup
+
 2009-08-29 16:59  osborn
 
 	* lib/perl/: expressions_scalar.pl, expressions_tensor.pl,
