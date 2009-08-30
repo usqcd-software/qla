@@ -1,3 +1,8 @@
+2009-08-29 16:59  osborn
+
+	* lib/perl/: expressions_scalar.pl, expressions_tensor.pl,
+	  make_code_ternary.pl: cleanup and more fixes to code generation
+
 2009-08-29 02:46  osborn
 
 	* lib/perl/: expressions_gamma.pl, expressions_tensor.pl,
