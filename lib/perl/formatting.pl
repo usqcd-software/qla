@@ -183,19 +183,19 @@ sub print_align_indx {
 }
 
 sub print_very_top_matter {
-    local($declaration,$i,$dim_name) = @_;
+  local($declaration,$i,$dim_name) = @_;
 
-    &open_src_file;
-    &print_function_def($declaration);
-    #if($prec ne "") {
-      print QLA_SRC "#ifdef HAVE_XLC\n";
-      print QLA_SRC "#pragma disjoint($disjoint_list)\n";
-      &print_align_top();
-      print QLA_SRC "#endif\n";
-    #}
-    if(($src1_def{'t'} ne '') && ($datatype_scalar{$src1_def{'t'}})) {
-      &make_temp(*src1_def);
-    }
+  &open_src_file;
+  &print_function_def($declaration);
+  #if($prec ne "") {
+  print QLA_SRC "#ifdef HAVE_XLC\n";
+  print QLA_SRC "#pragma disjoint($disjoint_list)\n";
+  &print_align_top();
+  print QLA_SRC "#endif\n";
+  #}
+  if(($src1_def{'t'} ne '') && ($datatype_scalar{$src1_def{'t'}})) {
+    &make_temp(\%src1_def);
+  }
 #    &print_def_open_iter($i,$dim_name);
 }
 

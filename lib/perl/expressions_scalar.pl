@@ -84,10 +84,11 @@ sub print_s_eqop_s_op_s {
      $eqop,$imre,
      $rc_s1,$src1,$conj_s1,
      $op,
-     $rc_s2,$src2,$conj_s2) = @_;
+     $rc_s2,$src2,$conj_s2,
+     $prec_d,$prec_s1,$prec_s2) = @_;
 
-  if($rc_s1 eq "r"){$conj_s1 = "";}
-  if($rc_s2 eq "r"){$conj_s2 = "";}
+  if($rc_s1 eq "r") {$conj_s1 = "";}
+  if($rc_s2 eq "r") {$conj_s2 = "";}
 
   # Case complex eqop real  or complex eqop complex (*)
   # or real eq real part or imag part of complex
@@ -95,16 +96,13 @@ sub print_s_eqop_s_op_s {
     my $key = $eqop.$imre.$rc_s1.$conj_s1.$op.$rc_s2.$conj_s2;
     my($macro) = $carith2{$key};
     defined($macro) || die "no carith2 for $key\n";
-    #print QLA_SRC @indent,"$macro($dest,$src1,$src2);\n";
-    my $prec_s1 = $precision;
-    my $prec_s2 = $precision;
     #($src1, $prec_s1) = &make_cast($src1, 'c', $temp_precision, $precision) if($rc_s1 eq 'c');
     #($src2, $prec_s2) = &make_cast($src2, 'c', $temp_precision, $precision) if($rc_s2 eq 'c');
-    ($src1, $prec_s1) = &make_cast($src1, $rc_s1, $temp_precision, $precision);
-    ($src2, $prec_s2) = &make_cast($src2, $rc_s2, $temp_precision, $precision);
+    ($src1, $prec_s1) = &make_cast($src1, $rc_s1, $temp_precision, $prec_s1);
+    ($src2, $prec_s2) = &make_cast($src2, $rc_s2, $temp_precision, $prec_s2);
     my $dt = uc($rc_d);
     print_prec_conv_macro("$macro(", $dest, ", $src1, $src2);",
-			  $dt, $precision, $prec_s1);
+			  $dt, $prec_d, $prec_s1);
   }
 
   # Case real eqop real
@@ -124,42 +122,45 @@ sub print_s_eqop_s_op_s {
 #---------------------------------------------------------------------
 
 sub print_s_eqop_s_times_s_pm_s {
-    my($rc_d,$dest,
-	  $eqop,
-	  $rc_s1,$src1,$conj_s1,
-	  $op,
-	  $rc_s2,$src2,$conj_s2,
-	  $op2,
-	  $rc_s3,$src3,$conj_s3) = @_;
+  my($rc_d,$dest,
+     $eqop,
+     $rc_s1,$src1,$conj_s1,
+     $op,
+     $rc_s2,$src2,$conj_s2,
+     $op2,
+     $rc_s3,$src3,$conj_s3,
+     $prec_d,$prec_s1,$prec_s2,$prec_s3) = @_;
 
-    my($key);
+  $op eq '*' && ($op2 eq '+' || $op2 eq '-') || 
+      die "Supports only s * s +/- s\n";
 
-    $op eq '*' && ($op2 eq '+' || $op2 eq '-') || 
-	die "Supports only s * s +/- s\n";
+  if($rc_s1 eq "r"){$conj_s1 = "";}
+  if($rc_s2 eq "r"){$conj_s2 = "";}
+  if($rc_s3 eq "r"){$conj_s3 = "";}
 
-    if($rc_s1 eq "r"){$conj_s1 = "";}
-    if($rc_s2 eq "r"){$conj_s2 = "";}
-    if($rc_s3 eq "r"){$conj_s3 = "";}
+  # Case complex eqop real or complex eqop complex (*)
+  if($rc_d eq "c"){
+    my $key = $eqop.$rc_s1.$conj_s1.$op.$rc_s2.$conj_s2.$op2.$rc_s3.$conj_s3;
+    my($macro) = $carith3{$key};
+    defined($macro) || die "no carith3 for $key\n";
+    #print QLA_SRC @indent,"$macro($dest,$src1,$src2,$src3);\n";
+    ($src1, $prec_s1) = &make_cast($src1, $rc_s1, $temp_precision, $prec_s1);
+    ($src2, $prec_s2) = &make_cast($src2, $rc_s2, $temp_precision, $prec_s2);
+    ($src3, $prec_s3) = &make_cast($src3, $rc_s3, $temp_precision, $prec_s3);
+    my $dt = uc($rc_d);
+    print_prec_conv_macro("$macro(", $dest, ", $src1, $src2, $src3);",
+			  $dt, $prec_d, $prec_s1);
+  }
 
-    # Case complex eqop real  or complex eqop complex (*)
-
-    if($rc_d eq "c"){
-	$key = $eqop.$rc_s1.$conj_s1.$op.$rc_s2.$conj_s2.$op2.$rc_s3.$conj_s3;
-	my($macro) = $carith3{$key};
-	defined($macro) || die "no carith2 for $key\n";
-	print QLA_SRC @indent,"$macro($dest,$src1,$src2,$src3);\n";
+  # Case real eqop real
+  else{
+    if($rc_s1 eq "r" && $rc_s2 eq "r" && $rc_s3 eq "r"){
+      print QLA_SRC @indent,"$dest $eqop_notation{$eqop} $src1 $op $src2 $op2 $src3;\n";
     }
-    
-    # Case real eqop real
-
     else{
-	if($rc_s1 eq "r" && $rc_s2 eq "r" && $rc_s3 eq "r"){
-	    print QLA_SRC @indent,"$dest $eqop_notation{$eqop} $src1 $op $src2 $op2 $src3;\n";
-	}
-	else{
-	    die "print_s_eqop_s_op_s: can't assign complex to real\n";
-	}
+      die "print_s_eqop_s_op_s: can't assign complex to real\n";
     }
+  }
 }
 
 #---------------------------------------------------------------------
@@ -167,16 +168,15 @@ sub print_s_eqop_s_times_s_pm_s {
 #---------------------------------------------------------------------
 
 sub print_c_eqop_r_plus_ir {
-    my($c,$eqop,$x,$y) = @_;
-    my($key,$macro);
+  my($c,$eqop,$x,$y) = @_;
+  my($key,$macro);
 
-    # Null argument defaults to zero
-    if($x eq ""){$x = 0.;}
-    if($y eq ""){$y = 0.;}
-    
-    $key = $eqop."r+ir";
-    $macro = $carith2{$key};
-    defined($macro) || die "no carith2 for $key\n";
-    print QLA_SRC @indent,"$macro($c,$x,$y);\n";
+  # Null argument defaults to zero
+  if($x eq ""){$x = 0.;}
+  if($y eq ""){$y = 0.;}
+
+  $key = $eqop."r+ir";
+  $macro = $carith2{$key};
+  defined($macro) || die "no carith2 for $key\n";
+  print QLA_SRC @indent,"$macro($c,$x,$y);\n";
 }
-

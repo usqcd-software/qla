@@ -310,14 +310,14 @@ sub make_code_norm2_global_sum {
 
     # Accumulate reduced result in global variable
     if($def{'qualifier'} eq "norm2"){
-	# dest must be real in this case
+      # dest must be real in this case
       &print_val_eqop_norm2_val(\%global_def,$eqop_peq,\%src1_def);
     }
     elsif($def{'qualifier'} eq "sum"){
-	&print_val_eqop_op_val(\%global_def,$eqop_peq,\%src1_def,"identity");
+      &print_val_eqop_op_val(\%global_def,$eqop_peq,\%src1_def,"identity");
     }
     else{
-	die "Can't do $def{'qualifier'}\n";
+      die "Can't do $def{'qualifier'}\n";
     }
 
     if($def{'dim_name'} ne ""){&close_iter($var_i);}

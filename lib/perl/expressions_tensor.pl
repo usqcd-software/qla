@@ -17,11 +17,22 @@
 ######################################################################
 # Supporting files required:
 
+use strict;
+
 require("variable_names.pl");
 require("headers.pl");
 require("formatting.pl");
 require("operatortypes.pl");
 require("expressions_scalar.pl");
+
+use vars qw/ %carith1 %carith2 %carith3 %eqop_notation /;
+use vars qw/ $fcn_random $fcn_gaussian $fcn_seed_random $arg_seed /;
+use vars qw/ $datatype_integer_abbrev $datatype_real_abbrev $datatype_gauge_abbrev /;
+use vars qw/ $precision $temp_precision /;
+use vars qw/ $eqop_eqm $eqop_meq /;
+use vars qw/ $var_i /;
+use vars qw/ @indent /;
+
 
 ######################################################################
 
@@ -30,100 +41,94 @@ require("expressions_scalar.pl");
 #---------------------------------------------------------------------
 
 sub print_val_eqop_op_val {
-    my($ddef,$eqop,$s1def,$qualifier) = @_;
+  my($ddef,$eqop,$s1def,$qualifier) = @_;
+  my($dest_elem_value,$src1_elem_value);
 
-    my($dest_elem_value,$src1_elem_value);
+  # Operand dimensions
+  my($mcd,$msd,$ncd,$nsd) = @$ddef {'mc','ms','nc','ns'};
+  my($mc1,$ms1,$nc1,$ns1) = @$s1def{'mc','ms','nc','ns'};
 
-    # Operand dimensions
+  # Color spin indices
+  my($ic,$is,$jc,$js) = &get_color_spin_indices($ddef);
 
-    my($mcd,$msd,$ncd,$nsd) = @$ddef {'mc','ms','nc','ns'};
-    my($mc1,$ms1,$nc1,$ns1) = @$s1def{'mc','ms','nc','ns'};
+  # Real or complex matrix element
+  my($rc_d,$rc_s1) = ($$ddef{'rc'},$$s1def{'rc'});
 
-    # Color spin indices
-    my($ic,$is,$jc,$js) = &get_color_spin_indices($ddef);
+  # Check consistency of dimensions
+  if($$s1def{'t'} ne "" && $qualifier ne "diagfill" && 
+     $qualifier ne "gaussian"&& $qualifier ne "random" 
+     && $qualifier ne "seed") {
+    $mcd eq $mc1 && $msd eq $ms1 && $ncd eq $nc1 && $nsd eq $ns1 ||
+	die "incompatible types in assignment\n";
+  }
 
-    # Real or complex matrix element
-    my($rc_d,$rc_s1) = ($$ddef{'rc'},$$s1def{'rc'});
+  # Open iteration over destination row indices
+  &print_int_def($ic); &open_iter($ic,$mcd);
+  &print_int_def($is); &open_iter($is,$msd);
 
-    # Check consistency of dimensions
-    if($$s1def{'t'} ne "" && $qualifier ne "diagfill" && 
-       $qualifier ne "gaussian"&& $qualifier ne "random" 
-       && $qualifier ne "seed"){
+  # Open iteration over destination column indices, if needed
+  &print_int_def($jc); &open_iter($jc,$ncd);
+  &print_int_def($js); &open_iter($js,$nsd);
 
-	$mcd eq $mc1 && $msd eq $ms1 && $ncd eq $nc1 && $nsd eq $ns1 ||
-	    die "incompatible types in assignment\n";
-    }
+  $dest_elem_value = &make_accessor($ddef, $def{'nc'},$ic,$is,$jc,$js);
+  $src1_elem_value = &make_accessor($s1def,$def{'nc'},$ic,$is,$jc,$js);
 
-    # Open iteration over destination row indices
-    &print_int_def($ic); &open_iter($ic,$mcd);
-    &print_int_def($is); &open_iter($is,$msd);
+  # Build alternate expression for source if necessary
+  if($qualifier eq "zero" || $qualifier eq "diagfill"){
+    $src1_elem_value = "0."; $rc_s1 = "r";
+  }
+  elsif($qualifier eq "random"){
+    $src1_elem_value = "$fcn_random(&($$s1def{'value'}))";
+    $rc_s1 = "r";  # fcn_random returns real
+  }
+  elsif($qualifier eq "gaussian"){
+    $src1_elem_value = "$fcn_gaussian(&($$s1def{'value'}))";
+    $rc_s1 = "r"; # fcn_gaussian returns real
+  }
 
-    # Open iteration over destination column indices, if needed
-    &print_int_def($jc); &open_iter($jc,$ncd);
-    &print_int_def($js); &open_iter($js,$nsd);
+  # Build statement
 
-    $dest_elem_value = &make_accessor($ddef, $def{'nc'},$ic,$is,$jc,$js);
-    $src1_elem_value = &make_accessor($s1def,$def{'nc'},$ic,$is,$jc,$js);
+  # Special case: seeding the random number generator
+  if($qualifier eq "seed"){
+    print QLA_SRC @indent, "$fcn_seed_random(&($$ddef{'value'}),$arg_seed,$$s1def{'value'});\n";
+  }
 
-    # Build alternate expression for source if necessary
+  # Special case: assign random complex numbers
+  elsif(($qualifier eq "random" || $qualifier eq "gaussian") && $rc_d eq "c"){
+    &print_c_eqop_r_plus_ir($dest_elem_value,$eqop,
+			    $src1_elem_value,$src1_elem_value);
+  }
 
-    if($qualifier eq "zero" || $qualifier eq "diagfill"){
-	$src1_elem_value = "0."; $rc_s1 = "r";
-    }
+  # Special case, multiply by i
+  elsif($qualifier eq "i"){
+    &print_s_eqop_s($rc_d,$dest_elem_value,$eqop,"i",
+		    $rc_s1,$src1_elem_value,$$s1def{'conj'},
+		    $$ddef{'precision'}, $$s1def{'precision'});
+  }
 
-    elsif($qualifier eq "random"){
-	$src1_elem_value = "$fcn_random(&($$s1def{'value'}))";
-	$rc_s1 = "r";  # fcn_random returns real
-    }
+  # Standard case
+  else{
+    &print_s_eqop_s($rc_d,$dest_elem_value,$eqop,"",
+		    $rc_s1,$src1_elem_value,$$s1def{'conj'},
+		    $$ddef{'precision'}, $$s1def{'precision'});
+  }
 
-    elsif($qualifier eq "gaussian"){
-	$src1_elem_value = "$fcn_gaussian(&($$s1def{'value'}))";
-	$rc_s1 = "r"; # fcn_gaussian returns real
-    }
+  # Close inner tensor index loops
+  &close_iter($js); &close_iter($jc);
 
-    # Build statement
+  # Additional statement if needed
+  if($qualifier eq "diagfill"){
+    # Add line to set diagonal value
+    $src1_elem_value = $$s1def{'value'};
+    $rc_s1 = "c";
+    $dest_elem_value = &make_accessor($ddef,$def{'nc'},$ic,$is,$ic,$is);
+    &print_s_eqop_s($rc_d,$dest_elem_value,$eqop,"",
+		    $rc_s1,$src1_elem_value,$$s1def{'conj'},
+		    $$ddef{'precision'}, $$s1def{'precision'});
+  }
 
-    # Special case: seeding the random number generator
-    if($qualifier eq "seed"){
-	print QLA_SRC @indent, "$fcn_seed_random(&($$ddef{'value'}),$arg_seed,$$s1def{'value'});\n";
-    }
-
-    # Special case: assign random complex numbers
-    elsif(($qualifier eq "random" || $qualifier eq "gaussian") && $rc_d eq "c"){
-	&print_c_eqop_r_plus_ir($dest_elem_value,$eqop,
-				$src1_elem_value,$src1_elem_value);
-    }
-
-    # Special case, multiply by i
-    elsif($qualifier eq "i"){
-	&print_s_eqop_s($rc_d,$dest_elem_value,$eqop,"i",
-			$rc_s1,$src1_elem_value,$$s1def{'conj'},
-			$$ddef{'precision'}, $$s1def{'precision'});
-    }
-
-    # Standard case
-    else{
-	&print_s_eqop_s($rc_d,$dest_elem_value,$eqop,"",
-			$rc_s1,$src1_elem_value,$$s1def{'conj'},
-			$$ddef{'precision'}, $$s1def{'precision'});
-    }
-
-    # Close inner tensor index loops
-    &close_iter($js); &close_iter($jc);
-
-    # Additional statement if needed
-    if($qualifier eq "diagfill"){
-	# Add line to set diagonal value
-	$src1_elem_value = $$s1def{'value'};
-	$rc_s1 = "c";
-	$dest_elem_value = &make_accessor($ddef,$def{'nc'},$ic,$is,$ic,$is);
-	&print_s_eqop_s($rc_d,$dest_elem_value,$eqop,"",
-			$rc_s1,$src1_elem_value,$$s1def{'conj'});
-    }
-
-    # Close outer tensor index loops
-    &close_iter($is);  &close_iter($ic);
-
+  # Close outer tensor index loops
+  &close_iter($is);  &close_iter($ic);
 }
 
 #---------------------------------------------------------------------
@@ -131,13 +136,13 @@ sub print_val_eqop_op_val {
 #---------------------------------------------------------------------
 
 sub print_g_eqop_antiherm_g {
-    my($eqop) = @_;
-    my $ddef  = \%dest_def;
-    my $s1def = \%src1_def;
+  my($eqop) = @_;
+  my $ddef  = \%dest_def;
+  my $s1def = \%src1_def;
 
-    # Color spin indices
-    my($ic,$is,$jc,$js) = &get_color_spin_indices($ddef);
-    my($maxic,$maxjc) = ($$ddef{'mc'},$$ddef{'nc'});
+  # Color spin indices
+  my($ic,$is,$jc,$js) = &get_color_spin_indices($ddef);
+  my($maxic,$maxjc) = ($$ddef{'mc'},$$ddef{'nc'});
 
     my($dest_elem_value,$src1_elem_value);
     my($dest_tran_value,$src1_tran_value);
@@ -151,7 +156,7 @@ sub print_g_eqop_antiherm_g {
 	die "antiherm supports only replacement\n";
 
     # Define intermediate real for accumulating im(trace)
-    $temp_type = &datatype_specific($datatype_real_abbrev);
+    my $temp_type = &datatype_specific($datatype_real_abbrev);
     &print_def($temp_type,$var_x);
     &print_def($temp_type,$var_x2);
 
@@ -220,28 +225,33 @@ sub print_g_eqop_antiherm_g {
 #---------------------------------------------------------------------
 
 sub print_val_eqop_norm2_val {
-    my($ddef,$eqop,$s1def,$qualifier) = @_;
+  my($ddef,$eqop,$s1def,$qualifier) = @_;
 
-    my($dest_elem_value,$src1_elem_value);
-    my($ic,$is,$jc,$js) = &get_color_spin_indices($s1def);
-    my($maxic,$maxis,$maxjc,$maxjs) = @$s1def{'mc','ms','nc','ns'};
-    my($rc_d,$rc_s1) = ($$ddef{'rc'},$$s1def{'rc'});
+  my($dest_elem_value,$src1_elem_value);
+  my($ic,$is,$jc,$js) = &get_color_spin_indices($s1def);
+  my($maxic,$maxis,$maxjc,$maxjs) = @$s1def{'mc','ms','nc','ns'};
+  my($rc_d,$rc_s1) = ($$ddef{'rc'},$$s1def{'rc'});
 
-    &print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
+  &print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
 
-    # Print product for real, norm2 for complex
-    $src1_elem_value = &make_accessor($s1def,$def{'nc'},$ic,$is,$jc,$js);
-    my($srce_value);
-    if($rc_s1 eq "r"){
-	$srce_value = "($src1_elem_value)*($src1_elem_value)";
-    }
-    else{
-	$srce_value = "$carith0{'norm2'}($src1_elem_value)";
-    }
+  # Print product for real, norm2 for complex
+  $src1_elem_value = &make_accessor($s1def,$def{'nc'},$ic,$is,$jc,$js);
+  my %temp = %$s1def;
+  $temp{value} = $src1_elem_value;
+  $temp{t} = $rc_s1;
+  &make_temp(\%temp);
+  $src1_elem_value = $temp{value};
+  my($srce_value);
+  if($rc_s1 eq "r"){
+    $srce_value = "($src1_elem_value)*($src1_elem_value)";
+  }
+  else{
+    $srce_value = "$carith0{'norm2'}($src1_elem_value)";
+  }
 
-    print QLA_SRC @indent,"$$ddef{'value'} $eqop_notation{$eqop} $srce_value;\n";
+  print QLA_SRC @indent,"$$ddef{'value'} $eqop_notation{$eqop} $srce_value;\n";
 
-    &print_close_iter_list($ic,$is,$jc,$js);
+  &print_close_iter_list($ic,$is,$jc,$js);
 }
 
 #---------------------------------------------------------------------
@@ -418,7 +428,8 @@ sub plus_pattern {
 
 sub mult_index {
   my($pat,$i,$maxi,$j,$maxj,$k,$maxk) = @_;
-
+  my($i1, $i2, $j1, $j2);
+  my($maxi1, $maxi2, $maxj1, $maxj2);
   if($pat eq "XX"){
     $i1 = $i;
     $j1 = $k;
@@ -495,11 +506,12 @@ sub dot_terms {
 # Do row-column product
 sub print_s_eqop_v_times_v_pm_s {
   my($rc_d,$dest_t,$dest_elem_value,
-	$kc,$maxkc,$ks,$maxks,$eqop,
-	$rc_s1,$src1_elem_value,$conj1,
-	$rc_s2,$src2_elem_value,$conj2,
-	$pm,
-	$rc_s3,$src3_elem_value,$conj3) = @_;
+     $kc,$maxkc,$ks,$maxks,$eqop,
+     $rc_s1,$src1_elem_value,$conj1,
+     $rc_s2,$src2_elem_value,$conj2,
+     $pm,
+     $rc_s3,$src3_elem_value,$conj3,
+     $dprec, $s1prec, $s2prec, $s3prec) = @_;
 
   my($rc_x) = $rc_d;
 
@@ -516,24 +528,24 @@ sub print_s_eqop_v_times_v_pm_s {
   }
 
   # Define and zero intermediate variable for accumulating sum
-  $prec = $dest_prec;
-  $prec = $precision if($prec eq '');
   $rc_x = $rc_d;
-  $d_dt = &datatype_element_specific($dest_t, $prec);
-  $x_dt = &datatype_element_specific($dest_t, $temp_precision);
+  my $xprec = $temp_precision;
+  my $d_dt = &datatype_element_specific($dest_t, $dprec);
+  my $x_dt = &datatype_element_specific($dest_t, $xprec);
   &print_def($x_dt, $var_x);
 
   my($loop_eqop);
-  if(!defined($src3_elem_value)){
+  #if(!defined($src3_elem_value)){
+  if($src3_elem_value == '') {
     # Assign accumulated result to dest
     if($eqop eq $eqop_eq) {
       &print_s_eqop_s($rc_x, $var_x, $eqop_eq);
       $loop_eqop = $eqop_peq;
     } elsif($eqop eq $eqop_peq) {
-      &print_s_eqop_s($rc_x, $var_x, $eqop_eq, "", $rc_d, $dest_elem_value, "", $temp_precision, $prec);
+      &print_s_eqop_s($rc_x, $var_x, $eqop_eq, "", $rc_d, $dest_elem_value, "", $xprec, $dprec);
       $loop_eqop = $eqop_peq;
     } elsif($eqop eq $eqop_meq) {
-      &print_s_eqop_s($rc_x, $var_x, $eqop_eq, "", $rc_d, $dest_elem_value, "", $temp_precision, $prec);
+      &print_s_eqop_s($rc_x, $var_x, $eqop_eq, "", $rc_d, $dest_elem_value, "", $xprec, $dprec);
       $loop_eqop = $eqop_meq;
     } elsif($eqop eq $eqop_eqm) {
       &print_s_eqop_s($rc_x, $var_x, $eqop_eq);
@@ -548,7 +560,8 @@ sub print_s_eqop_v_times_v_pm_s {
 			 $eqop,"",
 			 $rc_x,$var_x,"",
 			 $pm,
-			 $rc_s3,$src3_elem_value,$conj3);
+			 $rc_s3,$src3_elem_value,$conj3,
+			 $dprec,$xprec,$s3prec);
   }
 
   &open_iter($kc,$maxkc);
@@ -568,60 +581,67 @@ sub print_s_eqop_v_times_v_pm_s {
 			 $loop_eqop, "",
 			 $rc_s1, $s1, $conj1,
 			 '*',
-			 $rc_s2, $s2, $conj2);
+			 $rc_s2, $s2, $conj2,
+			 $xprec,$s1prec,$s2prec);
 
   }
   if(!$unroll) {
     &close_iter($ks);
   }
   &close_iter($kc);
-  &print_s_eqop_s($rc_d, $dest_elem_value, $eqop_eq, "", $rc_x, $var_x, "", $prec, $temp_precision);
+  &print_s_eqop_s($rc_d, $dest_elem_value, $eqop_eq, "", $rc_x, $var_x, "", $dprec, $xprec);
 }
 
 # Do row-column dot product with trace
 sub print_s_eqop_v_dot_v {
-    my($rc_d,$dest_t,$dest_elem_value,
-	  $ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs,
-	  $eqop,$imre,
-	  $rc_s1,$src1_elem_value,$conj1,
-	  $rc_s2,$src2_elem_value,$conj2) = @_;
+  my($rc_d,$dest_t,$dest_elem_value,
+     $ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs,
+     $eqop,$imre,
+     $rc_s1,$src1_elem_value,$conj1,
+     $rc_s2,$src2_elem_value,$conj2,
+     $dprec, $s1prec, $s2prec) = @_;
 
-    my($rc_x) = $rc_d;
+  my($rc_x) = $rc_d;
 
-    &print_int_def($ic);  &print_int_def($is);
-    &print_int_def($jc);  &print_int_def($js);
+  &print_int_def($ic);
+  &open_iter($ic,$maxic);
+  &print_int_def($is);
+  &open_iter($is,$maxis);
+  &print_int_def($jc);
+  &open_iter($jc,$maxjc);
+  &print_int_def($js);
+  &open_iter($js,$maxjs);
 
-    &open_iter($ic,$maxic); &open_iter($is,$maxis);
-    &open_iter($jc,$maxjc); &open_iter($js,$maxjs);
+  # Accumulate product
+  &print_s_eqop_s_op_s($rc_x,$var_x,
+		       $eqop_peq,$imre,
+		       $rc_s1,$src1_elem_value,$conj1,
+		       '*',
+		       $rc_s2,$src2_elem_value,$conj2,
+		       $dprec, $s1prec, $s2prec);
 
-    # Accumulate product
-    &print_s_eqop_s_op_s($rc_x,$var_x,
-			 $eqop_peq,$imre,
-			 $rc_s1,$src1_elem_value,$conj1,
-			 '*',
-			 $rc_s2,$src2_elem_value,$conj2);
-
-    &close_iter($js); &close_iter($jc);
-    &close_iter($is); &close_iter($ic);
+  &close_iter($js); &close_iter($jc);
+  &close_iter($is); &close_iter($ic);
 }
 
 #---------------------------------------------------------------------
 #  Binary operation between tensors
 #---------------------------------------------------------------------
 
-%c_eqop = ( "eq"=>"=", "eqm"=>"=-", "peq"=>"+=", "meq"=>"-=" );
+#%c_eqop = ( "eq"=>"=", "eqm"=>"=-", "peq"=>"+=", "meq"=>"-=" );
 
 sub print_array_def($$$$) {
   my($typeabbr, $var, $ni, $nj) = @_;
   my $ss = "";
-  $ni0 = -1; $ni1 = 0;
-  $nj0 = -1; $nj1 = 0;
+  my $ni0 = -1; my $ni1 = 0;
+  my $nj0 = -1; my $nj1 = 0;
   if($ni) { $ss .= "[$ni]"; $ni0 = 0; $ni1 = $ni; }
   if($nj) { $ss .= "[$nj]"; $nj0 = 0; $nj1 = $nj; }
+  my $unroll = 0;
   if($unroll) {
-    $vt = "";
-    for($ii=$ni0; $ii<$ni1; $ii++) {
-      for($jj=$nj0; $jj<$nj1; $jj++) {
+    my $vt = "";
+    for(my $ii=$ni0; $ii<$ni1; $ii++) {
+      for(my $jj=$nj0; $jj<$nj1; $jj++) {
 	if($vt) { $vt .= ", "; }
 	$vt .= "$var";
 	if($ii>=0) { $vt .= $ii; }
@@ -654,7 +674,7 @@ sub print_c_op_c_times_r($$$$$) {
     print QLA_SRC @indent, "QLA_c_".$op."_c_times_r($d,$s1,$s2);\n"
   } else {
     my($cop,$copm);
-    $cop = $c_eqop{$op};
+    $cop = $eqop_notation{$op};
     ($copm = $cop) =~ tr/+-/-+/;
     print QLA_SRC @indent, "QLA_real($d) $cop  QLA_real($s1) * $s2;\n";
     print QLA_SRC @indent, "QLA_imag($d) $copm QLA_imag($s1) * $s2;\n";
@@ -665,7 +685,7 @@ sub print_c_op_c_times_ir($$$$$$) {
   my($d,$op,$s1,$conj1,$s2,$conj2) = @_;
   my($cop,$copm);
   my($cop1,$cop2);
-  $cop = $c_eqop{$op};
+  $cop = $eqop_notation{$op};
   ($copm = $cop) =~ tr/+-/-+/;
   if($conj2 eq "") { $cop1 = $copm; $cop2 = $cop; }
   else { $cop1 = $cop; $cop2 = $copm; }
@@ -677,7 +697,7 @@ sub print_c_op_c_times_ir($$$$$$) {
 sub print_rr_op_c_times_r($$$$$$) {
   my($dr,$di,$op,$s1,$conj1,$s2) = @_;
   my($cop1,$cop2);
-  $cop1 = $c_eqop{$op};
+  $cop1 = $eqop_notation{$op};
   if($conj1 eq "") {
     $cop2 = $cop1;
   } else {
@@ -691,7 +711,7 @@ sub print_rr_op_c_times_ir($$$$$$$) {
   my($dr,$di,$op,$s1,$conj1,$s2,$conj2) = @_;
   my($cop,$copm);
   my($cop1,$cop2);
-  $cop = $c_eqop{$op};
+  $cop = $eqop_notation{$op};
   ($copm = $cop) =~ tr/+-/-+/;
   if($conj2 eq "") { $cop1 = $copm; $cop2 = $cop; }
   else { $cop1 = $cop; $cop2 = $copm; }
@@ -709,7 +729,7 @@ sub print_MV {
 sub print_val_eqop_val_op_val {
   my($ddef,$eqop,$imre,$s1def,$op,$s2def) = @_;
 
-  $inline = 1;
+  my $inline = 1;
   if(!$inline) {
 #      if( ($op eq "times") && ($$s1def{t} eq "M") ) {
 #        if($$s2def{t} eq "V") {
@@ -735,12 +755,11 @@ sub print_val_eqop_val_op_val {
   }
 
   my($dest_elem_value,$src1_elem_value,$src2_elem_value);
-  my($kc);
   my($rc_d,$rc_s1,$rc_s2) = 
       ($$ddef{'rc'},$$s1def{'rc'},$$s2def{'rc'});
   my($rc_x);
 
-  my($mcd,$msd,$ncd,$nsd) = @$ddef{'mc','ms','nc','ns'};
+  my($mcd,$msd,$ncd,$nsd) = @$ddef {'mc','ms','nc','ns'};
   my($mc1,$ms1,$nc1,$ns1) = @$s1def{'mc','ms','nc','ns'};
   my($mc2,$ms2,$nc2,$ns2) = @$s2def{'mc','ms','nc','ns'};
 
@@ -749,6 +768,7 @@ sub print_val_eqop_val_op_val {
   my($cpat,$spat);
   my($pmd);
 
+  my($kc,$ks);
   my($maxkc,$maxks) = ($nc1,$ns1);
 
   # Operand color/spin dimension consistency checks
@@ -796,10 +816,13 @@ sub print_val_eqop_val_op_val {
       print_s_eqop_v_times_v_pm_s($rc_d, $$ddef{'t'}, $dest_elem_value,
 				  $kc, $maxkc, $ks, $maxks, $eqop,
 				  $rc_s1, $src1_elem_value, $$s1def{conj},
-				  $rc_s2, $src2_elem_value, $$s2def{conj});
-      if(!$noclose) {
-	print_close_iter_list($ic,$is,$jc,$js);
-      }
+				  $rc_s2, $src2_elem_value, $$s2def{conj},
+				  '',
+				  '','','',
+				  $$ddef{precision}, $$s1def{precision}, $$s2def{precision});
+#      if(!$noclose) {
+      print_close_iter_list($ic,$is,$jc,$js);
+#      }
 
     }
     # Otherwise, a simple product
@@ -838,11 +861,12 @@ sub print_val_eqop_val_op_val {
 			   $eqop,"",
 			   $rc_s1,$src1_elem_value,$$s1def{'conj'},
 			   '*',
-			   $rc_s2,$src2_elem_value,$$s2def{'conj'});
+			   $rc_s2,$src2_elem_value,$$s2def{'conj'},
+			   $$ddef{precision}, $$s1def{precision}, $$s2def{precision});
 
-      if(!$noclose) {
-	&print_close_iter_list($ic,$is,$jc,$js);
-      }
+#      if(!$noclose) {
+      &print_close_iter_list($ic,$is,$jc,$js);
+#      }
 
     }
 
@@ -860,12 +884,12 @@ sub print_val_eqop_val_op_val {
 
     # If we are summing over ic, jc, is, or js, need to handle the sum
     if($ic ne "" || $is ne "" || $jc ne "" || $js ne ""){
-      &print_s_eqop_v_dot_v(
-			    $rc_d,$$ddef{'t'},$dest_elem_value,
+      &print_s_eqop_v_dot_v($rc_d,$$ddef{'t'},$dest_elem_value,
 			    $ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs,
 			    $eqop,$imre,
 			    $rc_s1,$src1_elem_value,$$s1def{'conj'},
-			    $rc_s2,$src2_elem_value,$$s2def{'conj'});
+			    $rc_s2,$src2_elem_value,$$s2def{'conj'},
+			    $$ddef{precision}, $$s1def{precision}, $$s2def{precision});
     }
     # Otherwise, a simple product
     else{
@@ -873,7 +897,8 @@ sub print_val_eqop_val_op_val {
 			   $eqop,$imre,
 			   $rc_s1,$src1_elem_value,$$s1def{'conj'},
 			   '*',
-			   $rc_s2,$src2_elem_value,$$s2def{'conj'});
+			   $rc_s2,$src2_elem_value,$$s2def{'conj'},
+			   $$ddef{precision}, $$s1def{precision}, $$s2def{precision});
     }
   }
 
@@ -897,11 +922,12 @@ sub print_val_eqop_val_op_val {
 			 $eqop,"",
 			 $rc_s1,$src1_elem_value,$$s1def{'conj'},
 			 $pmd,
-			 $rc_s2,$src2_elem_value,$$s2def{'conj'});
+			 $rc_s2,$src2_elem_value,$$s2def{'conj'},
+			 $$ddef{precision}, $$s1def{precision}, $$s2def{precision});
 
-    if(!$noclose) {
-      &print_close_iter_list($ic,$is,$jc,$js);
-    }
+#    if(!$noclose) {
+    &print_close_iter_list($ic,$is,$jc,$js);
+#    }
   }
 
   else{
@@ -914,7 +940,7 @@ sub print_val_eqop_val_op_val {
 #  Binary operation on integers and reals
 #---------------------------------------------------------------------
 
-%bool_binary_op = (
+my %bool_binary_op = (
 		   'eq', '==',
 		   'ne', '!=',
 		   'gt', '>',
@@ -1014,10 +1040,11 @@ sub print_val_eqop_val_op_val_op2_val {
     # Operand color/spin dimension consistency checks
     # Also detects patterns for use with multiplication
 
+    my($cpat, $spat);
     if($op eq "times"){
-	$cpat = &times_pattern($mcd,$ncd,$mc1,$nc1,$mc2,$nc2);
-	$spat = &times_pattern($msd,$nsd,$ms1,$ns1,$ms2,$ns2);
-	$cpat ne "" && $spat ne "" || die "incompatible product types\n";
+      $cpat = &times_pattern($mcd,$ncd,$mc1,$nc1,$mc2,$nc2);
+      $spat = &times_pattern($msd,$nsd,$ms1,$ns1,$ms2,$ns2);
+      $cpat ne "" && $spat ne "" || die "incompatible product types\n";
     }
     else{
 	die "ternary operations do not support op = $op\n";
@@ -1077,20 +1104,20 @@ sub print_val_eqop_val_op_val_op2_val {
 #---------------------------------------------------------------------
 
 sub print_fill {
-    my($ddef,$qualifier) = @_;
+  my($ddef,$qualifier) = @_;
 
-    my($ic,$is,$jc,$js) = &get_color_spin_indices($ddef);
-    my($maxic,$maxis,$maxjc,$maxjs) = @$ddef{'mc','ms','nc','ns'};
-    my($rc_d)  = $$ddef{'rc'};
+  my($ic,$is,$jc,$js) = &get_color_spin_indices($ddef);
+  my($maxic,$maxis,$maxjc,$maxjs) = @$ddef{'mc','ms','nc','ns'};
+  my($rc_d)  = $$ddef{'rc'};
 
-    &print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
+  &print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
 
-    $dest_elem_value = &make_accessor($ddef,$def{'nc'},$ic,$is,$jc,$js);
+  my $dest_elem_value = &make_accessor($ddef,$def{'nc'},$ic,$is,$jc,$js);
 
-    if($qualifier eq "zero") {
-      &print_s_eqop_s($rc_d,$dest_elem_value,$eqop_eq,"","r","0.","");
-    }
+  if($qualifier eq "zero") {
+    &print_s_eqop_s($rc_d,$dest_elem_value,$eqop_eq,"","r","0.","");
+  }
 
-    &print_close_iter_list($ic,$is,$jc,$js);
+  &print_close_iter_list($ic,$is,$jc,$js);
 }
 1;
