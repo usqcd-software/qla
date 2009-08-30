@@ -227,12 +227,11 @@ sub print_val_eqop_norm2_val {
     my($maxic,$maxis,$maxjc,$maxjs) = @$s1def{'mc','ms','nc','ns'};
     my($rc_d,$rc_s1) = ($$ddef{'rc'},$$s1def{'rc'});
 
-    my($srce_value);
-
     &print_def_open_iter_list($ic,$maxic,$is,$maxis,$jc,$maxjc,$js,$maxjs);
 
     # Print product for real, norm2 for complex
     $src1_elem_value = &make_accessor($s1def,$def{'nc'},$ic,$is,$jc,$js);
+    my($srce_value);
     if($rc_s1 eq "r"){
 	$srce_value = "($src1_elem_value)*($src1_elem_value)";
     }
@@ -738,7 +737,7 @@ sub print_val_eqop_val_op_val {
   my($dest_elem_value,$src1_elem_value,$src2_elem_value);
   my($kc);
   my($rc_d,$rc_s1,$rc_s2) = 
-    ($$ddef{'rc'},$$s1def{'rc'},$$s2def{'rc'});
+      ($$ddef{'rc'},$$s1def{'rc'},$$s2def{'rc'});
   my($rc_x);
 
   my($mcd,$msd,$ncd,$nsd) = @$ddef{'mc','ms','nc','ns'};

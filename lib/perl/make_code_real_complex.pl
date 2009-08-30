@@ -17,8 +17,12 @@
 ######################################################################
 # Supporting files required:
 
+use strict;
+
 require("expressions_tensor.pl");
 require("expressions_scalar.pl");
+
+use vars qw/ %def %dest_def %src1_def %src2_def /;
 
 ######################################################################
 

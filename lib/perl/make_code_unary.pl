@@ -16,6 +16,8 @@
 ######################################################################
 # Supporting files required:
 
+use strict;
+
 require("formatting.pl");
 require("variable_names.pl");
 require("expressions_scalar.pl");
@@ -24,6 +26,15 @@ require("expressions_gamma.pl");
 require("datatypes.pl");
 require("headers.pl");
 
+use vars qw/ %def %dest_def %src1_def %src2_def /;
+use vars qw/ @indent /;
+use vars qw/ %unary_cmath %carith0 /;
+use vars qw/ %precision_promotion /;
+use vars qw/ $precision_double_abbrev $precision $temp_precision /;
+use vars qw/ $var_i $var_x $var_x2 $var_global_sum /;
+use vars qw/ $eqop_eq $eqop_peq /;
+use vars qw/ $datatype_halffermion_abbrev /;
+
 ######################################################################
 
 #---------------------------------------------------------------------
@@ -31,14 +42,14 @@ require("headers.pl");
 #---------------------------------------------------------------------
 
 sub make_code_unary {
-  local($eqop,$qualifier) = @_;
+  my($eqop,$qualifier) = @_;
 
   &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
   #if($def{dim_name} ne "") {
   #  make_temp_ptr(*dest_def,$def{dest_name});
   #  make_temp_ptr(*src1_def,$def{src1_name});
   #}
-  &print_val_eqop_op_val(*dest_def,$eqop,*src1_def,$qualifier);
+  &print_val_eqop_op_val(\%dest_def,$eqop,\%src1_def,$qualifier);
   &print_end_matter($var_i,$def{'dim_name'});
 }
 
@@ -47,7 +58,7 @@ sub make_code_unary {
 #---------------------------------------------------------------------
 
 sub make_code_antiherm_part {
-    local($eqop) = @_;
+    my($eqop) = @_;
 
     &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
     &print_g_eqop_antiherm_g($eqop);
@@ -59,10 +70,10 @@ sub make_code_antiherm_part {
 #---------------------------------------------------------------------
 
 sub make_code_getset_component {
-    local($eqop,$ic,$is,$jc,$js,$qualifier) = @_;
+    my($eqop,$ic,$is,$jc,$js,$qualifier) = @_;
     
     &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
-    &print_val_getset_component(*dest_def,$eqop,*src1_def,
+    &print_val_getset_component(\%dest_def,$eqop,\%src1_def,
 				$ic,$is,$jc,$js,$qualifier);
     &print_end_matter($var_i,$def{'dim_name'});
 }
@@ -74,12 +85,12 @@ sub make_code_getset_component {
 # (These functions all take double precision arguments)
 
 sub make_code_unary_fcn {
-    local($eqop,$unary_fcn) = @_;
+    my($eqop,$unary_fcn) = @_;
 
-    local($dest_value,$src1_value) = ($dest_def{'value'},$src1_def{'value'});
-    local($temp_dest_type,$temp_src1_type,$macro,$math_name);
+    my($dest_value,$src1_value) = ($dest_def{'value'},$src1_def{'value'});
+    my($temp_dest_type,$temp_src1_type,$macro,$math_name);
 
-    ($rc_d,$rc_s1) = ($dest_def{'rc'},$src1_def{'rc'});
+    my($rc_d,$rc_s1) = ($dest_def{'rc'},$src1_def{'rc'});
 
     &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
 
@@ -143,16 +154,16 @@ sub make_code_unary_fcn {
 #---------------------------------------------------------------------
 
 sub spproj_func {
-  local($sign, $dir, $eqop) = @_;
+  my($sign, $dir, $eqop) = @_;
   &print_def_open_iter($var_i,$def{'dim_name'});
   &print_align_indx();
   if($def{dim_name} ne "") {
     make_temp_ptr(*dest_def,$def{dest_name});
     make_temp_ptr(*src1_def,$def{src1_name});
   }
-  local $ic = &get_row_color_index(*src1_def);
+  my $ic = &get_row_color_index(*src1_def);
   &print_int_def($ic);
-  local $maxic = $src1_def{'mc'};
+  my $maxic = $src1_def{'mc'};
   &open_iter($ic,$maxic);
   print_val_assign_spproj_dirs(\%dest_def, \%src1_def, $ic, $sign, $dir, $eqop);
   &close_iter($ic);
@@ -162,16 +173,16 @@ sub spproj_func {
 }
 
 sub sprecon_func {
-  local($sign, $dir, $eqop) = @_;
+  my($sign, $dir, $eqop) = @_;
   &print_def_open_iter($var_i,$def{'dim_name'});
   &print_align_indx();
   if($def{dim_name} ne "") {
     make_temp_ptr(*dest_def,$def{dest_name});
     make_temp_ptr(*src1_def,$def{src1_name});
   }
-  $ic = &get_row_color_index(*src1_def);
+  my $ic = &get_row_color_index(*src1_def);
   &print_int_def($ic);
-  $maxic = $src1_def{'mc'};
+  my $maxic = $src1_def{'mc'};
   &open_iter($ic,$maxic);
   print_val_assign_sprecon_dirs(\%dest_def, \%src1_def, $ic, $sign, $dir, $eqop);
   &close_iter($ic);
@@ -181,7 +192,7 @@ sub sprecon_func {
 }
 
 sub make_code_spproj_sprecon {
-    local($eqop,$mu,$sign,$qualifier) = @_;
+    my($eqop,$mu,$sign,$qualifier) = @_;
 
     &print_very_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
 
@@ -199,16 +210,24 @@ sub make_code_spproj_sprecon {
 #-----------------------------------------------------------------------
 
 sub wilsonspin_func {
-  local($sign, $dir, $eqop) = @_;
+  my($sign, $dir, $eqop) = @_;
+  my %mytemp = ();
+
+  &load_arg_hash(\%mytemp,'src1');
+  $mytemp{t} = $datatype_halffermion_abbrev;
+  $mytemp{type} = &datatype_specific($mytemp{t}, $temp_precision);
+  $mytemp{value} = "t";
+  $mytemp{precision} = $temp_precision;
+
   &print_def_open_iter($var_i,$def{'dim_name'});
   &print_align_indx();
   if($def{dim_name} ne "") {
     make_temp_ptr(*dest_def,$def{dest_name});
     make_temp_ptr(*src1_def,$def{src1_name});
   }
-  $ic = &get_row_color_index(*src1_def);
+  my $ic = &get_row_color_index(*src1_def);
   &print_int_def($ic);
-  $maxic = $src1_def{'mc'};
+  my $maxic = $src1_def{'mc'};
   &open_iter($ic,$maxic);
   if($dir<4) {
     print_def($mytemp{type}, $mytemp{value});
@@ -224,14 +243,7 @@ sub wilsonspin_func {
 }
 
 sub make_code_wilsonspin {
-    local($eqop,$mu,$sign) = @_;
-    %mytemp = ();
-
-    &load_arg_hash(*mytemp,'src1');
-    $mytemp{t} = $datatype_halffermion_abbrev;
-    $mytemp{type} = &datatype_specific($mytemp{t}, $temp_precision);
-    $mytemp{value} = "t";
-    $mytemp{precision} = $temp_precision;
+    my($eqop,$mu,$sign) = @_;
 
     &print_very_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
 
@@ -245,7 +257,7 @@ sub make_code_wilsonspin {
 #---------------------------------------------------------------------
 
 sub mult_gamma_func {
-  local($eqop, $leftright, $g) = @_;
+  my($eqop, $leftright, $g) = @_;
 
   &print_def_open_iter($var_i,$def{'dim_name'});
   if($def{dim_name} ne "") {
@@ -261,7 +273,7 @@ sub mult_gamma_func {
 }
 
 sub make_code_mult_gamma {
-  local($eqop,$mu,$leftright) = @_;
+  my($eqop,$mu,$leftright) = @_;
 
   &print_very_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
   &print_val_assign_gamma_times($eqop, $mu, $leftright, \&mult_gamma_func);
@@ -273,14 +285,15 @@ sub make_code_mult_gamma {
 #---------------------------------------------------------------------
 
 sub make_code_norm2_global_sum {
-    local($eqop) = @_;
+    my($eqop) = @_;
 
-    local($global_type);
-    local(%global_def) = %dest_def;
+    my($global_type);
+    my(%global_def) = %dest_def;
+    my $dest_t = $dest_def{t};
 
     # The global variable inherits dest attributes, except for type and name
     # We accumulate global sums in the next higher precision relative to src1
-    local($higher_precision) = $precision_promotion{$precision};
+    my($higher_precision) = $precision_promotion{$precision};
     $global_type = &datatype_specific($dest_t,$higher_precision);
     $global_def{'type'} = $global_type;
     $global_def{'value'} = $var_global_sum;
@@ -289,7 +302,7 @@ sub make_code_norm2_global_sum {
     &open_src_file;
     &print_function_def($def{'declaration'});
     &print_nonregister_def($global_type,$var_global_sum);
-    &print_fill(*global_def,"zero");
+    &print_fill(\%global_def,"zero");
 
     &open_brace();
     &open_block();
@@ -298,10 +311,10 @@ sub make_code_norm2_global_sum {
     # Accumulate reduced result in global variable
     if($def{'qualifier'} eq "norm2"){
 	# dest must be real in this case
-	&print_val_eqop_norm2_val(*global_def,$eqop_peq,*src1_def);
+      &print_val_eqop_norm2_val(\%global_def,$eqop_peq,\%src1_def);
     }
     elsif($def{'qualifier'} eq "sum"){
-	&print_val_eqop_op_val(*global_def,$eqop_peq,*src1_def,"identity");
+	&print_val_eqop_op_val(\%global_def,$eqop_peq,\%src1_def,"identity");
     }
     else{
 	die "Can't do $def{'qualifier'}\n";
@@ -316,7 +329,7 @@ sub make_code_norm2_global_sum {
     &open_block();
 
     # Assign reduced result to dest
-    &print_val_eqop_op_val(*dest_def,$eqop,*global_def,"identity");
+    &print_val_eqop_op_val(\%dest_def,$eqop,\%global_def,"identity");
 
     &close_block();
     &close_brace();
@@ -330,7 +343,7 @@ sub make_code_norm2_global_sum {
 #---------------------------------------------------------------------
 
 sub make_code_boolean_not {
-    local($eqop) = @_;
+    my($eqop) = @_;
 
     &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
     # Only integer operands supported here
