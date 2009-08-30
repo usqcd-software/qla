@@ -158,7 +158,6 @@ sub print_g_eqop_antiherm_g {
     # Define intermediate real for accumulating im(trace)
     my $temp_type = &datatype_specific($datatype_real_abbrev);
     &print_def($temp_type,$var_x);
-    &print_def($temp_type,$var_x2);
 
     &print_int_def($ic);
     # Zero the intermediate value var_x
@@ -178,6 +177,7 @@ sub print_g_eqop_antiherm_g {
 
     # Loop to remove trace
     &open_iter($ic,$maxic);
+    &print_def($temp_type,$var_x2);
 
     # var_x2 = Im S_ii
     $src1_elem_value = &make_accessor($s1def,$def{'nc'},$ic,$is,$ic,$js);
@@ -195,7 +195,7 @@ sub print_g_eqop_antiherm_g {
     # Loop for antihermitian projection
     &open_iter($ic,"$maxic-1");
     &print_int_def($jc);
-    print QLA_SRC @indent,"for($jc=$ic+1;$jc<$maxjc;$jc++)\n";
+    print QLA_SRC @indent,"for(int $jc=$ic+1;$jc<$maxjc;$jc++)\n";
     &open_block();
     &open_brace();
 

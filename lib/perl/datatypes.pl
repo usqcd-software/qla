@@ -349,7 +349,8 @@ foreach $t ( @datatype_abbrev ){
 # Promotion table for precision
 %precision_promotion = (
    $precision_float_abbrev, $precision_double_abbrev,
-   $precision_double_abbrev, $precision_longdouble_abbrev
+   $precision_double_abbrev, $precision_double_abbrev
+#   $precision_double_abbrev, $precision_longdouble_abbrev
 			);
 
 # Construction of specific datatype name from abbreviated generic name

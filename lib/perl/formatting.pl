@@ -17,7 +17,18 @@
 ######################################################################
 # Supporting files required:
 
+use strict;
+
 require("headers.pl");
+
+use vars qw/ $have_openmp /;
+use vars qw/ %datatype_scalar %datatype_rc /;
+use vars qw/ $c_source_path /;
+use vars qw/ $arg $arg_nc /;
+use vars qw/ $pointer_pfx /;
+use vars qw/ $disjoint_list /;
+use vars qw/ $tab /;
+use vars qw/ $header @headers /;
 
 ######################################################################
 
@@ -48,28 +59,28 @@ sub close_brace {
 #--------------------------------------------------
 
 sub print_int_def {
-    local($k) = @_;
-    #if($k ne ""){print QLA_SRC @indent,"register int $k;\n";}
-    if($k ne ""){print QLA_SRC @indent,"int $k;\n";}
+  my($k) = @_;
+  #if($k ne ""){print QLA_SRC @indent,"register int $k;\n";}
+  #if($k ne ""){print QLA_SRC @indent,"int $k;\n";}
 }
 
 sub print_def {
-    local($type,$k) = @_;
-    #print QLA_SRC @indent,"register $type $k;\n";
-    if($type =~ /QLA_.N/) {
-	print QLA_SRC @indent,"$type($arg_nc, ($k));\n";
-    } else {
-	print QLA_SRC @indent,"$type $k;\n";
-    }
+  my($type,$k) = @_;
+  #print QLA_SRC @indent,"register $type $k;\n";
+  if($type =~ /QLA_.N/) {
+    print QLA_SRC @indent,"$type($arg_nc, ($k));\n";
+  } else {
+    print QLA_SRC @indent,"$type $k;\n";
+  }
 }
 
 sub print_nonregister_def {
-    local($type,$k) = @_;
-    if($type =~ /QLA_.N/) {
-	print QLA_SRC @indent,"$type($arg_nc, ($k));\n";
-    } else {
-	print QLA_SRC @indent,"$type $k;\n";
-    }
+  my($type,$k) = @_;
+  if($type =~ /QLA_.N/) {
+    print QLA_SRC @indent,"$type($arg_nc, ($k));\n";
+  } else {
+    print QLA_SRC @indent,"$type $k;\n";
+  }
 }
 
 #--------------------------------------------------
@@ -77,17 +88,17 @@ sub print_nonregister_def {
 #--------------------------------------------------
 
 sub open_iter {
-    local($i,$max)= @_;
+  my($i,$max)= @_;
 
-    if($i ne ""){
-	print QLA_SRC @indent,"for($i=0; $i<$max; $i++) {\n";
-	&open_block();
+  if($i ne ""){
+    print QLA_SRC @indent,"for(int $i=0; $i<$max; $i++) {\n";
+    &open_block();
 #	&open_brace();
-    }
+  }
 }
 
 sub close_iter {
-    local($i)= @_;
+    my($i)= @_;
 
     if($i ne ""){
 	&close_brace();
@@ -96,7 +107,7 @@ sub close_iter {
 }
 
 sub print_def_open_iter {
-    local($i,$dim_name) = @_;
+    my($i,$dim_name) = @_;
 
     if($i ne "" && $dim_name ne ""){
 	&print_int_def($i);
@@ -106,17 +117,17 @@ sub print_def_open_iter {
 
 sub print_def_open_iter_list {
     while(@_){
-	local($i) = shift(@_);
-	local($max) = shift(@_);
+	my($i) = shift(@_);
+	my($max) = shift(@_);
 	&print_int_def($i); &open_iter($i,$max);
     }
 }
 
 sub print_close_iter_list {
-    local(@list) = @_;
+    my(@list) = @_;
 
     while(@list){
-	local($i) = pop(@list);
+	my($i) = pop(@list);
 	&close_iter($i);
     }
 }
@@ -124,7 +135,7 @@ sub print_close_iter_list {
 # Source file handling
 #--------------------------------------------------
 sub open_src_file {
-    local($filename) = "$c_source_path/$def{'src_filename'}";
+    my($filename) = "$c_source_path/$def{'src_filename'}";
 
     open(QLA_SRC,">$filename") || 
 	die "Can't open $filename\n";
@@ -139,7 +150,7 @@ sub close_src_file {
 #--------------------------------------------------
 
 sub print_function_def {
-    local($declaration) = @_;
+    my($declaration) = @_;
 
     @indent = ();
     $tab = "  ";
@@ -170,7 +181,7 @@ sub print_align_indx {
   foreach $arg ( 'dest','src1','src2','src3' ) {
     if(defined($def{$arg.'_t'})) {
       if($def{$arg.'_ptr_pfx'} eq $pointer_pfx) {
-	$value = $def{$arg.'_value'};
+	my $value = $def{$arg.'_value'};
 	if( !($value =~ s/^\*//) ) {
 	  $value = "&".$value;
 	}
@@ -183,7 +194,7 @@ sub print_align_indx {
 }
 
 sub print_very_top_matter {
-  local($declaration,$i,$dim_name) = @_;
+  my($declaration,$i,$dim_name) = @_;
 
   &open_src_file;
   &print_function_def($declaration);
@@ -200,7 +211,7 @@ sub print_very_top_matter {
 }
 
 sub print_top_matter {
-  local($declaration,$i,$dim_name) = @_;
+  my($declaration,$i,$dim_name) = @_;
 
   &print_very_top_matter($declaration,$i,$dim_name);
   #&open_src_file;
@@ -220,7 +231,7 @@ sub print_top_matter {
 }
 
 sub print_very_end_matter {
-    local($i,$dim_name) = @_;
+    my($i,$dim_name) = @_;
 
 #    if($dim_name ne ""){
 #	&close_iter($i);
@@ -231,7 +242,7 @@ sub print_very_end_matter {
 }
 
 sub print_end_matter {
-    local($i,$dim_name) = @_;
+    my($i,$dim_name) = @_;
 
     if($dim_name ne ""){
 	&close_iter($i);
@@ -292,8 +303,8 @@ sub make_temp_ptr(\%$) {
 }
 
 sub make_cast($$$$) {
-  local ($v, $rc, $np, $op) = @_;
-  local $p = $op;
+  my ($v, $rc, $np, $op) = @_;
+  my $p = $op;
   if($op eq '') { $op = $precision; }
   if( ($np ne '') && ($np ne $op) ) {
     $v = "QLA_${np}${op}_${rc}($v)";
@@ -303,22 +314,22 @@ sub make_cast($$$$) {
 }
 
 sub print_prec_conv_macro($$$$$$) {
-  local ($m1, $d, $m2, $t, $pd, $ps) = @_;
+  my ($m1, $d, $m2, $t, $pd, $ps) = @_;
   if($pd eq '') { $pd = $precision; }
   if($ps eq '') { $ps = $precision; }
   if( $pd ne $ps ) {
-    local $tt = &datatype_element_specific($t, $ps);
-    local $tv = "_t";
-    local $rc = $datatype_rc{$t};
+    my $tt = &datatype_element_specific($t, $ps);
+    my $tv = "_t";
+    my $rc = $datatype_rc{$t};
     &open_brace;
     &print_def($tt, $tv);
     if($m1=~/_peq_/ || $m1=~/_meq_/) {
-      #local ($dc, $pdc) = &make_cast($d, 'c', $ps, $pd);
+      #my ($dc, $pdc) = &make_cast($d, 'c', $ps, $pd);
       #&print_s_eqop_s($rc, $tv, $eqop_eq, "", $rc, $dc, "", $ps, $pdc);
       &print_s_eqop_s($rc, $tv, $eqop_eq, "", $rc, $d, "", $ps, $pd);
     }
     print QLA_SRC @indent, "${m1}${tv}$m2\n";
-    #local ($tvc, $psc) = &make_cast($tv, 'c', $pd, $ps);
+    #my ($tvc, $psc) = &make_cast($tv, 'c', $pd, $ps);
     #&print_s_eqop_s($rc, $d, $eqop_eq, "", $rc, $tvc, "", $pd, $psc);
     &print_s_eqop_s($rc, $d, $eqop_eq, "", $rc, $tv, "", $pd, $ps);
     &close_brace;
