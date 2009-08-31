@@ -144,80 +144,86 @@ sub print_g_eqop_antiherm_g {
   my($ic,$is,$jc,$js) = &get_color_spin_indices($ddef);
   my($maxic,$maxjc) = ($$ddef{'mc'},$$ddef{'nc'});
 
-    my($dest_elem_value,$src1_elem_value);
-    my($dest_tran_value,$src1_tran_value);
+  my($dest_elem_value,$src1_elem_value);
+  my($dest_tran_value,$src1_tran_value);
 
-    # type checking
-    $$ddef{'t'} eq $datatype_gauge_abbrev &&
-	$$s1def{'t'} eq $datatype_gauge_abbrev ||
-	die "antiherm supports only gauge field\n";
+  # type checking
+  $$ddef{'t'} eq $datatype_gauge_abbrev &&
+      $$s1def{'t'} eq $datatype_gauge_abbrev ||
+      die "antiherm supports only gauge field\n";
 
-    $eqop eq $eqop_eq ||
-	die "antiherm supports only replacement\n";
+  $eqop eq $eqop_eq ||
+      die "antiherm supports only replacement\n";
 
-    # Define intermediate real for accumulating im(trace)
-    my $temp_type = &datatype_specific($datatype_real_abbrev);
-    &print_def($temp_type,$var_x);
+  # Define intermediate real for accumulating im(trace)
+  my $temp_type = &datatype_specific($datatype_real_abbrev);
+  &print_def($temp_type,$var_x);
 
-    &print_int_def($ic);
-    # Zero the intermediate value var_x
-    &print_s_eqop_s("r",$var_x,$eqop_eq);
+  &print_int_def($ic);
+  # Zero the intermediate value var_x
+  &print_s_eqop_s("r",$var_x,$eqop_eq);
 
-    # Loop for trace: answer in var_x
-    &open_iter($ic,$maxic);
-    $src1_elem_value = &make_accessor($s1def,$def{'nc'},$ic,$is,$ic,$js);
+  # Loop for trace: answer in var_x
+  &open_iter($ic,$maxic);
+  $src1_elem_value = &make_accessor($s1def,$def{'nc'},$ic,$is,$ic,$js);
 
-    # var_x += Im S_ii
-    &print_s_eqop_s("r",$var_x,$eqop_peq,"I",
-		    "c",$src1_elem_value,"");
-    &close_iter($ic);
-    # Divide ImTr by number of colors
-    &print_s_eqop_s("r",$var_x,$eqop_eq,"",
-		    "r","$var_x/$def{'nc'}","");
+  # var_x += Im S_ii
+  &print_s_eqop_s("r",$var_x,$eqop_peq,"I",
+		  "c",$src1_elem_value,"");
+  &close_iter($ic);
+  # Divide ImTr by number of colors
+  &print_s_eqop_s("r",$var_x,$eqop_eq,"",
+		  "r","$var_x/$def{'nc'}","");
 
-    # Loop to remove trace
-    &open_iter($ic,$maxic);
-    &print_def($temp_type,$var_x2);
+  # Loop to remove trace
+  &open_iter($ic,$maxic);
+  &print_def($temp_type,$var_x2);
 
-    # var_x2 = Im S_ii
-    $src1_elem_value = &make_accessor($s1def,$def{'nc'},$ic,$is,$ic,$js);
-    &print_s_eqop_s("r",$var_x2,$eqop_eq,"I","c",$src1_elem_value,"");
+  # var_x2 = Im S_ii
+  $src1_elem_value = &make_accessor($s1def,$def{'nc'},$ic,$is,$ic,$js);
+  &print_s_eqop_s("r",$var_x2,$eqop_eq,"I","c",$src1_elem_value,"");
 
-    # var_x2 = var_x2 - ImTr/3
-    &print_s_eqop_s("r",$var_x2,$eqop_eq,"","r","$var_x2 - $var_x","");
+  # var_x2 = var_x2 - ImTr/3
+  &print_s_eqop_s("r",$var_x2,$eqop_eq,"","r","$var_x2 - $var_x","");
 
-    # D_ii = i*var_x2
-    $dest_elem_value = &make_accessor($ddef,$def{'nc'},$ic,$is,$ic,$js);
-    &print_c_eqop_r_plus_ir($dest_elem_value,$eqop_eq,"0.",$var_x2);
+  # D_ii = i*var_x2
+  $dest_elem_value = &make_accessor($ddef,$def{'nc'},$ic,$is,$ic,$js);
+  &print_c_eqop_r_plus_ir($dest_elem_value,$eqop_eq,"0.",$var_x2);
 
-    &close_iter($ic);
+  &close_iter($ic);
 
-    # Loop for antihermitian projection
-    &open_iter($ic,"$maxic-1");
-    &print_int_def($jc);
-    print QLA_SRC @indent,"for(int $jc=$ic+1;$jc<$maxjc;$jc++)\n";
-    &open_block();
-    &open_brace();
+  # Loop for antihermitian projection
+  &open_iter($ic,"$maxic-1");
+  &print_int_def($jc);
+  print QLA_SRC @indent,"for(int $jc=$ic+1;$jc<$maxjc;$jc++)\n";
+  &open_block();
+  &open_brace();
 
-    $src1_elem_value = &make_accessor($s1def,$def{'nc'},$ic,$is,$jc,$js);
-    $src1_tran_value = &make_accessor($s1def,$def{'nc'},$jc,$is,$ic,$js);
-    $dest_elem_value = &make_accessor($ddef,$def{'nc'},$ic,$is,$jc,$js);
-    $dest_tran_value = &make_accessor($ddef,$def{'nc'},$jc,$is,$ic,$js);
+  $src1_elem_value = &make_accessor($s1def,$def{'nc'},$ic,$is,$jc,$js);
+  $src1_tran_value = &make_accessor($s1def,$def{'nc'},$jc,$is,$ic,$js);
+  $dest_elem_value = &make_accessor($ddef,$def{'nc'},$ic,$is,$jc,$js);
+  $dest_tran_value = &make_accessor($ddef,$def{'nc'},$jc,$is,$ic,$js);
+  my $px2 = $temp_precision;
+  $px2 = $precision if($px2 eq '');
+  my $x2_dt = &datatype_element_specific($$ddef{t}, $px2);
+  &print_def($x2_dt, $var_x2);
 
-    # D_ij = S_ij - S_ji^*
-    &print_s_eqop_s_op_s("c",$dest_elem_value,$eqop_eq,"",
-			 "c",$src1_elem_value,"","-",
-			 "c",$src1_tran_value,"a");
-    # D_ij = D_ij/2
-    &print_s_eqop_s_op_s("c",$dest_elem_value,$eqop_eq,"",
-			 "c",$dest_elem_value,"","*","r","0.5","");
+  # D_ij = S_ij - S_ji^*
+  &print_s_eqop_s_op_s("c",$var_x2,$eqop_eq,"",
+		       "c",$src1_elem_value,"","-",
+		       "c",$src1_tran_value,"a",
+		       $px2, $$s1def{precision}, $$s1def{precision});
+  # D_ij = D_ij/2
+  &print_s_eqop_s_op_s("c",$dest_elem_value,$eqop_eq,"",
+		       "c",$var_x2,"","*","r","0.5","",
+		       $$ddef{precision}, $px2, $precision);
 
-    # D_ji = -D_ij^*
-    &print_s_eqop_s("c",$dest_tran_value,$eqop_eqm,"",
-		    "c",$dest_elem_value,"a");
+  # D_ji = -D_ij^*
+  &print_s_eqop_s("c",$dest_tran_value,$eqop_eqm,"",
+		  "c",$dest_elem_value,"a");
 
-    &close_iter($ic);
-    &close_iter($jc);
+  &close_iter($ic);
+  &close_iter($jc);
 }
 
 #---------------------------------------------------------------------
