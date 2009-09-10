@@ -1,3 +1,7 @@
+2009-09-10 16:46  osborn
+
+	* NEWS: updated NEWS
+
 2009-08-30 22:23  osborn
 
 	* lib/perl/expressions_tensor.pl: more code generation cleanup and
