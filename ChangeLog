@@ -1,3 +1,7 @@
+2009-09-28 17:43  osborn
+
+	* NEWS, include/Makefile.am: added missing qla_complex_c99.h
+
 2009-09-10 16:46  tag qla1-7-0-a2
 
 2009-09-10 16:46  osborn
