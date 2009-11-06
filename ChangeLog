@@ -1,3 +1,8 @@
+2009-11-05 23:12  osborn
+
+	* NEWS, aclocal.m4, configure, configure.ac: Added missing
+	  qla_complex_c99.h
+
 2009-09-28 17:43  osborn
 
 	* NEWS, include/Makefile.am: added missing qla_complex_c99.h
