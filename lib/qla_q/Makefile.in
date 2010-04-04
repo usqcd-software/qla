@@ -135,6 +135,7 @@ PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
 PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
+PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PERL = @PERL@
@@ -194,118 +195,118 @@ AUTOMAKE_OPTIONS = no-dependencies
 QLASRC1 = \
 QLA_Q_C_eq_C.c \
 QLA_Q_C_eq_gaussian_S.c \
-QLA_Q_C_eqm_C.c \
 QLA_Q_C_eq_zero.c \
+QLA_Q_C_eqm_C.c \
 QLA_Q_C_meq_C.c \
 QLA_Q_C_peq_C.c \
 QLA_Q_C_veq_C.c \
-QLA_Q_C_veq_gaussian_pS.c \
 QLA_Q_C_veq_gaussian_S.c \
-QLA_Q_C_veqm_C.c \
-QLA_Q_C_veqm_pC.c \
+QLA_Q_C_veq_gaussian_pS.c \
 QLA_Q_C_veq_pC.c \
 QLA_Q_C_veq_zero.c \
+QLA_Q_C_veqm_C.c \
+QLA_Q_C_veqm_pC.c \
 QLA_Q_C_vmeq_C.c \
 QLA_Q_C_vmeq_pC.c \
 QLA_Q_C_vpeq_C.c \
 QLA_Q_C_vpeq_pC.c \
 QLA_Q_C_xeq_C.c \
-QLA_Q_C_xeq_gaussian_pS.c \
 QLA_Q_C_xeq_gaussian_S.c \
-QLA_Q_C_xeqm_C.c \
-QLA_Q_C_xeqm_pC.c \
+QLA_Q_C_xeq_gaussian_pS.c \
 QLA_Q_C_xeq_pC.c \
 QLA_Q_C_xeq_zero.c \
+QLA_Q_C_xeqm_C.c \
+QLA_Q_C_xeqm_pC.c \
 QLA_Q_C_xmeq_C.c \
 QLA_Q_C_xmeq_pC.c \
 QLA_Q_C_xpeq_C.c \
 QLA_Q_C_xpeq_pC.c \
-QLA_Q_R_eq_gaussian_S.c \
-QLA_Q_R_eqm_R.c \
 QLA_Q_R_eq_R.c \
+QLA_Q_R_eq_gaussian_S.c \
 QLA_Q_R_eq_zero.c \
+QLA_Q_R_eqm_R.c \
 QLA_Q_R_meq_R.c \
 QLA_Q_R_peq_R.c \
-QLA_Q_R_veq_gaussian_pS.c \
-QLA_Q_R_veq_gaussian_S.c \
-QLA_Q_R_veqm_pR.c \
-QLA_Q_R_veqm_R.c \
-QLA_Q_R_veq_pR.c \
 QLA_Q_R_veq_R.c \
+QLA_Q_R_veq_gaussian_S.c \
+QLA_Q_R_veq_gaussian_pS.c \
+QLA_Q_R_veq_pR.c \
 QLA_Q_R_veq_zero.c \
-QLA_Q_R_vmeq_pR.c \
+QLA_Q_R_veqm_R.c \
+QLA_Q_R_veqm_pR.c \
 QLA_Q_R_vmeq_R.c \
-QLA_Q_R_vpeq_pR.c \
+QLA_Q_R_vmeq_pR.c \
 QLA_Q_R_vpeq_R.c \
-QLA_Q_R_xeq_gaussian_pS.c \
-QLA_Q_R_xeq_gaussian_S.c \
-QLA_Q_R_xeqm_pR.c \
-QLA_Q_R_xeqm_R.c \
-QLA_Q_R_xeq_pR.c \
+QLA_Q_R_vpeq_pR.c \
 QLA_Q_R_xeq_R.c \
+QLA_Q_R_xeq_gaussian_S.c \
+QLA_Q_R_xeq_gaussian_pS.c \
+QLA_Q_R_xeq_pR.c \
 QLA_Q_R_xeq_zero.c \
-QLA_Q_R_xmeq_pR.c \
+QLA_Q_R_xeqm_R.c \
+QLA_Q_R_xeqm_pR.c \
 QLA_Q_R_xmeq_R.c \
-QLA_Q_R_xpeq_pR.c \
-QLA_Q_R_xpeq_R.c
+QLA_Q_R_xmeq_pR.c \
+QLA_Q_R_xpeq_R.c \
+QLA_Q_R_xpeq_pR.c
 
 QLAOBJ1 = \
 QLA_Q_C_eq_C.o \
 QLA_Q_C_eq_gaussian_S.o \
-QLA_Q_C_eqm_C.o \
 QLA_Q_C_eq_zero.o \
+QLA_Q_C_eqm_C.o \
 QLA_Q_C_meq_C.o \
 QLA_Q_C_peq_C.o \
 QLA_Q_C_veq_C.o \
-QLA_Q_C_veq_gaussian_pS.o \
 QLA_Q_C_veq_gaussian_S.o \
-QLA_Q_C_veqm_C.o \
-QLA_Q_C_veqm_pC.o \
+QLA_Q_C_veq_gaussian_pS.o \
 QLA_Q_C_veq_pC.o \
 QLA_Q_C_veq_zero.o \
+QLA_Q_C_veqm_C.o \
+QLA_Q_C_veqm_pC.o \
 QLA_Q_C_vmeq_C.o \
 QLA_Q_C_vmeq_pC.o \
 QLA_Q_C_vpeq_C.o \
 QLA_Q_C_vpeq_pC.o \
 QLA_Q_C_xeq_C.o \
-QLA_Q_C_xeq_gaussian_pS.o \
 QLA_Q_C_xeq_gaussian_S.o \
-QLA_Q_C_xeqm_C.o \
-QLA_Q_C_xeqm_pC.o \
+QLA_Q_C_xeq_gaussian_pS.o \
 QLA_Q_C_xeq_pC.o \
 QLA_Q_C_xeq_zero.o \
+QLA_Q_C_xeqm_C.o \
+QLA_Q_C_xeqm_pC.o \
 QLA_Q_C_xmeq_C.o \
 QLA_Q_C_xmeq_pC.o \
 QLA_Q_C_xpeq_C.o \
 QLA_Q_C_xpeq_pC.o \
-QLA_Q_R_eq_gaussian_S.o \
-QLA_Q_R_eqm_R.o \
 QLA_Q_R_eq_R.o \
+QLA_Q_R_eq_gaussian_S.o \
 QLA_Q_R_eq_zero.o \
+QLA_Q_R_eqm_R.o \
 QLA_Q_R_meq_R.o \
 QLA_Q_R_peq_R.o \
-QLA_Q_R_veq_gaussian_pS.o \
-QLA_Q_R_veq_gaussian_S.o \
-QLA_Q_R_veqm_pR.o \
-QLA_Q_R_veqm_R.o \
-QLA_Q_R_veq_pR.o \
 QLA_Q_R_veq_R.o \
+QLA_Q_R_veq_gaussian_S.o \
+QLA_Q_R_veq_gaussian_pS.o \
+QLA_Q_R_veq_pR.o \
 QLA_Q_R_veq_zero.o \
-QLA_Q_R_vmeq_pR.o \
+QLA_Q_R_veqm_R.o \
+QLA_Q_R_veqm_pR.o \
 QLA_Q_R_vmeq_R.o \
-QLA_Q_R_vpeq_pR.o \
+QLA_Q_R_vmeq_pR.o \
 QLA_Q_R_vpeq_R.o \
-QLA_Q_R_xeq_gaussian_pS.o \
-QLA_Q_R_xeq_gaussian_S.o \
-QLA_Q_R_xeqm_pR.o \
-QLA_Q_R_xeqm_R.o \
-QLA_Q_R_xeq_pR.o \
+QLA_Q_R_vpeq_pR.o \
 QLA_Q_R_xeq_R.o \
+QLA_Q_R_xeq_gaussian_S.o \
+QLA_Q_R_xeq_gaussian_pS.o \
+QLA_Q_R_xeq_pR.o \
 QLA_Q_R_xeq_zero.o \
-QLA_Q_R_xmeq_pR.o \
+QLA_Q_R_xeqm_R.o \
+QLA_Q_R_xeqm_pR.o \
 QLA_Q_R_xmeq_R.o \
-QLA_Q_R_xpeq_pR.o \
-QLA_Q_R_xpeq_R.o
+QLA_Q_R_xmeq_pR.o \
+QLA_Q_R_xpeq_R.o \
+QLA_Q_R_xpeq_pR.o
 
 QLASRC = $(QLASRC1)
 QLAOBJ = $(QLAOBJ1)
@@ -329,7 +330,7 @@ BUILD_DEPS = \
 	$(BUILD_SCRIPT_DIR)/variable_names.pl
 
 lib_LIBRARIES = ../libqla_q.a
-AM_CFLAGS = -I$(top_srcdir)/include
+AM_CFLAGS = -I$(top_srcdir)/include  
 
 # this is just to force automake to include the .c.o rule
 nodist____libqla_q_a_SOURCES = QLA_Q_C_eq_C.c

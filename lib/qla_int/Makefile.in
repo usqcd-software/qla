@@ -71,7 +71,7 @@ LIBRARIES = $(lib_LIBRARIES)
 ARFLAGS = cru
 ___libqla_int_a_AR = $(AR) $(ARFLAGS)
 ___libqla_int_a_LIBADD =
-nodist____libqla_int_a_OBJECTS = QLA_I_eq_i1.$(OBJEXT)
+nodist____libqla_int_a_OBJECTS = QLA_I_eq_I.$(OBJEXT)
 ___libqla_int_a_OBJECTS = $(nodist____libqla_int_a_OBJECTS)
 am__dirstamp = $(am__leading_dot)dirstamp
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/include
@@ -135,6 +135,7 @@ PACKAGE_BUGREPORT = @PACKAGE_BUGREPORT@
 PACKAGE_NAME = @PACKAGE_NAME@
 PACKAGE_STRING = @PACKAGE_STRING@
 PACKAGE_TARNAME = @PACKAGE_TARNAME@
+PACKAGE_URL = @PACKAGE_URL@
 PACKAGE_VERSION = @PACKAGE_VERSION@
 PATH_SEPARATOR = @PATH_SEPARATOR@
 PERL = @PERL@
@@ -192,12 +193,8 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = no-dependencies
 QLASRC1 = \
-QLA_I_eq_i1.c \
-QLA_I_eq_i1_times_I.c \
-QLA_I_eq_i1_times_I_minus_I.c \
-QLA_I_eq_i1_times_I_plus_I.c \
-QLA_I_eq_I_and_I.c \
 QLA_I_eq_I.c \
+QLA_I_eq_I_and_I.c \
 QLA_I_eq_I_divide_I.c \
 QLA_I_eq_I_eq_I.c \
 QLA_I_eq_I_ge_I.c \
@@ -216,31 +213,24 @@ QLA_I_eq_I_plus_I.c \
 QLA_I_eq_I_rshift_I.c \
 QLA_I_eq_I_times_I.c \
 QLA_I_eq_I_xor_I.c \
-QLA_I_eqm_i1_times_I.c \
-QLA_I_eqm_I.c \
-QLA_I_eqm_I_times_I.c \
+QLA_I_eq_i1.c \
+QLA_I_eq_i1_times_I.c \
+QLA_I_eq_i1_times_I_minus_I.c \
+QLA_I_eq_i1_times_I_plus_I.c \
 QLA_I_eq_not_I.c \
 QLA_I_eq_zero.c \
-QLA_I_meq_i1_times_I.c \
+QLA_I_eqm_I.c \
+QLA_I_eqm_I_times_I.c \
+QLA_I_eqm_i1_times_I.c \
 QLA_I_meq_I.c \
 QLA_I_meq_I_times_I.c \
-QLA_I_peq_i1_times_I.c \
+QLA_I_meq_i1_times_I.c \
 QLA_I_peq_I.c \
 QLA_I_peq_I_times_I.c \
-QLA_I_veq_i1.c \
-QLA_I_veq_i1_times_I.c \
-QLA_I_veq_i1_times_I_minus_I.c \
-QLA_I_veq_i1_times_I_minus_pI.c \
-QLA_I_veq_i1_times_I_plus_I.c \
-QLA_I_veq_i1_times_I_plus_pI.c \
-QLA_I_veq_i1_times_pI.c \
-QLA_I_veq_i1_times_pI_minus_I.c \
-QLA_I_veq_i1_times_pI_minus_pI.c \
-QLA_I_veq_i1_times_pI_plus_I.c \
-QLA_I_veq_i1_times_pI_plus_pI.c \
+QLA_I_peq_i1_times_I.c \
+QLA_I_veq_I.c \
 QLA_I_veq_I_and_I.c \
 QLA_I_veq_I_and_pI.c \
-QLA_I_veq_I.c \
 QLA_I_veq_I_divide_I.c \
 QLA_I_veq_I_divide_pI.c \
 QLA_I_veq_I_eq_I.c \
@@ -277,19 +267,22 @@ QLA_I_veq_I_times_I.c \
 QLA_I_veq_I_times_pI.c \
 QLA_I_veq_I_xor_I.c \
 QLA_I_veq_I_xor_pI.c \
-QLA_I_veqm_i1_times_I.c \
-QLA_I_veqm_i1_times_pI.c \
-QLA_I_veqm_I.c \
-QLA_I_veqm_I_times_I.c \
-QLA_I_veqm_I_times_pI.c \
-QLA_I_veqm_pI.c \
-QLA_I_veqm_pI_times_I.c \
-QLA_I_veqm_pI_times_pI.c \
+QLA_I_veq_i1.c \
+QLA_I_veq_i1_times_I.c \
+QLA_I_veq_i1_times_I_minus_I.c \
+QLA_I_veq_i1_times_I_minus_pI.c \
+QLA_I_veq_i1_times_I_plus_I.c \
+QLA_I_veq_i1_times_I_plus_pI.c \
+QLA_I_veq_i1_times_pI.c \
+QLA_I_veq_i1_times_pI_minus_I.c \
+QLA_I_veq_i1_times_pI_minus_pI.c \
+QLA_I_veq_i1_times_pI_plus_I.c \
+QLA_I_veq_i1_times_pI_plus_pI.c \
 QLA_I_veq_not_I.c \
 QLA_I_veq_not_pI.c \
+QLA_I_veq_pI.c \
 QLA_I_veq_pI_and_I.c \
 QLA_I_veq_pI_and_pI.c \
-QLA_I_veq_pI.c \
 QLA_I_veq_pI_divide_I.c \
 QLA_I_veq_pI_divide_pI.c \
 QLA_I_veq_pI_eq_I.c \
@@ -327,36 +320,33 @@ QLA_I_veq_pI_times_pI.c \
 QLA_I_veq_pI_xor_I.c \
 QLA_I_veq_pI_xor_pI.c \
 QLA_I_veq_zero.c \
-QLA_I_vmeq_i1_times_I.c \
-QLA_I_vmeq_i1_times_pI.c \
+QLA_I_veqm_I.c \
+QLA_I_veqm_I_times_I.c \
+QLA_I_veqm_I_times_pI.c \
+QLA_I_veqm_i1_times_I.c \
+QLA_I_veqm_i1_times_pI.c \
+QLA_I_veqm_pI.c \
+QLA_I_veqm_pI_times_I.c \
+QLA_I_veqm_pI_times_pI.c \
 QLA_I_vmeq_I.c \
 QLA_I_vmeq_I_times_I.c \
 QLA_I_vmeq_I_times_pI.c \
+QLA_I_vmeq_i1_times_I.c \
+QLA_I_vmeq_i1_times_pI.c \
 QLA_I_vmeq_pI.c \
 QLA_I_vmeq_pI_times_I.c \
 QLA_I_vmeq_pI_times_pI.c \
-QLA_I_vpeq_i1_times_I.c \
-QLA_I_vpeq_i1_times_pI.c \
 QLA_I_vpeq_I.c \
 QLA_I_vpeq_I_times_I.c \
 QLA_I_vpeq_I_times_pI.c \
+QLA_I_vpeq_i1_times_I.c \
+QLA_I_vpeq_i1_times_pI.c \
 QLA_I_vpeq_pI.c \
 QLA_I_vpeq_pI_times_I.c \
 QLA_I_vpeq_pI_times_pI.c \
-QLA_I_xeq_i1.c \
-QLA_I_xeq_i1_times_I.c \
-QLA_I_xeq_i1_times_I_minus_I.c \
-QLA_I_xeq_i1_times_I_minus_pI.c \
-QLA_I_xeq_i1_times_I_plus_I.c \
-QLA_I_xeq_i1_times_I_plus_pI.c \
-QLA_I_xeq_i1_times_pI.c \
-QLA_I_xeq_i1_times_pI_minus_I.c \
-QLA_I_xeq_i1_times_pI_minus_pI.c \
-QLA_I_xeq_i1_times_pI_plus_I.c \
-QLA_I_xeq_i1_times_pI_plus_pI.c \
+QLA_I_xeq_I.c \
 QLA_I_xeq_I_and_I.c \
 QLA_I_xeq_I_and_pI.c \
-QLA_I_xeq_I.c \
 QLA_I_xeq_I_divide_I.c \
 QLA_I_xeq_I_divide_pI.c \
 QLA_I_xeq_I_eq_I.c \
@@ -393,19 +383,22 @@ QLA_I_xeq_I_times_I.c \
 QLA_I_xeq_I_times_pI.c \
 QLA_I_xeq_I_xor_I.c \
 QLA_I_xeq_I_xor_pI.c \
-QLA_I_xeqm_i1_times_I.c \
-QLA_I_xeqm_i1_times_pI.c \
-QLA_I_xeqm_I.c \
-QLA_I_xeqm_I_times_I.c \
-QLA_I_xeqm_I_times_pI.c \
-QLA_I_xeqm_pI.c \
-QLA_I_xeqm_pI_times_I.c \
-QLA_I_xeqm_pI_times_pI.c \
+QLA_I_xeq_i1.c \
+QLA_I_xeq_i1_times_I.c \
+QLA_I_xeq_i1_times_I_minus_I.c \
+QLA_I_xeq_i1_times_I_minus_pI.c \
+QLA_I_xeq_i1_times_I_plus_I.c \
+QLA_I_xeq_i1_times_I_plus_pI.c \
+QLA_I_xeq_i1_times_pI.c \
+QLA_I_xeq_i1_times_pI_minus_I.c \
+QLA_I_xeq_i1_times_pI_minus_pI.c \
+QLA_I_xeq_i1_times_pI_plus_I.c \
+QLA_I_xeq_i1_times_pI_plus_pI.c \
 QLA_I_xeq_not_I.c \
 QLA_I_xeq_not_pI.c \
+QLA_I_xeq_pI.c \
 QLA_I_xeq_pI_and_I.c \
 QLA_I_xeq_pI_and_pI.c \
-QLA_I_xeq_pI.c \
 QLA_I_xeq_pI_divide_I.c \
 QLA_I_xeq_pI_divide_pI.c \
 QLA_I_xeq_pI_eq_I.c \
@@ -443,40 +436,44 @@ QLA_I_xeq_pI_times_pI.c \
 QLA_I_xeq_pI_xor_I.c \
 QLA_I_xeq_pI_xor_pI.c \
 QLA_I_xeq_zero.c \
-QLA_I_xmeq_i1_times_I.c \
-QLA_I_xmeq_i1_times_pI.c \
+QLA_I_xeqm_I.c \
+QLA_I_xeqm_I_times_I.c \
+QLA_I_xeqm_I_times_pI.c \
+QLA_I_xeqm_i1_times_I.c \
+QLA_I_xeqm_i1_times_pI.c \
+QLA_I_xeqm_pI.c \
+QLA_I_xeqm_pI_times_I.c \
+QLA_I_xeqm_pI_times_pI.c \
 QLA_I_xmeq_I.c \
 QLA_I_xmeq_I_times_I.c \
 QLA_I_xmeq_I_times_pI.c \
+QLA_I_xmeq_i1_times_I.c \
+QLA_I_xmeq_i1_times_pI.c \
 QLA_I_xmeq_pI.c \
 QLA_I_xmeq_pI_times_I.c \
 QLA_I_xmeq_pI_times_pI.c \
-QLA_I_xpeq_i1_times_I.c \
-QLA_I_xpeq_i1_times_pI.c \
 QLA_I_xpeq_I.c \
 QLA_I_xpeq_I_times_I.c \
 QLA_I_xpeq_I_times_pI.c \
+QLA_I_xpeq_i1_times_I.c \
+QLA_I_xpeq_i1_times_pI.c \
 QLA_I_xpeq_pI.c \
 QLA_I_xpeq_pI_times_I.c \
 QLA_I_xpeq_pI_times_pI.c \
 QLA_S_eq_S.c \
 QLA_S_eq_seed_i_I.c \
-QLA_S_veq_pS.c \
 QLA_S_veq_S.c \
+QLA_S_veq_pS.c \
 QLA_S_veq_seed_i_I.c \
 QLA_S_veq_seed_i_pI.c \
-QLA_S_xeq_pS.c \
 QLA_S_xeq_S.c \
+QLA_S_xeq_pS.c \
 QLA_S_xeq_seed_i_I.c \
 QLA_S_xeq_seed_i_pI.c
 
 QLAOBJ1 = \
-QLA_I_eq_i1.o \
-QLA_I_eq_i1_times_I.o \
-QLA_I_eq_i1_times_I_minus_I.o \
-QLA_I_eq_i1_times_I_plus_I.o \
-QLA_I_eq_I_and_I.o \
 QLA_I_eq_I.o \
+QLA_I_eq_I_and_I.o \
 QLA_I_eq_I_divide_I.o \
 QLA_I_eq_I_eq_I.o \
 QLA_I_eq_I_ge_I.o \
@@ -495,31 +492,24 @@ QLA_I_eq_I_plus_I.o \
 QLA_I_eq_I_rshift_I.o \
 QLA_I_eq_I_times_I.o \
 QLA_I_eq_I_xor_I.o \
-QLA_I_eqm_i1_times_I.o \
-QLA_I_eqm_I.o \
-QLA_I_eqm_I_times_I.o \
+QLA_I_eq_i1.o \
+QLA_I_eq_i1_times_I.o \
+QLA_I_eq_i1_times_I_minus_I.o \
+QLA_I_eq_i1_times_I_plus_I.o \
 QLA_I_eq_not_I.o \
 QLA_I_eq_zero.o \
-QLA_I_meq_i1_times_I.o \
+QLA_I_eqm_I.o \
+QLA_I_eqm_I_times_I.o \
+QLA_I_eqm_i1_times_I.o \
 QLA_I_meq_I.o \
 QLA_I_meq_I_times_I.o \
-QLA_I_peq_i1_times_I.o \
+QLA_I_meq_i1_times_I.o \
 QLA_I_peq_I.o \
 QLA_I_peq_I_times_I.o \
-QLA_I_veq_i1.o \
-QLA_I_veq_i1_times_I.o \
-QLA_I_veq_i1_times_I_minus_I.o \
-QLA_I_veq_i1_times_I_minus_pI.o \
-QLA_I_veq_i1_times_I_plus_I.o \
-QLA_I_veq_i1_times_I_plus_pI.o \
-QLA_I_veq_i1_times_pI.o \
-QLA_I_veq_i1_times_pI_minus_I.o \
-QLA_I_veq_i1_times_pI_minus_pI.o \
-QLA_I_veq_i1_times_pI_plus_I.o \
-QLA_I_veq_i1_times_pI_plus_pI.o \
+QLA_I_peq_i1_times_I.o \
+QLA_I_veq_I.o \
 QLA_I_veq_I_and_I.o \
 QLA_I_veq_I_and_pI.o \
-QLA_I_veq_I.o \
 QLA_I_veq_I_divide_I.o \
 QLA_I_veq_I_divide_pI.o \
 QLA_I_veq_I_eq_I.o \
@@ -556,19 +546,22 @@ QLA_I_veq_I_times_I.o \
 QLA_I_veq_I_times_pI.o \
 QLA_I_veq_I_xor_I.o \
 QLA_I_veq_I_xor_pI.o \
-QLA_I_veqm_i1_times_I.o \
-QLA_I_veqm_i1_times_pI.o \
-QLA_I_veqm_I.o \
-QLA_I_veqm_I_times_I.o \
-QLA_I_veqm_I_times_pI.o \
-QLA_I_veqm_pI.o \
-QLA_I_veqm_pI_times_I.o \
-QLA_I_veqm_pI_times_pI.o \
+QLA_I_veq_i1.o \
+QLA_I_veq_i1_times_I.o \
+QLA_I_veq_i1_times_I_minus_I.o \
+QLA_I_veq_i1_times_I_minus_pI.o \
+QLA_I_veq_i1_times_I_plus_I.o \
+QLA_I_veq_i1_times_I_plus_pI.o \
+QLA_I_veq_i1_times_pI.o \
+QLA_I_veq_i1_times_pI_minus_I.o \
+QLA_I_veq_i1_times_pI_minus_pI.o \
+QLA_I_veq_i1_times_pI_plus_I.o \
+QLA_I_veq_i1_times_pI_plus_pI.o \
 QLA_I_veq_not_I.o \
 QLA_I_veq_not_pI.o \
+QLA_I_veq_pI.o \
 QLA_I_veq_pI_and_I.o \
 QLA_I_veq_pI_and_pI.o \
-QLA_I_veq_pI.o \
 QLA_I_veq_pI_divide_I.o \
 QLA_I_veq_pI_divide_pI.o \
 QLA_I_veq_pI_eq_I.o \
@@ -606,36 +599,33 @@ QLA_I_veq_pI_times_pI.o \
 QLA_I_veq_pI_xor_I.o \
 QLA_I_veq_pI_xor_pI.o \
 QLA_I_veq_zero.o \
-QLA_I_vmeq_i1_times_I.o \
-QLA_I_vmeq_i1_times_pI.o \
+QLA_I_veqm_I.o \
+QLA_I_veqm_I_times_I.o \
+QLA_I_veqm_I_times_pI.o \
+QLA_I_veqm_i1_times_I.o \
+QLA_I_veqm_i1_times_pI.o \
+QLA_I_veqm_pI.o \
+QLA_I_veqm_pI_times_I.o \
+QLA_I_veqm_pI_times_pI.o \
 QLA_I_vmeq_I.o \
 QLA_I_vmeq_I_times_I.o \
 QLA_I_vmeq_I_times_pI.o \
+QLA_I_vmeq_i1_times_I.o \
+QLA_I_vmeq_i1_times_pI.o \
 QLA_I_vmeq_pI.o \
 QLA_I_vmeq_pI_times_I.o \
 QLA_I_vmeq_pI_times_pI.o \
-QLA_I_vpeq_i1_times_I.o \
-QLA_I_vpeq_i1_times_pI.o \
 QLA_I_vpeq_I.o \
 QLA_I_vpeq_I_times_I.o \
 QLA_I_vpeq_I_times_pI.o \
+QLA_I_vpeq_i1_times_I.o \
+QLA_I_vpeq_i1_times_pI.o \
 QLA_I_vpeq_pI.o \
 QLA_I_vpeq_pI_times_I.o \
 QLA_I_vpeq_pI_times_pI.o \
-QLA_I_xeq_i1.o \
-QLA_I_xeq_i1_times_I.o \
-QLA_I_xeq_i1_times_I_minus_I.o \
-QLA_I_xeq_i1_times_I_minus_pI.o \
-QLA_I_xeq_i1_times_I_plus_I.o \
-QLA_I_xeq_i1_times_I_plus_pI.o \
-QLA_I_xeq_i1_times_pI.o \
-QLA_I_xeq_i1_times_pI_minus_I.o \
-QLA_I_xeq_i1_times_pI_minus_pI.o \
-QLA_I_xeq_i1_times_pI_plus_I.o \
-QLA_I_xeq_i1_times_pI_plus_pI.o \
+QLA_I_xeq_I.o \
 QLA_I_xeq_I_and_I.o \
 QLA_I_xeq_I_and_pI.o \
-QLA_I_xeq_I.o \
 QLA_I_xeq_I_divide_I.o \
 QLA_I_xeq_I_divide_pI.o \
 QLA_I_xeq_I_eq_I.o \
@@ -672,19 +662,22 @@ QLA_I_xeq_I_times_I.o \
 QLA_I_xeq_I_times_pI.o \
 QLA_I_xeq_I_xor_I.o \
 QLA_I_xeq_I_xor_pI.o \
-QLA_I_xeqm_i1_times_I.o \
-QLA_I_xeqm_i1_times_pI.o \
-QLA_I_xeqm_I.o \
-QLA_I_xeqm_I_times_I.o \
-QLA_I_xeqm_I_times_pI.o \
-QLA_I_xeqm_pI.o \
-QLA_I_xeqm_pI_times_I.o \
-QLA_I_xeqm_pI_times_pI.o \
+QLA_I_xeq_i1.o \
+QLA_I_xeq_i1_times_I.o \
+QLA_I_xeq_i1_times_I_minus_I.o \
+QLA_I_xeq_i1_times_I_minus_pI.o \
+QLA_I_xeq_i1_times_I_plus_I.o \
+QLA_I_xeq_i1_times_I_plus_pI.o \
+QLA_I_xeq_i1_times_pI.o \
+QLA_I_xeq_i1_times_pI_minus_I.o \
+QLA_I_xeq_i1_times_pI_minus_pI.o \
+QLA_I_xeq_i1_times_pI_plus_I.o \
+QLA_I_xeq_i1_times_pI_plus_pI.o \
 QLA_I_xeq_not_I.o \
 QLA_I_xeq_not_pI.o \
+QLA_I_xeq_pI.o \
 QLA_I_xeq_pI_and_I.o \
 QLA_I_xeq_pI_and_pI.o \
-QLA_I_xeq_pI.o \
 QLA_I_xeq_pI_divide_I.o \
 QLA_I_xeq_pI_divide_pI.o \
 QLA_I_xeq_pI_eq_I.o \
@@ -722,30 +715,38 @@ QLA_I_xeq_pI_times_pI.o \
 QLA_I_xeq_pI_xor_I.o \
 QLA_I_xeq_pI_xor_pI.o \
 QLA_I_xeq_zero.o \
-QLA_I_xmeq_i1_times_I.o \
-QLA_I_xmeq_i1_times_pI.o \
+QLA_I_xeqm_I.o \
+QLA_I_xeqm_I_times_I.o \
+QLA_I_xeqm_I_times_pI.o \
+QLA_I_xeqm_i1_times_I.o \
+QLA_I_xeqm_i1_times_pI.o \
+QLA_I_xeqm_pI.o \
+QLA_I_xeqm_pI_times_I.o \
+QLA_I_xeqm_pI_times_pI.o \
 QLA_I_xmeq_I.o \
 QLA_I_xmeq_I_times_I.o \
 QLA_I_xmeq_I_times_pI.o \
+QLA_I_xmeq_i1_times_I.o \
+QLA_I_xmeq_i1_times_pI.o \
 QLA_I_xmeq_pI.o \
 QLA_I_xmeq_pI_times_I.o \
 QLA_I_xmeq_pI_times_pI.o \
-QLA_I_xpeq_i1_times_I.o \
-QLA_I_xpeq_i1_times_pI.o \
 QLA_I_xpeq_I.o \
 QLA_I_xpeq_I_times_I.o \
 QLA_I_xpeq_I_times_pI.o \
+QLA_I_xpeq_i1_times_I.o \
+QLA_I_xpeq_i1_times_pI.o \
 QLA_I_xpeq_pI.o \
 QLA_I_xpeq_pI_times_I.o \
 QLA_I_xpeq_pI_times_pI.o \
 QLA_S_eq_S.o \
 QLA_S_eq_seed_i_I.o \
-QLA_S_veq_pS.o \
 QLA_S_veq_S.o \
+QLA_S_veq_pS.o \
 QLA_S_veq_seed_i_I.o \
 QLA_S_veq_seed_i_pI.o \
-QLA_S_xeq_pS.o \
 QLA_S_xeq_S.o \
+QLA_S_xeq_pS.o \
 QLA_S_xeq_seed_i_I.o \
 QLA_S_xeq_seed_i_pI.o
 
@@ -771,10 +772,10 @@ BUILD_DEPS = \
 	$(BUILD_SCRIPT_DIR)/variable_names.pl
 
 lib_LIBRARIES = ../libqla_int.a
-AM_CFLAGS = -I$(top_srcdir)/include
+AM_CFLAGS = -I$(top_srcdir)/include  
 
 # this is just to force automake to include the .c.o rule
-nodist____libqla_int_a_SOURCES = QLA_I_eq_i1.c
+nodist____libqla_int_a_SOURCES = QLA_I_eq_I.c
 nodist_include_HEADERS = $(top_builddir)/include/qla_int.h
 all: all-am
 

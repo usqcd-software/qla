@@ -66,6 +66,81 @@ sub make_code_antiherm_part {
 }
 
 #---------------------------------------------------------------------
+# Code for matrix determinant
+#---------------------------------------------------------------------
+
+sub make_code_matrix_det {
+    my($eqop) = @_;
+
+    &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
+    if($def{'dim_name'} ne "") {
+      &print_c_eqop_det_m($eqop);
+    } else {
+    }
+    &print_end_matter($var_i,$def{'dim_name'});
+}
+
+#---------------------------------------------------------------------
+# Code for matrix inverse
+#---------------------------------------------------------------------
+
+sub make_code_matrix_inv {
+    my($eqop) = @_;
+
+    &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
+    if($def{'dim_name'} ne "") {
+      &print_m_eqop_inv_m($eqop);
+    } else {
+    }
+    &print_end_matter($var_i,$def{'dim_name'});
+}
+
+#---------------------------------------------------------------------
+# Code for matrix exponential
+#---------------------------------------------------------------------
+
+sub make_code_matrix_exp {
+    my($eqop) = @_;
+
+    &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
+    if($def{'dim_name'} ne "") {
+      &print_m_eqop_exp_m($eqop);
+    } else {
+    }
+    &print_end_matter($var_i,$def{'dim_name'});
+}
+
+#---------------------------------------------------------------------
+# Code for matrix square root
+#---------------------------------------------------------------------
+
+sub make_code_matrix_sqrt {
+    my($eqop) = @_;
+
+    &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
+    if($def{'dim_name'} ne "") {
+      &print_m_eqop_sqrt_m($eqop);
+    } else {
+    }
+    &print_end_matter($var_i,$def{'dim_name'});
+}
+
+#---------------------------------------------------------------------
+# Code for matrix log
+#---------------------------------------------------------------------
+
+sub make_code_matrix_log {
+    my($eqop) = @_;
+
+    &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
+    if($def{'dim_name'} ne "") {
+      &print_m_eqop_log_m($eqop);
+    } else {
+    }
+    &print_end_matter($var_i,$def{'dim_name'});
+}
+
+#---------------------------------------------------------------------
 # Code for assignment from or to individual matrix or vector elements
 #---------------------------------------------------------------------
 

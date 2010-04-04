@@ -46,6 +46,7 @@ $QLA_this_header = "<$qla_header_file>";
 	    "$QLA_types_header",
 	    "$QLA_random_header",
 	    "$QLA_cmath_header",
+	    "$QLA_this_header",
 	    "<math.h>"
 	    );
 

@@ -278,6 +278,9 @@ typedef QLA_Q2_DiracPropagator     QLA_Q_DiracPropagator;
 #define QLA_Q_elem_M QLA_Q2_elem_M 
 
 #elif ( QLA_Colors == 'N' )
+#ifndef QLA_Nc
+#define QLA_Nc 5
+#endif
 
 /* These types specify precision but are generic with respect to color */
 
@@ -330,6 +333,8 @@ typedef QLA_QN_DiracPropagator(QLA_Nc, QLA_Q_DiracPropagator);
 
 /* These types are fully generic with respect to precision and color */
 
+#ifdef QLA_Colors
+
 #if ( QLA_Precision == 'F' )
 
 typedef QLA_F_ColorMatrix         QLA_ColorMatrix;
@@ -355,5 +360,7 @@ typedef QLA_Q_DiracFermion        QLA_DiracFermion;
 typedef QLA_Q_DiracPropagator     QLA_DiracPropagator;
 
 #endif
+
+#endif //QLA_Colors
 
 #endif /* _QLA_TYPES_H */

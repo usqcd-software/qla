@@ -8,6 +8,7 @@ include(protocol_tensor_sng.m4)
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 #include "compare.h"
 #include "milc_gamma.h"
 
@@ -91,6 +92,7 @@ alltensors(`chkGaussian');
 `
   /* Then use random number fills to create the test fields */
 
+  sI2 = time(NULL);
   QLA_S_eq_seed_i_I(&sS1,sI2,&sI3);
 
   QLA_H_eq_gaussian_S(&sH1,&sS1);
@@ -195,6 +197,26 @@ chkSpintrace;
 
 chkAntiherm;
 
+  /* QLA_M_eq_det_M */
+
+chkMatDet;
+
+  /* QLA_M_eq_inverse_M */
+
+chkMatInverse;
+
+  /* QLA_M_eq_exp_M */
+
+chkMatExp;
+
+  /* QLA_M_eq_sqrt_M */
+
+chkMatSqrt;
+
+  /* QLA_M_eq_sqrt_M */
+
+chkMatLog;
+
   /* Gamma matrix tests */
 
 alleqops(`chkSpproj(H,',`)')
@@ -213,14 +235,17 @@ alleqops(`chkSpreconMult(',`,a)')
 
   /* QLA_T_eq_t_times_T */
 
+alltensors(`chkiMult');
 alltensors(`chkrMult');
 alltensors(`chkcMult');
-alltensors(`chkiMult');
 
   /* Check addition/subtraction of elements */
 
 alltensors(`chkPlus');
 alltensors(`chkMinus');
+
+  /* Multiplication by Real or Complex field */
+alltensors(`chkRCMult');
 
   /* Multiplication - uniform types */
 chkUniformMult(P);

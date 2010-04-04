@@ -29,6 +29,11 @@ unary(R,eq_re_trace,M)
 unary(R,eq_im_trace,M)
 unary(C,eq_trace,M)
 unary(M,eq_antiherm,M)
+unary(C,eq_det,M)
+unary(M,eq_inverse,M)
+unary(M,eq_exp,M)
+unary(M,eq_sqrt,M)
+unary(M,eq_log,M)
 unary(M,eq_spintrace,P)
 }
 
@@ -74,23 +79,35 @@ unary_gammar(P,eq,P)
 
   /* Multiplcation - uniform types */
 void do_mut(FILE *fp) {
+binary(V,eq,V,plus,V,sV1,sV2)
 binary(H,eq,H,plus,H,sH1,sH2)
 binary(D,eq,D,plus,D,sD1,sD2)
-binary(V,eq,V,plus,V,sV1,sV2)
-binary(P,eq,P,plus,P,sP1,sP2)
 binary(M,eq,M,plus,M,sM1,sM2)
+binary(P,eq,P,plus,P,sP1,sP2)
+
+binary(V,eq,V,minus,V,sV1,sV2)
 binary(H,eq,H,minus,H,sH1,sH2)
 binary(D,eq,D,minus,D,sD1,sD2)
-binary(V,eq,V,minus,V,sV1,sV2)
-binary(P,eq,P,minus,P,sP1,sP2)
 binary(M,eq,M,minus,M,sM1,sM2)
-binary(P,eq,P,times,P,sP1,sP2)
-binary(P,peq,P,times,P,sP1,sP2)
-binary(M,peq,M,times,M,sM1,sM2)
-binary(P,eqm,P,times,P,sP1,sP2)
+binary(P,eq,P,minus,P,sP1,sP2)
+
 binary(M,eqm,M,times,M,sM1,sM2)
-binary(P,meq,P,times,P,sP1,sP2)
+binary(M,peq,M,times,M,sM1,sM2)
 binary(M,meq,M,times,M,sM1,sM2)
+
+alleqops(`binary(P,',`,P,times,P,sP1,sP2)')
+
+alleqops(`binary(V,',`,R,times,V,sR1,sV2)')
+alleqops(`binary(H,',`,R,times,H,sR1,sH2)')
+alleqops(`binary(D,',`,R,times,D,sR1,sD2)')
+alleqops(`binary(M,',`,R,times,M,sR1,sM2)')
+alleqops(`binary(P,',`,R,times,P,sR1,sP2)')
+
+alleqops(`binary(V,',`,C,times,V,sC1,sV2)')
+alleqops(`binary(H,',`,C,times,H,sC1,sH2)')
+alleqops(`binary(D,',`,C,times,D,sC1,sD2)')
+alleqops(`binary(M,',`,C,times,M,sC1,sM2)')
+alleqops(`binary(P,',`,C,times,P,sC1,sP2)')
 }
 
   /* Outer product */

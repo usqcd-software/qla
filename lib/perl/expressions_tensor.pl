@@ -27,8 +27,9 @@ require("expressions_scalar.pl");
 
 use vars qw/ %carith1 %carith2 %carith3 %eqop_notation /;
 use vars qw/ $fcn_random $fcn_gaussian $fcn_seed_random $arg_seed /;
-use vars qw/ $datatype_integer_abbrev $datatype_real_abbrev $datatype_gauge_abbrev /;
-use vars qw/ $precision $temp_precision /;
+use vars qw/ $datatype_integer_abbrev $datatype_real_abbrev /;
+use vars qw/ $datatype_complex_abbrev $datatype_gauge_abbrev /;
+use vars qw/ $precision $temp_precision $colors /;
 use vars qw/ $eqop_eqm $eqop_meq /;
 use vars qw/ $var_i /;
 use vars qw/ @indent /;
@@ -155,15 +156,17 @@ sub print_g_eqop_antiherm_g {
   $eqop eq $eqop_eq ||
       die "antiherm supports only replacement\n";
 
+  &open_brace();
+
   # Define intermediate real for accumulating im(trace)
   my $temp_type = &datatype_specific($datatype_real_abbrev);
   &print_def($temp_type,$var_x);
 
-  &print_int_def($ic);
   # Zero the intermediate value var_x
   &print_s_eqop_s("r",$var_x,$eqop_eq);
 
   # Loop for trace: answer in var_x
+  &print_int_def($ic);
   &open_iter($ic,$maxic);
   $src1_elem_value = &make_accessor($s1def,$def{'nc'},$ic,$is,$ic,$js);
 
@@ -191,13 +194,13 @@ sub print_g_eqop_antiherm_g {
   &print_c_eqop_r_plus_ir($dest_elem_value,$eqop_eq,"0.",$var_x2);
 
   &close_iter($ic);
+  &close_brace();
 
   # Loop for antihermitian projection
   &open_iter($ic,"$maxic-1");
   &print_int_def($jc);
-  print QLA_SRC @indent,"for(int $jc=$ic+1;$jc<$maxjc;$jc++)\n";
+  print QLA_SRC @indent,"for(int $jc=$ic+1;$jc<$maxjc;$jc++) {\n";
   &open_block();
-  &open_brace();
 
   $src1_elem_value = &make_accessor($s1def,$def{'nc'},$ic,$is,$jc,$js);
   $src1_tran_value = &make_accessor($s1def,$def{'nc'},$jc,$is,$ic,$js);
@@ -206,24 +209,153 @@ sub print_g_eqop_antiherm_g {
   my $px2 = $temp_precision;
   $px2 = $precision if($px2 eq '');
   my $x2_dt = &datatype_element_specific($$ddef{t}, $px2);
+  &print_def($x2_dt, $var_x);
   &print_def($x2_dt, $var_x2);
 
   # D_ij = S_ij - S_ji^*
-  &print_s_eqop_s_op_s("c",$var_x2,$eqop_eq,"",
+  &print_s_eqop_s_op_s("c",$var_x,$eqop_eq,"",
 		       "c",$src1_elem_value,"","-",
 		       "c",$src1_tran_value,"a",
 		       $px2, $$s1def{precision}, $$s1def{precision});
   # D_ij = D_ij/2
-  &print_s_eqop_s_op_s("c",$dest_elem_value,$eqop_eq,"",
-		       "c",$var_x2,"","*","r","0.5","",
-		       $$ddef{precision}, $px2, $precision);
+  &print_s_eqop_s_op_s("c",$var_x2,$eqop_eq,"",
+		       "c",$var_x,"","*","r","0.5","",
+		       $px2, $px2, $precision);
+
+  &print_s_eqop_s("c",$dest_elem_value,$eqop_eq,"",
+		  "c",$var_x2,"", $$ddef{precision}, $px2);
 
   # D_ji = -D_ij^*
   &print_s_eqop_s("c",$dest_tran_value,$eqop_eqm,"",
-		  "c",$dest_elem_value,"a");
+		  "c",$var_x2,"a", $$ddef{precision}, $px2);
 
   &close_iter($ic);
   &close_iter($jc);
+}
+
+#---------------------------------------------------------------------
+# Matrix determinant
+#---------------------------------------------------------------------
+
+sub print_c_eqop_det_m {
+  my($eqop) = @_;
+  my $ddef  = \%dest_def;
+  my $s1def = \%src1_def;
+
+  # type checking
+  $$ddef{'t'} eq $datatype_complex_abbrev &&
+      $$s1def{'t'} eq $datatype_gauge_abbrev ||
+      die "matrix det supports only gauge field\n";
+
+  $eqop eq $eqop_eq ||
+      die "matrix det supports only replacement\n";
+
+  my $func = "QLA_${precision}${colors}_C_eq_det_M";
+  my $ncvar = "";
+  if($def{'nc'} eq $arg_nc) {
+    $ncvar = "$arg_nc, ";
+  }
+  print QLA_SRC @indent,"$func(${ncvar}&($$ddef{'value'}), &($$s1def{'value'}));\n";
+}
+
+#---------------------------------------------------------------------
+# Matrix inverse
+#---------------------------------------------------------------------
+
+sub print_m_eqop_inv_m {
+  my($eqop) = @_;
+  my $ddef  = \%dest_def;
+  my $s1def = \%src1_def;
+
+  # type checking
+  $$ddef{'t'} eq $datatype_gauge_abbrev &&
+      $$s1def{'t'} eq $datatype_gauge_abbrev ||
+      die "matrix inverse supports only gauge field\n";
+
+  $eqop eq $eqop_eq ||
+      die "matrix inverse supports only replacement\n";
+
+  my $func = "QLA_${precision}${colors}_M_eq_inverse_M";
+  my $ncvar = "";
+  if($def{'nc'} eq $arg_nc) {
+    $ncvar = "$arg_nc, ";
+  }
+  print QLA_SRC @indent,"$func(${ncvar}&($$ddef{'value'}), &($$s1def{'value'}));\n";
+}
+
+#---------------------------------------------------------------------
+# Matrix exponential
+#---------------------------------------------------------------------
+
+sub print_m_eqop_exp_m {
+  my($eqop) = @_;
+  my $ddef  = \%dest_def;
+  my $s1def = \%src1_def;
+
+  # type checking
+  $$ddef{'t'} eq $datatype_gauge_abbrev &&
+      $$s1def{'t'} eq $datatype_gauge_abbrev ||
+      die "matrix exp supports only gauge field\n";
+
+  $eqop eq $eqop_eq ||
+      die "matrix exp supports only replacement\n";
+
+  my $func = "QLA_${precision}${colors}_M_eq_exp_M";
+  my $ncvar = "";
+  if($def{'nc'} eq $arg_nc) {
+    $ncvar = "$arg_nc, ";
+  }
+  print QLA_SRC @indent,"$func(${ncvar}&($$ddef{'value'}), &($$s1def{'value'}));\n";
+}
+
+#---------------------------------------------------------------------
+# Matrix square root
+#---------------------------------------------------------------------
+
+sub print_m_eqop_sqrt_m {
+  my($eqop) = @_;
+  my $ddef  = \%dest_def;
+  my $s1def = \%src1_def;
+
+  # type checking
+  $$ddef{'t'} eq $datatype_gauge_abbrev &&
+      $$s1def{'t'} eq $datatype_gauge_abbrev ||
+      die "matrix sqrt supports only gauge field\n";
+
+  $eqop eq $eqop_eq ||
+      die "matrix sqrt supports only replacement\n";
+
+  my $func = "QLA_${precision}${colors}_M_eq_sqrt_M";
+  my $ncvar = "";
+  if($def{'nc'} eq $arg_nc) {
+    $ncvar = "$arg_nc, ";
+  }
+  print QLA_SRC @indent,"$func(${ncvar}&($$ddef{'value'}), &($$s1def{'value'}));\n";
+}
+
+#---------------------------------------------------------------------
+# Matrix log
+#---------------------------------------------------------------------
+
+sub print_m_eqop_log_m {
+  my($eqop) = @_;
+  my $ddef  = \%dest_def;
+  my $s1def = \%src1_def;
+
+  # type checking
+  $$ddef{'t'} eq $datatype_gauge_abbrev &&
+      $$s1def{'t'} eq $datatype_gauge_abbrev ||
+      die "matrix log supports only gauge field\n";
+
+  $eqop eq $eqop_eq ||
+      die "matrix log supports only replacement\n";
+
+  my $func = "QLA_${precision}${colors}_M_eq_log_M";
+  my $ncvar = "";
+  if($def{'nc'} eq $arg_nc) {
+    $ncvar = "$arg_nc, ";
+  }
+  print QLA_SRC @indent,"$func(${ncvar}&($$ddef{'value'}), &($$s1def{'value'}));\n";
 }
 
 #---------------------------------------------------------------------

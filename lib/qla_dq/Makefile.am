@@ -9,10 +9,10 @@ QLA_DQ_C_veq_pC.c \
 QLA_DQ_C_xeq_C.c \
 QLA_DQ_C_xeq_pC.c \
 QLA_DQ_R_eq_R.c \
-QLA_DQ_R_veq_pR.c \
 QLA_DQ_R_veq_R.c \
-QLA_DQ_R_xeq_pR.c \
+QLA_DQ_R_veq_pR.c \
 QLA_DQ_R_xeq_R.c \
+QLA_DQ_R_xeq_pR.c \
 QLA_QD_c1_eq_C_dot_C.c \
 QLA_QD_c1_eq_sum_C.c \
 QLA_QD_c1_veq_C_dot_C.c \
@@ -27,39 +27,39 @@ QLA_QD_c1_xeq_pC_dot_C.c \
 QLA_QD_c1_xeq_pC_dot_pC.c \
 QLA_QD_c1_xeq_sum_C.c \
 QLA_QD_c1_xeq_sum_pC.c \
+QLA_QD_r1_eq_R_dot_R.c \
 QLA_QD_r1_eq_norm2_C.c \
 QLA_QD_r1_eq_norm2_R.c \
-QLA_QD_r1_eq_R_dot_R.c \
 QLA_QD_r1_eq_re_C_dot_C.c \
 QLA_QD_r1_eq_sum_R.c \
+QLA_QD_r1_veq_R_dot_R.c \
+QLA_QD_r1_veq_R_dot_pR.c \
 QLA_QD_r1_veq_norm2_C.c \
+QLA_QD_r1_veq_norm2_R.c \
 QLA_QD_r1_veq_norm2_pC.c \
 QLA_QD_r1_veq_norm2_pR.c \
-QLA_QD_r1_veq_norm2_R.c \
-QLA_QD_r1_veq_pR_dot_pR.c \
 QLA_QD_r1_veq_pR_dot_R.c \
-QLA_QD_r1_veq_R_dot_pR.c \
-QLA_QD_r1_veq_R_dot_R.c \
+QLA_QD_r1_veq_pR_dot_pR.c \
 QLA_QD_r1_veq_re_C_dot_C.c \
 QLA_QD_r1_veq_re_C_dot_pC.c \
 QLA_QD_r1_veq_re_pC_dot_C.c \
 QLA_QD_r1_veq_re_pC_dot_pC.c \
-QLA_QD_r1_veq_sum_pR.c \
 QLA_QD_r1_veq_sum_R.c \
+QLA_QD_r1_veq_sum_pR.c \
+QLA_QD_r1_xeq_R_dot_R.c \
+QLA_QD_r1_xeq_R_dot_pR.c \
 QLA_QD_r1_xeq_norm2_C.c \
+QLA_QD_r1_xeq_norm2_R.c \
 QLA_QD_r1_xeq_norm2_pC.c \
 QLA_QD_r1_xeq_norm2_pR.c \
-QLA_QD_r1_xeq_norm2_R.c \
-QLA_QD_r1_xeq_pR_dot_pR.c \
 QLA_QD_r1_xeq_pR_dot_R.c \
-QLA_QD_r1_xeq_R_dot_pR.c \
-QLA_QD_r1_xeq_R_dot_R.c \
+QLA_QD_r1_xeq_pR_dot_pR.c \
 QLA_QD_r1_xeq_re_C_dot_C.c \
 QLA_QD_r1_xeq_re_C_dot_pC.c \
 QLA_QD_r1_xeq_re_pC_dot_C.c \
 QLA_QD_r1_xeq_re_pC_dot_pC.c \
-QLA_QD_r1_xeq_sum_pR.c \
-QLA_QD_r1_xeq_sum_R.c
+QLA_QD_r1_xeq_sum_R.c \
+QLA_QD_r1_xeq_sum_pR.c
 
 QLAOBJ1 = \
 QLA_DQ_C_eq_C.o \
@@ -68,10 +68,10 @@ QLA_DQ_C_veq_pC.o \
 QLA_DQ_C_xeq_C.o \
 QLA_DQ_C_xeq_pC.o \
 QLA_DQ_R_eq_R.o \
-QLA_DQ_R_veq_pR.o \
 QLA_DQ_R_veq_R.o \
-QLA_DQ_R_xeq_pR.o \
+QLA_DQ_R_veq_pR.o \
 QLA_DQ_R_xeq_R.o \
+QLA_DQ_R_xeq_pR.o \
 QLA_QD_c1_eq_C_dot_C.o \
 QLA_QD_c1_eq_sum_C.o \
 QLA_QD_c1_veq_C_dot_C.o \
@@ -86,39 +86,39 @@ QLA_QD_c1_xeq_pC_dot_C.o \
 QLA_QD_c1_xeq_pC_dot_pC.o \
 QLA_QD_c1_xeq_sum_C.o \
 QLA_QD_c1_xeq_sum_pC.o \
+QLA_QD_r1_eq_R_dot_R.o \
 QLA_QD_r1_eq_norm2_C.o \
 QLA_QD_r1_eq_norm2_R.o \
-QLA_QD_r1_eq_R_dot_R.o \
 QLA_QD_r1_eq_re_C_dot_C.o \
 QLA_QD_r1_eq_sum_R.o \
+QLA_QD_r1_veq_R_dot_R.o \
+QLA_QD_r1_veq_R_dot_pR.o \
 QLA_QD_r1_veq_norm2_C.o \
+QLA_QD_r1_veq_norm2_R.o \
 QLA_QD_r1_veq_norm2_pC.o \
 QLA_QD_r1_veq_norm2_pR.o \
-QLA_QD_r1_veq_norm2_R.o \
-QLA_QD_r1_veq_pR_dot_pR.o \
 QLA_QD_r1_veq_pR_dot_R.o \
-QLA_QD_r1_veq_R_dot_pR.o \
-QLA_QD_r1_veq_R_dot_R.o \
+QLA_QD_r1_veq_pR_dot_pR.o \
 QLA_QD_r1_veq_re_C_dot_C.o \
 QLA_QD_r1_veq_re_C_dot_pC.o \
 QLA_QD_r1_veq_re_pC_dot_C.o \
 QLA_QD_r1_veq_re_pC_dot_pC.o \
-QLA_QD_r1_veq_sum_pR.o \
 QLA_QD_r1_veq_sum_R.o \
+QLA_QD_r1_veq_sum_pR.o \
+QLA_QD_r1_xeq_R_dot_R.o \
+QLA_QD_r1_xeq_R_dot_pR.o \
 QLA_QD_r1_xeq_norm2_C.o \
+QLA_QD_r1_xeq_norm2_R.o \
 QLA_QD_r1_xeq_norm2_pC.o \
 QLA_QD_r1_xeq_norm2_pR.o \
-QLA_QD_r1_xeq_norm2_R.o \
-QLA_QD_r1_xeq_pR_dot_pR.o \
 QLA_QD_r1_xeq_pR_dot_R.o \
-QLA_QD_r1_xeq_R_dot_pR.o \
-QLA_QD_r1_xeq_R_dot_R.o \
+QLA_QD_r1_xeq_pR_dot_pR.o \
 QLA_QD_r1_xeq_re_C_dot_C.o \
 QLA_QD_r1_xeq_re_C_dot_pC.o \
 QLA_QD_r1_xeq_re_pC_dot_C.o \
 QLA_QD_r1_xeq_re_pC_dot_pC.o \
-QLA_QD_r1_xeq_sum_pR.o \
-QLA_QD_r1_xeq_sum_R.o
+QLA_QD_r1_xeq_sum_R.o \
+QLA_QD_r1_xeq_sum_pR.o
 
 QLASRC = $(QLASRC1)
 QLAOBJ = $(QLAOBJ1)
@@ -146,7 +146,7 @@ BUILD_DEPS = \
 
 lib_LIBRARIES = ../libqla_dq.a
 
-AM_CFLAGS = -I$(top_srcdir)/include
+AM_CFLAGS = -I$(top_srcdir)/include  
 
 # this is just to force automake to include the .c.o rule
 nodist____libqla_dq_a_SOURCES = QLA_DQ_C_eq_C.c

@@ -214,25 +214,38 @@ typedef struct {
 
 
 #define QLA_c_eq_r_plus_ir(c,a,b) {QLA_real(c) = (a); QLA_imag(c) = (b);}
-#define QLA_c_peq_r_plus_ir(c,a,b) {QLA_real(c) += (a); QLA_imag(c) += (b);}
 #define QLA_c_eqm_r_plus_ir(c,a,b) {QLA_real(c) = -(a); QLA_imag(c) = -(b);}
+#define QLA_c_peq_r_plus_ir(c,a,b) {QLA_real(c) += (a); QLA_imag(c) += (b);}
 #define QLA_c_meq_r_plus_ir(c,a,b) {QLA_real(c) -= (a); QLA_imag(c) -= (b);}
 
 
-#define QLA_c_eq_c_times_r(c,a,b)   {QLA_real(c) = (b) * QLA_real(a);\
-                                     QLA_imag(c) = (b) * QLA_imag(a); }
-#define QLA_c_peq_c_times_r(c,a,b)   {QLA_real(c) += (b) * QLA_real(a);\
-                                     QLA_imag(c) += (b) * QLA_imag(a); }
+#define QLA_c_eq_c_times_r(c,a,b)    {QLA_real(c) = (b) * QLA_real(a);\
+                                      QLA_imag(c) = (b) * QLA_imag(a); }
 #define QLA_c_eqm_c_times_r(c,a,b)   {QLA_real(c) = -((b) * QLA_real(a));\
-                                     QLA_imag(c) = -((b) * QLA_imag(a)); }
+                                      QLA_imag(c) = -((b) * QLA_imag(a)); }
+#define QLA_c_peq_c_times_r(c,a,b)   {QLA_real(c) += (b) * QLA_real(a);\
+                                      QLA_imag(c) += (b) * QLA_imag(a); }
 #define QLA_c_meq_c_times_r(c,a,b)   {QLA_real(c) -= (b) * QLA_real(a);\
-                                     QLA_imag(c) -= (b) * QLA_imag(a); }
+                                      QLA_imag(c) -= (b) * QLA_imag(a); }
 
 #define QLA_c_eq_r_times_c(c,a,b)    QLA_c_eq_c_times_r(c,b,a)
-#define QLA_c_peq_r_times_c(c,a,b)   QLA_c_peq_c_times_r(c,b,a)
 #define QLA_c_eqm_r_times_c(c,a,b)   QLA_c_eqm_c_times_r(c,b,a)
+#define QLA_c_peq_r_times_c(c,a,b)   QLA_c_peq_c_times_r(c,b,a)
 #define QLA_c_meq_r_times_c(c,a,b)   QLA_c_meq_c_times_r(c,b,a)
 
+#define QLA_c_eq_ca_times_r(c,a,b)    {QLA_real(c) = (b) * QLA_real(a);\
+                                       QLA_imag(c) = -((b) * QLA_imag(a)); }
+#define QLA_c_eqm_ca_times_r(c,a,b)   {QLA_real(c) = -((b) * QLA_real(a));\
+                                       QLA_imag(c) = (b) * QLA_imag(a); }
+#define QLA_c_peq_ca_times_r(c,a,b)   {QLA_real(c) += (b) * QLA_real(a);\
+                                       QLA_imag(c) -= (b) * QLA_imag(a); }
+#define QLA_c_meq_ca_times_r(c,a,b)   {QLA_real(c) -= (b) * QLA_real(a);\
+                                       QLA_imag(c) += (b) * QLA_imag(a); }
+
+#define QLA_c_eq_r_times_ca(c,a,b)    QLA_c_eq_ca_times_r(c,b,a)
+#define QLA_c_eqm_r_times_ca(c,a,b)   QLA_c_eqm_ca_times_r(c,b,a)
+#define QLA_c_peq_r_times_ca(c,a,b)   QLA_c_peq_ca_times_r(c,b,a)
+#define QLA_c_meq_r_times_ca(c,a,b)   QLA_c_meq_ca_times_r(c,b,a)
 
 
 #define QLA_c_eq_c_plus_c(c,a,b)  {QLA_real(c) = QLA_real(a) + QLA_real(b);\
@@ -353,12 +366,17 @@ typedef struct {
                                      QLA_imag(c) = QLA_imag(a)/(b);}
 
 
-#define QLA_c_eq_c_div_c(c,a,b) { QLA_D_Real t = QLA_real(b)*QLA_real(b)\
-                                          + QLA_imag(b)*QLA_imag(b); \
-		                  QLA_real(c) = (QLA_real(a)*QLA_real(b)\
-                                          + QLA_imag(a)*QLA_imag(b))/t; \
-		                  QLA_imag(c) = (QLA_imag(a)*QLA_real(b)\
-                                          - QLA_real(a)*QLA_imag(b))/t; }
+#define QLA_c_eq_r_div_c(c,a,b) { QLA_D_Real _t = (a)/(QLA_real(b)*QLA_real(b) \
+						       + QLA_imag(b)*QLA_imag(b)); \
+                                  QLA_real(c) = _t*QLA_real(b); \
+                                  QLA_imag(c) = -_t*QLA_imag(b); }
+
+#define QLA_c_eq_c_div_c(c,a,b) { QLA_D_Real _t = 1.0/(QLA_real(b)*QLA_real(b) \
+						       + QLA_imag(b)*QLA_imag(b)); \
+		                  QLA_real(c) = (QLA_real(a)*QLA_real(b) \
+						 + QLA_imag(a)*QLA_imag(b))*_t; \
+		                  QLA_imag(c) = (QLA_imag(a)*QLA_real(b) \
+						 - QLA_real(a)*QLA_imag(b))*_t; }
 
 /* Ternary operations */
 

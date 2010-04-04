@@ -19,4 +19,11 @@ QLA_F_Real QLA_random(QLA_RandomState *prn_pt);
 QLA_F_Real QLA_gaussian(QLA_RandomState *prn_pt);
 void QLA_seed_random(QLA_RandomState *prn_pt, int seed, QLA_Int index);
 
+/**
+ *  Version information
+ */
+
+extern const char * QLA_version_str(void);
+extern int QLA_version_int(void);
+
 #endif /* _QLA_RANDOM_H */

@@ -14,4 +14,5 @@ EXTRA_DIST = \
  make_code_unary.pl \
  operatortypes.pl \
  prototype.pl \
- variable_names.pl
+ variable_names.pl \
+ code-templates

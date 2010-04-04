@@ -376,6 +376,113 @@ define(chkAntiherm,`
 ')
 
 rem(`
+     Matrix determinant
+')
+rem(`chkMatDet')
+define(chkMatDet,`
+  strcpy(name,"QLA_C_eq_det_M");
+  QLA_c_eq_r(argt(C), 1);
+  for(ic=0;ic<nc;ic++) {
+    QLA_c_eq_c(argd(C), argt(C));
+    QLA_c_eq_c_times_c(argt(C), argd(C), QLA_elem_M(arg1(M),ic,ic));
+  }
+  QLA_M_eq_inverse_M(&arg3(M),&arg1(M));
+  QLA_M_eq_zero(&arg2(M));
+  for(ic=0;ic<nc;ic++) QLA_c_eq_c(QLA_elem_M(arg2(M),ic,ic),QLA_elem_M(arg1(M),ic,ic));
+  QLA_M_eq_M_times_M(&argd(M),&arg2(M),&arg1(M));
+  QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argd(M));
+  QLA_C_eq_det_M(&argd(C),&arg2(M));
+  checkeqsngCC(&argd(C),&argt(C),name,fp);
+  QLA_M_eq_gaussian_S(&arg2(M),&sS1);
+  QLA_M_eq_gaussian_S(&arg3(M),&sS1);
+')
+
+rem(`
+     Matrix inverse
+')
+rem(`chkMatInverse')
+define(chkMatInverse,`
+  strcpy(name,"QLA_M_eq_inverse_M");
+  QLA_M_eq_inverse_M(&argd(M),&arg1(M));
+  QLA_M_eq_M_times_M(&argt(M),&argd(M),&arg1(M));
+  QLA_c_eq_r(sC1, 1);
+  QLA_M_eq_c(&argd(M),&sC1);
+  checkeqsngMM(&argd(M),&argt(M),name,fp);
+  QLA_M_eq_inverse_M(&argd(M),&arg1(M));
+  QLA_M_eq_M_times_M(&argt(M),&arg1(M),&argd(M));
+  QLA_c_eq_r(sC1, 1);
+  QLA_M_eq_c(&argd(M),&sC1);
+  checkeqsngMM(&argd(M),&argt(M),name,fp);
+')
+
+define(printMat,`
+  for(ic=0;ic<nc;ic++) {
+    for(jc=0;jc<nc;jc++) {
+      printf("%i %i %g %g\n", QLA_real(QLA_elem_M($1,ic,jc)), QLA_imag(QLA_elem_M($1,ic,jc)));
+    }
+  }
+')
+
+rem(`
+     Matrix exponential
+')
+rem(`chkMatExp')
+define(chkMatExp,`
+  strcpy(name,"QLA_M_eq_exp_M");
+  //QLA_M_eq_zero(&arg1(M));
+  //for(ic=0;ic<nc;ic++) QLA_c_eq_r_plus_ir(QLA_elem_M(arg1(M),ic,ic),0,1);
+  //for(ic=0;ic<nc;ic++) for(jc=0;jc<nc;jc++) if(ic!=jc) QLA_c_eq_r(QLA_elem_M(arg1(M),ic,jc),0);
+  QLA_M_eq_inverse_M(&arg3(M),&arg1(M));
+  QLA_M_eq_zero(&arg2(M));
+  for(ic=0;ic<nc;ic++) QLA_c_eq_c(QLA_elem_M(arg2(M),ic,ic),QLA_elem_M(arg1(M),ic,ic));
+  QLA_M_eq_M_times_M(&argd(M),&arg2(M),&arg1(M));
+  QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argd(M));
+  QLA_M_eq_exp_M(&argd(M),&arg2(M));
+  QLA_M_eq_zero(&arg2(M));
+  for(ic=0;ic<nc;ic++) QLA_C_eq_cexp_C(&QLA_elem_M(arg2(M),ic,ic),&QLA_elem_M(arg1(M),ic,ic));
+  QLA_M_eq_M_times_M(&argt(M),&arg2(M),&arg1(M));
+  QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argt(M));
+  checkeqsngMM(&argd(M),&arg2(M),name,fp);
+  QLA_M_eq_gaussian_S(&arg2(M),&sS1);
+  QLA_M_eq_gaussian_S(&arg3(M),&sS1);
+')
+
+rem(`
+     Matrix square root
+')
+rem(`chkMatSqrt')
+define(chkMatSqrt,`
+  strcpy(name,"QLA_M_eq_sqrt_M");
+  QLA_M_eq_sqrt_M(&argd(M),&arg1(M));
+  QLA_M_eq_M_times_M(&argt(M),&argd(M),&argd(M));
+  checkeqsngMM(&arg1(M),&argt(M),name,fp);
+')
+
+rem(`
+     Matrix log
+')
+rem(`chkMatLog')
+define(chkMatLog,`
+  strcpy(name,"QLA_M_eq_log_M");
+  //QLA_M_eq_zero(&arg1(M));
+  //for(ic=0;ic<nc;ic++) QLA_c_eq_r_plus_ir(QLA_elem_M(arg1(M),ic,ic),1,0);
+  //for(ic=0;ic<nc;ic++) for(jc=0;jc<nc;jc++) if(ic!=jc) QLA_c_eq_r(QLA_elem_M(arg1(M),ic,jc),0);
+  QLA_M_eq_inverse_M(&arg3(M),&arg1(M));
+  QLA_M_eq_zero(&arg2(M));
+  for(ic=0;ic<nc;ic++) QLA_c_eq_c(QLA_elem_M(arg2(M),ic,ic),QLA_elem_M(arg1(M),ic,ic));
+  QLA_M_eq_M_times_M(&argd(M),&arg2(M),&arg1(M));
+  QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argd(M));
+  QLA_M_eq_log_M(&argd(M),&arg2(M));
+  QLA_M_eq_zero(&arg2(M));
+  for(ic=0;ic<nc;ic++) QLA_C_eq_clog_C(&QLA_elem_M(arg2(M),ic,ic),&QLA_elem_M(arg1(M),ic,ic));
+  QLA_M_eq_M_times_M(&argt(M),&arg2(M),&arg1(M));
+  QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argt(M));
+  checkeqsngMM(&argd(M),&arg2(M),name,fp);
+  QLA_M_eq_gaussian_S(&arg2(M),&sS1);
+  QLA_M_eq_gaussian_S(&arg3(M),&sS1);
+')
+
+rem(`
      Spin projection
 ')
 rem(`chkSpproj(dt,eq)')
@@ -569,6 +676,33 @@ define(chkMinus,`
 ')
 
 rem(`
+     Multiplication by Real and Complex fields
+')
+rem(`chkAssignRCMult(t1,rc,eq)')
+define(chkAssignRCMult,`
+  strcpy(name,"QLA_$1_$3_$2_times_$1");
+  QLA_$1_eq_$1(&argd($1),&arg2($1));
+  QLA_$1_$3_$2_times_$1(&argd($1),&arg1($2),&arg2($1));
+  QLA_$1_eq_$1(&argt($1),&arg2($1));
+  for_$1_elem{
+    QLA_c_$3_`'lower($2)_times_c($1_elem(argt($1)),$2_elem(arg1($2)),$1_elem(arg2($1)));
+  }
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
+')
+
+rem(`chkRCMult(td)')
+define(chkRCMult,`
+chkAssignRCMult($1,R,eq)
+chkAssignRCMult($1,R,eqm)
+chkAssignRCMult($1,R,peq)
+chkAssignRCMult($1,R,meq)
+chkAssignRCMult($1,C,eq)
+chkAssignRCMult($1,C,eqm)
+chkAssignRCMult($1,C,peq)
+chkAssignRCMult($1,C,meq)
+')
+
+rem(`
      Multiplication - uniform types
 ')
 rem(`chkAssignUniformMult(t1,eq)')
@@ -587,7 +721,6 @@ define(chkAssignUniformMult,`
   }
   checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
-
 
 rem(`chkUniformMult(td)')
 define(chkUniformMult,`

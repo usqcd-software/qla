@@ -1,4 +1,22 @@
 ===============================================================================
+2010-04-04	version 1.7.0-a4 (4th alpha release of 1.7.0)
+===============================================================================
+2010-04-04: James Osborn
+	Many additions:
+          r_div_c macro
+          QLA_version_str()
+	  QLA_version_int()
+	  QLA_C_eq_det_M()
+	  QLA_M_eq_inverse_M()
+	  QLA_M_eq_exp_M()
+	  QLA_M_eq_sqrt_M()
+	  QLA_M_eq_log_M()
+	  QLA_X_eq_R_times_X()
+	  QLA_X_eq_C_times_X()
+	   (for X = V,H,D,M,P)
+	  2 & N color example benchmarks
+
+===============================================================================
 2009-11-05	version 1.7.0-a3 (3rd alpha release of 1.7.0)
 ===============================================================================
 2009-09-28: James Osborn

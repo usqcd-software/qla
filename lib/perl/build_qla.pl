@@ -100,7 +100,7 @@ $path = "./";
 $path = $1 if ( $0 =~ m|(.*/)[^/]*| );
 push @INC, $path;
 
-require("../perl/defines.pl");
+require("../perl/defines.pl") if -f "../perl/defines.pl";
 require($path."datatypes.pl");
 require($path."operatortypes.pl");
 require($path."indirection.pl");
@@ -971,6 +971,7 @@ foreach $indexing ( @ind_unary_list ){
     }
 }
 }
+
 #---------------------------------------------------------------------
 &header2("Traceless antihermitian part of colormatrix matrix");
 #---------------------------------------------------------------------
@@ -992,6 +993,117 @@ foreach $indexing ( @ind_unary_list ){
     }
 }
 }
+
+#---------------------------------------------------------------------
+&header2("Matrix determinant");
+#---------------------------------------------------------------------
+
+require("make_code_unary.pl");
+
+if(!$quadprecision) {
+
+  $assgn = $eqop_eq;
+
+  foreach $indexing ( @ind_unary_list ) {
+    %def = ();
+    ($def{'dest_t'},$def{'src1_t'}) = 
+	($datatype_complex_abbrev,$datatype_colormatrix_abbrev);
+    $def{'qualifier'} = "det";
+
+    if(&make_prototype($indexing,$assgn)) {
+      &make_code_matrix_det($assgn);
+    }
+  }
+}
+
+#---------------------------------------------------------------------
+&header2("Matrix inverse");
+#---------------------------------------------------------------------
+
+require("make_code_unary.pl");
+
+if(!$quadprecision) {
+
+  $assgn = $eqop_eq;
+
+  foreach $indexing ( @ind_unary_list ) {
+    %def = ();
+    ($def{'dest_t'},$def{'src1_t'}) = 
+	($datatype_colormatrix_abbrev,$datatype_colormatrix_abbrev);
+    $def{'qualifier'} = "inverse";
+
+    if(&make_prototype($indexing,$assgn)) {
+      &make_code_matrix_inv($assgn);
+    }
+  }
+}
+
+#---------------------------------------------------------------------
+&header2("Matrix exponential");
+#---------------------------------------------------------------------
+
+require("make_code_unary.pl");
+
+if(!$quadprecision) {
+
+  $assgn = $eqop_eq;
+
+  foreach $indexing ( @ind_unary_list ) {
+    %def = ();
+    ($def{'dest_t'},$def{'src1_t'}) = 
+	($datatype_colormatrix_abbrev,$datatype_colormatrix_abbrev);
+    $def{'qualifier'} = "exp";
+
+    if(&make_prototype($indexing,$assgn)) {
+      &make_code_matrix_exp($assgn);
+    }
+  }
+}
+
+#---------------------------------------------------------------------
+&header2("Matrix square root");
+#---------------------------------------------------------------------
+
+require("make_code_unary.pl");
+
+if(!$quadprecision) {
+
+  $assgn = $eqop_eq;
+
+  foreach $indexing ( @ind_unary_list ) {
+    %def = ();
+    ($def{'dest_t'},$def{'src1_t'}) = 
+	($datatype_colormatrix_abbrev,$datatype_colormatrix_abbrev);
+    $def{'qualifier'} = "sqrt";
+
+    if(&make_prototype($indexing,$assgn)) {
+      &make_code_matrix_sqrt($assgn);
+    }
+  }
+}
+
+#---------------------------------------------------------------------
+&header2("Matrix log");
+#---------------------------------------------------------------------
+
+require("make_code_unary.pl");
+
+if(!$quadprecision) {
+
+  $assgn = $eqop_eq;
+
+  foreach $indexing ( @ind_unary_list ) {
+    %def = ();
+    ($def{'dest_t'},$def{'src1_t'}) = 
+	($datatype_colormatrix_abbrev,$datatype_colormatrix_abbrev);
+    $def{'qualifier'} = "log";
+
+    if(&make_prototype($indexing,$assgn)) {
+      &make_code_matrix_log($assgn);
+    }
+  }
+}
+
 #---------------------------------------------------------------------
 &header2("Spin trace of Dirac propagator");
 #---------------------------------------------------------------------
@@ -1199,7 +1311,7 @@ foreach $assgn ( @assign_list ){
     $eqop_notation = $eqop_notation{$assgn};
 
     foreach $t ( @data_list ){
-	&header3(" $datatype_generic_name{$t} r $eqop_notation ca (real c) ");
+	&header3(" $datatype_generic_name{$t} r $eqop_notation c a (real c) ");
 	if($datatype_floatpt{$t} == 1){
 	    $src1_t = $real_scalar_abbrev;
 	}
@@ -1241,7 +1353,7 @@ foreach $assgn ( @assign_list ){
     foreach $t ( @data_list ){
 	$dest_t = $t;
 	$src2_t = $t;
-	&header3(" $datatype_generic_name{$t} r $eqop_notation ca (complex c)");
+	&header3(" $datatype_generic_name{$t} r $eqop_notation c a (complex c)");
 	
 	foreach $indexing ( @ind_binary_src1_const_list ){
 	    %def = ();
@@ -1375,6 +1487,7 @@ foreach $assgn ( @assign_list ){
     }
 }
 }
+
 #---------------------------------------------------------------------
 &header2("Addition and Subtraction");
 #---------------------------------------------------------------------
@@ -1410,6 +1523,45 @@ foreach $assgn ( @assign_list ){
     }
 }
 }
+
+#---------------------------------------------------------------------
+&header2("Multiplication by real and complex fields");
+#---------------------------------------------------------------------
+
+require("make_code_binary.pl");
+
+if(!$quadprecision){
+  @assign_list = @eqop_all;
+
+  @rc_field_list = ($datatype_real_abbrev,
+		    $datatype_complex_abbrev);
+  @data_field_list = ($datatype_colorvector_abbrev,
+		      $datatype_halffermion_abbrev,
+		      $datatype_diracfermion_abbrev,
+		      $datatype_colormatrix_abbrev,
+		      $datatype_diracpropagator_abbrev);
+
+  foreach $assgn ( @assign_list ){
+    $eqop_notation = $eqop_notation{$assgn};
+
+    foreach $rc ( @rc_field_list ){
+      foreach $t ( @data_field_list ){
+	&header3(" $datatype_generic_name{$t} r $eqop_notation f a ($datatype_generic_name{$rc} f)");
+
+	foreach $indexing ( @ind_binary_list ){
+	  %def = ();
+	  ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = 
+	      ($t,$rc,$t);
+	  $def{'op'} = "times";
+	  if(&make_prototype($indexing,$assgn)){
+	    &make_code_binary($assgn);
+	  }
+	}
+      }
+    }
+  }
+}
+
 #---------------------------------------------------------------------
 &header2("Multiplication: uniform types");
 #---------------------------------------------------------------------
@@ -2469,3 +2621,41 @@ if($do_generic_defines || $do_color_generic_defines){
 ######################################################################
 
 
+## copy specialized files
+use File::Copy;
+
+$codedir="$path/code-templates";
+
+@files = (
+  "C_eq_det_M.c",
+  "M_eq_inverse_M.c",
+  "M_eq_exp_M.c",
+  "M_eq_sqrt_M.c",
+  "M_eq_log_M.c"
+    );
+
+@targets = (
+  "F2 D2 F3 D3 FN DN",
+  "F2 D2 F3 D3 FN DN",
+  "F2 D2 F3 D3 FN DN",
+  "F2 D2 F3 D3 FN DN",
+  "F2 D2 F3 D3 FN DN"
+    );
+
+for($i=0; $i<=$#files; $i++) {
+  $f = $files[$i];
+  $ts = $targets[$i];
+#  printf("%i %s %s\n", $i, $f, $ts);
+  foreach $t ( split(' ',$ts) ) {
+#    printf("%i %s %s\n", $i, $f, $t);
+#    printf("%s %s\n", $t, $pc);
+    if($t eq $pc) {
+#      printf("copyfile %s %s\n", $f, $t);
+      $of = "QLA_${t}_$f";
+      $fin = "$codedir/$f";
+      $fout = "$c_source_path/$of";
+      printf("copy %s %s\n", $fin, $fout);
+      copy($fin,$fout) or die "Copy failed: $!";
+    }
+  }
+}

@@ -644,7 +644,7 @@ sub make_prototype {
 
     $def{'declaration'} = $declaration;
 # remove restrict from header file
-    $declaration =~ s/restrict //g;
+#    $declaration =~ s/restrict //g;
     print QLA_HDR "$declaration;\n";
 
     ############################################################

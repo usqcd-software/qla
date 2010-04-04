@@ -216,6 +216,16 @@ typedef union {
 #define QLA_c_peq_c_times_r(c,a,b) QLA_c_peq_r_times_c(c,b,a)
 #define QLA_c_meq_c_times_r(c,a,b) QLA_c_meq_r_times_c(c,b,a)
 
+#define QLA_c_eq_r_times_ca(c,a,b)  QLA_cmplx(c)  =  QLA_treal(a) * QLA_conj(QLA_cmplx(b))
+#define QLA_c_eqm_r_times_ca(c,a,b) QLA_cmplx(c)  = -QLA_treal(a) * QLA_conj(QLA_cmplx(b))
+#define QLA_c_peq_r_times_ca(c,a,b) QLA_cmplx(c) +=  QLA_treal(a) * QLA_conj(QLA_cmplx(b))
+#define QLA_c_meq_r_times_ca(c,a,b) QLA_cmplx(c) -=  QLA_treal(a) * QLA_conj(QLA_cmplx(b))
+
+#define QLA_c_eq_ca_times_r(c,a,b)  QLA_c_eq_r_times_ca(c,b,a)
+#define QLA_c_eqm_ca_times_r(c,a,b) QLA_c_eqm_r_times_ca(c,b,a)
+#define QLA_c_peq_ca_times_r(c,a,b) QLA_c_peq_r_times_ca(c,b,a)
+#define QLA_c_meq_ca_times_r(c,a,b) QLA_c_meq_r_times_ca(c,b,a)
+
 #define QLA_c_eq_c_times_c(c,a,b)  QLA_cmplx(c)  =   QLA_tcmplx(a) * QLA_tcmplx(b)
 #define QLA_c_eqm_c_times_c(c,a,b) QLA_cmplx(c)  = -(QLA_tcmplx(a) * QLA_tcmplx(b))
 #define QLA_c_peq_c_times_c(c,a,b) QLA_cmplx(c) +=   QLA_tcmplx(a) * QLA_tcmplx(b)
@@ -291,6 +301,7 @@ QLA_cmplx(c) = __fxcxnsma(QLA_cmplx(c),QLA_tcmplx(a),QLA_imag(QLA_tcmplx(b))); \
 #define QLA_r_meq_Im_ca_times_ca(c,a,b) (c) -= QLA_imag(QLA_conj(QLA_tcmplx(a))*QLA_conj(QLA_tcmplx(b)))
 
 #define QLA_c_eq_c_div_r(c,a,b) QLA_cmplx(c) = QLA_tcmplx(a)/QLA_treal(b)
+#define QLA_c_eq_r_div_c(c,a,b) QLA_cmplx(c) = QLA_treal(a)/QLA_tcmplx(b)
 #define QLA_c_eq_c_div_c(c,a,b) QLA_cmplx(c) = QLA_tcmplx(a)/QLA_tcmplx(b)
 
 
