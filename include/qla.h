@@ -38,6 +38,10 @@ extern "C" {
 #define QLA_Colors 'N'
 #endif
 
+#ifndef QLA_RESTRICT
+#define QLA_RESTRICT
+#endif
+
 /* Define specific types and map them to generic types */
 #include <qla_types.h>
 

@@ -643,8 +643,8 @@ sub make_prototype {
     print QLA_HDR $comment3 if $comment3; $comment3 = "";
 
     $def{'declaration'} = $declaration;
-# remove restrict from header file
-#    $declaration =~ s/restrict //g;
+    # rename restrict to QLA_RESTRICT in header file
+    $declaration =~ s/restrict /QLA_RESTRICT /g;
     print QLA_HDR "$declaration;\n";
 
     ############################################################

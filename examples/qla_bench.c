@@ -191,7 +191,6 @@ main(int argc, char *argv[])
   mem = 2*(2+QLA_Nc)*QLA_Nc*REALBYTES;
   flop = 8*QLA_Nc*QLA_Nc;
   c = cf/(flop+mem);
-  c = cf/200;
   time1 = clock();
   for(i=0; i<c; ++i) {
     QLA_V_vpeq_M_times_pV(v1, m1, vp1, n);
@@ -206,7 +205,6 @@ main(int argc, char *argv[])
   mem = 2*(2+QLA_Nc)*QLA_Nc*REALBYTES;
   flop = (8*QLA_Nc-2)*QLA_Nc;
   c = cf/(flop+mem);
-  c = cf/200;
   time1 = clock();
   for(i=0; i<c; ++i) {
     QLA_V_veq_Ma_times_V(v1, m1, v2, n);

@@ -123,7 +123,7 @@ BUILD_DEPS = \\
 
 lib_LIBRARIES = ../${lib}.a
 
-AM_CFLAGS = -I\$(top_srcdir)/include $PCDEF
+AM_CFLAGS = -I\$(top_srcdir)/include -DQLA_RESTRICT=restrict $PCDEF
 
 # this is just to force automake to include the .c.o rule
 nodist____${lib}_a_SOURCES = $src1

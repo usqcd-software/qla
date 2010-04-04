@@ -586,7 +586,7 @@ BUILD_DEPS = \
 
 lib_LIBRARIES = ../libqla_int.a
 
-AM_CFLAGS = -I$(top_srcdir)/include  
+AM_CFLAGS = -I$(top_srcdir)/include -DQLA_RESTRICT=restrict  
 
 # this is just to force automake to include the .c.o rule
 nodist____libqla_int_a_SOURCES = QLA_I_eq_I.c

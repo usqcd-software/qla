@@ -5912,7 +5912,7 @@ BUILD_DEPS = \
 
 lib_LIBRARIES = ../libqla_d2.a
 
-AM_CFLAGS = -I$(top_srcdir)/include -DQLA_Precision=\'D\' -DQLA_Colors=2
+AM_CFLAGS = -I$(top_srcdir)/include -DQLA_RESTRICT=restrict -DQLA_Precision=\'D\' -DQLA_Colors=2
 
 # this is just to force automake to include the .c.o rule
 nodist____libqla_d2_a_SOURCES = QLA_D2_C_eq_D_dot_D.c
