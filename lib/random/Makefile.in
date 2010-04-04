@@ -71,7 +71,8 @@ ARFLAGS = cru
 ___libqla_random_a_AR = $(AR) $(ARFLAGS)
 ___libqla_random_a_LIBADD =
 am____libqla_random_a_OBJECTS = QLA_gaussian.$(OBJEXT) \
-	QLA_random.$(OBJEXT) QLA_seed_random.$(OBJEXT)
+	QLA_random.$(OBJEXT) QLA_seed_random.$(OBJEXT) \
+	QLA_version.$(OBJEXT)
 ___libqla_random_a_OBJECTS = $(am____libqla_random_a_OBJECTS)
 am__dirstamp = $(am__leading_dot)dirstamp
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/include
@@ -196,7 +197,8 @@ lib_LIBRARIES = ../libqla_random.a
 ___libqla_random_a_SOURCES = \
 	QLA_gaussian.c \
 	QLA_random.c \
-	QLA_seed_random.c
+	QLA_seed_random.c \
+	QLA_version.c
 
 all: all-am
 
@@ -281,6 +283,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/QLA_gaussian.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/QLA_random.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/QLA_seed_random.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/QLA_version.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
