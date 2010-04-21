@@ -117,37 +117,41 @@ define(M_elem, `QLA_elem_M($1,ic,jc)')
 rem(`
      Accessors for transpose
 ')
-define(Pt_elem, `QLA_elem_P($1,jc,js,ic,is)')
 define(Mt_elem, `QLA_elem_M($1,jc,ic)')
+define(Pt_elem, `QLA_elem_P($1,jc,js,ic,is)')
 
 rem(`
      Accessors for multiplicands and multipliers
 ')
-define(P_elem_mleft, `QLA_elem_P($1,ic,is,kc,ks)')
-define(P_elem_mright, `QLA_elem_P($1,kc,ks,jc,js)')
 define(M_elem_mleft, `QLA_elem_M($1,ic,kc)')
 define(M_elem_mright, `QLA_elem_M($1,kc,jc)')
+define(P_elem_mleft, `QLA_elem_P($1,ic,is,kc,ks)')
+define(P_elem_mright, `QLA_elem_P($1,kc,ks,jc,js)')
 
 rem(`
-     Accessors for multiplication by adjoint of gauge matrix 
+     Accessors for multiplication by adjoint 
 ')
 define(Ma_elem_mleft, `QLA_elem_M($1,kc,ic)')
 define(Ma_elem_mright, `QLA_elem_M($1,jc,kc)')
+define(Pa_elem_mleft, `QLA_elem_P($1,kc,ks,ic,is)')
+define(Pa_elem_mright, `QLA_elem_P($1,jc,js,kc,ks)')
 
 rem(`
      Accessors for right multiplication by gauge matrix 
 ')
+define(V_elem_Mmright, `QLA_elem_V($1,kc)')
 define(H_elem_Mmright, `QLA_elem_H($1,kc,is)')
 define(D_elem_Mmright, `QLA_elem_D($1,kc,is)')
-define(V_elem_Mmright, `QLA_elem_V($1,kc)')
-define(P_elem_Mmright, `QLA_elem_P($1,kc,is,jc,js)')
 define(M_elem_Mmright, `QLA_elem_M($1,kc,jc)')
+define(P_elem_Mmright, `QLA_elem_P($1,kc,is,jc,js)')
+define(Pa_elem_Mmright, `QLA_elem_P($1,jc,js,kc,is)')
 
 rem(`
      Accessors for left multiplication by gauge matrix 
 ')
-define(P_elem_mleftM, `QLA_elem_P($1,ic,is,kc,js)')
 define(M_elem_mleftM, `QLA_elem_M($1,ic,kc)')
+define(P_elem_mleftM, `QLA_elem_P($1,ic,is,kc,js)')
+define(Pa_elem_mleftM, `QLA_elem_P($1,kc,js,ic,is)')
 
 rem(`
      Iterator for all tensors

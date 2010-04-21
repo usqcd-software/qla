@@ -284,10 +284,11 @@ sub make_temp(\%) {
 }
 
 sub make_temp_ptr(\%$) {
-  return;
+  #return;
   my($tdef,$name) = @_;
   my($old_value) = $tdef->{value};
 
+  #print "$tdef->{t} $datatype_scalar{$tdef->{t}} $tdef->{temp_ptr}\n";
   if( ($def{dim_name} ne "") &&
       ($tdef->{t} ne "") &&
       (!$datatype_scalar{$tdef->{t}}) &&

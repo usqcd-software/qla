@@ -276,26 +276,6 @@ int main(int argc, char *argv[]){
   QLA_C_meq_Ca(&destC,&sC2);
   CHECKeqsngCRR(&destC,sC1re-sC2re,sC1im+sC2im,name,fp);
 
-  /* QLA_C_eq_conj_C */
-
-  strcpy(name,"QLA_C_eq_conj_C");
-  QLA_C_eq_conj_C(&destC,&sC1);
-  CHECKeqsngCRR(&destC,sC1re,-sC1im,name,fp);
-
-  QLA_c_eq_c(destC,sC1);
-  strcpy(name,"QLA_C_peq_conj_C");
-  QLA_C_peq_conj_C(&destC,&sC2);
-  CHECKeqsngCRR(&destC,sC1re+sC2re,sC1im-sC2im,name,fp);
-
-  strcpy(name,"QLA_C_eqm_conj_C");
-  QLA_C_eqm_conj_C(&destC,&sC1);
-  CHECKeqsngCRR(&destC,-sC1re,sC1im,name,fp);
-
-  QLA_c_eq_c(destC,sC1);
-  strcpy(name,"QLA_C_meq_conj_C");
-  QLA_C_meq_conj_C(&destC,&sC2);
-  CHECKeqsngCRR(&destC,sC1re-sC2re,sC1im+sC2im,name,fp);
-
   /* Local squared norm - complex */
 
   strcpy(name,"QLA_R_eq_norm2_C");
@@ -542,17 +522,11 @@ int main(int argc, char *argv[]){
   QLA_r_meq_Re_ca_times_c(chkR1,sC2,sC1);
   CHECKeqsngRR(chkR1,destR,name,fp);
 
-  /* Uniform types - times */
+  /* Multiplication by a real field */
 
   strcpy(name,"QLA_R_eq_R_times_R");
   QLA_R_eq_R_times_R(&destR,&sR2,&sR1);
   chkR1 = sR1*sR2;
-  CHECKeqsngRR(destR,chkR1,name,fp);
-
-  destR = sR1;
-  strcpy(name,"QLA_R_peq_R_times_R");
-  QLA_R_peq_R_times_R(&destR,&sR2,&sR3);
-  chkR1 = sR1 + sR3*sR2;
   CHECKeqsngRR(destR,chkR1,name,fp);
 
   strcpy(name,"QLA_R_eqm_R_times_R");
@@ -561,22 +535,49 @@ int main(int argc, char *argv[]){
   CHECKeqsngRR(destR,chkR1,name,fp);
 
   destR = sR1;
+  strcpy(name,"QLA_R_peq_R_times_R");
+  QLA_R_peq_R_times_R(&destR,&sR2,&sR3);
+  chkR1 = sR1 + sR3*sR2;
+  CHECKeqsngRR(destR,chkR1,name,fp);
+
+  destR = sR1;
   strcpy(name,"QLA_R_meq_R_times_R");
   QLA_R_meq_R_times_R(&destR,&sR2,&sR3);
   chkR1 = sR1 - sR3*sR2;
   CHECKeqsngRR(destR,chkR1,name,fp);
 
+  strcpy(name,"QLA_C_eq_R_times_C");
+  QLA_C_eq_R_times_C(&destC,&sR1,&sC1);
+  chkR1 = sR1*sC1re;
+  chkR2 = sR1*sC1im;
+  CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
+
+  strcpy(name,"QLA_C_eqm_R_times_C");
+  QLA_C_eqm_R_times_C(&destC,&sR1,&sC1);
+  chkR1 = -sR1*sC1re;
+  chkR2 = -sR1*sC1im;
+  CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
+
+  destC = sC1;
+  strcpy(name,"QLA_C_peq_R_times_C");
+  QLA_C_peq_R_times_C(&destC,&sR1,&sC2);
+  chkR1 = sC1re + sR1*sC2re;
+  chkR2 = sC1im + sR1*sC2im;
+  CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
+
+  destC = sC1;
+  strcpy(name,"QLA_C_meq_R_times_C");
+  QLA_C_meq_R_times_C(&destC,&sR1,&sC2);
+  chkR1 = sC1re - sR1*sC2re;
+  chkR2 = sC1im - sR1*sC2im;
+  CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
+
+  /* Multiplication by a complex field */
+
   strcpy(name,"QLA_C_eq_C_times_C");
   QLA_C_eq_C_times_C(&destC,&sC2,&sC3);
   chkR1 = sC2re*sC3re - sC2im*sC3im;
   chkR2 = sC2im*sC3re + sC2re*sC3im;
-  CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
-
-  destC = sC1;
-  strcpy(name,"QLA_C_peq_C_times_C");
-  QLA_C_peq_C_times_C(&destC,&sC2,&sC3);
-  chkR1 = sC1re + sC2re*sC3re - sC2im*sC3im;
-  chkR2 = sC1im + sC2im*sC3re + sC2re*sC3im;
   CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
 
   strcpy(name,"QLA_C_eqm_C_times_C");
@@ -586,10 +587,95 @@ int main(int argc, char *argv[]){
   CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
 
   destC = sC1;
+  strcpy(name,"QLA_C_peq_C_times_C");
+  QLA_C_peq_C_times_C(&destC,&sC2,&sC3);
+  chkR1 = sC1re + sC2re*sC3re - sC2im*sC3im;
+  chkR2 = sC1im + sC2im*sC3re + sC2re*sC3im;
+  CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
+
+  destC = sC1;
   strcpy(name,"QLA_C_meq_C_times_C");
   QLA_C_meq_C_times_C(&destC,&sC2,&sC3);
   chkR1 = sC1re - sC2re*sC3re + sC2im*sC3im;
   chkR2 = sC1im - sC2im*sC3re - sC2re*sC3im;
+  CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
+
+  strcpy(name,"QLA_C_eq_C_times_Ca");
+  QLA_C_eq_C_times_Ca(&destC,&sC2,&sC3);
+  chkR1 = sC2re*sC3re + sC2im*sC3im;
+  chkR2 = sC2im*sC3re - sC2re*sC3im;
+  CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
+
+  strcpy(name,"QLA_C_eqm_C_times_Ca");
+  QLA_C_eqm_C_times_Ca(&destC,&sC2,&sC3);
+  chkR1 = -sC2re*sC3re - sC2im*sC3im;
+  chkR2 = -sC2im*sC3re + sC2re*sC3im;
+  CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
+
+  destC = sC1;
+  strcpy(name,"QLA_C_peq_C_times_Ca");
+  QLA_C_peq_C_times_Ca(&destC,&sC2,&sC3);
+  chkR1 = sC1re + sC2re*sC3re + sC2im*sC3im;
+  chkR2 = sC1im + sC2im*sC3re - sC2re*sC3im;
+  CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
+
+  destC = sC1;
+  strcpy(name,"QLA_C_meq_C_times_Ca");
+  QLA_C_meq_C_times_Ca(&destC,&sC2,&sC3);
+  chkR1 = sC1re - sC2re*sC3re - sC2im*sC3im;
+  chkR2 = sC1im - sC2im*sC3re + sC2re*sC3im;
+  CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
+
+  strcpy(name,"QLA_C_eq_Ca_times_C");
+  QLA_C_eq_Ca_times_C(&destC,&sC2,&sC3);
+  chkR1 = sC2re*sC3re + sC2im*sC3im;
+  chkR2 = -sC2im*sC3re + sC2re*sC3im;
+  CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
+
+  strcpy(name,"QLA_C_eqm_Ca_times_C");
+  QLA_C_eqm_Ca_times_C(&destC,&sC2,&sC3);
+  chkR1 = -sC2re*sC3re - sC2im*sC3im;
+  chkR2 = sC2im*sC3re - sC2re*sC3im;
+  CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
+
+  destC = sC1;
+  strcpy(name,"QLA_C_peq_Ca_times_C");
+  QLA_C_peq_Ca_times_C(&destC,&sC2,&sC3);
+  chkR1 = sC1re + sC2re*sC3re + sC2im*sC3im;
+  chkR2 = sC1im - sC2im*sC3re + sC2re*sC3im;
+  CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
+
+  destC = sC1;
+  strcpy(name,"QLA_C_meq_Ca_times_C");
+  QLA_C_meq_Ca_times_C(&destC,&sC2,&sC3);
+  chkR1 = sC1re - sC2re*sC3re - sC2im*sC3im;
+  chkR2 = sC1im + sC2im*sC3re - sC2re*sC3im;
+  CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
+
+  strcpy(name,"QLA_C_eq_Ca_times_Ca");
+  QLA_C_eq_Ca_times_Ca(&destC,&sC2,&sC3);
+  chkR1 = sC2re*sC3re - sC2im*sC3im;
+  chkR2 = -sC2im*sC3re - sC2re*sC3im;
+  CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
+
+  strcpy(name,"QLA_C_eqm_Ca_times_Ca");
+  QLA_C_eqm_Ca_times_Ca(&destC,&sC2,&sC3);
+  chkR1 = -sC2re*sC3re + sC2im*sC3im;
+  chkR2 = sC2im*sC3re + sC2re*sC3im;
+  CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
+
+  destC = sC1;
+  strcpy(name,"QLA_C_peq_Ca_times_Ca");
+  QLA_C_peq_Ca_times_Ca(&destC,&sC2,&sC3);
+  chkR1 = sC1re + sC2re*sC3re - sC2im*sC3im;
+  chkR2 = sC1im - sC2im*sC3re - sC2re*sC3im;
+  CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
+
+  destC = sC1;
+  strcpy(name,"QLA_C_meq_Ca_times_Ca");
+  QLA_C_meq_Ca_times_C(&destC,&sC2,&sC3);
+  chkR1 = sC1re - sC2re*sC3re + sC2im*sC3im;
+  chkR2 = sC1im + sC2im*sC3re + sC2re*sC3im;
   CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);
 
   /* Ternary a = b*x + c */

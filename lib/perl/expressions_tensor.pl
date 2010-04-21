@@ -28,7 +28,7 @@ require("expressions_scalar.pl");
 use vars qw/ %carith1 %carith2 %carith3 %eqop_notation /;
 use vars qw/ $fcn_random $fcn_gaussian $fcn_seed_random $arg_seed /;
 use vars qw/ $datatype_integer_abbrev $datatype_real_abbrev /;
-use vars qw/ $datatype_complex_abbrev $datatype_gauge_abbrev /;
+use vars qw/ $datatype_complex_abbrev $datatype_colormatrix_abbrev /;
 use vars qw/ $precision $temp_precision $colors /;
 use vars qw/ $eqop_eqm $eqop_meq /;
 use vars qw/ $var_i /;
@@ -133,7 +133,7 @@ sub print_val_eqop_op_val {
 }
 
 #---------------------------------------------------------------------
-# Antihermitian traceless part (gauge matrix only)
+# Antihermitian traceless part (colormatrix matrix only)
 #---------------------------------------------------------------------
 
 sub print_g_eqop_antiherm_g {
@@ -149,9 +149,9 @@ sub print_g_eqop_antiherm_g {
   my($dest_tran_value,$src1_tran_value);
 
   # type checking
-  $$ddef{'t'} eq $datatype_gauge_abbrev &&
-      $$s1def{'t'} eq $datatype_gauge_abbrev ||
-      die "antiherm supports only gauge field\n";
+  $$ddef{'t'} eq $datatype_colormatrix_abbrev &&
+      $$s1def{'t'} eq $datatype_colormatrix_abbrev ||
+      die "antiherm supports only colormatrix field\n";
 
   $eqop eq $eqop_eq ||
       die "antiherm supports only replacement\n";
@@ -244,8 +244,8 @@ sub print_c_eqop_det_m {
 
   # type checking
   $$ddef{'t'} eq $datatype_complex_abbrev &&
-      $$s1def{'t'} eq $datatype_gauge_abbrev ||
-      die "matrix det supports only gauge field\n";
+      $$s1def{'t'} eq $datatype_colormatrix_abbrev ||
+      die "matrix det supports only colormatrix field\n";
 
   $eqop eq $eqop_eq ||
       die "matrix det supports only replacement\n";
@@ -268,9 +268,9 @@ sub print_m_eqop_inv_m {
   my $s1def = \%src1_def;
 
   # type checking
-  $$ddef{'t'} eq $datatype_gauge_abbrev &&
-      $$s1def{'t'} eq $datatype_gauge_abbrev ||
-      die "matrix inverse supports only gauge field\n";
+  $$ddef{'t'} eq $datatype_colormatrix_abbrev &&
+      $$s1def{'t'} eq $datatype_colormatrix_abbrev ||
+      die "matrix inverse supports only colormatrix field\n";
 
   $eqop eq $eqop_eq ||
       die "matrix inverse supports only replacement\n";
@@ -293,9 +293,9 @@ sub print_m_eqop_exp_m {
   my $s1def = \%src1_def;
 
   # type checking
-  $$ddef{'t'} eq $datatype_gauge_abbrev &&
-      $$s1def{'t'} eq $datatype_gauge_abbrev ||
-      die "matrix exp supports only gauge field\n";
+  $$ddef{'t'} eq $datatype_colormatrix_abbrev &&
+      $$s1def{'t'} eq $datatype_colormatrix_abbrev ||
+      die "matrix exp supports only colormatrix field\n";
 
   $eqop eq $eqop_eq ||
       die "matrix exp supports only replacement\n";
@@ -318,9 +318,9 @@ sub print_m_eqop_sqrt_m {
   my $s1def = \%src1_def;
 
   # type checking
-  $$ddef{'t'} eq $datatype_gauge_abbrev &&
-      $$s1def{'t'} eq $datatype_gauge_abbrev ||
-      die "matrix sqrt supports only gauge field\n";
+  $$ddef{'t'} eq $datatype_colormatrix_abbrev &&
+      $$s1def{'t'} eq $datatype_colormatrix_abbrev ||
+      die "matrix sqrt supports only colormatrix field\n";
 
   $eqop eq $eqop_eq ||
       die "matrix sqrt supports only replacement\n";
@@ -343,9 +343,9 @@ sub print_m_eqop_log_m {
   my $s1def = \%src1_def;
 
   # type checking
-  $$ddef{'t'} eq $datatype_gauge_abbrev &&
-      $$s1def{'t'} eq $datatype_gauge_abbrev ||
-      die "matrix log supports only gauge field\n";
+  $$ddef{'t'} eq $datatype_colormatrix_abbrev &&
+      $$s1def{'t'} eq $datatype_colormatrix_abbrev ||
+      die "matrix log supports only colormatrix field\n";
 
   $eqop eq $eqop_eq ||
       die "matrix log supports only replacement\n";

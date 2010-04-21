@@ -248,8 +248,8 @@ alltensors(`chkMinus');
 alltensors(`chkRCMult');
 
   /* Multiplication - uniform types */
-chkUniformMult(P);
 chkUniformMult(M);
+chkUniformMult(P);
 
   /* ColorMatrix from outer product */
 chkOuterprod;
@@ -267,29 +267,26 @@ chkLocalRealDot(P);
 chkLocalRealDot(M);
 
   /* QLA_T_eq_M_times_T */
+chkLeftMultM(V);
 chkLeftMultM(H);
 chkLeftMultM(D);
-chkLeftMultM(V);
 chkLeftMultM(P);
-chkLeftMultM(M);
-
-  /* QLA_M_eq_Ma_times_Ma */
-chkMultMaMa;
+chkLeftMultM(P,a);
 
   /* QLA_T_eq_Ma_times_T */
+chkLeftMultMa(V);
 chkLeftMultMa(H);
 chkLeftMultMa(D);
-chkLeftMultMa(V);
 chkLeftMultMa(P);
-chkLeftMultMa(M);
+chkLeftMultMa(P,a);
 
   /* QLA_T_eq_T_times_M */
 chkRightMultM(P);
-chkRightMultM(M);
+chkRightMultM(P,a);
 
   /* QLA_T_eq_T_times_Ma */
 chkRightMultMa(P);
-chkRightMultMa(M);
+chkRightMultMa(P,a);
 
   /* QLA_T_eq_rc_times_T_pm_T */
 alltensors(`chkrMultAdd');

@@ -358,19 +358,19 @@ require("make_code_unary.pl");
 @data_list   = ( $datatype_randomstate_abbrev );
 
 foreach $assgn ( @assign_list ){
-    $eqop_notation = $eqop_notation{$assgn};
+  $eqop_notation = $eqop_notation{$assgn};
 
-    foreach $t ( @data_list ){
-	&header3(" r $eqop_notation a ($datatype_generic_name{$t}) ");
-	foreach $indexing ( @ind_unary_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'}) = ($t,$t);
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_unary($assgn,"identity");
-	    }
+  foreach $t ( @data_list ){
+    &header3(" r $eqop_notation a ($datatype_generic_name{$t}) ");
+    foreach $indexing ( @ind_unary_list ){
+      %def = ();
+      ($def{'dest_t'},$def{'src1_t'}) = ($t,$t);
+      if(&make_prototype($indexing,$assgn)){
+	&make_code_unary($assgn,"identity");
+      }
 
-	}
     }
+  }
 }
 
 # rest
@@ -379,19 +379,19 @@ foreach $assgn ( @assign_list ){
 @data_list   = @datatype_arithmetic_abbrev;
 
 foreach $assgn ( @assign_list ){
-    $eqop_notation = $eqop_notation{$assgn};
+  $eqop_notation = $eqop_notation{$assgn};
 
-    foreach $t ( @data_list ){
-	&header3(" r $eqop_notation a ($datatype_generic_name{$t}) ");
-	foreach $indexing ( @ind_unary_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'}) = ($t,$t);
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_unary($assgn,"identity");
-	    }
+  foreach $t ( @data_list ){
+    &header3(" r $eqop_notation a ($datatype_generic_name{$t}) ");
+    foreach $indexing ( @ind_unary_list ){
+      %def = ();
+      ($def{'dest_t'},$def{'src1_t'}) = ($t,$t);
+      if(&make_prototype($indexing,$assgn)){
+	&make_code_unary($assgn,"identity");
+      }
 
-	}
     }
+  }
 }
 
 #---------------------------------------------------------------------
@@ -402,55 +402,56 @@ require("make_code_unary.pl");
 
 if(!$quadprecision){
 
-@assign_list = @eqop_all;
-@data_list   = @datatype_adjoint_abbrev;
+  @assign_list = @eqop_all;
+  @data_list   = @datatype_adjoint_abbrev;
 
-foreach $assgn ( @assign_list ){
+  foreach $assgn ( @assign_list ){
     $eqop_notation = $eqop_notation{$assgn};
 
     foreach $t ( @data_list ){
-	&header3(" r = hconj(a) ($datatype_generic_name{$t}) ");
-	foreach $indexing ( @ind_unary_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'}) = ($t,$t);
-	    $def{'src1_adj'} = $suffix_adjoint;
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_unary($assgn,"adjoint");
-	    }
+      &header3(" r = hconj(a) ($datatype_generic_name{$t}) ");
+      foreach $indexing ( @ind_unary_list ){
+	%def = ();
+	($def{'dest_t'},$def{'src1_t'}) = ($t,$t);
+	$def{'src1_adj'} = $suffix_adjoint;
+	if(&make_prototype($indexing,$assgn)){
+	  &make_code_unary($assgn,"adjoint");
 	}
+      }
     }
+  }
 }
-}
+
 #---------------------------------------------------------------------
 &header2("Transpose");
 #---------------------------------------------------------------------
-
 
 require("make_code_unary.pl");
 
 if(!$quadprecision){
 
-@assign_list = @eqop_all;
-@data_list   = @datatype_transpose_abbrev;
-$qualifier = "transpose";
+  @assign_list = @eqop_all;
+  @data_list   = @datatype_transpose_abbrev;
+  $qualifier = "transpose";
 
-foreach $assgn ( @assign_list ){
+  foreach $assgn ( @assign_list ){
     $eqop_notation = $eqop_notation{$assgn};
     
     foreach $t ( @data_list ){
-	&header3(" r $eqop_notation{$assgn} transpose(a) ($datatype_generic_name{$t}) ");
-	foreach $indexing ( @ind_unary_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'}) = ($t,$t);
-	    $def{'qualifier'} = $qualifier;
-	    $def{'src1_trans'} = "t";
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_unary($assgn,"transpose");
-	    }
+      &header3(" r $eqop_notation{$assgn} transpose(a) ($datatype_generic_name{$t}) ");
+      foreach $indexing ( @ind_unary_list ){
+	%def = ();
+	($def{'dest_t'},$def{'src1_t'}) = ($t,$t);
+	$def{'qualifier'} = $qualifier;
+	$def{'src1_trans'} = "t";
+	if(&make_prototype($indexing,$assgn)){
+	  &make_code_unary($assgn,"transpose");
 	}
+      }
     }
+  }
 }
-}
+
 #---------------------------------------------------------------------
 &header2("Complex conjugate");
 #---------------------------------------------------------------------
@@ -459,30 +460,31 @@ require("make_code_unary.pl");
 
 if(!$quadprecision){
 
-@assign_list = @eqop_all;
-@data_list   = @datatype_mult_complex_abbrev;
-$qualifier = "conj";
+  @assign_list = @eqop_all;
+  @data_list   = @datatype_mult_complex_abbrev;
+  $qualifier = "conj";
 
-foreach $assgn ( @assign_list ){
+  foreach $assgn ( @assign_list ){
     $eqop_notation = $eqop_notation{$assgn};
 
     foreach $t ( @data_list ){
-	$srce_t = $t;
-	$dest_t = $t;
-	&header3(" r $eqop_notation{$assgn} complconj(a) ($datatype_generic_name{$t}) ");
-	foreach $indexing ( @ind_unary_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'}) = ($srce_t,$dest_t);
-	    $def{'qualifier'} = $qualifier;
-	    $def{'src1_conj'} = "a";
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_unary($assgn,"complconj");
-	    }
-	    
+      next if($t eq $datatype_complex_abbrev); # same as adjoint
+      $srce_t = $t;
+      $dest_t = $t;
+      &header3(" r $eqop_notation{$assgn} complconj(a) ($datatype_generic_name{$t}) ");
+      foreach $indexing ( @ind_unary_list ){
+	%def = ();
+	($def{'dest_t'},$def{'src1_t'}) = ($srce_t,$dest_t);
+	$def{'qualifier'} = $qualifier;
+	$def{'src1_conj'} = "a";
+	if(&make_prototype($indexing,$assgn)){
+	  &make_code_unary($assgn,"complconj");
 	}
+      }
     }
+  }
 }
-}
+
 #---------------------------------------------------------------------
 &header2("Local squared norm");
 #---------------------------------------------------------------------
@@ -490,29 +492,28 @@ foreach $assgn ( @assign_list ){
 require("make_code_binary.pl");
 
 if(!$quadprecision){
-@assign_list = @eqop_all;
-@data_list   = ($datatype_complex_abbrev,@datatype_array_element_abbrev);
+  @assign_list = @eqop_all;
+  @data_list   = (@datatype_mult_complex_abbrev);
+  $dest_t = $datatype_real_abbrev;
 
-$dest_t = $datatype_real_abbrev;
-
-foreach $assgn ( @assign_list ){
+  foreach $assgn ( @assign_list ){
     $eqop_notation = $eqop_notation{$assgn};
 
     foreach $t ( @data_list ){
-	$src1_t = $t;
+      $src1_t = $t;
 
-	&header3(" $datatype_generic_name{$t} (r = norm2 a)");
-	foreach $indexing ( @ind_unary_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'}) = ($dest_t,$src1_t);
-	    $def{'qualifier'} = "norm2";
-	    if(&make_prototype($indexing,$assgn)){
-		%src2_def = %src1_def;
-		&make_code_binary_dot($assgn,"R");
-	    }
+      &header3(" $datatype_generic_name{$t} (r = norm2 a)");
+      foreach $indexing ( @ind_unary_list ){
+	%def = ();
+	($def{'dest_t'},$def{'src1_t'}) = ($dest_t,$src1_t);
+	$def{'qualifier'} = "norm2";
+	if(&make_prototype($indexing,$assgn)){
+	  %src2_def = %src1_def;
+	  &make_code_binary_dot($assgn,"R");
 	}
+      }
     }
-}
+  }
 }
 
 #=====================================================================
@@ -978,20 +979,18 @@ foreach $indexing ( @ind_unary_list ){
 
 require("make_code_unary.pl");
 
-if(!$quadprecision){
-
-$assgn = $eqop_eq;
-
-foreach $indexing ( @ind_unary_list ){
+if(!$quadprecision) {
+  $assgn = $eqop_eq;
+  foreach $indexing ( @ind_unary_list ) {
     %def = ();
     ($def{'dest_t'},$def{'src1_t'}) = 
 	($datatype_colormatrix_abbrev,$datatype_colormatrix_abbrev);
     $def{'qualifier'} = "antiherm";
 
     if(&make_prototype($indexing,$assgn)){
-	&make_code_antiherm_part($assgn);
+      &make_code_antiherm_part($assgn);
     }
-}
+  }
 }
 
 #---------------------------------------------------------------------
@@ -1301,71 +1300,72 @@ foreach $assgn ( @assign_list ){
 require("make_code_binary.pl");
 
 if(!$quadprecision){
-@assign_list = @eqop_all;
-@data_list   = @datatype_arithmetic_abbrev;
+  @assign_list = @eqop_all;
+  @data_list   = @datatype_arithmetic_abbrev;
 
-$real_scalar_abbrev = $datatype_scalar_abbrev{$datatype_real_abbrev};
-$integer_scalar_abbrev = $datatype_scalar_abbrev{$datatype_integer_abbrev};
+  $real_scalar_abbrev = $datatype_scalar_abbrev{$datatype_real_abbrev};
+  $integer_scalar_abbrev = $datatype_scalar_abbrev{$datatype_integer_abbrev};
 
-foreach $assgn ( @assign_list ){
+  foreach $assgn ( @assign_list ){
     $eqop_notation = $eqop_notation{$assgn};
 
     foreach $t ( @data_list ){
-	&header3(" $datatype_generic_name{$t} r $eqop_notation c a (real c) ");
-	if($datatype_floatpt{$t} == 1){
-	    $src1_t = $real_scalar_abbrev;
-	}
-	else{
-	    $src1_t = $integer_scalar_abbrev;
-	}
+      &header3(" $datatype_generic_name{$t} r $eqop_notation c a (real c) ");
+      if($datatype_floatpt{$t} == 1){
+	$src1_t = $real_scalar_abbrev;
+      }
+      else{
+	$src1_t = $integer_scalar_abbrev;
+      }
 
-	foreach $indexing ( @ind_binary_src1_const_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = 
-		($t,$src1_t,$t);
-	    $def{'op'} = "times";
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_binary($assgn);
-	    }
+      foreach $indexing ( @ind_binary_src1_const_list ){
+	%def = ();
+	($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = 
+	    ($t,$src1_t,$t);
+	$def{'op'} = "times";
+	if(&make_prototype($indexing,$assgn)){
+	  &make_code_binary($assgn);
 	}
+      }
     }
+  }
 }
-}
+
 #---------------------------------------------------------------------
 &header2("Multiplication by complex constant");
 #---------------------------------------------------------------------
 
 require("make_code_binary.pl");
 
-if(!$quadprecision){
-@assign_list = @eqop_all;
-@data_list   = @datatype_mult_complex_abbrev;
+if(!$quadprecision) {
+  @assign_list = @eqop_all;
+  @data_list   = @datatype_mult_complex_abbrev;
 
-$complex_const_type = &datatype_specific($datatype_complex_abbrev);
-$complex_scalar_abbrev = $datatype_scalar_abbrev{$datatype_complex_abbrev};
+  $complex_const_type = &datatype_specific($datatype_complex_abbrev);
+  $complex_scalar_abbrev = $datatype_scalar_abbrev{$datatype_complex_abbrev};
 
-foreach $assgn ( @assign_list ){
+  foreach $assgn ( @assign_list ){
     $eqop_notation = $eqop_notation{$assgn};
     &header3(" r $eqop_notation ca (complex c) ");
 
     $src1_t = $complex_scalar_abbrev;
 
     foreach $t ( @data_list ){
-	$dest_t = $t;
-	$src2_t = $t;
-	&header3(" $datatype_generic_name{$t} r $eqop_notation c a (complex c)");
-	
-	foreach $indexing ( @ind_binary_src1_const_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = 
-		($dest_t,$src1_t,$src2_t);
-	    $def{'op'} = "times";
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_binary($assgn);
-	    }
+      $dest_t = $t;
+      $src2_t = $t;
+      &header3(" $datatype_generic_name{$t} r $eqop_notation c a (complex c)");
+
+      foreach $indexing ( @ind_binary_src1_const_list ){
+	%def = ();
+	($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = 
+	    ($dest_t,$src1_t,$src2_t);
+	$def{'op'} = "times";
+	if(&make_prototype($indexing,$assgn)){
+	  &make_code_binary($assgn);
 	}
+      }
     }
-}
+  }
 }
 
 #---------------------------------------------------------------------
@@ -1457,36 +1457,10 @@ foreach $assgn ( @assign_list ){
     }
 }
 }
+
 #---------------------------------------------------------------------
 &header1("Binary Operations with Fields ");
 #---------------------------------------------------------------------
-
-#---------------------------------------------------------------------
-&header2("Division of scalar fields");
-#---------------------------------------------------------------------
-
-require("make_code_binary.pl");
-
-if(!$quadprecision){
-
-@assign_list = ( $eqop_eq );
-@data_list   = ( $datatype_real_abbrev, 
-		 $datatype_complex_abbrev, 
-		 $datatype_integer_abbrev);
-
-foreach $assgn ( @assign_list ){
-    foreach $t ( @data_list  ){
-	foreach $indexing ( @ind_binary_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($t,$t,$t);
-	    $def{'op'} = "divide";
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_binary($assgn);
-	    }
-	}
-    }
-}
-}
 
 #---------------------------------------------------------------------
 &header2("Addition and Subtraction");
@@ -1525,7 +1499,34 @@ foreach $assgn ( @assign_list ){
 }
 
 #---------------------------------------------------------------------
-&header2("Multiplication by real and complex fields");
+&header2("Division of scalar fields");
+#---------------------------------------------------------------------
+
+require("make_code_binary.pl");
+
+if(!$quadprecision){
+
+@assign_list = ( $eqop_eq );
+@data_list   = ( $datatype_real_abbrev, 
+		 $datatype_complex_abbrev, 
+		 $datatype_integer_abbrev);
+
+foreach $assgn ( @assign_list ){
+    foreach $t ( @data_list  ){
+	foreach $indexing ( @ind_binary_list ){
+	    %def = ();
+	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($t,$t,$t);
+	    $def{'op'} = "divide";
+	    if(&make_prototype($indexing,$assgn)){
+		&make_code_binary($assgn);
+	    }
+	}
+    }
+}
+}
+
+#---------------------------------------------------------------------
+&header2("Multiplication by an integer field");
 #---------------------------------------------------------------------
 
 require("make_code_binary.pl");
@@ -1533,25 +1534,20 @@ require("make_code_binary.pl");
 if(!$quadprecision){
   @assign_list = @eqop_all;
 
-  @rc_field_list = ($datatype_real_abbrev,
-		    $datatype_complex_abbrev);
-  @data_field_list = ($datatype_colorvector_abbrev,
-		      $datatype_halffermion_abbrev,
-		      $datatype_diracfermion_abbrev,
-		      $datatype_colormatrix_abbrev,
-		      $datatype_diracpropagator_abbrev);
+  @src1_field_list = ($datatype_integer_abbrev);
+  @src2_field_list = ($datatype_integer_abbrev);
 
   foreach $assgn ( @assign_list ){
     $eqop_notation = $eqop_notation{$assgn};
 
-    foreach $rc ( @rc_field_list ){
-      foreach $t ( @data_field_list ){
-	&header3(" $datatype_generic_name{$t} r $eqop_notation f a ($datatype_generic_name{$rc} f)");
+    foreach $s1 ( @src1_field_list ){
+      foreach $s2 ( @src2_field_list ){
+	&header3(" $datatype_generic_name{$s2} r $eqop_notation f a ($datatype_generic_name{$s1} f)");
 
 	foreach $indexing ( @ind_binary_list ){
 	  %def = ();
 	  ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = 
-	      ($t,$rc,$t);
+	      ($s2,$s1,$s2);
 	  $def{'op'} = "times";
 	  if(&make_prototype($indexing,$assgn)){
 	    &make_code_binary($assgn);
@@ -1563,32 +1559,188 @@ if(!$quadprecision){
 }
 
 #---------------------------------------------------------------------
-&header2("Multiplication: uniform types");
+&header2("Multiplication by a real field");
+#---------------------------------------------------------------------
+
+require("make_code_binary.pl");
+
+if(!$quadprecision){
+  @assign_list = @eqop_all;
+
+  @src1_field_list = ($datatype_real_abbrev);
+  @src2_field_list = ($datatype_real_abbrev,
+		      $datatype_complex_abbrev,
+		      $datatype_colorvector_abbrev,
+		      $datatype_halffermion_abbrev,
+		      $datatype_diracfermion_abbrev,
+		      $datatype_colormatrix_abbrev,
+		      $datatype_diracpropagator_abbrev);
+
+  foreach $assgn ( @assign_list ){
+    $eqop_notation = $eqop_notation{$assgn};
+
+    foreach $s1 ( @src1_field_list ){
+      foreach $s2 ( @src2_field_list ){
+	&header3(" $datatype_generic_name{$s2} r $eqop_notation f a ($datatype_generic_name{$s1} f)");
+
+	foreach $indexing ( @ind_binary_list ){
+	  %def = ();
+	  ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = 
+	      ($s2,$s1,$s2);
+	  $def{'op'} = "times";
+	  if(&make_prototype($indexing,$assgn)){
+	    &make_code_binary($assgn);
+	  }
+	}
+      }
+    }
+  }
+}
+
+#---------------------------------------------------------------------
+&header2("Multiplication: uniform complex types");
 #---------------------------------------------------------------------
 
 require("make_code_binary.pl");
 
 if(!$quadprecision){
 
-@assign_list = @eqop_all;
-@data_list   = @datatype_mult_self_abbrev;
+  @assign_list = @eqop_all;
+  @data_list   = ($datatype_complex_abbrev,
+		  $datatype_colormatrix_abbrev,
+		  $datatype_diracpropagator_abbrev);
 
-foreach $assgn ( @assign_list ){
+  foreach $assgn ( @assign_list ){
     $eqop_notation = $eqop_notation{$assgn};
-    
     foreach $t ( @data_list ){
-	&header3(" $datatype_generic_name{$t} (r $eqop_notation a * b)");
-	
-	foreach $indexing ( @ind_binary_list ){
+      foreach $adj1 ( 0, 1 ) {
+	foreach $adj2 ( 0, 1 ) {
+	  &header3(" $datatype_generic_name{$t} (r $eqop_notation a * b)");
+	  foreach $indexing ( @ind_binary_list ){
 	    %def = ();
 	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($t,$t,$t);
+	    $def{'src1_adj'} = $suffix_adjoint if($adj1);
+	    $def{'src2_adj'} = $suffix_adjoint if($adj2);
 	    $def{'op'} = "times";
 	    if(&make_prototype($indexing,$assgn)){
-		&make_code_binary($assgn);
+	      &make_code_binary($assgn);
 	    }
+	  }
 	}
+      }
     }
+  }
 }
+
+#---------------------------------------------------------------------
+&header2("Multiplication by a complex field");
+#---------------------------------------------------------------------
+
+require("make_code_binary.pl");
+
+if(!$quadprecision){
+  @assign_list = @eqop_all;
+
+  @src1_field_list = ($datatype_complex_abbrev);
+  @src2_field_list = ($datatype_colorvector_abbrev,
+		      $datatype_halffermion_abbrev,
+		      $datatype_diracfermion_abbrev,
+		      $datatype_colormatrix_abbrev,
+		      $datatype_diracpropagator_abbrev);
+
+  foreach $assgn ( @assign_list ){
+    $eqop_notation = $eqop_notation{$assgn};
+
+    foreach $s1 ( @src1_field_list ){
+      foreach $s2 ( @src2_field_list ){
+	&header3(" $datatype_generic_name{$s2} r $eqop_notation f a ($datatype_generic_name{$s1} f)");
+
+	foreach $indexing ( @ind_binary_list ){
+	  %def = ();
+	  ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = 
+	      ($s2,$s1,$s2);
+	  $def{'op'} = "times";
+	  if(&make_prototype($indexing,$assgn)){
+	    &make_code_binary($assgn);
+	  }
+	}
+      }
+    }
+  }
+}
+
+#---------------------------------------------------------------------
+&header2("Color matrix field times vector field");
+#---------------------------------------------------------------------
+
+require("make_code_binary.pl");
+
+if(!$quadprecision){
+  @assign_list = @eqop_all;
+
+  @src1_field_list = ($datatype_colormatrix_abbrev);
+  @src2_field_list = ($datatype_colorvector_abbrev,
+		      $datatype_halffermion_abbrev,
+		      $datatype_diracfermion_abbrev);
+
+  foreach $assgn ( @assign_list ){
+    $eqop_notation = $eqop_notation{$assgn};
+
+    foreach $s1 ( @src1_field_list ){
+      foreach $adj ( 0, 1 ) {
+	foreach $s2 ( @src2_field_list ){
+	  &header3(" $datatype_generic_name{$s2} r $eqop_notation (adj) f a ($datatype_generic_name{$s1} f)");
+	  foreach $indexing ( @ind_binary_list ){
+	    %def = ();
+	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = 
+		($s2,$s1,$s2);
+	    $def{'src1_adj'} = $suffix_adjoint if($adj);
+	    $def{'op'} = "times";
+	    if(&make_prototype($indexing,$assgn)){
+	      &make_code_binary($assgn);
+	    }
+	  }
+	}
+      }
+    }
+  }
+}
+
+#---------------------------------------------------------------------
+&header2("Multiplication of color matrix field and propagator field");
+#---------------------------------------------------------------------
+
+require("make_code_binary.pl");
+
+if(!$quadprecision){
+  @assign_list = @eqop_all;
+  @data_list = ($datatype_colormatrix_abbrev,
+		$datatype_diracpropagator_abbrev);
+
+  foreach $s1 ( @data_list ) {
+    foreach $s2 ( @data_list ) {
+      next if($s1 eq $s2);
+      foreach $assgn ( @assign_list ){
+	$eqop_notation = $eqop_notation{$assgn};
+	foreach $adj1 ( 0, 1 ) {
+	  foreach $adj2 ( 0, 1 ) {
+	    &header3(" DiracPropagator r $eqop_notation f a (ColorMatrix f or a)");
+	    foreach $indexing ( @ind_binary_list ){
+	      %def = ();
+	      ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = 
+		  ($datatype_diracpropagator_abbrev,$s1,$s2);
+	      $def{'src1_adj'} = $suffix_adjoint if($adj1);
+	      $def{'src2_adj'} = $suffix_adjoint if($adj2);
+	      $def{'op'} = "times";
+	      if(&make_prototype($indexing,$assgn)){
+		&make_code_binary($assgn);
+	      }
+	    }
+	  }
+	}
+      }
+    }
+  }
 }
 
 #---------------------------------------------------------------------
@@ -1671,153 +1823,6 @@ foreach $assgn ( @assign_list ){
 }
 }
 
-#---------------------------------------------------------------------
-&header2("Left multiplication by color matrix");
-#---------------------------------------------------------------------
-
-require("make_code_binary.pl");
-
-if(!$quadprecision){
-@assign_list = @eqop_all;
-@data_list   = @datatype_left_mult_colormatrix_abbrev;
-
-foreach $assgn ( @assign_list ){
-    $eqop_notation = $eqop_notation{$assgn};
-    
-    $src1_t = $datatype_colormatrix_abbrev;
-    foreach $t ( @data_list ){
-	# We already did colormatrix times colormatrix with uniform types above
-	if( $t eq $datatype_colormatrix_abbrev ){next;}
-	&header3(" $datatype_generic_name{$t} (r $eqop_notation colormatrix * b)");
-	
-	foreach $indexing ( @ind_binary_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($t,$src1_t,$t);
-	    $def{'op'} = "times";
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_binary($assgn);
-	    }
-	}
-    }
-}
-}
-
-#---------------------------------------------------------------------
-&header2("Adjoint of color matrix times adjoint of color matrix");
-#---------------------------------------------------------------------
-
-require("make_code_binary.pl");
-
-if(!$quadprecision){
-@assign_list = @eqop_all;
-@data_list   = ( $datatype_colormatrix_abbrev );
-
-foreach $assgn ( @assign_list ){
-    $eqop_notation = $eqop_notation{$assgn};
-    
-    foreach $t ( @data_list ){
-	&header3(" (r $eqop_notation adjoint colormatrix * adjoint colormatrix)");
-	
-	foreach $indexing ( @ind_binary_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($t,$t,$t);
-	    $def{'src1_adj'} = $suffix_adjoint;
-	    $def{'src2_adj'} = $suffix_adjoint;
-	    $def{'op'} = "times";
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_binary($assgn);
-	    }
-	}
-    }
-}
-}
-
-#---------------------------------------------------------------------
-&header2("Left multiplication by adjoint of color matrix");
-#---------------------------------------------------------------------
-
-require("make_code_binary.pl");
-
-if(!$quadprecision){
-@assign_list = @eqop_all;
-@data_list   = @datatype_left_mult_colormatrix_abbrev;
-
-foreach $assgn ( @assign_list ){
-    $eqop_notation = $eqop_notation{$assgn};
-    $src1_t = $datatype_colormatrix_abbrev;
-    foreach $t ( @data_list ){
-
-	&header3(" $datatype_generic_name{$t} (r $eqop_notation adjoint colormatrix * b)");
-	foreach $indexing ( @ind_binary_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($t,$src1_t,$t);
-	    $def{'op'} = "times";
-	    $def{'src1_adj'} = $suffix_adjoint;
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_binary($assgn);
-	    }
-	}
-    }
-}
-}
-
-#---------------------------------------------------------------------
-&header2("Right multiplication by color matrix");
-#---------------------------------------------------------------------
-
-require("make_code_binary.pl");
-
-if(!$quadprecision){
-@assign_list = @eqop_all;
-@data_list   = @datatype_right_mult_colormatrix_abbrev;
-
-foreach $assgn ( @assign_list ){
-    $eqop_notation = $eqop_notation{$assgn};
-    $src2_t = $datatype_colormatrix_abbrev;
-    foreach $t ( @data_list ){
-	# We already did colormatrix times colormatrix
-	if($t eq $datatype_colormatrix_abbrev){next;}
-
-	&header3(" $datatype_generic_name{$t} (r $eqop_notation a * colormatrix)");
-	foreach $indexing ( @ind_binary_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($t,$t,$src2_t);
-	    $def{'op'} = "times";
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_binary($assgn);
-	    }
-	}
-    }
-}
-}
-#---------------------------------------------------------------------
-&header2("Right multiplication by adjoint of color matrix");
-#---------------------------------------------------------------------
-
-require("make_code_binary.pl");
-
-if(!$quadprecision){
-@assign_list = @eqop_all;
-@data_list   = @datatype_right_mult_colormatrix_abbrev;
-
-foreach $assgn ( @assign_list ){
-    $eqop_notation = $eqop_notation{$assgn};
-    $src2_t = $datatype_colormatrix_abbrev;
-    foreach $t ( @data_list ){
-
-	&header3(" $datatype_generic_name{$t} (r $eqop_notation a * adjoint colormatrix)");
-	foreach $indexing ( @ind_binary_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($t,$t,$src2_t);
-	    $def{'op'} = "times";
-	    $def{'src2_adj'} = $suffix_adjoint;
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_binary($assgn);
-	    }
-	}
-    }
-}
-}
 
 #=====================================================================
 &header1("Ternary Operations");

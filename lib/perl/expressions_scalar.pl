@@ -61,7 +61,13 @@ sub print_s_eqop_s {
 	$macro =~ s/QLA/QLA_$prec_d$prec_s/;
       }
       if( $prec_d ne $prec_s && ($key eq "peqc" || $key eq "meqc" || $key eq "eqmc") ) {
-	&print_prec_conv_macro("$macro(", $dest, ", $srce);", 'C', $prec_d, $prec_s);
+	if( ($key eq "peqc" || $key eq "meqc") &&
+	    ($temp_precision ne '' && $temp_precision ne $prec_d) ) {
+	  &print_prec_conv_macro("$macro(", $dest, ", $srce);", 'C', $prec_d, $prec_s);
+	} else {
+	  ($srce, $prec_s) = &make_cast($srce, 'c', $prec_d, $prec_s);
+	  print QLA_SRC @indent,"$macro($dest,$srce);\n";
+	}
       } else {
 	print QLA_SRC @indent,"$macro($dest,$srce);\n";
       }
@@ -96,13 +102,17 @@ sub print_s_eqop_s_op_s {
     my $key = $eqop.$imre.$rc_s1.$conj_s1.$op.$rc_s2.$conj_s2;
     my($macro) = $carith2{$key};
     defined($macro) || die "no carith2 for $key\n";
-    #($src1, $prec_s1) = &make_cast($src1, 'c', $temp_precision, $precision) if($rc_s1 eq 'c');
-    #($src2, $prec_s2) = &make_cast($src2, 'c', $temp_precision, $precision) if($rc_s2 eq 'c');
-    ($src1, $prec_s1) = &make_cast($src1, $rc_s1, $temp_precision, $prec_s1);
-    ($src2, $prec_s2) = &make_cast($src2, $rc_s2, $temp_precision, $prec_s2);
-    my $dt = uc($rc_d);
-    print_prec_conv_macro("$macro(", $dest, ", $src1, $src2);",
-			  $dt, $prec_d, $prec_s1);
+    if($temp_precision ne '') {
+      ($src1, $prec_s1) = &make_cast($src1, $rc_s1, $temp_precision, $prec_s1);
+      ($src2, $prec_s2) = &make_cast($src2, $rc_s2, $temp_precision, $prec_s2);
+      my $dt = uc($rc_d);
+      print_prec_conv_macro("$macro(", $dest, ", $src1, $src2);",
+			    $dt, $prec_d, $prec_s1);
+    } else {
+      ($src1, $prec_s1) = &make_cast($src1, $rc_s1, $prec_d, $prec_s1);
+      ($src2, $prec_s2) = &make_cast($src2, $rc_s2, $prec_d, $prec_s2);
+      print QLA_SRC @indent,"$macro($dest, $src1, $src2);\n";
+    }
   }
 
   # Case real eqop real

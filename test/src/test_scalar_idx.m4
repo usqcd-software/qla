@@ -236,11 +236,6 @@ unarya(C,peq,C)
 unarya(C,eqm,C)
 unarya(C,meq,C)
 
-unary(C,eq_conj,C)
-unary(C,peq_conj,C)
-unary(C,eqm_conj,C)
-unary(C,meq_conj,C)
-
   /* Local squared norm */
 
 alleqops(`unary(R,',`_norm2,C)')
@@ -286,17 +281,15 @@ binary(R,eq,R,plus,R,sR1,sR2)
 binary(R,eq,R,minus,R,sR1,sR2)
 binary(C,eq,C,plus,C,sC1,sC2)
 binary(C,eq,C,minus,C,sC1,sC2)
-binary(R,eq,R,times,R,sR1,sR2)
-binary(C,eq,C,times,C,sC1,sC2)
 
   /* Multiplication */
 
-binary(R,peq,R,times,R,sR1,sR2)
-binary(C,peq,C,times,C,sC1,sC2)
-binary(R,eqm,R,times,R,sR1,sR2)
-binary(C,eqm,C,times,C,sC1,sC2)
-binary(R,meq,R,times,R,sR1,sR2)
-binary(C,meq,C,times,C,sC1,sC2)
+alleqops(`binary(R,',`,R,times,R,sR1,sR2)')
+alleqops(`binary(C,',`,R,times,C,sR1,sC1)')
+alleqops(`binary(C,',`,C,times,C,sC1,sC2)')
+alleqops(`binary(C,',`,C,times,Ca,sC1,sC2)')
+alleqops(`binary(C,',`,Ca,times,C,sC1,sC2)')
+alleqops(`binary(C,',`,Ca,times,Ca,sC1,sC2)')
 
   /* Local inner product - complex */
 

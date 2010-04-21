@@ -54,7 +54,7 @@ sub make_code_unary {
 }
 
 #---------------------------------------------------------------------
-# Code for traceless antihermitian part of gauge matrix
+# Code for traceless antihermitian part of colormatrix
 #---------------------------------------------------------------------
 
 sub make_code_antiherm_part {
@@ -380,7 +380,6 @@ sub make_code_norm2_global_sum {
     &print_fill(\%global_def,"zero");
 
     &open_brace();
-    &open_block();
     &print_def_open_iter($var_i,$def{'dim_name'});
 
     # Accumulate reduced result in global variable
@@ -389,6 +388,9 @@ sub make_code_norm2_global_sum {
       &print_val_eqop_norm2_val(\%global_def,$eqop_peq,\%src1_def);
     }
     elsif($def{'qualifier'} eq "sum"){
+      if($def{dim_name} ne "") {
+	make_temp_ptr(*src1_def,$def{src1_name});
+      }
       &print_val_eqop_op_val(\%global_def,$eqop_peq,\%src1_def,"identity");
     }
     else{
@@ -397,16 +399,13 @@ sub make_code_norm2_global_sum {
 
     if($def{'dim_name'} ne ""){&close_iter($var_i);}
 
-    &close_block();
     &close_brace();
 
     &open_brace();
-    &open_block();
 
     # Assign reduced result to dest
     &print_val_eqop_op_val(\%dest_def,$eqop,\%global_def,"identity");
 
-    &close_block();
     &close_brace();
 
     &close_brace();

@@ -91,12 +91,6 @@ binary(D,eq,D,minus,D,sD1,sD2)
 binary(M,eq,M,minus,M,sM1,sM2)
 binary(P,eq,P,minus,P,sP1,sP2)
 
-binary(M,eqm,M,times,M,sM1,sM2)
-binary(M,peq,M,times,M,sM1,sM2)
-binary(M,meq,M,times,M,sM1,sM2)
-
-alleqops(`binary(P,',`,P,times,P,sP1,sP2)')
-
 alleqops(`binary(V,',`,R,times,V,sR1,sV2)')
 alleqops(`binary(H,',`,R,times,H,sR1,sH2)')
 alleqops(`binary(D,',`,R,times,D,sR1,sD2)')
@@ -108,6 +102,16 @@ alleqops(`binary(H,',`,C,times,H,sC1,sH2)')
 alleqops(`binary(D,',`,C,times,D,sC1,sD2)')
 alleqops(`binary(M,',`,C,times,M,sC1,sM2)')
 alleqops(`binary(P,',`,C,times,P,sC1,sP2)')
+
+alleqops(`binary(M,',`,M,times,M,sM1,sM2)')
+alleqops(`binary(M,',`,M,times,Ma,sM1,sM2)')
+alleqops(`binary(M,',`,Ma,times,M,sM1,sM2)')
+alleqops(`binary(M,',`,Ma,times,Ma,sM1,sM2)')
+
+alleqops(`binary(P,',`,P,times,P,sP1,sP2)')
+alleqops(`binary(P,',`,P,times,Pa,sP1,sP2)')
+alleqops(`binary(P,',`,Pa,times,P,sP1,sP2)')
+alleqops(`binary(P,',`,Pa,times,Pa,sP1,sP2)')
 }
 
   /* Outer product */

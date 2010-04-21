@@ -705,29 +705,37 @@ chkAssignRCMult($1,C,meq)
 rem(`
      Multiplication - uniform types
 ')
-rem(`chkAssignUniformMult(t1,eq)')
+rem(`chkAssignUniformMult(t1,eq,a1,a2)')
 define(chkAssignUniformMult,`
-  strcpy(name,"QLA_$1_$2_$1_times_$1");
+  strcpy(name,"QLA_$1_$2_$1$3_times_$1$4");
   QLA_$1_eq_$1(&argd($1),&arg2($1));
-  QLA_$1_$2_$1_times_$1(&argd($1),&arg1($1),&arg2($1));
+  QLA_$1_$2_$1$3_times_$1$4(&argd($1),&arg1($1),&arg2($1));
   QLA_$1_eq_$1(&argt($1),&arg2($1));
   for_$1_elem{
     QLA_c_eq_r(argt(C),0.);
     for_$1_dot{
-      QLA_c_peq_c_times_c(argt(C),$1_elem_mleft(arg1($1)),
-        $1_elem_mright(arg2($1)));
+      QLA_c_peq_c$3_times_c$4(argt(C),$1$3_elem_mleft(arg1($1)),
+        $1$4_elem_mright(arg2($1)));
     }
    QLA_c_$2_c($1_elem(argt($1)),argt(C));
   }
   checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
+rem(`chkAssignUniformMultAdj(td,eq)')
+define(chkAssignUniformMultAdj,`
+chkAssignUniformMult($1,$2)
+chkAssignUniformMult($1,$2,a)
+chkAssignUniformMult($1,$2,,a)
+chkAssignUniformMult($1,$2,a,a)
+')
+
 rem(`chkUniformMult(td)')
 define(chkUniformMult,`
-chkAssignUniformMult($1,eq)
-chkAssignUniformMult($1,peq)
-chkAssignUniformMult($1,eqm)
-chkAssignUniformMult($1,meq)
+chkAssignUniformMultAdj($1,eq)
+chkAssignUniformMultAdj($1,peq)
+chkAssignUniformMultAdj($1,eqm)
+chkAssignUniformMultAdj($1,meq)
 ')
 
 rem(`
@@ -806,17 +814,17 @@ chkLocalRealDoteqop($1,meq)
 rem(`
      Left multiplication by gauge matrix
 ')
-rem(`chkAssignLeftMultM(t1,eq)')
+rem(`chkAssignLeftMultM(t1,eq,adj)')
 define(chkAssignLeftMultM,`
-  strcpy(name,"QLA_$1_$2_M_times_$1");
+  strcpy(name,"QLA_$1_$2_M_times_$1$3");
   QLA_$1_eq_$1(&argd($1),&arg3($1));
-  QLA_$1_$2_M_times_$1(&argd($1),&arg1(M),&arg2($1));
+  QLA_$1_$2_M_times_$1$3(&argd($1),&arg1(M),&arg2($1));
   QLA_$1_eq_$1(&argt($1),&arg3($1));
   for_$1_elem{
     QLA_c_eq_r(argt(C),0.);
     for_M_colordot{
-      QLA_c_peq_c_times_c(argt(C),M_elem_mleft(arg1(M)),
-        $1_elem_Mmright(arg2($1)));
+      QLA_c_peq_c_times_c$3(argt(C),M_elem_mleft(arg1(M)),
+        $1$3_elem_Mmright(arg2($1)));
     }
    QLA_c_$2_c($1_elem(argt($1)),argt(C));
   }
@@ -824,56 +832,28 @@ define(chkAssignLeftMultM,`
 ')
 
 
-rem(`chkLeftMultM(td)')
+rem(`chkLeftMultM(td,adj)')
 define(chkLeftMultM,`
-chkAssignLeftMultM($1,eq)
-chkAssignLeftMultM($1,peq)
-chkAssignLeftMultM($1,eqm)
-chkAssignLeftMultM($1,meq)
-')
-
-rem(`
-     Adjoint gauge times adjoint gauge
-')
-rem(`chkAssignMultMaMa(td,eq)')
-define(chkAssignMultMaMa,`
-  strcpy(name,"QLA_$1_$2_Ma_times_Ma");
-  QLA_$1_eq_$1(&argd($1),&arg3($1));
-  QLA_$1_$2_Ma_times_Ma(&argd($1),&arg1(M),&arg2(M));
-  QLA_M_eq_M(&argt($1),&arg3($1));
-  for_$1_elem{
-    QLA_c_eq_r(argt(C),0.);
-    for_$1_colordot{
-      QLA_c_peq_ca_times_ca(argt(C),Ma_elem_mleft(arg1(M)),
-        Ma_elem_mright(arg2(M)));
-    }
-   QLA_c_$2_c($1_elem(argt($1)),argt(C));
-  }
-  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
-')
-
-rem(`chkMultMaMa(td)')
-define(chkMultMaMa,`
-chkAssignMultMaMa(M,eq)
-chkAssignMultMaMa(M,peq)
-chkAssignMultMaMa(M,eqm)
-chkAssignMultMaMa(M,meq)
+chkAssignLeftMultM($1,eq,$2)
+chkAssignLeftMultM($1,peq,$2)
+chkAssignLeftMultM($1,eqm,$2)
+chkAssignLeftMultM($1,meq,$2)
 ')
 
 rem(`
      Left multiplication by adjoint gauge
 ')
-rem(`chkAssignLeftMultMa(t1,eq)')
+rem(`chkAssignLeftMultMa(t1,eq,adj)')
 define(chkAssignLeftMultMa,`
-  strcpy(name,"QLA_$1_$2_Ma_times_$1");
+  strcpy(name,"QLA_$1_$2_Ma_times_$1$3");
   QLA_$1_eq_$1(&argd($1),&arg3($1));
-  QLA_$1_$2_Ma_times_$1(&argd($1),&arg1(M),&arg2($1));
+  QLA_$1_$2_Ma_times_$1$3(&argd($1),&arg1(M),&arg2($1));
   QLA_$1_eq_$1(&argt($1),&arg3($1));
   for_$1_elem{
     QLA_c_eq_r(argt(C),0.);
     for_M_colordot{
-      QLA_c_peq_ca_times_c(argt(C),Ma_elem_mleft(arg1(M)),
-        $1_elem_Mmright(arg2($1)));
+      QLA_c_peq_ca_times_c$3(argt(C),Ma_elem_mleft(arg1(M)),
+        $1$3_elem_Mmright(arg2($1)));
     }
    QLA_c_$2_c($1_elem(argt($1)),argt(C));
   }
@@ -881,27 +861,27 @@ define(chkAssignLeftMultMa,`
 ')
 
 
-rem(`chkLeftMultMa(td)')
+rem(`chkLeftMultMa(td,adj)')
 define(chkLeftMultMa,`
-chkAssignLeftMultMa($1,eq)
-chkAssignLeftMultMa($1,peq)
-chkAssignLeftMultMa($1,eqm)
-chkAssignLeftMultMa($1,meq)
+chkAssignLeftMultMa($1,eq,$2)
+chkAssignLeftMultMa($1,peq,$2)
+chkAssignLeftMultMa($1,eqm,$2)
+chkAssignLeftMultMa($1,meq,$2)
 ')
 
 rem(`
      Right multiplication by gauge
 ')
-rem(`chkAssignRightMultM(t1,eq)')
+rem(`chkAssignRightMultM(t1,eq,adj)')
 define(chkAssignRightMultM,`
-  strcpy(name,"QLA_$1_$2_$1_times_M");
+  strcpy(name,"QLA_$1_$2_$1$3_times_M");
   QLA_$1_eq_$1(&argd($1),&arg3($1));
-  QLA_$1_$2_$1_times_M(&argd($1),&arg1($1),&arg2(M));
+  QLA_$1_$2_$1$3_times_M(&argd($1),&arg1($1),&arg2(M));
   QLA_$1_eq_$1(&argt($1),&arg3($1));
   for_$1_elem{
     QLA_c_eq_r(argt(C),0.);
     for_M_colordot{
-      QLA_c_peq_c_times_c(argt(C),$1_elem_mleftM(arg1($1)),
+      QLA_c_peq_c$3_times_c(argt(C),$1$3_elem_mleftM(arg1($1)),
         M_elem_mright(arg2(M)));
     }
    QLA_c_$2_c($1_elem(argt($1)),argt(C));
@@ -910,27 +890,27 @@ define(chkAssignRightMultM,`
 ')
 
 
-rem(`chkRightMultM(td)')
+rem(`chkRightMultM(td,adj)')
 define(chkRightMultM,`
-chkAssignRightMultM($1,eq)
-chkAssignRightMultM($1,peq)
-chkAssignRightMultM($1,eqm)
-chkAssignRightMultM($1,meq)
+chkAssignRightMultM($1,eq,$2)
+chkAssignRightMultM($1,peq,$2)
+chkAssignRightMultM($1,eqm,$2)
+chkAssignRightMultM($1,meq,$2)
 ')
 
 rem(`
      Right multiplication by adjoint gauge
 ')
-rem(`chkAssignRightMultMa(t1,eq)')
+rem(`chkAssignRightMultMa(t1,eq,adj)')
 define(chkAssignRightMultMa,`
-  strcpy(name,"QLA_$1_$2_$1_times_Ma");
+  strcpy(name,"QLA_$1_$2_$1$3_times_Ma");
   QLA_$1_eq_$1(&argd($1),&arg3($1));
-  QLA_$1_$2_$1_times_Ma(&argd($1),&arg1($1),&arg2(M));
+  QLA_$1_$2_$1$3_times_Ma(&argd($1),&arg1($1),&arg2(M));
   QLA_$1_eq_$1(&argt($1),&arg3($1));
   for_$1_elem{
     QLA_c_eq_r(argt(C),0.);
     for_M_colordot{
-      QLA_c_peq_c_times_ca(argt(C),$1_elem_mleftM(arg1($1)),
+      QLA_c_peq_c$3_times_ca(argt(C),$1$3_elem_mleftM(arg1($1)),
         Ma_elem_mright(arg2(M)));
     }
    QLA_c_$2_c($1_elem(argt($1)),argt(C));
@@ -939,12 +919,12 @@ define(chkAssignRightMultMa,`
 ')
 
 
-rem(`chkRightMultMa(td)')
+rem(`chkRightMultMa(td,adj)')
 define(chkRightMultMa,`
-chkAssignRightMultMa($1,eq)
-chkAssignRightMultMa($1,peq)
-chkAssignRightMultMa($1,eqm)
-chkAssignRightMultMa($1,meq)
+chkAssignRightMultMa($1,eq,$2)
+chkAssignRightMultMa($1,peq,$2)
+chkAssignRightMultMa($1,eqm,$2)
+chkAssignRightMultMa($1,meq,$2)
 ')
 
 

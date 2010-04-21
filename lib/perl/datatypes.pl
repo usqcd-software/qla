@@ -38,38 +38,37 @@ $precision_longdouble_abbrev = 'Q';
 # List of datatype abbreviations
 
 # Type abbreviations
+$datatype_integer_abbrev = 'I';
 $datatype_real_abbrev = 'R';
 $datatype_complex_abbrev = 'C';
-$datatype_integer_abbrev = 'I';
-$datatype_colormatrix_abbrev = 'M';
-$datatype_gauge_abbrev = $datatype_colormatrix_abbrev;
+$datatype_colorvector_abbrev = 'V';
 $datatype_halffermion_abbrev = 'H';
 $datatype_diracfermion_abbrev = 'D';
-$datatype_colorvector_abbrev = 'V';
+$datatype_colormatrix_abbrev = 'M';
 $datatype_diracpropagator_abbrev = 'P';
 $datatype_randomstate_abbrev = 'S';
 
 @datatype_abbrev = (
+    $datatype_integer_abbrev,
     $datatype_real_abbrev,
     $datatype_complex_abbrev,
-    $datatype_integer_abbrev,
-    $datatype_colormatrix_abbrev,
+    $datatype_colorvector_abbrev,
     $datatype_halffermion_abbrev,
     $datatype_diracfermion_abbrev,
-    $datatype_colorvector_abbrev,
+    $datatype_colormatrix_abbrev,
     $datatype_diracpropagator_abbrev,
     $datatype_randomstate_abbrev
 		    );
 
 # Arithmetic datatypes
 @datatype_arithmetic_abbrev = (
+    $datatype_integer_abbrev,
     $datatype_real_abbrev,
     $datatype_complex_abbrev,
-    $datatype_integer_abbrev,
-    $datatype_colormatrix_abbrev,
+    $datatype_colorvector_abbrev,
     $datatype_halffermion_abbrev,
     $datatype_diracfermion_abbrev,
-    $datatype_colorvector_abbrev,
+    $datatype_colormatrix_abbrev,
     $datatype_diracpropagator_abbrev,
 		   );
 
@@ -92,13 +91,13 @@ foreach $t ( @datatype_abbrev ){
 # Generic datatypes in terms of abbreviations
 
 %datatype_generic_name = (
+  $datatype_integer_abbrev, 'QLA_Int',
   $datatype_real_abbrev, 'QLA_Real',
   $datatype_complex_abbrev, 'QLA_Complex',
-  $datatype_integer_abbrev, 'QLA_Int',
-  $datatype_colormatrix_abbrev, 'QLA_ColorMatrix',
+  $datatype_colorvector_abbrev, 'QLA_ColorVector',
   $datatype_halffermion_abbrev, 'QLA_HalfFermion',
   $datatype_diracfermion_abbrev, 'QLA_DiracFermion',
-  $datatype_colorvector_abbrev, 'QLA_ColorVector',
+  $datatype_colormatrix_abbrev, 'QLA_ColorMatrix',
   $datatype_diracpropagator_abbrev, 'QLA_DiracPropagator',
   $datatype_randomstate_abbrev, 'QLA_RandomState',
 		      );
@@ -112,13 +111,13 @@ foreach $t ( keys %datatype_generic_name ){
 # Floating point datatypes 
 
 %datatype_floatpt = (
+     $datatype_integer_abbrev,0,  
      $datatype_real_abbrev,1,
      $datatype_complex_abbrev,1,
-     $datatype_integer_abbrev,0,  
-     $datatype_colormatrix_abbrev,1,
+     $datatype_colorvector_abbrev,1,
      $datatype_halffermion_abbrev,1,
      $datatype_diracfermion_abbrev,1,
-     $datatype_colorvector_abbrev,1,
+     $datatype_colormatrix_abbrev,1,
      $datatype_diracpropagator_abbrev,1,
      $datatype_randomstate_abbrev,0,
 			   );
@@ -131,13 +130,13 @@ foreach $t ( keys %datatype_floatpt ){
 
 # Specify real or complex for datatype element
 %datatype_rc = (
+   $datatype_integer_abbrev,"r",
    $datatype_real_abbrev,"r",
    $datatype_complex_abbrev,"c",
-   $datatype_integer_abbrev,"r",
-   $datatype_colormatrix_abbrev,"c",
+   $datatype_colorvector_abbrev,"c",
    $datatype_halffermion_abbrev,"c",
    $datatype_diracfermion_abbrev,"c",
-   $datatype_colorvector_abbrev,"c",
+   $datatype_colormatrix_abbrev,"c",
    $datatype_diracpropagator_abbrev,"c",
    $datatype_randomstate_abbrev,"r"
 			   );
@@ -149,13 +148,13 @@ foreach $t ( keys %datatype_rc ){
 
 # Dimension of row color index
 %datatype_row_color_dim = (
+   $datatype_integer_abbrev,0,
    $datatype_real_abbrev,0,
    $datatype_complex_abbrev,0,
-   $datatype_integer_abbrev,0,
-   $datatype_colormatrix_abbrev,$colors,
+   $datatype_colorvector_abbrev,$colors,
    $datatype_halffermion_abbrev,$colors,
    $datatype_diracfermion_abbrev,$colors,
-   $datatype_colorvector_abbrev,$colors,
+   $datatype_colormatrix_abbrev,$colors,
    $datatype_diracpropagator_abbrev,$colors,
    $datatype_randomstate_abbrev,0
 			   );
@@ -175,16 +174,16 @@ sub max_row_color_dim {
 
 # Dimension of column color index
 %datatype_col_color_dim = (
-   $datatype_real_abbrev,0,
-   $datatype_complex_abbrev,0,
-   $datatype_integer_abbrev,0,
-   $datatype_colormatrix_abbrev,$colors,
-   $datatype_halffermion_abbrev,0,
-   $datatype_diracfermion_abbrev,0,
-   $datatype_colorvector_abbrev,0,
-   $datatype_diracpropagator_abbrev,$colors,
-   $datatype_randomstate_abbrev,0
-			   );
+  $datatype_integer_abbrev,0,
+  $datatype_real_abbrev,0,
+  $datatype_complex_abbrev,0,
+  $datatype_colorvector_abbrev,0,
+  $datatype_halffermion_abbrev,0,
+  $datatype_diracfermion_abbrev,0,
+  $datatype_colormatrix_abbrev,$colors,
+  $datatype_diracpropagator_abbrev,$colors,
+  $datatype_randomstate_abbrev,0
+    );
 
 # Append scalar types - the values are identical
 foreach $t ( keys %datatype_col_color_dim ){
@@ -194,42 +193,44 @@ foreach $t ( keys %datatype_col_color_dim ){
 
 # Return constant or variable for maximum color index
 sub max_col_color_dim {
-    local($t) = @_;
-    # nc is either 2, 3, or the color argument
-    if($datatype_col_color_dim{$t} eq $colors){$def{'nc'};}
-    else {$datatype_col_color_dim{$t}};
+  local($t) = @_;
+  # nc is either 2, 3, or the color argument
+  if($datatype_col_color_dim{$t} eq $colors){$def{'nc'};}
+  else {$datatype_col_color_dim{$t}};
 }
 
 # Dimension of spin row index
 %datatype_row_spin_dim = (
-   $datatype_real_abbrev,0,
-   $datatype_complex_abbrev,0,
-   $datatype_integer_abbrev,0,
-   $datatype_colormatrix_abbrev,0,
-   $datatype_halffermion_abbrev,$halfspins,
-   $datatype_diracfermion_abbrev,$spins,
-   $datatype_colorvector_abbrev,0,
-   $datatype_diracpropagator_abbrev,$spins,
-   $datatype_randomstate_abbrev,0
-			   );
+  $datatype_integer_abbrev,0,
+  $datatype_real_abbrev,0,
+  $datatype_complex_abbrev,0,
+  $datatype_colorvector_abbrev,0,
+  $datatype_halffermion_abbrev,$halfspins,
+  $datatype_diracfermion_abbrev,$spins,
+  $datatype_colormatrix_abbrev,0,
+  $datatype_diracpropagator_abbrev,$spins,
+  $datatype_randomstate_abbrev,0
+    );
+
 # Append scalar types - the values are identical
 foreach $t ( keys %datatype_row_spin_dim ){
-    $s = $datatype_scalar_abbrev{$t};
-    $datatype_row_spin_dim{$s} = $datatype_row_spin_dim{$t};
+  $s = $datatype_scalar_abbrev{$t};
+  $datatype_row_spin_dim{$s} = $datatype_row_spin_dim{$t};
 }
 
 # Dimension of spin column index
 %datatype_col_spin_dim = (
+   $datatype_integer_abbrev,0,
    $datatype_real_abbrev,0,
    $datatype_complex_abbrev,0,
-   $datatype_integer_abbrev,0,
-   $datatype_colormatrix_abbrev,0,
+   $datatype_colorvector_abbrev,0,
    $datatype_halffermion_abbrev,0,
    $datatype_diracfermion_abbrev,0,
-   $datatype_colorvector_abbrev,0,
+   $datatype_colormatrix_abbrev,0,
    $datatype_diracpropagator_abbrev,$spins,
    $datatype_randomstate_abbrev,0
-			   );
+    );
+
 # Append scalar types - the values are identical
 foreach $t ( keys %datatype_col_spin_dim ){
     $s = $datatype_scalar_abbrev{$t};
@@ -252,7 +253,6 @@ foreach $t ( @datatype_abbrev )
        $datatype_col_color_dim{$s} ne "0")
     {$datatype_colorful{$s} = 1;}
     else{$datatype_colorful{$s} = 0;}
-
 }
 
 # Datatypes having distinct adjoints in the same class
@@ -261,15 +261,6 @@ foreach $t ( @datatype_abbrev )
      $datatype_colormatrix_abbrev,
      $datatype_diracpropagator_abbrev,
 		   );
-
-# Datatypes having distinct adjoints 
-@datatype_distinct_adjoint_abbrev = (
-     $datatype_real_abbrev,
-     $datatype_complex_abbrev,
-     $datatype_halffermion_abbrev,
-     $datatype_diracfermion_abbrev,
-     $datatype_colorvector_abbrev,
-				     );
 
 # Datatypes allowing distinct transpose in the same class
 @datatype_transpose_abbrev = (
@@ -287,18 +278,16 @@ foreach $t ( @datatype_abbrev ){
 
 @datatype_mult_complex_abbrev = (
      $datatype_complex_abbrev,
-     $datatype_colormatrix_abbrev,
+     $datatype_colorvector_abbrev,
      $datatype_halffermion_abbrev,
      $datatype_diracfermion_abbrev,
-     $datatype_colorvector_abbrev,
+     $datatype_colormatrix_abbrev,
      $datatype_diracpropagator_abbrev,
 		     );
 
 # Types closing under self multiplication 
 
 @datatype_mult_self_abbrev = (
-  $datatype_real_abbrev,
-  $datatype_complex_abbrev,
   $datatype_integer_abbrev,
   $datatype_colormatrix_abbrev,
   $datatype_diracpropagator_abbrev,
@@ -307,10 +296,10 @@ foreach $t ( @datatype_abbrev ){
 # Types closing under left multiplication by colormatrix field 
 
 @datatype_left_mult_colormatrix_abbrev = (
-     $datatype_colormatrix_abbrev,
+     $datatype_colorvector_abbrev,
      $datatype_halffermion_abbrev,
      $datatype_diracfermion_abbrev,
-     $datatype_colorvector_abbrev,
+     $datatype_colormatrix_abbrev,
      $datatype_diracpropagator_abbrev,
 			     );
 

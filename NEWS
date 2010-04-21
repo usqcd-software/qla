@@ -1,4 +1,17 @@
 ===============================================================================
+2010-04-21	version 1.7.0-a5 (5th alpha release of 1.7.0)
+===============================================================================
+2010-04-20: James Osborn
+	Added more functions, removed C_eqop_conj_C, added temporary pointers
+	for indexed varibles to avoid XLCv8 bug.
+
+2010-04-09: James Osborn
+	Added more times functions.
+
+2010-04-04: James Osborn
+	Fix _div_c macros to use safer temporary name.
+
+===============================================================================
 2010-04-04	version 1.7.0-a4 (4th alpha release of 1.7.0)
 ===============================================================================
 2010-04-04: James Osborn
