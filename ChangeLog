@@ -1,3 +1,20 @@
+2010-04-21 02:40  osborn
+
+	* NEWS, configure, configure.ac, include/qla_complex.h,
+	  lib/perl/build_qla.pl, lib/perl/datatypes.pl,
+	  lib/perl/expressions_scalar.pl, lib/perl/expressions_tensor.pl,
+	  lib/perl/formatting.pl, lib/perl/make_code_unary.pl,
+	  lib/qla_d/Makefile.am, lib/qla_d2/Makefile.am,
+	  lib/qla_d3/Makefile.am, lib/qla_dn/Makefile.am,
+	  lib/qla_f/Makefile.am, lib/qla_f2/Makefile.am,
+	  lib/qla_f3/Makefile.am, lib/qla_fn/Makefile.am,
+	  test/src/protocol_tensor_sng.m4, test/src/tensor_args.m4,
+	  test/src/test_scalar_idx.m4, test/src/test_scalar_sng.c,
+	  test/src/test_tensor_idx2.m4, test/src/test_tensor_idx3.m4,
+	  test/src/test_tensor_sng.m4: Added more functions, removed
+	  C_eqop_conj_C, added temporary pointers for indexed varibles to
+	  avoid XLCv8 bug.
+
 2010-04-04 17:43  tag qla1-7-0-a4
 
 2010-04-04 17:43  osborn
