@@ -61,8 +61,7 @@ sub print_s_eqop_s {
 	$macro =~ s/QLA/QLA_$prec_d$prec_s/;
       }
       if( $prec_d ne $prec_s && ($key eq "peqc" || $key eq "meqc" || $key eq "eqmc") ) {
-	if( ($key eq "peqc" || $key eq "meqc") &&
-	    ($temp_precision ne '' && $temp_precision ne $prec_d) ) {
+	if($temp_precision ne '' && $temp_precision ne $prec_d) {
 	  &print_prec_conv_macro("$macro(", $dest, ", $srce);", 'C', $prec_d, $prec_s);
 	} else {
 	  ($srce, $prec_s) = &make_cast($srce, 'c', $prec_d, $prec_s);

@@ -1,5 +1,5 @@
 ===============================================================================
-2010-04-21	version 1.7.0-a5 (5th alpha release of 1.7.0)
+2010-04-22	version 1.7.0-a5 (5th alpha release of 1.7.0)
 ===============================================================================
 2010-04-20: James Osborn
 	Added more functions, removed C_eqop_conj_C, added temporary pointers

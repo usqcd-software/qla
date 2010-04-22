@@ -95,8 +95,12 @@ typedef union {
 #endif
 
 #define QLA_DF_r(a)  ((QLA_D_Real)(a))
+#define QLA_FD_r(a)  ((QLA_F_Real)(a))
 #define QLA_DQ_r(a)  ((QLA_D_Real)(a))
+#define QLA_QD_r(a)  ((QLA_Q_Real)(a))
+#define QLA_FD_c(a)  ((QLA_F_Complex)(a))
 #define QLA_DQ_c(a)  ((QLA_D_Complex)(a))
+#define QLA_QD_c(a)  ((QLA_Q_Complex)(a))
 
 #define QLA_FD_c_eq_r(c,a) (c) = (a)
 
