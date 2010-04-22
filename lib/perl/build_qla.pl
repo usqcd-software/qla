@@ -1472,30 +1472,30 @@ require("make_code_binary.pl");
 @data_list   = @datatype_arithmetic_abbrev;
 
 if(!$quadprecision){
-foreach $assgn ( @assign_list ){
+  foreach $assgn ( @assign_list ){
     foreach $t ( @data_list ){
 
-	&header3(" $datatype_generic_name{$t} (r = a + b) ");
-	foreach $indexing ( @ind_binary_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($t,$t,$t);
-	    $def{'op'} = "plus";
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_binary($assgn);
-	    }
+      &header3(" $datatype_generic_name{$t} (r = a + b) ");
+      foreach $indexing ( @ind_binary_list ){
+	%def = ();
+	($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($t,$t,$t);
+	$def{'op'} = "plus";
+	if(&make_prototype($indexing,$assgn)){
+	  &make_code_binary($assgn);
 	}
-	
-	&header3(" $datatype_generic_name{$t} (r = a - b)");
-	foreach $indexing ( @ind_binary_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($t,$t,$t);
-	    $def{'op'} = "minus";
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_binary($assgn);
-	    }
+      }
+
+      &header3(" $datatype_generic_name{$t} (r = a - b)");
+      foreach $indexing ( @ind_binary_list ){
+	%def = ();
+	($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($t,$t,$t);
+	$def{'op'} = "minus";
+	if(&make_prototype($indexing,$assgn)){
+	  &make_code_binary($assgn);
 	}
+      }
     }
-}
+  }
 }
 
 #---------------------------------------------------------------------
@@ -2056,24 +2056,24 @@ foreach $indexing ( @ind_unary_list ){
 require("make_code_binary.pl");
 
 if(!$quadprecision){
-@assign_list = ( $eqop_eq );
-@data_list   = ( @datatype_arithmetic_abbrev );
+  @assign_list = ( $eqop_eq );
+  @data_list   = ( @datatype_abbrev );
 
-$src2_t = $datatype_integer_abbrev;
+  $src2_t = $datatype_integer_abbrev;
 
-foreach $assgn ( @assign_list ){
+  foreach $assgn ( @assign_list ){
     foreach $t ( @data_list ){
-	&header3(" $datatype_generic_name{$t} (r = a mask b)");
-	foreach $indexing ( @ind_binary_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($t,$t,$src2_t);
-	    $def{'op'} = "mask";
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_binary_elementary($assgn);
-	    }
+      &header3(" $datatype_generic_name{$t} (r = a mask b)");
+      foreach $indexing ( @ind_binary_list ){
+	%def = ();
+	($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($t,$t,$src2_t);
+	$def{'op'} = "mask";
+	if(&make_prototype($indexing,$assgn)){
+	  &make_code_binary_elementary($assgn);
 	}
+      }
     }
-}    
+  }
 }
 
 #=====================================================================

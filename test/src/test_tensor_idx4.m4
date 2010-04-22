@@ -19,10 +19,11 @@ include(protocol_idx.m4)
 #define QLA(x) QLA_ ## x
 #define QLA_DF(x) QLA_DF_ ## x
 #define QLA_QD(x) QLA_QD_ ## x
+
 '
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
-
 #if (QLA_Precision == 1) || (QLA_Precision == 'F')
+`
 #define QLA_PR(x) QLA_DF_ ## x
   QLA_D_Real destrP, chkrP;
   QLA_D_Complex destcP, chkcP;
@@ -31,7 +32,6 @@ include(protocol_idx.m4)
   QLA_Q_Real destrP, chkrP;
   QLA_Q_Complex destcP, chkcP;
 #endif
-`
 static  int nc = QLA_Nc;
 static  int ns = QLA_Ns;
 static  int ic,jc,is,js;
@@ -75,7 +75,7 @@ static  QLA_Real sR4       = -6.35;
   int dPx[MAX]  = {9,7,3,2,5,8,6,4,0,1};
   int dMx[MAX]  = {1,2,9,7,3,0,4,6,5,8};
 '
-include(tensor_idx_defs.m4);
+include(tensor_idx_defs.m4)
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 
   /* Ternary operations */

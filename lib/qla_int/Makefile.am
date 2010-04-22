@@ -271,13 +271,22 @@ QLA_I_xpeq_pI.c \
 QLA_I_xpeq_pI_times_I.c \
 QLA_I_xpeq_pI_times_pI.c \
 QLA_S_eq_S.c \
+QLA_S_eq_S_mask_I.c \
 QLA_S_eq_seed_i_I.c \
 QLA_S_veq_S.c \
+QLA_S_veq_S_mask_I.c \
+QLA_S_veq_S_mask_pI.c \
 QLA_S_veq_pS.c \
+QLA_S_veq_pS_mask_I.c \
+QLA_S_veq_pS_mask_pI.c \
 QLA_S_veq_seed_i_I.c \
 QLA_S_veq_seed_i_pI.c \
 QLA_S_xeq_S.c \
+QLA_S_xeq_S_mask_I.c \
+QLA_S_xeq_S_mask_pI.c \
 QLA_S_xeq_pS.c \
+QLA_S_xeq_pS_mask_I.c \
+QLA_S_xeq_pS_mask_pI.c \
 QLA_S_xeq_seed_i_I.c \
 QLA_S_xeq_seed_i_pI.c
 
@@ -550,13 +559,22 @@ QLA_I_xpeq_pI.o \
 QLA_I_xpeq_pI_times_I.o \
 QLA_I_xpeq_pI_times_pI.o \
 QLA_S_eq_S.o \
+QLA_S_eq_S_mask_I.o \
 QLA_S_eq_seed_i_I.o \
 QLA_S_veq_S.o \
+QLA_S_veq_S_mask_I.o \
+QLA_S_veq_S_mask_pI.o \
 QLA_S_veq_pS.o \
+QLA_S_veq_pS_mask_I.o \
+QLA_S_veq_pS_mask_pI.o \
 QLA_S_veq_seed_i_I.o \
 QLA_S_veq_seed_i_pI.o \
 QLA_S_xeq_S.o \
+QLA_S_xeq_S_mask_I.o \
+QLA_S_xeq_S_mask_pI.o \
 QLA_S_xeq_pS.o \
+QLA_S_xeq_pS_mask_I.o \
+QLA_S_xeq_pS_mask_pI.o \
 QLA_S_xeq_seed_i_I.o \
 QLA_S_xeq_seed_i_pI.o
 

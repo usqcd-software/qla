@@ -236,6 +236,18 @@ int main(int argc, char *argv[]){
   strcpy(name,"QLA_S_eq_S");
   QLA_S_eq_S(&destS,&chkS);
   CHECKeqsngSS(&destS,&chkS,name,fp);
+ 
+  strcpy(name,"QLA_S_eq_S_mask_I");
+  QLA_S_eq_seed_i_I(&destS,sI1,&nI1);
+  QLA_S_eq_S_mask_I(&destS,&chkS,&sI7);
+  if(sI7){CHECKeqsngSS(&destS,&chkS,name,fp);}
+  else{CHECKeqsngSS(&destS,&destS,name,fp);}
+
+  strcpy(name,"QLA_S_eq_S_mask_I");
+  QLA_S_eq_seed_i_I(&destS,sI1,&nI1);
+  QLA_S_eq_S_mask_I(&destS,&chkS,&sI6);
+  if(sI6){CHECKeqsngSS(&destS,&chkS,name,fp);}
+  else{CHECKeqsngSS(&destS,&destS,name,fp);}
 
   return 0;
 }

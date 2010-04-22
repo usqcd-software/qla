@@ -125,6 +125,7 @@ unary(I,eq_not,I)
   /* Copymask */
 
 binary(I,eq,I,mask,I,sI1,zI1);
+binary(S,eq,S,mask,I,sS1,zI1);
 
   /* Fills */
 
