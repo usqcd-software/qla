@@ -1,3 +1,8 @@
+2010-04-22 00:10  osborn
+
+	* NEWS, include/qla_complex_c99.h, lib/perl/expressions_scalar.pl:
+	  fixed problem with building with temp precision
+
 2010-04-21 02:40  osborn
 
 	* NEWS, configure, configure.ac, include/qla_complex.h,
