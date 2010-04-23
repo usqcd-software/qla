@@ -1,4 +1,10 @@
-2010-04-22 00:10  tag qla1-7-0-a5
+2010-04-22 18:15  tag qla1-7-0-a5
+
+2010-04-22 18:15  osborn
+
+	* lib/perl/build_qla.pl, lib/qla_int/Makefile.am,
+	  test/src/test_int_idx.m4, test/src/test_int_sng.c,
+	  test/src/test_tensor_idx4.m4: added S_mask_I functions
 
 2010-04-22 00:10  osborn
 
