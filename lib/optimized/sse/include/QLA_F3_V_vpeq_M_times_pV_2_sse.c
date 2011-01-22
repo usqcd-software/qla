@@ -1,16 +1,15 @@
 {
-  v4sf a0, a1, a2;
-  v4sf bs0, bs1, b0r, b0i, b1r, b1i, b2r, b2i;
-  v4sf r0r, r0i;
-  v4sf bs2, bs3;
-#ifndef LOAD1
-  v4sf aa0, aa1, aa2;
-#endif
-  int i;
-
 #pragma omp parallel for
-  for(i=0; i<n; i+=2) {
-    //prefetchnt(&r[i+NP]);
+  for(int i=0; i<n; i+=2) {
+    v4sf a0, a1, a2;
+    v4sf bs0, bs1, b0r, b0i, b1r, b1i, b2r, b2i;
+    v4sf r0r, r0i;
+    v4sf bs2, bs3;
+#ifndef LOAD1
+    v4sf aa0, aa1, aa2;
+#endif
+
+    //prefetch(&r[i+NP]);
     //prefetchnt(&a[i+NP]);
     //prefetchnt(b[i+NP]);
 
@@ -82,8 +81,8 @@
     b1i = shufps(bs0,bs2,0xff);
     r0i = addps(r0i,mulps(a1,b1i));
 
-    //prefetchnt(&r[i+12]);
-    //prefetchnt(&a[i+12]);
+    //prefetch(&r[i+NP+1]);
+    //prefetchnt(&a[i+NP+1]);
     //prefetchnt(b[i+NP+1]);
 
 #ifdef LOAD1
@@ -142,6 +141,5 @@
     r0i = shufps(r0i, r0i, 0xb1);
     r0r = addsubps(r0r, r0i);
     storepsr(foff(&r[i],8), r0r);
-
   }
 }

@@ -101,53 +101,58 @@ sub make_code_binary_dot {
 #---------------------------------------------------------------------
 
 sub make_code_binary_dot_global {
-    my($eqop,$imre) = @_;
-    my($global_type);
-    my(%global_def) = %dest_def;
-    my(%src1_mod_def) = %src1_def;
-    my $dest_t = $dest_def{t};
+  my($eqop,$imre) = @_;
+  my($global_type);
+  my(%global_def) = %dest_def;
+  my(%src1_mod_def) = %src1_def;
+  my $dest_t = $dest_def{t};
+  $eqop eq 'eq' || die "only eq supported in global dot ($eqop)\n";
 
-    # The global variable inherits dest attributes, except for type and name
-    # We accumulate global sums in the next higher precision relative to src1
-    my($higher_precision) = $precision_promotion{$precision};
-    $global_type = &datatype_specific($dest_t,$higher_precision);
-    $global_def{'type'} = $global_type;
-    $global_def{'value'} = $var_x;
-    $global_def{'precision'} = $higher_precision;
+  # The global variable inherits dest attributes, except for type and name
+  # We accumulate global sums in the next higher precision relative to src1
+  my($higher_precision) = $precision_promotion{$precision};
+  $global_type = &datatype_specific($dest_t,$higher_precision);
+  $global_def{'type'} = $global_type;
+  $global_def{'value'} = $var_global_sum;
+  $global_def{'precision'} = $higher_precision;
 
-    # For the dot product the adjoint of src1 is understood
-    $src1_mod_def{'adj'} = "a";
-    $src1_mod_def{'conj'} = "a";
-    $src1_mod_def{'trans'} = "t";
-    $src1_mod_def{'mc'} = $src1_def{'nc'};
-    $src1_mod_def{'nc'} = $src1_def{'mc'};
-    $src1_mod_def{'ms'} = $src1_def{'ns'};
-    $src1_mod_def{'ns'} = $src1_def{'ms'};
+  # For the dot product the adjoint of src1 is understood
+  $src1_mod_def{'adj'} = "a";
+  $src1_mod_def{'conj'} = "a";
+  $src1_mod_def{'trans'} = "t";
+  $src1_mod_def{'mc'} = $src1_def{'nc'};
+  $src1_mod_def{'nc'} = $src1_def{'mc'};
+  $src1_mod_def{'ms'} = $src1_def{'ns'};
+  $src1_mod_def{'ns'} = $src1_def{'ms'};
 
-    &open_src_file;
-    &print_function_def($def{'declaration'});
-    &print_nonregister_def($global_type,$var_x);
-    &print_fill(\%global_def,"zero");
+  &print_very_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
+#  &open_src_file;
+#  &print_function_def($def{'declaration'});
+  &print_nonregister_def($global_type,$var_global_sum);
+  &print_fill(\%global_def,"zero");
 
-    &open_brace();
-    &open_block();
-    &print_def_open_iter($var_i,$def{'dim_name'});
+  my $rdef = &open_siteloop_reduce($var_i,$def{'dim_name'},\%global_def);
+#  &open_brace();
+#  &open_block();
+#  &print_def_open_iter($var_i,$def{'dim_name'});
 
-    # Accumulate reduced result in global variable
-    &print_val_eqop_val_op_val(\%global_def,$eqop_peq,$imre,\%src1_mod_def,
-			       "dot",\%src2_def);
+  # Accumulate reduced result in global variable
+  &print_val_eqop_val_op_val($rdef,$eqop_peq,$imre,\%src1_mod_def,
+			     "dot",\%src2_def);
 
-    if($def{'dim_name'} ne ""){
-	&close_iter($var_i);
-    }
+#  if($def{'dim_name'} ne ""){
+#    &close_iter($var_i);
+#  }
 
-    &close_block();
-    &close_brace();
+#  &close_block();
+#  &close_brace();
+  &close_siteloop_reduce($var_i,$def{'dim_name'},\%global_def,$rdef);
 
-    # Assign reduced result to dest
-    &print_val_eqop_op_val(\%dest_def,$eqop,\%global_def,"identity");
-    &close_brace();
-    &close_src_file;
+  # Assign reduced result to dest
+  &print_val_eqop_op_val(\%dest_def,$eqop,\%global_def,"identity");
+  &print_very_end_matter($var_i,$def{'dim_name'});
+#  &close_brace();
+#  &close_src_file;
 }
 
 #---------------------------------------------------------------------
@@ -176,8 +181,9 @@ sub spproj_mult_func {
   $mytemp{value} = "t";
   $mytemp{precision} = $temp_precision;
 
-  &print_def_open_iter($var_i,$def{'dim_name'});
-  &print_align_indx();
+  &open_siteloop($var_i,$def{'dim_name'});
+#  &print_def_open_iter($var_i,$def{'dim_name'});
+#  &print_align_indx();
   print_def($mytemp{type}, $mytemp{value});
 #  if($def{dim_name} ne "") {
 #    make_temp_ptr(\%dest_def,$def{dest_name});
@@ -210,8 +216,9 @@ sub sprecon_mult_func {
   $mytemp{value} = "t";
   $mytemp{precision} = $temp_precision;
 
-  &print_def_open_iter($var_i,$def{'dim_name'});
-  &print_align_indx();
+  &open_siteloop($var_i,$def{'dim_name'});
+#  &print_def_open_iter($var_i,$def{'dim_name'});
+#  &print_align_indx();
   print_def($mytemp{type}, $mytemp{value});
 #  if($def{dim_name} ne "") {
 #    make_temp_ptr(%dest_def,$def{dest_name});
@@ -270,8 +277,9 @@ sub wilsonspin_mult_func {
   %mytemp2 = %mytemp1;
   $mytemp2{value} = "t2";
 
-  &print_def_open_iter($var_i,$def{'dim_name'});
-  &print_align_indx();
+  &open_siteloop($var_i,$def{'dim_name'});
+#  &print_def_open_iter($var_i,$def{'dim_name'});
+#  &print_align_indx();
   print_def($mytemp1{type}, $mytemp1{value});
   print_def($mytemp2{type}, $mytemp2{value});
 #  if($def{dim_name} ne "") {
@@ -306,11 +314,9 @@ sub wilsonspin_mult_func {
 }
 
 sub make_code_wilsonspin_mult {
-    my($eqop,$mu,$sign) = @_;
+  my($eqop,$mu,$sign) = @_;
 
-    &print_very_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
-
-    &print_val_assign_spin($eqop, $mu, $sign, \&wilsonspin_mult_func);
-
-    &print_very_end_matter($var_i,$def{'dim_name'});
+  &print_very_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
+  &print_val_assign_spin($eqop, $mu, $sign, \&wilsonspin_mult_func);
+  &print_very_end_matter($var_i,$def{'dim_name'});
 }

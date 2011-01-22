@@ -1,3 +1,12 @@
+2011-01-21: James Osborn
+	Added OpenMP support for all routines.
+
+2010-08-24: James Osborn
+	Fixed OpenMP support.
+
+2010-04-22: James Osborn
+	Fixed mem & flops for QLA_D_vpeq_spproj_D benchmark.
+
 ===============================================================================
 2010-04-22	version 1.7.0-a5 (5th alpha release of 1.7.0)
 ===============================================================================

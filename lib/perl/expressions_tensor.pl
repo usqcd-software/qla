@@ -31,7 +31,6 @@ use vars qw/ $datatype_integer_abbrev $datatype_real_abbrev /;
 use vars qw/ $datatype_complex_abbrev $datatype_colormatrix_abbrev /;
 use vars qw/ $precision $temp_precision $colors /;
 use vars qw/ $eqop_eqm $eqop_meq /;
-use vars qw/ $var_i /;
 use vars qw/ @indent /;
 
 
@@ -739,7 +738,7 @@ sub print_s_eqop_v_dot_v {
      $rc_s2,$src2_elem_value,$conj2,
      $dprec, $s1prec, $s2prec) = @_;
 
-  my($rc_x) = $rc_d;
+  #my($rc_x) = $rc_d;
 
   &print_int_def($ic);
   &open_iter($ic,$maxic);
@@ -751,7 +750,7 @@ sub print_s_eqop_v_dot_v {
   &open_iter($js,$maxjs);
 
   # Accumulate product
-  &print_s_eqop_s_op_s($rc_x,$var_x,
+  &print_s_eqop_s_op_s($rc_d,$dest_elem_value,
 		       $eqop_peq,$imre,
 		       $rc_s1,$src1_elem_value,$conj1,
 		       '*',

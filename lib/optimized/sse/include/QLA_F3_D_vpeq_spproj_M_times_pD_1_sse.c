@@ -34,8 +34,8 @@
 
 #define NP 6
 {
-  int i;
-  for(i=0;i<n;i++) {
+#pragma omp parallel for
+  for(int i=0; i<n; i++) {
     v4sf h1[3], h2[3];
     QLA_F3_DiracFermion *ri = &r[i];
     QLA_F3_ColorMatrix *ai = &a[i];
@@ -47,7 +47,7 @@
 	spproj(SP)(h1[i_c], foff(bi,8*i_c));
       }
     }
-    prefetchnt(&a[i+NP]);
+    //prefetchnt(&a[i+NP]);
     {
 #if 0
       int i_c;
@@ -83,7 +83,7 @@
       h2[2] = addsubps(h2[2],mti);
 #endif
     }
-    prefetch(&r[i+NP]);
+    //prefetch(&r[i+NP]);
     {
       int i_c;
       for(i_c=0; i_c<3; i_c++) {

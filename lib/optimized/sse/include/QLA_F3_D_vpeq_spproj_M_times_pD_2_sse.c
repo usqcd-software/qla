@@ -32,18 +32,19 @@
   mt3 = shufps(mt1, mt1, 0xff);                 \
   ri = addps(ri, mulps(mt3, b))
 
-#define NP 6
+#define NP 4
 {
-  int i;
-  for(i=0; i<n; ) {
+#pragma omp parallel for
+  for(int i=0; i<n; i+=2) {
     v4sf mt1;
-
     {
       v4sf h1[3], h2[3];
       QLA_F3_DiracFermion *ri = &r[i];
       QLA_F3_ColorMatrix *ai = &a[i];
       QLA_F3_DiracFermion *bi = b[i];
 
+      //prefetch(&r[i+NP]);
+      //prefetchnt(&a[i+NP]);
       //prefetchnt(b[i+NP]);
       {
 	int i_c;
@@ -51,7 +52,6 @@
 	  spproj(SP)(h1[i_c], foff(bi,8*i_c));
 	}
       }
-      prefetchnt(&a[i+NP]);
       {
 	v4sf mti, mt2, mt3;
 	mt1 = loadaps(&QLA_F3_elem_M(*ai,0,0));
@@ -75,7 +75,6 @@
 	mti = shufps(mti, mti, 0xb1);
 	h2[2] = addsubps(h2[2],mti);
       }
-      prefetch(&r[i+NP]);
       {
 	int i_c;
 	for(i_c=0; i_c<3; i_c++) {
@@ -92,14 +91,15 @@
 	}
       }
     }
-    i++;
 
     {
       v4sf h1[3], h2[3];
-      QLA_F3_DiracFermion *ri = &r[i];
-      QLA_F3_ColorMatrix *ai = &a[i];
-      QLA_F3_DiracFermion *bi = b[i];
+      QLA_F3_DiracFermion *ri = &r[i+1];
+      QLA_F3_ColorMatrix *ai = &a[i+1];
+      QLA_F3_DiracFermion *bi = b[i+1];
 
+      //prefetch(&r[i+NP+1]);
+      //prefetchnt(&a[i+NP+1]);
       //prefetchnt(b[i+NP]);
       {
 	int i_c;
@@ -107,7 +107,6 @@
 	  spproj(SP)(h1[i_c], foff(bi,8*i_c));
 	}
       }
-      prefetchnt(&a[i+NP]);
       {
 	v4sf mti, mt2, mt3;
 	mult_c1_h(h2[0], mti, h1[0]);
@@ -130,7 +129,6 @@
 	mti = shufps(mti, mti, 0xb1);
 	h2[2] = addsubps(h2[2],mti);
       }
-      prefetch(&r[i+NP]);
       {
 	int i_c;
 	for(i_c=0; i_c<3; i_c++) {
@@ -147,7 +145,6 @@
 	}
       }
     }
-    i++;
 
   }
 }

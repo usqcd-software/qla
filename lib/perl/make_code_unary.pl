@@ -230,8 +230,10 @@ sub make_code_unary_fcn {
 
 sub spproj_func {
   my($sign, $dir, $eqop) = @_;
-  &print_def_open_iter($var_i,$def{'dim_name'});
-  &print_align_indx();
+
+  &open_siteloop($var_i,$def{'dim_name'});
+#  &print_def_open_iter($var_i,$def{'dim_name'});
+#  &print_align_indx();
   if($def{dim_name} ne "") {
     make_temp_ptr(*dest_def,$def{dest_name});
     make_temp_ptr(*src1_def,$def{src1_name});
@@ -249,8 +251,10 @@ sub spproj_func {
 
 sub sprecon_func {
   my($sign, $dir, $eqop) = @_;
-  &print_def_open_iter($var_i,$def{'dim_name'});
-  &print_align_indx();
+
+  &open_siteloop($var_i,$def{'dim_name'});
+#  &print_def_open_iter($var_i,$def{'dim_name'});
+#  &print_align_indx();
   if($def{dim_name} ne "") {
     make_temp_ptr(*dest_def,$def{dest_name});
     make_temp_ptr(*src1_def,$def{src1_name});
@@ -294,8 +298,9 @@ sub wilsonspin_func {
   $mytemp{value} = "t";
   $mytemp{precision} = $temp_precision;
 
-  &print_def_open_iter($var_i,$def{'dim_name'});
-  &print_align_indx();
+  &open_siteloop($var_i,$def{'dim_name'});
+#  &print_def_open_iter($var_i,$def{'dim_name'});
+#  &print_align_indx();
   if($def{dim_name} ne "") {
     make_temp_ptr(*dest_def,$def{dest_name});
     make_temp_ptr(*src1_def,$def{src1_name});
@@ -318,13 +323,11 @@ sub wilsonspin_func {
 }
 
 sub make_code_wilsonspin {
-    my($eqop,$mu,$sign) = @_;
+  my($eqop,$mu,$sign) = @_;
 
-    &print_very_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
-
-    &print_val_assign_spin($eqop, $mu, $sign, \&wilsonspin_func);
-
-    &print_very_end_matter($var_i,$def{'dim_name'});
+  &print_very_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
+  &print_val_assign_spin($eqop, $mu, $sign, \&wilsonspin_func);
+  &print_very_end_matter($var_i,$def{'dim_name'});
 }
 
 #---------------------------------------------------------------------
@@ -334,7 +337,8 @@ sub make_code_wilsonspin {
 sub mult_gamma_func {
   my($eqop, $leftright, $g) = @_;
 
-  &print_def_open_iter($var_i,$def{'dim_name'});
+  &open_siteloop($var_i,$def{'dim_name'});
+#  &print_def_open_iter($var_i,$def{'dim_name'});
   if($def{dim_name} ne "") {
     make_temp_ptr(*dest_def,$def{dest_name});
     make_temp_ptr(*src1_def,$def{src1_name});
@@ -360,56 +364,53 @@ sub make_code_mult_gamma {
 #---------------------------------------------------------------------
 
 sub make_code_norm2_global_sum {
-    my($eqop) = @_;
+  my($eqop) = @_;
+  $eqop eq 'eq' || die "only eq supported in reductions ($eqop)\n";
 
-    my($global_type);
-    my(%global_def) = %dest_def;
-    my $dest_t = $dest_def{t};
+  my($global_type);
+  my(%global_def) = %dest_def;
+  my $dest_t = $dest_def{t};
 
-    # The global variable inherits dest attributes, except for type and name
-    # We accumulate global sums in the next higher precision relative to src1
-    my($higher_precision) = $precision_promotion{$precision};
-    $global_type = &datatype_specific($dest_t,$higher_precision);
-    $global_def{'type'} = $global_type;
-    $global_def{'value'} = $var_global_sum;
-    $global_def{'precision'} = $higher_precision;
+  # The global variable inherits dest attributes, except for type and name
+  # We accumulate global sums in the next higher precision relative to src1
+  my($higher_precision) = $precision_promotion{$precision};
+  $global_type = &datatype_specific($dest_t,$higher_precision);
+  $global_def{'type'} = $global_type;
+  $global_def{'value'} = $var_global_sum;
+  $global_def{'precision'} = $higher_precision;
 
-    &open_src_file;
-    &print_function_def($def{'declaration'});
-    &print_nonregister_def($global_type,$var_global_sum);
-    &print_fill(\%global_def,"zero");
+  &print_very_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
+#  &open_src_file;
+#  &print_function_def($def{'declaration'});
+  &print_nonregister_def($global_type,$var_global_sum);
+  &print_fill(\%global_def,"zero");
+  my $rdef;
 
-    &open_brace();
-    &print_def_open_iter($var_i,$def{'dim_name'});
-
-    # Accumulate reduced result in global variable
-    if($def{'qualifier'} eq "norm2"){
-      # dest must be real in this case
-      &print_val_eqop_norm2_val(\%global_def,$eqop_peq,\%src1_def);
+  # Accumulate reduced result in global variable
+  if($def{'qualifier'} eq "norm2"){
+    # dest must be real in this case
+    $rdef = &open_siteloop_reduce($var_i,$def{'dim_name'},\%global_def);
+    &print_val_eqop_norm2_val($rdef,$eqop_peq,\%src1_def);
+  }
+  elsif($def{'qualifier'} eq "sum"){
+    $rdef = &open_siteloop_reduce($var_i,$def{'dim_name'},\%global_def);
+    if($def{dim_name} ne "") {
+      make_temp_ptr(*src1_def,$def{src1_name});
     }
-    elsif($def{'qualifier'} eq "sum"){
-      if($def{dim_name} ne "") {
-	make_temp_ptr(*src1_def,$def{src1_name});
-      }
-      &print_val_eqop_op_val(\%global_def,$eqop_peq,\%src1_def,"identity");
-    }
-    else{
-      die "Can't do $def{'qualifier'}\n";
-    }
+    &print_val_eqop_op_val($rdef,$eqop_peq,\%src1_def,"identity");
+  }
+  else{
+    die "Can't do $def{'qualifier'}\n";
+  }
 
-    if($def{'dim_name'} ne ""){&close_iter($var_i);}
+  &close_siteloop_reduce($var_i,$def{'dim_name'},\%global_def,$rdef);
 
-    &close_brace();
+  # Assign reduced result to dest
+  &print_val_eqop_op_val(\%dest_def,$eqop,\%global_def,"identity");
 
-    &open_brace();
-
-    # Assign reduced result to dest
-    &print_val_eqop_op_val(\%dest_def,$eqop,\%global_def,"identity");
-
-    &close_brace();
-
-    &close_brace();
-    &close_src_file;
+  &print_very_end_matter($var_i,$def{'dim_name'});
+#  &close_brace();
+#  &close_src_file;
 }
 
 #---------------------------------------------------------------------

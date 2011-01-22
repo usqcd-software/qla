@@ -1,10 +1,10 @@
 {
-  v4sf a0, a1, a2;
-  v4sf bs0, bs1, b0r, b0i, b1r, b1i, b2r, b2i;
-  v4sf r0r, r0i;
-  int i;
+#pragma omp parallel for
+  for(int i=0; i<n; i++) {
+    v4sf a0, a1, a2;
+    v4sf bs0, bs1, b0r, b0i, b1r, b1i, b2r, b2i;
+    v4sf r0r, r0i;
 
-  for(i=0; i<n; i++) {
     a0 = loadups(foff(&a[i],0));
     //a0 = loadhps(a0,foff(&a[i],6));
     bs0 = loadups(&b[i]);

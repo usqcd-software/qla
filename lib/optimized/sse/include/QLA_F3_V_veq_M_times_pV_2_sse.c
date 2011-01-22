@@ -1,14 +1,14 @@
 {
-  v4sf a0, a1, a2;
-  v4sf bs0, bs1, b0r, b0i, b1r, b1i, b2r, b2i;
-  v4sf r0r, r0i;
-  v4sf bs2, bs3;
+#pragma omp parallel for
+  for(int i=0; i<n; i+=2) {
+    v4sf a0, a1, a2;
+    v4sf bs0, bs1, b0r, b0i, b1r, b1i, b2r, b2i;
+    v4sf r0r, r0i;
+    v4sf bs2, bs3;
 #ifndef LOAD1
-  v4sf aa0, aa1, aa2;
+    v4sf aa0, aa1, aa2;
 #endif
-  int i;
 
-  for(i=0; i<n; i+=2) {
     //prefetchnt(&r[i+NP]);
     //prefetchnt(&a[i+NP]);
     //prefetchnt(b[i+NP]);

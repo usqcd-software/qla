@@ -31,7 +31,7 @@ QLA_F3_V_vmeq_pV( QLA_F3_ColorVector *restrict r,
 {
   size_t m, x = (size_t)r;
   int u8, u16;
-  int i, nb, nn;
+  int nb, nn;
 
   m = 0x7;
   u8 = x&m;
@@ -52,7 +52,7 @@ QLA_F3_V_vmeq_pV( QLA_F3_ColorVector *restrict r,
 
   //printf("u8=%i u16=%i nb=%i nn=%i\n", u8, u16, nb, nn);
 
-  for(i=0; i<nb; i++) {
+  for(int i=0; i<nb; i++) {
     v4sf r0, r1;
     r0 = subps( loadups(foff(&r[i],0)), loadups(foff(a[i],0)) );
     storeups(foff(&r[i],0),r0);
@@ -61,8 +61,9 @@ QLA_F3_V_vmeq_pV( QLA_F3_ColorVector *restrict r,
   }
 
   if(u8) {
-    v4sf r0,r1=setss(0),r2;
-    for( ; i<nn; i+=2) {
+#pragma omp parallel for
+    for(int i=nb; i<nn; i+=2) {
+      v4sf r0,r1,r2;
 
       r0 = subps( loadups(foff(&r[i],0)), loadups(foff(a[i],0)) );
       storeups(foff(&r[i],0),r0);
@@ -76,8 +77,9 @@ QLA_F3_V_vmeq_pV( QLA_F3_ColorVector *restrict r,
       storeups(foff(&r[i],8),r2);
     }
   } else {
-    v4sf r0,r1=setss(0),r2;
-    for( ; i<nn; i+=2) {
+#pragma omp parallel for
+    for(int i=nb; i<nn; i+=2) {
+      v4sf r0,r1,r2;
 
       r0 = subps( loadaps(foff(&r[i],0)), loadups(foff(a[i],0)) );
       storeaps(foff(&r[i],0),r0);
@@ -92,7 +94,7 @@ QLA_F3_V_vmeq_pV( QLA_F3_ColorVector *restrict r,
     }
   }
 
-  for( ; i<n; i++) {
+  for(int i=nn; i<n; i++) {
     v4sf r0, r1;
     r0 = subps( loadups(foff(&r[i],0)), loadups(foff(a[i],0)) );
     storeups(foff(&r[i],0),r0);

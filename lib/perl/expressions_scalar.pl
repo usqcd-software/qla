@@ -26,7 +26,6 @@ require("operatortypes.pl");
 
 use vars qw/ %carith1 %carith2 %carith3 %eqop_notation /;
 use vars qw/ $precision $temp_precision /;
-use vars qw/ $var_i /;
 use vars qw/ @indent /;
 
 ######################################################################

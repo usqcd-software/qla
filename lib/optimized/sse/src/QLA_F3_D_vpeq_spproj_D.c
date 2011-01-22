@@ -8,7 +8,7 @@
 #include <qla_sse.h>
 #include <math.h>
 
-#define NP 6
+#define NP 4
 
 void
 QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
@@ -19,8 +19,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
     if(sign==1) {
       switch(mu) {
       case 0: {
-	int i;
-	for(i=0; i<n; i++) {
+#pragma omp parallel for
+	for(int i=0; i<n; i++) {
 	  QLA_F3_DiracFermion *ri = &r[i];
 	  QLA_F3_DiracFermion *ai = &a[i];
 	  int i_c;
@@ -34,8 +34,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
 	}
       } break;
       case 1: {
-	int i;
-	for(i=0; i<n; i++) {
+#pragma omp parallel for
+	for(int i=0; i<n; i++) {
 	  QLA_F3_DiracFermion *ri = &r[i];
 	  QLA_F3_DiracFermion *ai = &a[i];
 	  int i_c;
@@ -49,8 +49,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
 	}
       } break;
       case 2: {
-	int i;
-	for(i=0; i<n; i++) {
+#pragma omp parallel for
+	for(int i=0; i<n; i++) {
 	  QLA_F3_DiracFermion *ri = &r[i];
 	  QLA_F3_DiracFermion *ai = &a[i];
 	  int i_c;
@@ -64,8 +64,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
 	}
       } break;
       case 3: {
-	int i;
-	for(i=0; i<n; i++) {
+#pragma omp parallel for
+	for(int i=0; i<n; i++) {
 	  QLA_F3_DiracFermion *ri = &r[i];
 	  QLA_F3_DiracFermion *ai = &a[i];
 	  int i_c;
@@ -79,13 +79,13 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
 	}
       } break;
       case 4: {
-	int i;
-	for(i=0; i<n; i++) {
+#pragma omp parallel for
+	for(int i=0; i<n; i++) {
 	  QLA_F3_DiracFermion *ri = &r[i];
 	  QLA_F3_DiracFermion *ai = &a[i];
 	  int i_c;
-	  prefetch(&r[i+NP]);
-	  prefetch(&a[i+NP]);
+	  //prefetch(&r[i+NP]);
+	  //prefetchnt(&a[i+NP]);
 	  for(i_c=0; i_c<3; i_c++) {
 	    v4sf t1;
 	    spproj4p(t1, foff(ai,8*i_c));
@@ -97,8 +97,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
     } else {
       switch(mu) {
       case 0: {
-	int i;
-	for(i=0; i<n; i++) {
+#pragma omp parallel for
+	for(int i=0; i<n; i++) {
 	  QLA_F3_DiracFermion *ri = &r[i];
 	  QLA_F3_DiracFermion *ai = &a[i];
 	  int i_c;
@@ -112,8 +112,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
 	}
       } break;
       case 1: {
-	int i;
-	for(i=0; i<n; i++) {
+#pragma omp parallel for
+	for(int i=0; i<n; i++) {
 	  QLA_F3_DiracFermion *ri = &r[i];
 	  QLA_F3_DiracFermion *ai = &a[i];
 	  int i_c;
@@ -127,8 +127,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
 	}
       } break;
       case 2: {
-	int i;
-	for(i=0; i<n; i++) {
+#pragma omp parallel for
+	for(int i=0; i<n; i++) {
 	  QLA_F3_DiracFermion *ri = &r[i];
 	  QLA_F3_DiracFermion *ai = &a[i];
 	  int i_c;
@@ -142,8 +142,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
 	}
       } break;
       case 3: {
-	int i;
-	for(i=0; i<n; i++) {
+#pragma omp parallel for
+	for(int i=0; i<n; i++) {
 	  QLA_F3_DiracFermion *ri = &r[i];
 	  QLA_F3_DiracFermion *ai = &a[i];
 	  int i_c;
@@ -157,8 +157,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
 	}
       } break;
       case 4: {
-	int i;
-	for(i=0; i<n; i++) {
+#pragma omp parallel for
+	for(int i=0; i<n; i++) {
 	  QLA_F3_DiracFermion *ri = &r[i];
 	  QLA_F3_DiracFermion *ai = &a[i];
 	  int i_c;
@@ -175,8 +175,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
     if(sign==1) {
       switch(mu) {
       case 0: {
-	int i;
-	for(i=0;i<n;i++)
+#pragma omp parallel for
+	for(int i=0;i<n;i++)
 	  {
 	    QLA_F3_DiracFermion *ri = &r[i];
 	    QLA_F3_DiracFermion *ai = &a[i];
@@ -196,8 +196,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
 	  }
       } break;
       case 1: {
-	int i;
-	for(i=0;i<n;i++)
+#pragma omp parallel for
+	for(int i=0;i<n;i++)
 	  {
 	    QLA_F3_DiracFermion *ri = &r[i];
 	    QLA_F3_DiracFermion *ai = &a[i];
@@ -217,8 +217,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
 	  }
       } break;
       case 2: {
-	int i;
-	for(i=0;i<n;i++)
+#pragma omp parallel for
+	for(int i=0;i<n;i++)
 	  {
 	    QLA_F3_DiracFermion *ri = &r[i];
 	    QLA_F3_DiracFermion *ai = &a[i];
@@ -238,8 +238,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
 	  }
       } break;
       case 3: {
-	int i;
-	for(i=0;i<n;i++)
+#pragma omp parallel for
+	for(int i=0;i<n;i++)
 	  {
 	    QLA_F3_DiracFermion *ri = &r[i];
 	    QLA_F3_DiracFermion *ai = &a[i];
@@ -259,8 +259,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
 	  }
       } break;
       case 4: {
-	int i;
-	for(i=0;i<n;i++)
+#pragma omp parallel for
+	for(int i=0;i<n;i++)
 	  {
 	    QLA_F3_DiracFermion *ri = &r[i];
 	    QLA_F3_DiracFermion *ai = &a[i];
@@ -277,8 +277,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
     else {
       switch(mu) {
       case 0: {
-	int i;
-	for(i=0;i<n;i++)
+#pragma omp parallel for
+	for(int i=0;i<n;i++)
 	  {
 	    QLA_F3_DiracFermion *ri = &r[i];
 	    QLA_F3_DiracFermion *ai = &a[i];
@@ -298,8 +298,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
 	  }
       } break;
       case 1: {
-	int i;
-	for(i=0;i<n;i++)
+#pragma omp parallel for
+	for(int i=0;i<n;i++)
 	  {
 	    QLA_F3_DiracFermion *ri = &r[i];
 	    QLA_F3_DiracFermion *ai = &a[i];
@@ -319,8 +319,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
 	  }
       } break;
       case 2: {
-	int i;
-	for(i=0;i<n;i++)
+#pragma omp parallel for
+	for(int i=0;i<n;i++)
 	  {
 	    QLA_F3_DiracFermion *ri = &r[i];
 	    QLA_F3_DiracFermion *ai = &a[i];
@@ -340,8 +340,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
 	  }
       } break;
       case 3: {
-	int i;
-	for(i=0;i<n;i++)
+#pragma omp parallel for
+	for(int i=0;i<n;i++)
 	  {
 	    QLA_F3_DiracFermion *ri = &r[i];
 	    QLA_F3_DiracFermion *ai = &a[i];
@@ -361,8 +361,8 @@ QLA_F3_D_vpeq_spproj_D( QLA_F3_DiracFermion *restrict r,
 	  }
       } break;
       case 4: {
-	int i;
-	for(i=0;i<n;i++)
+#pragma omp parallel for
+	for(int i=0;i<n;i++)
 	  {
 	    QLA_F3_DiracFermion *ri = &r[i];
 	    QLA_F3_DiracFermion *ai = &a[i];

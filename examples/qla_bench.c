@@ -141,6 +141,7 @@ sum_M(QLA_ColorMatrix *d, int n)
 int
 main(int argc, char *argv[])
 {
+  QLA_Complex c1;
   QLA_Real r1, sum;
   QLA_ColorMatrix *m1, *m2, *m3, **mp1;
   QLA_ColorVector *v1, *v2, **vp1;
@@ -272,8 +273,10 @@ main(int argc, char *argv[])
   printf("%12g time=%5.2f mem=%5.0f mflops=%5.0f\n", sum, time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
 
   set_fields;
-  mem = 16*QLA_Nc*REALBYTES;
-  flop = 12*QLA_Nc;
+  //mem = 16*QLA_Nc*REALBYTES;
+  //flop = 12*QLA_Nc;
+  mem = 8*QLA_Nc*REALBYTES; // for gamma5
+  flop = 4*QLA_Nc; // for gamma5
   c = cf/(flop+mem);
   time1 = clock();
   for(i=0; i<c; ++i) {
@@ -297,6 +300,34 @@ main(int argc, char *argv[])
   time1 /= CLOCKS_PER_SEC;
   sum = sum_M(m1, n);
   printf("%-32s:", "QLA_M_veq_M_times_pM");
+  printf("%12g time=%5.2f mem=%5.0f mflops=%5.0f\n", sum, time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
+
+  set_fields;
+  mem = 2*QLA_Nc*REALBYTES;
+  flop = 4*QLA_Nc;
+  c = cf/(flop+mem);
+  time1 = clock();
+  for(i=0; i<c; ++i) {
+    QLA_r_veq_norm2_V(&r1, v1, n);
+  }
+  time1 = clock() - time1;
+  time1 /= CLOCKS_PER_SEC;
+  sum = r1;
+  printf("%-32s:", "QLA_r_veq_norm2_V");
+  printf("%12g time=%5.2f mem=%5.0f mflops=%5.0f\n", sum, time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
+
+  set_fields;
+  mem = 4*QLA_Nc*REALBYTES;
+  flop = 8*QLA_Nc;
+  c = cf/(flop+mem);
+  time1 = clock();
+  for(i=0; i<c; ++i) {
+    QLA_c_veq_V_dot_V(&c1, v1, v2, n);
+  }
+  time1 = clock() - time1;
+  time1 /= CLOCKS_PER_SEC;
+  sum = QLA_norm2_c(c1);
+  printf("%-32s:", "QLA_c_veq_V_dot_V");
   printf("%12g time=%5.2f mem=%5.0f mflops=%5.0f\n", sum, time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
 
   return 0;

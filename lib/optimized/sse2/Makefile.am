@@ -1,4 +1,5 @@
-GCC = @GNUCC@
+SSE_CC = @SSE_CC@
+SSE_CFLAGS = @SSE_CFLAGS@
 
 OPTLIBS =
 if NC3
@@ -11,7 +12,7 @@ all: $(OPTLIBS)
 libd3:
 	for f in $(srcdir)/src/*.c; do \
 	  echo compiling $$f; \
-	  $(GCC) -O3 -DSSE_INLINE -I$(top_srcdir)/include -I$(srcdir)/include -c $$f; \
+	  $(SSE_CC) $(SSE_CFLAGS) -I$(top_srcdir)/include -I$(top_builddir)/include -I$(srcdir)/include -c $$f; \
 	done
 	mv -f *.o ../../qla_d3
 

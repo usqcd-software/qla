@@ -87,10 +87,64 @@ sub print_nonregister_def {
 # Loop control
 #--------------------------------------------------
 
+sub open_siteloop {
+  my($i,$max)= @_;
+
+  if($i ne "" && $max ne ""){
+    if($have_openmp eq "yes") {
+      print QLA_SRC "#pragma omp parallel for\n"
+    }
+    print QLA_SRC @indent,"for(int $i=0; $i<$max; $i++) {\n";
+    &open_block();
+    &print_align_indx();
+  }
+}
+
+sub open_siteloop_reduce {
+  my($i,$max,$rdef1)= @_;
+  my %rdef2 = %{$rdef1};
+
+  if($i ne "" && $max ne "") {
+    if($have_openmp eq "yes") {
+      my $rvar = $$rdef1{'value'};
+      if($$rdef1{'t'} eq 'r') {
+        print QLA_SRC "#pragma omp parallel for reduction(+:$rvar)\n";
+      } else {
+	my $rvar2 = $rvar."_local";
+	$rdef2{'value'} = $rvar2;
+        print QLA_SRC "#pragma omp parallel\n";
+	&open_brace();
+	&print_nonregister_def($rdef2{'type'},$rvar2);
+	&print_fill(\%rdef2, "zero");
+        print QLA_SRC "#pragma omp for\n";
+      }
+    }
+    print QLA_SRC @indent,"for(int $i=0; $i<$max; $i++) {\n";
+    &open_block();
+    &print_align_indx();
+  }
+  return \%rdef2;
+}
+
+sub close_siteloop_reduce {
+  my($i,$max,$rdef1,$rdef2)= @_;
+
+  if($i ne "" && $max ne ""){
+    &close_brace();
+    if($$rdef1{'value'} ne $$rdef2{'value'}) {
+      print QLA_SRC "#pragma omp critical\n";
+      &open_brace();
+      &print_val_eqop_op_val($rdef1,$eqop_peq,$rdef2,"identity");
+      &close_brace();
+      &close_brace();
+    }
+  }
+}
+
 sub open_iter {
   my($i,$max)= @_;
 
-  if($i ne ""){
+  if($i ne "" && $max ne ""){
     print QLA_SRC @indent,"for(int $i=0; $i<$max; $i++) {\n";
     &open_block();
 #	&open_brace();
@@ -222,7 +276,7 @@ sub print_top_matter {
   #print QLA_SRC "#endif\n";
   if($i ne "" && $dim_name ne ""){
     &print_int_def($i);
-    if($have_openmp eq "1" && $i eq $var_i) {
+    if($have_openmp eq "yes" && $i eq $var_i) {
       print QLA_SRC "#pragma omp parallel for\n"
     }
     &open_iter($i,$dim_name);

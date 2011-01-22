@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([qla],[1.7.0-a5],[josborn at physics.bu.edu])
+AC_INIT([qla],[1.7.0-a6],[josborn at physics.bu.edu])
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE
 
@@ -123,10 +123,10 @@ AC_ARG_ENABLE(
   openmp,
   AC_HELP_STRING([--enable-openmp],
     [generate OpenMP pragmas]),
-  AC_SUBST(OPT_OPENMP, [$enableval]),
-  AC_SUBST(OPT_OPENMP, [no])
+  AC_SUBST(HAVE_OPENMP, [$enableval]),
+  AC_SUBST(HAVE_OPENMP, [no])
 )
-if test "X$OPT_OPENMP" != "Xno"; then
+if test "X$HAVE_OPENMP" != "Xno"; then
   AC_DEFINE_UNQUOTED(HAVE_OPENMP, 1, [using openmp])
 fi
 
@@ -138,10 +138,10 @@ AC_ARG_ENABLE(
   xlc,
   AC_HELP_STRING([--enable-xlc],
     [use XLC specific optimization features]),
-  AC_SUBST(OPT_XLC, [$enableval]),
-  AC_SUBST(OPT_XLC, [no])
+  AC_SUBST(HAVE_XLC, [$enableval]),
+  AC_SUBST(HAVE_XLC, [no])
 )
-if test "X$OPT_XLC" != "Xno"; then
+if test "X$HAVE_XLC" != "Xno"; then
   AC_DEFINE_UNQUOTED(HAVE_XLC, 1, [using xlc])
 fi
 
