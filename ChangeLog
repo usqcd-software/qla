@@ -1,3 +1,10 @@
+2011-01-22 15:51  osborn
+
+	* NEWS,
+	  lib/optimized/sse/include/QLA_F3_D_vpeq_spproj_M_times_pD_sse.c,
+	  lib/optimized/sse/include/QLA_F3_D_vpeq_sprecon_M_times_pH_sse.c:
+	  fixed recently introduced bugs in some SSE routines
+
 2011-01-21 19:42  osborn
 
 	* NEWS, aclocal.m4, configure, configure.ac, examples/qla_bench.c,
