@@ -4,6 +4,11 @@
 #include <sys/time.h>
 #include <math.h>
 #include <qla.h>
+#ifdef _OPENMP
+# include <omp.h>
+# define __USE_GNU
+# include <sched.h>
+#endif
 
 #if QLA_Precision == 'F'
 #define REALBYTES 4
@@ -120,6 +125,7 @@ sum_M(QLA_ColorMatrix *d, int n)
 
 #define set_fields { \
   r1 = 1.23; \
+  _Pragma("omp parallel for") \
   for(i=0; i<n; ++i) { \
     set_V(&v1[i], i); \
     set_V(&v2[i], i); \
@@ -170,9 +176,20 @@ main(int argc, char *argv[])
   d2 = myalloc(QLA_DiracFermion, n);
   dp1 = myalloc(QLA_DiracFermion *, n);
 
-
   printf("QLA version %s (%i)\n", QLA_version_str(), QLA_version_int());
   printf("len = %i\n", n);
+
+#ifdef _OPENMP
+  printf("OMP THREADS = %i\n", omp_get_max_threads());
+#pragma omp parallel
+  {
+    int tid = omp_get_thread_num();
+    cpu_set_t set;
+    CPU_ZERO(&set);
+    CPU_SET(tid, &set);
+    sched_setaffinity(0, sizeof(set), &set);
+  }
+#endif
 
   set_fields;
   mem = 16*QLA_Nc*REALBYTES;

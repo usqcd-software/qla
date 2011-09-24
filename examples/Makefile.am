@@ -13,10 +13,10 @@ F3_LDADD = -lqla_f -lqla_f3 -lqla_d -lqla_d3 -lqla_df -lqla_df3 $(ALL_LDADD)
 D3_CFLAGS = -DQLA_Precision=2 -DQLA_Nc=3 $(ALL_CFLAGS)
 D3_LDADD = -lqla_d -lqla_d3 -lqla_q -lqla_q3 -lqla_dq -lqla_dq3 $(ALL_LDADD)
 
-FN_CFLAGS = -DQLA_Precision=1 -DQLA_Nc=24 $(ALL_CFLAGS)
+FN_CFLAGS = -DQLA_Precision=1 -DQLA_Nc=23 $(ALL_CFLAGS)
 FN_LDADD = -lqla_f -lqla_fn -lqla_d -lqla_dn -lqla_df -lqla_dfn $(ALL_LDADD)
 
-DN_CFLAGS = -DQLA_Precision=2 -DQLA_Nc=24 $(ALL_CFLAGS)
+DN_CFLAGS = -DQLA_Precision=2 -DQLA_Nc=23 $(ALL_CFLAGS)
 DN_LDADD = -lqla_d -lqla_dn -lqla_q -lqla_qn -lqla_dq -lqla_dqn $(ALL_LDADD)
 
 check_PROGRAMS = qla_bench_f2 qla_bench_d2 qla_bench_f3 qla_bench_d3 qla_bench_fn qla_bench_dn
