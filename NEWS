@@ -1,3 +1,6 @@
+2011-10-18: James Osborn
+	Added some optimized C routines for BG/P.
+
 2011-09-24: James Osborn
 	Changed gaussian random number routine to match MILC.
 
