@@ -26,7 +26,7 @@ use vars qw/ %datatype_scalar %datatype_rc /;
 use vars qw/ $c_source_path /;
 use vars qw/ $arg $arg_nc /;
 use vars qw/ $pointer_pfx /;
-use vars qw/ $disjoint_list /;
+use vars qw/ @disjoint_list /;
 use vars qw/ $tab /;
 use vars qw/ $header @headers /;
 
@@ -254,7 +254,9 @@ sub print_very_top_matter {
   &print_function_def($declaration);
   #if($prec ne "") {
   print QLA_SRC "#ifdef HAVE_XLC\n";
-  print QLA_SRC "#pragma disjoint($disjoint_list)\n";
+  if($#disjoint_list>0) {
+    print QLA_SRC "#pragma disjoint(".join(',',@disjoint_list).")\n";
+  }
   &print_align_top();
   print QLA_SRC "#endif\n";
   #}

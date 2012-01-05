@@ -21,14 +21,14 @@ for dir in $dirs; do
   P=`echo $tag |sed 's/QLA[^FDQ]*\([FDQ]*\).*/\1/'`
   C=`echo $tag |sed 's/QLA[^23N]*\([23N]*\).*/\1/'`
   PDEF=""
-  if [ "X$P" == XF -o "X$P" == XD ]; then
+  if [ "X$P" = XF -o "X$P" = XD ]; then
     PDEF="-DQLA_Precision=\'$P\'"
   fi
   CDEF=""
-  if [ "X$C" == X2 -o "X$C" == X3 ]; then
+  if [ "X$C" = X2 -o "X$C" = X3 ]; then
     CDEF="-DQLA_Colors=$C"
   fi
-  if [ "X$C" == XN ]; then
+  if [ "X$C" = XN ]; then
     CDEF="-DQLA_Colors=\'N\'"
   fi
   PCDEF="$PDEF $CDEF"

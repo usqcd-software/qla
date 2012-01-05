@@ -1,8 +1,16 @@
+2012-01-03: James Osborn
+	Added float versions of cmath functions.
+
+2011-10-19: James Osborn
+	Added invsqrt_M function.
+	Added alignment hints to types.
+
 2011-10-18: James Osborn
 	Added some optimized C routines for BG/P.
+	Added int and real type min and max macros.
 
 2011-09-24: James Osborn
-	Changed gaussian random number routine to match MILC.
+	Changed gaussian random number routine to optionally match MILC.
 
 ===============================================================================
 2011-01-22	version 1.7.0-a6 (6th alpha release of 1.7.0)

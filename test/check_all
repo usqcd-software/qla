@@ -33,7 +33,7 @@ fi
 warn_rest int $intfiles
 
 
-mfiles="scalar/test_macros.result"
+mfiles="scalar/test_macros_[fdq].result"
 if exists $mfiles; then
   perl $srcdir/checkcomplete.pl 0 $srcdir/../include/qla_complex.h $mfiles
 fi

@@ -24,6 +24,7 @@ void QLA_D3_V_vpeq_M_times_pV ( QLA_D3_ColorVector *restrict r, QLA_D3_ColorMatr
   __alignx(16,r);
   __alignx(16,a);
 #endif
+#pragma omp parallel for
   for(int i=0; i<n; i++) {
 #ifdef HAVE_XLC
     __alignx(16,b[i]);

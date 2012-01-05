@@ -11,6 +11,9 @@ endif
 if OPT_440d
   ARCH_DIRS += 440d
 endif
+if OPT_QPX
+  ARCH_DIRS += qpx
+endif
 
 SUBDIRS = c $(ARCH_DIRS)
 

@@ -42,8 +42,8 @@ int main(int argc, char *argv[]){
 
   QLA_Real sR1 =  0.17320508075688772;
   QLA_Real sR2 =  0.28723479823477934;
-  QLA_Q_Real sRQ1 =  0.17320508075688772;
-  QLA_Q_Real sRQ2 =  0.28723479823477934;
+  //QLA_Q_Real sRQ1 =  0.17320508075688772;
+  //QLA_Q_Real sRQ2 =  0.28723479823477934;
 
   QLA_Real sC1re = -8.8000370811461867;
   QLA_Real sC1im =  5.7248575675626134;
@@ -82,6 +82,7 @@ int main(int argc, char *argv[]){
 
   destR = 0.;
   chkR = 0.;
+  QLA_c_eq_r(destC, 0.);
   QLA_c_eq_r(chkC, 0.);
 
   /* Test gaussian random fills against 
@@ -205,13 +206,17 @@ chkMatDet;
 
 chkMatInverse;
 
-  /* QLA_M_eq_exp_M */
-
-chkMatExp;
-
   /* QLA_M_eq_sqrt_M */
 
 chkMatSqrt;
+
+  /* QLA_M_eq_invsqrt_M */
+
+chkMatInvsqrt;
+
+  /* QLA_M_eq_exp_M */
+
+chkMatExp;
 
   /* QLA_M_eq_sqrt_M */
 

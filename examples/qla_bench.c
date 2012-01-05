@@ -19,7 +19,7 @@
 #define myalloc(type, n) (type *) aligned_malloc(n*sizeof(type))
 #define clock qtime
 
-#define ALIGN 16
+#define ALIGN 32
 void *
 aligned_malloc(size_t n)
 {
@@ -129,6 +129,9 @@ sum_M(QLA_ColorMatrix *d, int n)
   for(i=0; i<n; ++i) { \
     set_V(&v1[i], i); \
     set_V(&v2[i], i); \
+    set_V(&v3[i], i); \
+    set_V(&v4[i], i); \
+    set_V(&v5[i], i); \
     set_H(&h1[i], i); \
     set_H(&h2[i], i); \
     set_D(&d1[i], i); \
@@ -136,8 +139,12 @@ sum_M(QLA_ColorMatrix *d, int n)
     set_M(&m1[i], i); \
     set_M(&m2[i], i); \
     set_M(&m3[i], i); \
+    set_M(&m4[i], i); \
     j = ((i|16)+256) % n; \
     vp1[i] = &v2[j]; \
+    vp2[i] = &v3[j]; \
+    vp3[i] = &v4[j]; \
+    vp4[i] = &v5[j]; \
     hp1[i] = &h2[j]; \
     dp1[i] = &d2[j]; \
     mp1[i] = &m3[j]; \
@@ -149,8 +156,9 @@ main(int argc, char *argv[])
 {
   QLA_Complex c1;
   QLA_Real r1, sum;
-  QLA_ColorMatrix *m1, *m2, *m3, **mp1;
-  QLA_ColorVector *v1, *v2, **vp1;
+  QLA_ColorMatrix *m1, *m2, *m3, *m4, **mp1;
+  QLA_ColorVector *v1, *v2, *v3, *v4, *v5;
+  QLA_ColorVector **vp1, **vp2, **vp3, **vp4;
   QLA_HalfFermion *h1, *h2, **hp1;
   QLA_DiracFermion *d1, *d2, **dp1;
   double time1;
@@ -165,16 +173,26 @@ main(int argc, char *argv[])
   m1 = myalloc(QLA_ColorMatrix, n);
   m2 = myalloc(QLA_ColorMatrix, n);
   m3 = myalloc(QLA_ColorMatrix, n);
+  m4 = myalloc(QLA_ColorMatrix, n);
   mp1 = myalloc(QLA_ColorMatrix *, n);
   v1 = myalloc(QLA_ColorVector, n);
   v2 = myalloc(QLA_ColorVector, n);
+  v3 = myalloc(QLA_ColorVector, n);
+  v4 = myalloc(QLA_ColorVector, n);
+  v5 = myalloc(QLA_ColorVector, n);
   vp1 = myalloc(QLA_ColorVector *, n);
+  vp2 = myalloc(QLA_ColorVector *, n);
+  vp3 = myalloc(QLA_ColorVector *, n);
+  vp4 = myalloc(QLA_ColorVector *, n);
   h1 = myalloc(QLA_HalfFermion, n);
   h2 = myalloc(QLA_HalfFermion, n);
   hp1 = myalloc(QLA_HalfFermion *, n);
   d1 = myalloc(QLA_DiracFermion, n);
   d2 = myalloc(QLA_DiracFermion, n);
   dp1 = myalloc(QLA_DiracFermion *, n);
+  //QLA_ColorMatrix *ma[4] = { m1, m2, m3, m4 };
+  //QLA_ColorVector *va[4] = { v2, v3, v4, v5 };
+  //QLA_ColorVector **vpa[4] = { vp1, vp2, vp3, vp4 };
 
   printf("QLA version %s (%i)\n", QLA_version_str(), QLA_version_int());
   printf("len = %i\n", n);
@@ -218,6 +236,30 @@ main(int argc, char *argv[])
   sum = sum_V(v1, n);
   printf("%-32s:", "QLA_V_vpeq_M_times_pV");
   printf("%12g time=%5.2f mem=%5.0f mflops=%5.0f\n", sum, time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
+
+#if 0
+#if QLA_Precision == 'D' && QLA_Colors == 3
+  extern void
+    QLA_D3_V_vpeq_nM_times_npV(QLA_D3_ColorVector *restrict r,
+			       QLA_D3_ColorMatrix *restrict *a,
+			       QLA_D3_ColorVector *restrict **b,
+			       int n,
+			       int nd);
+  set_fields;
+  mem = 4*2*(2+QLA_Nc)*QLA_Nc*REALBYTES;
+  flop = 4*8*QLA_Nc*QLA_Nc;
+  c = cf/(flop+mem);
+  time1 = clock();
+  for(i=0; i<c; ++i) {
+    QLA_D3_V_vpeq_nM_times_npV(v1, ma, vpa, n, 4);
+  }
+  time1 = clock() - time1;
+  time1 /= CLOCKS_PER_SEC;
+  sum = sum_V(v1, n);
+  printf("%-32s:", "QLA_V_vpeq_nM_times_npV");
+  printf("%12g time=%5.2f mem=%5.0f mflops=%5.0f\n", sum, time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
+#endif
+#endif
 
   set_fields;
   mem = 2*(2+QLA_Nc)*QLA_Nc*REALBYTES;

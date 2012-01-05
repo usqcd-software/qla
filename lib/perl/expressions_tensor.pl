@@ -258,98 +258,23 @@ sub print_c_eqop_det_m {
 }
 
 #---------------------------------------------------------------------
-# Matrix inverse
+# Matrix function
 #---------------------------------------------------------------------
 
-sub print_m_eqop_inv_m {
-  my($eqop) = @_;
+sub print_m_eqop_func_m {
+  my($eqop,$mfunc) = @_;
   my $ddef  = \%dest_def;
   my $s1def = \%src1_def;
 
   # type checking
   $$ddef{'t'} eq $datatype_colormatrix_abbrev &&
       $$s1def{'t'} eq $datatype_colormatrix_abbrev ||
-      die "matrix inverse supports only colormatrix field\n";
+      die "matrix function (".$mfunc.") supports only colormatrix field\n";
 
   $eqop eq $eqop_eq ||
-      die "matrix inverse supports only replacement\n";
+      die "matrix function (".$mfunc.") supports only replacement\n";
 
-  my $func = "QLA_${precision}${colors}_M_eq_inverse_M";
-  my $ncvar = "";
-  if($def{'nc'} eq $arg_nc) {
-    $ncvar = "$arg_nc, ";
-  }
-  print QLA_SRC @indent,"$func(${ncvar}&($$ddef{'value'}), &($$s1def{'value'}));\n";
-}
-
-#---------------------------------------------------------------------
-# Matrix exponential
-#---------------------------------------------------------------------
-
-sub print_m_eqop_exp_m {
-  my($eqop) = @_;
-  my $ddef  = \%dest_def;
-  my $s1def = \%src1_def;
-
-  # type checking
-  $$ddef{'t'} eq $datatype_colormatrix_abbrev &&
-      $$s1def{'t'} eq $datatype_colormatrix_abbrev ||
-      die "matrix exp supports only colormatrix field\n";
-
-  $eqop eq $eqop_eq ||
-      die "matrix exp supports only replacement\n";
-
-  my $func = "QLA_${precision}${colors}_M_eq_exp_M";
-  my $ncvar = "";
-  if($def{'nc'} eq $arg_nc) {
-    $ncvar = "$arg_nc, ";
-  }
-  print QLA_SRC @indent,"$func(${ncvar}&($$ddef{'value'}), &($$s1def{'value'}));\n";
-}
-
-#---------------------------------------------------------------------
-# Matrix square root
-#---------------------------------------------------------------------
-
-sub print_m_eqop_sqrt_m {
-  my($eqop) = @_;
-  my $ddef  = \%dest_def;
-  my $s1def = \%src1_def;
-
-  # type checking
-  $$ddef{'t'} eq $datatype_colormatrix_abbrev &&
-      $$s1def{'t'} eq $datatype_colormatrix_abbrev ||
-      die "matrix sqrt supports only colormatrix field\n";
-
-  $eqop eq $eqop_eq ||
-      die "matrix sqrt supports only replacement\n";
-
-  my $func = "QLA_${precision}${colors}_M_eq_sqrt_M";
-  my $ncvar = "";
-  if($def{'nc'} eq $arg_nc) {
-    $ncvar = "$arg_nc, ";
-  }
-  print QLA_SRC @indent,"$func(${ncvar}&($$ddef{'value'}), &($$s1def{'value'}));\n";
-}
-
-#---------------------------------------------------------------------
-# Matrix log
-#---------------------------------------------------------------------
-
-sub print_m_eqop_log_m {
-  my($eqop) = @_;
-  my $ddef  = \%dest_def;
-  my $s1def = \%src1_def;
-
-  # type checking
-  $$ddef{'t'} eq $datatype_colormatrix_abbrev &&
-      $$s1def{'t'} eq $datatype_colormatrix_abbrev ||
-      die "matrix log supports only colormatrix field\n";
-
-  $eqop eq $eqop_eq ||
-      die "matrix log supports only replacement\n";
-
-  my $func = "QLA_${precision}${colors}_M_eq_log_M";
+  my $func = "QLA_${precision}${colors}_M_eq_".$mfunc."_M";
   my $ncvar = "";
   if($def{'nc'} eq $arg_nc) {
     $ncvar = "$arg_nc, ";

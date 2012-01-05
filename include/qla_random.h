@@ -7,8 +7,9 @@
 
 typedef struct {
   /* We assume long is at least 32 bits */
-  unsigned long r0,r1,r2,r3,r4,r5,r6;
-  unsigned long multiplier,addend,ic_state;
+  // now using int since that is more likely to always be 32 bits
+  unsigned int r0,r1,r2,r3,r4,r5,r6;
+  unsigned int multiplier,addend,ic_state;
   float scale;
 } QLA_RandomState;
 
@@ -18,6 +19,9 @@ typedef struct {
 QLA_F_Real QLA_random(QLA_RandomState *prn_pt);
 QLA_F_Real QLA_gaussian(QLA_RandomState *prn_pt);
 void QLA_seed_random(QLA_RandomState *prn_pt, int seed, QLA_Int index);
+
+// use same Gaussian generator as MILC if nonzero
+extern int QLA_use_milc_gaussian;
 
 /**
  *  Version information

@@ -81,60 +81,15 @@ sub make_code_matrix_det {
 }
 
 #---------------------------------------------------------------------
-# Code for matrix inverse
+# Code for matrix function
 #---------------------------------------------------------------------
 
-sub make_code_matrix_inv {
-    my($eqop) = @_;
+sub make_code_matrix_func {
+    my($eqop,$func) = @_;
 
     &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
     if($def{'dim_name'} ne "") {
-      &print_m_eqop_inv_m($eqop);
-    } else {
-    }
-    &print_end_matter($var_i,$def{'dim_name'});
-}
-
-#---------------------------------------------------------------------
-# Code for matrix exponential
-#---------------------------------------------------------------------
-
-sub make_code_matrix_exp {
-    my($eqop) = @_;
-
-    &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
-    if($def{'dim_name'} ne "") {
-      &print_m_eqop_exp_m($eqop);
-    } else {
-    }
-    &print_end_matter($var_i,$def{'dim_name'});
-}
-
-#---------------------------------------------------------------------
-# Code for matrix square root
-#---------------------------------------------------------------------
-
-sub make_code_matrix_sqrt {
-    my($eqop) = @_;
-
-    &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
-    if($def{'dim_name'} ne "") {
-      &print_m_eqop_sqrt_m($eqop);
-    } else {
-    }
-    &print_end_matter($var_i,$def{'dim_name'});
-}
-
-#---------------------------------------------------------------------
-# Code for matrix log
-#---------------------------------------------------------------------
-
-sub make_code_matrix_log {
-    my($eqop) = @_;
-
-    &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
-    if($def{'dim_name'} ne "") {
-      &print_m_eqop_log_m($eqop);
+      &print_m_eqop_func_m($eqop,$func);
     } else {
     }
     &print_end_matter($var_i,$def{'dim_name'});
@@ -158,6 +113,7 @@ sub make_code_getset_component {
 #---------------------------------------------------------------------
 
 # (These functions all take double precision arguments)
+# changed to now use float version of function
 
 sub make_code_unary_fcn {
     my($eqop,$unary_fcn) = @_;
@@ -177,21 +133,21 @@ sub make_code_unary_fcn {
     }
     else{
 	# Type conversion for a complex result requires an intermediate
-	$temp_dest_type = &datatype_specific($dest_def{'t'},
-					     $precision_double_abbrev);
-	if($rc_d eq "c" && $temp_dest_type ne $dest_def{'type'}){
-	    &print_def($temp_dest_type,$var_x2);
-	}
+	#$temp_dest_type = &datatype_specific($dest_def{'t'},
+	#				     $precision_double_abbrev);
+	#if($rc_d eq "c" && $temp_dest_type ne $dest_def{'type'}){
+	#    &print_def($temp_dest_type,$var_x2);
+	#}
 	# If type conversion to double is needed, define intermediate
-	$temp_src1_type = &datatype_specific($src1_def{'t'},
-					     $precision_double_abbrev);
-	if($temp_src1_type ne $src1_def{'type'}){
-	    # (Can't be a register variable)
-	    print QLA_SRC @indent,"$temp_src1_type $var_x;\n";
-	    &print_s_eqop_s($rc_s1,$var_x,$eqop_eq,"",
-			    $rc_s1,$src1_value,"");
-	    $src1_value = $var_x;
-	}
+	#$temp_src1_type = &datatype_specific($src1_def{'t'},
+	#				     $precision_double_abbrev);
+	#if($temp_src1_type ne $src1_def{'type'}){
+	#    # (Can't be a register variable)
+	#    print QLA_SRC @indent,"$temp_src1_type $var_x;\n";
+	#    &print_s_eqop_s($rc_s1,$var_x,$eqop_eq,"",
+	#		    $rc_s1,$src1_value,"");
+	#    $src1_value = $var_x;
+	#}
 
 	# Pass pointers for complex arguments
 	if($rc_s1 eq "c"){
@@ -200,11 +156,22 @@ sub make_code_unary_fcn {
 	
 	# Use function name from table - defaults to given name
 	$math_name = $unary_cmath{$unary_fcn};
-	if(!defined($math_name)){$math_name = $unary_fcn;}
+	if(!defined($math_name)) { 
+	  $math_name = $unary_fcn;
+	  if($src1_def{'precision'} eq 'F') {
+	    $math_name .= 'f';
+	  }
+	} else {
+	  if($src1_def{'precision'} eq 'F') {
+	    $math_name =~ s/QLA/QLA_F/;
+	  } else {
+	    $math_name =~ s/QLA/QLA_D/;
+	  }
+	}
 
 	# Exception: build inline sign function (of reals)
 
-	if($math_name eq "sign"){
+	if($math_name =~ /sign/){
 	    $src1_value = "$src1_value >= 0 ? 1. : -1.";
 	}
 	else{
@@ -212,14 +179,14 @@ sub make_code_unary_fcn {
 	}
 	
 	# Type conversion for a complex result uses the intermediate
-	if($rc_d eq "c" && $temp_dest_type ne $dest_def{'type'}){
-	    print QLA_SRC @indent,"$var_x2 = $src1_value;\n";
-	    &print_s_eqop_s($rc_d,$dest_value,$eqop_eq,"",
-			    $rc_d,$var_x2,"");
-	}
-	else{
-	    print QLA_SRC @indent,"$dest_value = $src1_value;\n";
-	}
+	#if($rc_d eq "c" && $temp_dest_type ne $dest_def{'type'}){
+	#    print QLA_SRC @indent,"$var_x2 = $src1_value;\n";
+	#    &print_s_eqop_s($rc_d,$dest_value,$eqop_eq,"",
+	#                    $rc_d,$var_x2,"");
+	#}
+	#else{
+	print QLA_SRC @indent,"$dest_value = $src1_value;\n";
+	#}
     }
     &print_end_matter($var_i,$def{'dim_name'});
 }

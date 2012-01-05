@@ -5,9 +5,9 @@
 //#include <tgmath.h>
 
 #if 1
-typedef float _Complex QLA_F_Complex;
-typedef double _Complex QLA_D_Complex;
-typedef long double _Complex QLA_Q_Complex;
+typedef float _Complex QLA_F_Complex _ALIGN(8);
+typedef double _Complex QLA_D_Complex _ALIGN(16);
+typedef long double _Complex QLA_Q_Complex _ALIGNED;
 #else
 typedef union {
   QLA_F_Real r,i;
@@ -24,6 +24,11 @@ typedef union {
   long double _Complex c;
 } QLA_Q_Complex;
 #endif
+
+#define QLA_F_c_eq_c99(x,y) x = y
+#define QLA_D_c_eq_c99(x,y) x = y
+#define QLA_F_c99_eq_c(x,y) x = y
+#define QLA_D_c99_eq_c(x,y) x = y
 
 #if 0
 #define QLA_real(a) ((a).r)

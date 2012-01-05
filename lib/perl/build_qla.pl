@@ -1016,7 +1016,7 @@ if(!$quadprecision) {
 }
 
 #---------------------------------------------------------------------
-&header2("Matrix inverse");
+&header2("Matrix functions");
 #---------------------------------------------------------------------
 
 require("make_code_unary.pl");
@@ -1024,81 +1024,16 @@ require("make_code_unary.pl");
 if(!$quadprecision) {
 
   $assgn = $eqop_eq;
-
-  foreach $indexing ( @ind_unary_list ) {
-    %def = ();
-    ($def{'dest_t'},$def{'src1_t'}) = 
-	($datatype_colormatrix_abbrev,$datatype_colormatrix_abbrev);
-    $def{'qualifier'} = "inverse";
-
-    if(&make_prototype($indexing,$assgn)) {
-      &make_code_matrix_inv($assgn);
-    }
-  }
-}
-
-#---------------------------------------------------------------------
-&header2("Matrix exponential");
-#---------------------------------------------------------------------
-
-require("make_code_unary.pl");
-
-if(!$quadprecision) {
-
-  $assgn = $eqop_eq;
-
-  foreach $indexing ( @ind_unary_list ) {
-    %def = ();
-    ($def{'dest_t'},$def{'src1_t'}) = 
-	($datatype_colormatrix_abbrev,$datatype_colormatrix_abbrev);
-    $def{'qualifier'} = "exp";
-
-    if(&make_prototype($indexing,$assgn)) {
-      &make_code_matrix_exp($assgn);
-    }
-  }
-}
-
-#---------------------------------------------------------------------
-&header2("Matrix square root");
-#---------------------------------------------------------------------
-
-require("make_code_unary.pl");
-
-if(!$quadprecision) {
-
-  $assgn = $eqop_eq;
-
-  foreach $indexing ( @ind_unary_list ) {
-    %def = ();
-    ($def{'dest_t'},$def{'src1_t'}) = 
-	($datatype_colormatrix_abbrev,$datatype_colormatrix_abbrev);
-    $def{'qualifier'} = "sqrt";
-
-    if(&make_prototype($indexing,$assgn)) {
-      &make_code_matrix_sqrt($assgn);
-    }
-  }
-}
-
-#---------------------------------------------------------------------
-&header2("Matrix log");
-#---------------------------------------------------------------------
-
-require("make_code_unary.pl");
-
-if(!$quadprecision) {
-
-  $assgn = $eqop_eq;
-
-  foreach $indexing ( @ind_unary_list ) {
-    %def = ();
-    ($def{'dest_t'},$def{'src1_t'}) = 
-	($datatype_colormatrix_abbrev,$datatype_colormatrix_abbrev);
-    $def{'qualifier'} = "log";
-
-    if(&make_prototype($indexing,$assgn)) {
-      &make_code_matrix_log($assgn);
+  @funcs = ( "inverse", "sqrt", "invsqrt", "exp", "log" );
+  foreach $func ( @funcs ) {
+    foreach $indexing ( @ind_unary_list ) {
+      %def = ();
+      ($def{'dest_t'},$def{'src1_t'}) = 
+	  ($datatype_colormatrix_abbrev,$datatype_colormatrix_abbrev);
+      $def{'qualifier'} = $func;
+      if(&make_prototype($indexing,$assgn)) {
+	&make_code_matrix_func($assgn,$func);
+      }
     }
   }
 }
@@ -2634,12 +2569,14 @@ $codedir="$path/code-templates";
 @files = (
   "C_eq_det_M.c",
   "M_eq_inverse_M.c",
-  "M_eq_exp_M.c",
   "M_eq_sqrt_M.c",
+  "M_eq_invsqrt_M.c",
+  "M_eq_exp_M.c",
   "M_eq_log_M.c"
     );
 
 @targets = (
+  "F2 D2 F3 D3 FN DN",
   "F2 D2 F3 D3 FN DN",
   "F2 D2 F3 D3 FN DN",
   "F2 D2 F3 D3 FN DN",

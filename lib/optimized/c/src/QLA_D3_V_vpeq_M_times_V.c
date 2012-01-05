@@ -23,6 +23,7 @@ void QLA_D3_V_vpeq_M_times_V ( QLA_D3_ColorVector *restrict r, QLA_D3_ColorMatri
   __alignx(16,a);
   __alignx(16,b);
 #endif
+#pragma omp parallel for
   for(int i=0; i<n; i++) {
     loadb(0);
     loadb(1);

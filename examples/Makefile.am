@@ -19,7 +19,16 @@ FN_LDADD = -lqla_f -lqla_fn -lqla_d -lqla_dn -lqla_df -lqla_dfn $(ALL_LDADD)
 DN_CFLAGS = -DQLA_Precision=2 -DQLA_Nc=23 $(ALL_CFLAGS)
 DN_LDADD = -lqla_d -lqla_dn -lqla_q -lqla_qn -lqla_dq -lqla_dqn $(ALL_LDADD)
 
-check_PROGRAMS = qla_bench_f2 qla_bench_d2 qla_bench_f3 qla_bench_d3 qla_bench_fn qla_bench_dn
+check_PROGRAMS =
+if NC2
+  check_PROGRAMS += qla_bench_f2 qla_bench_d2
+endif
+if NC3
+  check_PROGRAMS += qla_bench_f3 qla_bench_d3
+endif
+if NCN
+  check_PROGRAMS += qla_bench_fn qla_bench_dn
+endif
 
 qla_bench_f2_SOURCES = qla_bench.c
 qla_bench_f2_CFLAGS = $(F2_CFLAGS)

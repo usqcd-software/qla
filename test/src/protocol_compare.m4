@@ -80,17 +80,13 @@ define(elem_FP, `QLA_F_elem_P')
 rem(`checkequalreal(type,prec)')
 define(checkequalreal,`
 int checkequal$2$1$1(type_$2$1 *sa, type_$2$1 *sb){
-  diff = fabs(*sa-*sb);
-  if(fabs(*sa-*sb)>TOLABS) {
-    if((*sa+*sb)==0.0) {
-      diff = 0.0;
-    } else {
-      diff = fabs(*sa-*sb)*2.0/(*sa+*sb);
-    }
-  }
+  double diffa = fabs(*sa-*sb);
+  double avg = 0.5*(fabs(*sa)+fabs(*sb));
+  if(avg==0) diff = 0;
+  else diff = diffa/avg;
   checkeq1 = *sa;
   checkeq2 = *sb;
-  return diff > TOLREL;
+  return (diffa>TOLABS) && (diff>TOLREL);
 }
 ')
 

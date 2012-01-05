@@ -1,11 +1,23 @@
 #ifndef _QLA_COMPLEX_H
 #define _QLA_COMPLEX_H
 
-typedef int         QLA_Int;
+#include <float.h>
 
-typedef float       QLA_F_Real;
-typedef double      QLA_D_Real;
+typedef int QLA_Int;
+#define QLA_INT_MAX INT_MAX
+#define QLA_INT_MIN INT_MIN
+
+typedef float QLA_F_Real;
+#define QLA_F_REAL_MAX FLT_MAX
+#define QLA_F_REAL_MIN FLT_MIN
+
+typedef double QLA_D_Real;
+#define QLA_D_REAL_MAX DBL_MAX
+#define QLA_D_REAL_MIN DBL_MIN
+
 typedef long double QLA_Q_Real;
+#define QLA_Q_REAL_MAX LDBL_MAX
+#define QLA_Q_REAL_MIN LDBL_MIN
 
 #ifdef USE_C99_COMPLEX
 #undef _QLA_COMPLEX_H
@@ -15,18 +27,29 @@ typedef long double QLA_Q_Real;
 typedef struct {
    QLA_F_Real real;	
    QLA_F_Real imag;
-} QLA_F_Complex;
+} QLA_F_Complex _ALIGN(8);
 
 typedef struct {
    QLA_D_Real real;	
    QLA_D_Real imag;
-} QLA_D_Complex;
+} QLA_D_Complex _ALIGN(16);
 
 typedef struct {
    QLA_Q_Real real;	
    QLA_Q_Real imag;
-} QLA_Q_Complex;
+} QLA_Q_Complex _ALIGNED;
 
+#if (__STDC_VERSION__ >= 199901L) && !defined(__STDC_NO_COMPLEX__)
+# define QLA_F_c99_eq_c(x,y) do { QLA_F_Complex _t=(y); (x)=(union{float f[2]; float _Complex z;}){.f={QLA_real(_t),QLA_imag(_t)}}.z; } while(0)
+# define QLA_D_c99_eq_c(x,y) do { QLA_D_Complex _t=(y); (x)=(union{double f[2]; double _Complex z;}){.f={QLA_real(_t),QLA_imag(_t)}}.z; } while(0)
+# if defined(__xlC__)
+#  define QLA_F_c_eq_c99(x,y) do { float _Complex _t=(y); QLA_c_eq_r_plus_ir(x, __crealf(_t), __cimagf(_t)); } while(0)
+#  define QLA_D_c_eq_c99(x,y) do { double _Complex _t=(y); QLA_c_eq_r_plus_ir(x, __creal(_t), __cimag(_t)); } while(0)
+# else
+#  define QLA_F_c_eq_c99(x,y) do { float _Complex _t=(y); QLA_c_eq_r_plus_ir(x, crealf(_t), cimagf(_t)); } while(0)
+#  define QLA_D_c_eq_c99(x,y) do { double _Complex _t=(y); QLA_c_eq_r_plus_ir(x, creal(_t), cimag(_t)); } while(0)
+# endif
+#endif
 
 /* the following line is used by the test suite */
 /* BEGIN_MACROS */

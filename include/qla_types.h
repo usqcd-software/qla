@@ -1,6 +1,14 @@
 #ifndef _QLA_TYPES_H
 #define _QLA_TYPES_H
 
+#if defined(__GNUC__) || defined(__xlc__)
+#define _ALIGN2(x) __attribute__ ((aligned x))
+#else
+#define _ALIGN2(x)
+#endif
+#define _ALIGN(x) _ALIGN2((x))
+#define _ALIGNED _ALIGN2()
+
 /* int, real and complex types */
 #include <qla_complex.h>
 

@@ -5,15 +5,15 @@
 #include "compare.h"
 
 #define CHECKeqsngII(a,b,c,d) {QLA_Int tmp1,tmp2; tmp1 = (a); tmp2 = (b); \
-      checkeqsngII(&tmp1,&tmp2,c,d);}
+    checkeqsngII(&tmp1,&tmp2,c,d); (a) = -999; }
 
 #define CHECKeqsngRR(a,b,c,d) {QLA_Real tmp1,tmp2; tmp1 = (a); tmp2 = (b); \
-      checkeqsngRR(&tmp1,&tmp2,c,d);}
+    checkeqsngRR(&tmp1,&tmp2,c,d); (a) = -999.999; }
 
-#define CHECKeqsngCC(a,b,c,d) {checkeqsngCC(a,b,c,d);}
+#define CHECKeqsngCC(a,b,c,d) {checkeqsngCC(a,b,c,d); QLA_c_eq_r_plus_ir(*(a),-999.999,99.99); }
 
 #define CHECKeqsngCRR(a,b,c,d,e) {QLA_Real tmp1,tmp2; tmp1 = (b); tmp2 = (c); \
-      checkeqsngCRR(a,&tmp1,&tmp2,d,e);}
+    checkeqsngCRR(a,&tmp1,&tmp2,d,e); QLA_c_eq_r_plus_ir(*(a),-999.999,99.99); }
 
 #define sign(a) a > 0 ? 1. : -1.
 
@@ -673,7 +673,7 @@ int main(int argc, char *argv[]){
 
   destC = sC1;
   strcpy(name,"QLA_C_meq_Ca_times_Ca");
-  QLA_C_meq_Ca_times_C(&destC,&sC2,&sC3);
+  QLA_C_meq_Ca_times_Ca(&destC,&sC2,&sC3);
   chkR1 = sC1re - sC2re*sC3re + sC2im*sC3im;
   chkR2 = sC1im + sC2im*sC3re + sC2re*sC3im;
   CHECKeqsngCRR(&destC,chkR1,chkR2,name,fp);

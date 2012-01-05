@@ -14,7 +14,7 @@ extern int test_tensor_idx4(FILE *fp);
 int
 main(int argc, char* argv[])
 {
-  char name[64];
+  //char name[64];
   FILE *fp;
 
   char *test_program_name= basename(argv[0]); 

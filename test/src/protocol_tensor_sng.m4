@@ -415,6 +415,29 @@ define(chkMatInverse,`
   checkeqsngMM(&argd(M),&argt(M),name,fp);
 ')
 
+rem(`
+     Matrix square root
+')
+rem(`chkMatSqrt')
+define(chkMatSqrt,`
+  strcpy(name,"QLA_M_eq_sqrt_M");
+  QLA_M_eq_sqrt_M(&argd(M),&arg1(M));
+  QLA_M_eq_M_times_M(&argt(M),&argd(M),&argd(M));
+  checkeqsngMM(&arg1(M),&argt(M),name,fp);
+')
+
+rem(`
+     Matrix inverse square root
+')
+rem(`chkMatInvsqrt')
+define(chkMatInvsqrt,`
+  strcpy(name,"QLA_M_eq_invsqrt_M");
+  QLA_M_eq_invsqrt_M(&argd(M),&arg1(M));
+  QLA_M_eq_M_times_M(&argt(M),&argd(M),&argd(M));
+  QLA_M_eq_inverse_M(&arg2(M),&arg1(M));
+  checkeqsngMM(&arg2(M),&argt(M),name,fp);
+')
+
 define(printMat,`
   for(ic=0;ic<nc;ic++) {
     for(jc=0;jc<nc;jc++) {
@@ -445,17 +468,6 @@ define(chkMatExp,`
   checkeqsngMM(&argd(M),&arg2(M),name,fp);
   QLA_M_eq_gaussian_S(&arg2(M),&sS1);
   QLA_M_eq_gaussian_S(&arg3(M),&sS1);
-')
-
-rem(`
-     Matrix square root
-')
-rem(`chkMatSqrt')
-define(chkMatSqrt,`
-  strcpy(name,"QLA_M_eq_sqrt_M");
-  QLA_M_eq_sqrt_M(&argd(M),&arg1(M));
-  QLA_M_eq_M_times_M(&argt(M),&argd(M),&argd(M));
-  checkeqsngMM(&arg1(M),&argt(M),name,fp);
 ')
 
 rem(`

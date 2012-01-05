@@ -9,9 +9,9 @@ QLAEXTRA = $(SRCDIR)/libqla_int.a \
            $(SRCDIR)/libqla_random.a \
            $(SRCDIR)/libqla_cmath.a \
            -lm $(SRCDIR)/libqla_c99.a
-QLAF = $(SRCDIR)/libqla_f.a $(SRCDIR)/libqla_f$(c).a
-QLAD = $(SRCDIR)/libqla_d.a $(SRCDIR)/libqla_d$(c).a
-QLAQ = $(SRCDIR)/libqla_q.a $(SRCDIR)/libqla_q$(c).a
+QLAF = $(SRCDIR)/libqla_f$(c).a $(SRCDIR)/libqla_f.a
+QLAD = $(SRCDIR)/libqla_d$(c).a $(SRCDIR)/libqla_d.a
+QLAQ = $(SRCDIR)/libqla_q$(c).a $(SRCDIR)/libqla_q.a
 QLADF = $(QLAD) $(QLAF) $(SRCDIR)/libqla_df$(c).a
 QLADQ = $(QLAD) $(QLAQ) $(SRCDIR)/libqla_dq$(c).a
 

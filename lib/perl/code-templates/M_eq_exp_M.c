@@ -8,8 +8,10 @@
 #include <math.h>
 
 #if QLA_Precision == 'F'
+#  include <qla_f.h>
 #  define QLAPX(x,y) QLA_F ## x ## _ ## y
 #else
+#  include <qla_d.h>
 #  define QLAPX(x,y) QLA_D ## x ## _ ## y
 #endif
 
@@ -95,6 +97,13 @@ QLAPC(M_eq_exp_M)(NCARG QLAN(ColorMatrix,(*restrict a)), QLAN(ColorMatrix,(*rest
   __alignx(16,a);
   __alignx(16,b);
 #endif
+
+  if(NC==1) {
+    QLA_C_eq_cexp_C(&QLA_elem_M(*a,0,0),&QLA_elem_M(*b,0,0));
+    return;
+  }
+  if(NC==2) {
+  }
 
   /* get the integer scale */
   double ds = 2 * maxev(NCVAR b);

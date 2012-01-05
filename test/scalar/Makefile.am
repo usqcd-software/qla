@@ -13,7 +13,7 @@ QLAQ = $(SRCDIR)/libqla_q.a
 QLADF = $(QLAF) $(QLAD) $(SRCDIR)/libqla_df.a
 QLADQ = $(QLAQ) $(QLAD) $(SRCDIR)/libqla_dq.a
 
-check_PROGRAMS = test_macros \
+check_PROGRAMS = test_macros_f test_macros_d test_macros_q \
                  test_scalar_f_sng test_scalar_f_idx \
                  test_scalar_d_sng test_scalar_d_idx \
                  test_scalar_q_sng test_scalar_q_idx \
@@ -31,9 +31,17 @@ SNGSRC = ../src/test_scalar_sng.c
 IDXSRC = ../src/test_scalar_idx.c
 
 # macros
-nodist_test_macros_SOURCES = ../src/test_macros.c $(CMPSRC)
-test_macros_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'D\'
-test_macros_LDADD = -lm
+nodist_test_macros_f_SOURCES = ../src/test_macros.c $(CMPSRC)
+test_macros_f_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'F\'
+test_macros_f_LDADD = -lm
+
+nodist_test_macros_d_SOURCES = ../src/test_macros.c $(CMPSRC)
+test_macros_d_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'D\'
+test_macros_d_LDADD = -lm
+
+nodist_test_macros_q_SOURCES = ../src/test_macros.c $(CMPSRC)
+test_macros_q_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'Q\'
+test_macros_q_LDADD = -lm
 
 # f
 nodist_test_scalar_f_sng_SOURCES = $(SNGSRC) $(CMPSRC)

@@ -13,7 +13,6 @@ $pc = "" if($pc eq "0");
 if($#ARGV<0) { die "Usage $0 <pc> <headerfile> <testresultfiles>\n"; }
 
 # Build hash table with module names and results
-$n = 0;
 %result = (); %error = (); %tols = ();
 
 for $testresultfile (@ARGV) {
@@ -22,8 +21,9 @@ for $testresultfile (@ARGV) {
     # Parse line
     # Mostly OK/FAIL name
     # Exception OK MACRO name
+    $prec = "";
     ($ok,$name,$diff,$tol) = split(" ",$_);
-    if($name eq "MACRO") { ($ok,$macro,$name,$diff,$tol) = split(" ",$_); }
+    if($name eq "MACRO") { ($ok,$macro,$prec,$name,$diff,$tol) = split(" ",$_); }
     # Convert generic name to specific name
     # by adding color-precision label, if it was specified on the command line
     if($pc ne ""){
@@ -43,22 +43,11 @@ for $testresultfile (@ARGV) {
 	}
 	$name = join("_",@elements);
     }
-    if(!defined($result{$name})){
-	$n++;
-	$result{$name} = $ok;
-	if($diff ne ""){
-	    $error{$name} = $diff;
-	}
-	if($tol ne ""){
-	    $tols{$name} = $tol;
-	}
-    }
-    else{
-	if($ok ne "OK"){
-	    $result{$name} = $ok;
-	    $error{$name} = $diff;
-	    $tols{$name} = $tol;
-	}
+    if(!defined($result{$name}) || $ok ne "OK") {
+      $result{$name} = $ok;
+      $error{$name} = $diff;
+      $tols{$name} = $tol;
+      $prec{$name} = $prec;
     }
   }
   close(TESTRESULT);
@@ -78,14 +67,17 @@ while(<HEADER>){
     ($name) = split('\(',$prototype);
     if($result{$name} eq ""){print "WARNING: untested $name\n";}
     elsif($result{$name} eq "FAIL"){
+      $pname = $name;
+      if($prec{$name} ne "") { $pname .= " " . $prec{$name}; }
       if($error{$name}<10*$tols{$name}) {
-	printf "WARNING: FAILED %-32s with error %e\n", $name, $error{$name};
+	printf "WARNING: FAILED %-34s with error %e\n", $pname, $error{$name};
       } else {
-	printf "ERROR:   FAILED %-32s with error %e\n", $name, $error{$name};
+	printf "ERROR:   FAILED %-34s with error %e\n", $pname, $error{$name};
       }
     }
 }
 
 close(HEADER);
 
+$n = keys %result;
 print "Checked $n subroutines in $headerfile\n";

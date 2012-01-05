@@ -591,9 +591,11 @@ sub make_prototype {
 			      $def{'dest_index_name'});
     $declaration .= $def{'dest_extra_arg'};
 
-    $disjoint_list = "";
-    if($def{'dest_ptr_pfx'} eq $pointer_pfx) { $disjoint_list .= "*"; }
-    $disjoint_list .= "*$def{'dest_name'}";
+    @disjoint_list = ();
+    my $disjoint_ptr = "";
+    if($def{'dest_ptr_pfx'} eq $pointer_pfx) { $disjoint_ptr .= "*"; }
+    $disjoint_ptr .= "*$def{'dest_name'}";
+    push @disjoint_list, $disjoint_ptr;
 
     # Source arguments
 
@@ -605,9 +607,10 @@ sub make_prototype {
                                       $def{$arg.'_name'},
 				      $def{$arg.'_index_name'});
 
-	    $disjoint_list .= ", ";
-	    if($def{$arg.'_ptr_pfx'} eq $pointer_pfx) { $disjoint_list .= "*"; }
-	    $disjoint_list .= "*$def{$arg.'_name'}";
+	    my $disjoint_ptr = "";
+	    if($def{$arg.'_ptr_pfx'} eq $pointer_pfx) { $disjoint_ptr .= "*"; }
+	    $disjoint_ptr .= "*$def{$arg.'_name'}";
+	    push @disjoint_list, $disjoint_ptr;
 	}
 	$declaration .= $def{$arg.'_extra_arg'};
     }
