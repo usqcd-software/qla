@@ -8,7 +8,7 @@
 #include <float.h>
 
 /* Allowed discrepancy */
-#define NABS 10
+#define NABS 16
 #define NREL 10
 #if QLA_Precision == 'F'
 #define TOLABS NABS*FLT_EPSILON
