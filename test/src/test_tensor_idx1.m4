@@ -19,7 +19,7 @@ static  int ns = QLA_Ns;
 static  int ic,jc,is,js;
 #endif
 
-include(tensor_idx_defs.m4);
+include(tensor_idx_defs.m4)
 
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 

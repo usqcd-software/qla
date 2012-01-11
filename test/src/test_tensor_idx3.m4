@@ -13,7 +13,7 @@ include(protocol_idx.m4)
 
   /* Define test data */
 '
-include(tensor_idx_defs.m4);
+include(tensor_idx_defs.m4)
 `
 int test_tensor_idx3(FILE *fp)
 {

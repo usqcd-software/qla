@@ -19,7 +19,7 @@ static  int mu,sign;
 static  QLA_Real sR4       = -6.35;
 #endif
 
-include(tensor_idx_defs.m4);
+include(tensor_idx_defs.m4)
 
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 
