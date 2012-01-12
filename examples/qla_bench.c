@@ -199,6 +199,7 @@ main(int argc, char *argv[])
 
 #ifdef _OPENMP
   printf("OMP THREADS = %i\n", omp_get_max_threads());
+#ifdef CPU_ZERO
 #pragma omp parallel
   {
     int tid = omp_get_thread_num();
@@ -207,6 +208,7 @@ main(int argc, char *argv[])
     CPU_SET(tid, &set);
     sched_setaffinity(0, sizeof(set), &set);
   }
+#endif
 #endif
 
   set_fields;
