@@ -83,9 +83,8 @@ QLA_F3_D_vmeq_spproj_D( QLA_F3_DiracFermion *restrict r,
 	  QLA_F3_DiracFermion *ai = &a[i];
 	  int i_c;
 	  for(i_c=0; i_c<3; i_c++) {
-	    v4sf t1, t2;
+	    v4sf t1;
 	    spproj4p(t1, foff(ai,8*i_c));
-	    spproj4m(t2, foff(ai,8*i_c));
 	    storeaps(foff(ri,8*i_c), subps(loadaps(foff(ri,8*i_c)), t1));
 	  }
 	}

@@ -853,6 +853,32 @@ chkAssignLeftMultM($1,meq,$2)
 ')
 
 rem(`
+     Left multiplication by multiple gauge matrices
+')
+rem(`chkAssignLeftMultnM(t1,eq,adj)')
+define(chkAssignLeftMultnM,`
+  strcpy(name,"QLA_$1_$2_nM_times_n$1$3");
+  QLA_$1_eq_$1(&argt($1),&arg3($1));
+  QLA_$1_$2_M_times_$1$3(&argt($1),arg1n(M)[0],arg2n($1)[0]);
+  for(int i=1; i<ND; i++) {
+    QLA_$1_eq_zero(&argd($1));
+    QLA_$1_$2_M_times_$1$3(&argd($1),arg1n(M)[i],arg2n($1)[i]);
+    QLA_$1_peq_$1(&argt($1),&argd($1));
+  }
+  QLA_$1_eq_$1(&argd($1),&arg3($1));
+  QLA_$1_$2_nM_times_n$1$3(&argd($1),arg1n(M),arg2n($1),ND);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
+')
+
+rem(`chkLeftMultnM(td,adj)')
+define(chkLeftMultnM,`
+chkAssignLeftMultnM($1,eq,$2)
+chkAssignLeftMultnM($1,peq,$2)
+chkAssignLeftMultnM($1,eqm,$2)
+chkAssignLeftMultnM($1,meq,$2)
+')
+
+rem(`
      Left multiplication by adjoint gauge
 ')
 rem(`chkAssignLeftMultMa(t1,eq,adj)')
@@ -879,6 +905,32 @@ chkAssignLeftMultMa($1,eq,$2)
 chkAssignLeftMultMa($1,peq,$2)
 chkAssignLeftMultMa($1,eqm,$2)
 chkAssignLeftMultMa($1,meq,$2)
+')
+
+rem(`
+     Left multiplication by multiple adjoint gauge matrices
+')
+rem(`chkAssignLeftMultnMa(t1,eq,adj)')
+define(chkAssignLeftMultnMa,`
+  strcpy(name,"QLA_$1_$2_nMa_times_n$1$3");
+  QLA_$1_eq_$1(&argt($1),&arg3($1));
+  QLA_$1_$2_Ma_times_$1$3(&argt($1),arg1n(M)[0],arg2n($1)[0]);
+  for(int i=1; i<ND; i++) {
+    QLA_$1_eq_zero(&argd($1));
+    QLA_$1_$2_Ma_times_$1$3(&argd($1),arg1n(M)[i],arg2n($1)[i]);
+    QLA_$1_peq_$1(&argt($1),&argd($1));
+  }
+  QLA_$1_eq_$1(&argd($1),&arg3($1));
+  QLA_$1_$2_nMa_times_n$1$3(&argd($1),arg1n(M),arg2n($1),ND);
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
+')
+
+rem(`chkLeftMultnMa(td,adj)')
+define(chkLeftMultnMa,`
+chkAssignLeftMultnMa($1,eq,$2)
+chkAssignLeftMultnMa($1,peq,$2)
+chkAssignLeftMultnMa($1,eqm,$2)
+chkAssignLeftMultnMa($1,meq,$2)
 ')
 
 rem(`

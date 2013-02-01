@@ -31,7 +31,7 @@ int main(int argc, char *argv[]){
   int sI3x[MAX] = {8,3,2,5,6,9,7,4,0,1};
 
 
-  QLA_Int *sI1p[MAX], *sI2p[MAX], *sI3p[MAX], *nI1p[MAX], *zI1p[MAX];
+  QLA_Int *sI1p[MAX], *sI2p[MAX], /**sI3p[MAX],*/ *nI1p[MAX], *zI1p[MAX];
   
   QLA_Int destI[MAX],chkI[MAX];
 
@@ -54,7 +54,7 @@ int main(int argc, char *argv[]){
   for(i = 0; i < MAX; i++){
     sI1p[i] = &sI1[sI2x[i]];
     sI2p[i] = &sI2[sI3x[i]];
-    sI3p[i] = &sI3[sI1x[i]];
+    //sI3p[i] = &sI3[sI1x[i]];
     nI1p[i] = &nI1[sI3x[i]];
     zI1p[i] = &zI1[sI2x[i]];
     sS1p[i] = &sS1[sS1x[i]];

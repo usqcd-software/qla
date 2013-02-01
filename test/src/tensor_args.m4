@@ -57,6 +57,9 @@ define(arg2Qp, s$1Q``2''p)
 define(arg2Dp, s$1D``2''p)
 define(arg2Fp, s$1F``2''p)
 
+define(arg1n, s$1``1''n)
+define(arg2n, s$1``2''n)
+
 rem(`
      Iterators for tensor components
 ')

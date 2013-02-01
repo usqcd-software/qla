@@ -34,11 +34,11 @@ int main(int argc, char * argv[]){
   QLA_Q_ColorVector         destvQ,chkvQ;
   QLA_Q_DiracPropagator     destpQ,chkpQ;
 
-  QLA_Q_ColorMatrix         sMQ1[MAX],sMQ2[MAX],sMQ3[MAX];
-  QLA_Q_HalfFermion         sHQ1[MAX],sHQ2[MAX],sHQ3[MAX];
-  QLA_Q_DiracFermion        sDQ1[MAX],sDQ2[MAX],sDQ3[MAX];
-  QLA_Q_ColorVector         sVQ1[MAX],sVQ2[MAX],sVQ3[MAX];
-  QLA_Q_DiracPropagator     sPQ1[MAX],sPQ2[MAX],sPQ3[MAX];
+  QLA_Q_ColorMatrix         sMQ1[MAX]/*,sMQ2[MAX],sMQ3[MAX]*/;
+  QLA_Q_HalfFermion         sHQ1[MAX]/*,sHQ2[MAX],sHQ3[MAX]*/;
+  QLA_Q_DiracFermion        sDQ1[MAX]/*,sDQ2[MAX],sDQ3[MAX]*/;
+  QLA_Q_ColorVector         sVQ1[MAX]/*,sVQ2[MAX],sVQ3[MAX]*/;
+  QLA_Q_DiracPropagator     sPQ1[MAX]/*,sPQ2[MAX],sPQ3[MAX]*/;
 
   QLA_Q_ColorMatrix         /*destMQ[MAX],*/chkMQ[MAX];
   QLA_Q_HalfFermion         /*destHQ[MAX],*/chkHQ[MAX];
@@ -87,17 +87,17 @@ int main(int argc, char * argv[]){
   int sP1x[MAX] = {3,7,9,0,2,4,1,8,5,6};
   int sP2x[MAX] = {2,9,5,6,7,8,1,0,3,4};
 
-  QLA_Q_ColorMatrix         *sMQ1p[MAX], *sMQ2p[MAX], *sMQ3p[MAX];
-  QLA_Q_HalfFermion         *sHQ1p[MAX], *sHQ2p[MAX], *sHQ3p[MAX];
-  QLA_Q_DiracFermion        *sDQ1p[MAX], *sDQ2p[MAX], *sDQ3p[MAX];
-  QLA_Q_ColorVector         *sVQ1p[MAX], *sVQ2p[MAX], *sVQ3p[MAX];
-  QLA_Q_DiracPropagator     *sPQ1p[MAX], *sPQ2p[MAX], *sPQ3p[MAX];
+  QLA_Q_ColorMatrix         *sMQ1p[MAX]/*, *sMQ2p[MAX], *sMQ3p[MAX]*/;
+  QLA_Q_HalfFermion         *sHQ1p[MAX]/*, *sHQ2p[MAX], *sHQ3p[MAX]*/;
+  QLA_Q_DiracFermion        *sDQ1p[MAX]/*, *sDQ2p[MAX], *sDQ3p[MAX]*/;
+  QLA_Q_ColorVector         *sVQ1p[MAX]/*, *sVQ2p[MAX], *sVQ3p[MAX]*/;
+  QLA_Q_DiracPropagator     *sPQ1p[MAX]/*, *sPQ2p[MAX], *sPQ3p[MAX]*/;
 
-  QLA_D_ColorMatrix         *sMD1p[MAX], *sMD2p[MAX], *sMD3p[MAX];
-  QLA_D_HalfFermion         *sHD1p[MAX], *sHD2p[MAX], *sHD3p[MAX];
-  QLA_D_DiracFermion        *sDD1p[MAX], *sDD2p[MAX], *sDD3p[MAX];
-  QLA_D_ColorVector         *sVD1p[MAX], *sVD2p[MAX], *sVD3p[MAX];
-  QLA_D_DiracPropagator     *sPD1p[MAX], *sPD2p[MAX], *sPD3p[MAX];
+  QLA_D_ColorMatrix         *sMD1p[MAX], *sMD2p[MAX]/*, *sMD3p[MAX]*/;
+  QLA_D_HalfFermion         *sHD1p[MAX], *sHD2p[MAX]/*, *sHD3p[MAX]*/;
+  QLA_D_DiracFermion        *sDD1p[MAX], *sDD2p[MAX]/*, *sDD3p[MAX]*/;
+  QLA_D_ColorVector         *sVD1p[MAX], *sVD2p[MAX]/*, *sVD3p[MAX]*/;
+  QLA_D_DiracPropagator     *sPD1p[MAX], *sPD2p[MAX]/*, *sPD3p[MAX]*/;
 
   int i;
   int ic,jc,is,js;
@@ -118,44 +118,44 @@ int main(int argc, char * argv[]){
   for(i = 0; i < MAX; i++){
 
     sHQ1p[i] = &sHQ1[sH1x[i]];
-    sHQ2p[i] = &sHQ2[sH2x[i]];
-    sHQ3p[i] = &sHQ3[sH2x[i]];
+    //sHQ2p[i] = &sHQ2[sH2x[i]];
+    //sHQ3p[i] = &sHQ3[sH2x[i]];
 
     sDQ1p[i] = &sDQ1[sD1x[i]];
-    sDQ2p[i] = &sDQ2[sD2x[i]];
-    sDQ3p[i] = &sDQ3[sD2x[i]];
+    //sDQ2p[i] = &sDQ2[sD2x[i]];
+    //sDQ3p[i] = &sDQ3[sD2x[i]];
 
     sVQ1p[i] = &sVQ1[sV1x[i]];
-    sVQ2p[i] = &sVQ2[sV2x[i]];
-    sVQ3p[i] = &sVQ3[sV2x[i]];
+    //sVQ2p[i] = &sVQ2[sV2x[i]];
+    //sVQ3p[i] = &sVQ3[sV2x[i]];
 
     sPQ1p[i] = &sPQ1[sP1x[i]];
-    sPQ2p[i] = &sPQ2[sP2x[i]];
-    sPQ3p[i] = &sPQ3[sP2x[i]];
+    //sPQ2p[i] = &sPQ2[sP2x[i]];
+    //sPQ3p[i] = &sPQ3[sP2x[i]];
 
     sMQ1p[i] = &sMQ1[sM1x[i]];
-    sMQ2p[i] = &sMQ2[sM2x[i]];
-    sMQ3p[i] = &sMQ3[sM2x[i]];
+    //sMQ2p[i] = &sMQ2[sM2x[i]];
+    //sMQ3p[i] = &sMQ3[sM2x[i]];
 
     sHD1p[i] = &sHD1[sH1x[i]];
     sHD2p[i] = &sHD2[sH2x[i]];
-    sHD3p[i] = &sHD3[sH2x[i]];
+    //sHD3p[i] = &sHD3[sH2x[i]];
 
     sDD1p[i] = &sDD1[sD1x[i]];
     sDD2p[i] = &sDD2[sD2x[i]];
-    sDD3p[i] = &sDD3[sD2x[i]];
+    //sDD3p[i] = &sDD3[sD2x[i]];
 
     sVD1p[i] = &sVD1[sV1x[i]];
     sVD2p[i] = &sVD2[sV2x[i]];
-    sVD3p[i] = &sVD3[sV2x[i]];
+    //sVD3p[i] = &sVD3[sV2x[i]];
 
     sPD1p[i] = &sPD1[sP1x[i]];
     sPD2p[i] = &sPD2[sP2x[i]];
-    sPD3p[i] = &sPD3[sP2x[i]];
+    //sPD3p[i] = &sPD3[sP2x[i]];
 
     sMD1p[i] = &sMD1[sM1x[i]];
     sMD2p[i] = &sMD2[sM2x[i]];
-    sMD3p[i] = &sMD3[sM2x[i]];
+    //sMD3p[i] = &sMD3[sM2x[i]];
 
   }
 
@@ -167,24 +167,24 @@ int main(int argc, char * argv[]){
     /* Long double precision */
 '
     makeGaussianQarray(H,sHQ1);
-    makeGaussianQarray(H,sHQ2);
-    makeGaussianQarray(H,sHQ3);
+    /*makeGaussianQarray(H,sHQ2);*/
+    /*makeGaussianQarray(H,sHQ3);*/
 
     makeGaussianQarray(D,sDQ1);
-    makeGaussianQarray(D,sDQ2);
-    makeGaussianQarray(D,sDQ3);
+    /*makeGaussianQarray(D,sDQ2);*/
+    /*makeGaussianQarray(D,sDQ3);*/
 
     makeGaussianQarray(V,sVQ1);
-    makeGaussianQarray(V,sVQ2);
-    makeGaussianQarray(V,sVQ3);
+    /*makeGaussianQarray(V,sVQ2);*/
+    /*makeGaussianQarray(V,sVQ3);*/
 
     makeGaussianQarray(P,sPQ1);
-    makeGaussianQarray(P,sPQ2);
-    makeGaussianQarray(P,sPQ3);
+    /*makeGaussianQarray(P,sPQ2);*/
+    /*makeGaussianQarray(P,sPQ3);*/
 
     makeGaussianQarray(M,sMQ1);
-    makeGaussianQarray(M,sMQ2);
-    makeGaussianQarray(M,sMQ3);
+    /*makeGaussianQarray(M,sMQ2);*/
+    /*makeGaussianQarray(M,sMQ3);*/
 `
     /* Double precision */
 

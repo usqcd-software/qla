@@ -13,6 +13,31 @@ include(protocol_tensor_sng.m4)
 #include "milc_gamma.h"
 
 int main(int argc, char *argv[]){
+  int nc = QLA_Nc;
+  int ns = QLA_Ns;
+  int ic,jc,is,js;
+
+  QLA_Int sI2 = 0;
+  QLA_Int sI3 = 7032;
+
+  QLA_Real sR1 =  0.17320508075688772;
+  QLA_Real sR2 =  0.28723479823477934;
+  //QLA_Q_Real sRQ1 =  0.17320508075688772;
+  //QLA_Q_Real sRQ2 =  0.28723479823477934;
+
+  QLA_ColorMatrix         sM1,sM2,sM3;
+  QLA_HalfFermion         sH1,sH2,sH3;
+  QLA_DiracFermion        sD1,sD2,sD3;
+  QLA_ColorVector         sV1,sV2,sV3;
+  QLA_DiracPropagator     sP1,sP2,sP3;
+
+  QLA_RandomState sS1;
+
+  QLA_ColorMatrix         destM,chkM;
+  QLA_HalfFermion         destH,chkH;
+  QLA_DiracFermion        destD,chkD;
+  QLA_ColorVector         destV,chkV;
+  QLA_DiracPropagator     destP,chkP;
 '
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 #if (QLA_Precision == 1) || (QLA_Precision == 'F')
@@ -31,44 +56,34 @@ int main(int argc, char *argv[]){
   QLA_Q_Real              chkRQ;
   QLA_Q_Complex           chkCQ;
   int mu,sign;
-#endif
-
-  int nc = QLA_Nc;
-  int ns = QLA_Ns;
-  int ic,jc,is,js;
-
-  QLA_Int sI2 = 0;
-  QLA_Int sI3 = 7032;
-
-  QLA_Real sR1 =  0.17320508075688772;
-  QLA_Real sR2 =  0.28723479823477934;
-  //QLA_Q_Real sRQ1 =  0.17320508075688772;
-  //QLA_Q_Real sRQ2 =  0.28723479823477934;
 
   QLA_Real sC1re = -8.8000370811461867;
   QLA_Real sC1im =  5.7248575675626134;
   QLA_Real sC2re =  2.6141415406703029;
   QLA_Real sC2im = -9.6994509499895247;
-  QLA_Real sC3re =  5.1209437364852809;
-  QLA_Real sC3im =  3.2319023055820679;
+  //QLA_Real sC3re =  5.1209437364852809;
+  //QLA_Real sC3im =  3.2319023055820679;
 
-  QLA_Complex sC1,sC2,sC3;
-
-  QLA_ColorMatrix         sM1,sM2,sM3;
-  QLA_HalfFermion         sH1,sH2,sH3;
-  QLA_DiracFermion        sD1,sD2,sD3;
-  QLA_ColorVector         sV1,sV2,sV3;
-  QLA_DiracPropagator     sP1,sP2,sP3;
-
-  QLA_RandomState sS1;
+  QLA_Complex sC1,sC2/*,sC3*/;
 
   QLA_Real                destR,chkR;
   QLA_Complex             destC,chkC;
-  QLA_ColorMatrix         destM,chkM;
-  QLA_HalfFermion         destH,chkH;
-  QLA_DiracFermion        destD,chkD;
-  QLA_ColorVector         destV,chkV;
-  QLA_DiracPropagator     destP,chkP;
+
+#define ND 3
+  QLA_ColorVector *sV2n[] = {&sV1,&sV2,&sV3};
+  QLA_ColorMatrix *sM1n[] = {&sM1,&sM2,&sM3};
+
+  destR = 0.;
+  chkR = 0.;
+  QLA_c_eq_r(destC, 0.);
+  QLA_c_eq_r(chkC, 0.);
+
+  /* Assign values for complex constants */
+  QLA_c_eq_r_plus_ir(sC1,sC1re,sC1im);
+  QLA_c_eq_r_plus_ir(sC2,sC2re,sC2im);
+  //QLA_c_eq_r_plus_ir(sC3,sC3re,sC3im);
+
+#endif
 
   char name[64];
   FILE *fp;
@@ -80,16 +95,10 @@ int main(int argc, char *argv[]){
     exit(-1);
   }
 
-  destR = 0.;
-  chkR = 0.;
-  QLA_c_eq_r(destC, 0.);
-  QLA_c_eq_r(chkC, 0.);
-
   /* Test gaussian random fills against 
      direct call to the same underlying routine */
 '
 alltensors(`chkGaussian');
-
 `
   /* Then use random number fills to create the test fields */
 
@@ -115,17 +124,9 @@ alltensors(`chkGaussian');
   QLA_M_eq_gaussian_S(&sM1,&sS1);
   QLA_M_eq_gaussian_S(&sM2,&sS1);
   QLA_M_eq_gaussian_S(&sM3,&sS1);
-'
-`
-  /* Assign values for complex constants */
-
-  QLA_c_eq_r_plus_ir(sC1,sC1re,sC1im);
-  QLA_c_eq_r_plus_ir(sC2,sC2re,sC2im);
-  QLA_c_eq_r_plus_ir(sC3,sC3re,sC3im);
 
   /* QLA_T_eqop_T */
 '
-
 alltensors(`chkEqop');
 
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
@@ -278,12 +279,18 @@ chkLeftMultM(D);
 chkLeftMultM(P);
 chkLeftMultM(P,a);
 
+  /* QLA_T_eq_nM_times_nT */
+chkLeftMultnM(V);
+
   /* QLA_T_eq_Ma_times_T */
 chkLeftMultMa(V);
 chkLeftMultMa(H);
 chkLeftMultMa(D);
 chkLeftMultMa(P);
 chkLeftMultMa(P,a);
+
+  /* QLA_T_eq_nMa_times_nT */
+chkLeftMultnMa(V);
 
   /* QLA_T_eq_T_times_M */
 chkRightMultM(P);

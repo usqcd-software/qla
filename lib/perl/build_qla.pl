@@ -74,18 +74,23 @@ $colors = "3" if ! $colors;
 # We don't want a generic defines file for the integer or DF libraries
 $do_generic_defines = 1;
 $do_color_generic_defines = 1;
+$do_precision_generic_defines = 1;
 if($request_precision eq "DF" || $request_precision eq "FD"){
     $do_generic_defines = 0;
+    $do_precision_generic_defines = 0;
 }
 if($request_precision eq "DQ" || $request_precision eq "QD"){
     $do_generic_defines = 0;
+    $do_precision_generic_defines = 0;
 }
 if(!$request_precision && !$request_colors){
     $do_generic_defines = 0;
     $do_color_generic_defines = 0;
+    $do_precision_generic_defines = 0;
 }
 if(!$request_colors){
     $do_color_generic_defines = 0;
+    $do_precision_generic_defines = 0;
 }
 
 #  We do only a very limited set of functions for Q precision 
@@ -170,10 +175,11 @@ sub header3 {
 #---------------------------------------------------------------------
 
 &open_qla_header($qla_header_file);
-if($do_generic_defines || $do_color_generic_defines){
+if($do_generic_defines || $do_color_generic_defines || $do_precision_generic_defines){
     &open_generic_defines_header($qla_header_file,
 				 $do_generic_defines,
-				 $do_color_generic_defines);
+				 $do_color_generic_defines,
+				 $do_precision_generic_defines);
 }
 
 ######################################################################
@@ -1641,6 +1647,44 @@ if(!$quadprecision){
   }
 }
 
+
+#---------------------------------------------------------------------
+&header2("multiple color matrix fields times vector fields");
+#---------------------------------------------------------------------
+
+require("make_code_binary.pl");
+
+if(!$quadprecision){
+  @assign_list = @eqop_all;
+
+  @src1_field_list = ($datatype_colormatrix_abbrev);
+  @src2_field_list = ($datatype_colorvector_abbrev);
+
+  foreach $assgn ( @assign_list ){
+    $eqop_notation = $eqop_notation{$assgn};
+
+    foreach $s1 ( @src1_field_list ){
+      foreach $adj ( 0, 1 ) {
+	foreach $s2 ( @src2_field_list ){
+	  &header3(" $datatype_generic_name{$s2} r $eqop_notation (adj) f a ($datatype_generic_name{$s1} f)");
+	  foreach $indexing ( @ind_binary_list ){
+	    %def = ();
+	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = 
+		($s2,$s1,$s2);
+	    $def{'src1_adj'} = $suffix_adjoint if($adj);
+	    $def{'src1_multi'} = 'n';
+	    $def{'src2_multi'} = 'n';
+	    $def{'op'} = "times";
+	    if(&make_prototype($indexing,$assgn)){
+	      &make_code_binary($assgn);
+	    }
+	  }
+	}
+      }
+    }
+  }
+}
+
 #---------------------------------------------------------------------
 &header2("Multiplication of color matrix field and propagator field");
 #---------------------------------------------------------------------
@@ -2552,9 +2596,10 @@ foreach $assgn ( @assign_list ){
 }
 ######################################################################
 
-if($do_generic_defines || $do_color_generic_defines){
+if($do_generic_defines || $do_color_generic_defines || $do_precision_generic_defines){
     &close_generic_defines_header($do_generic_defines,
-				  $do_color_generic_defines);
+				  $do_color_generic_defines,
+				  $do_precision_generic_defines);
 }
 
 &close_qla_header;

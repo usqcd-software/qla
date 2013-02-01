@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([qla],[1.7.0-a7],[josborn at physics.bu.edu])
+AC_INIT([qla],[1.7.1],[josborn at physics.bu.edu])
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE
 
@@ -30,10 +30,14 @@ AC_ARG_ENABLE(
   AC_SUBST(NC, [$enableval]),
   AC_SUBST(NC, [all])
 )
-if test "X$NC" = Xn -o "X$NC" = X1; then NC="N"; fi
-if test `expr $NC : '[0-9]*$' \& $NC \> 3` -ne 0; then NC="N"; fi
-if test "X$NC" != X2 -a "X$NC" != X3 -a "X$NC" != XN; then NC="all"; fi 
-
+if test $NC = "all"; then NC="2,3,N"; fi
+for x in `echo "$NC" |tr ',' ' '`; do
+  case $x in
+    2) NC2=1;;
+    3) NC3=1;;
+    *) NCN=1;;
+  esac
+done
 
 # code options
 
@@ -217,9 +221,9 @@ AM_CONDITIONAL(OPT_SSE2, [test "X$OPT_SSE2" != "Xno"])
 AM_CONDITIONAL(OPT_440, [test "X$OPT_440" != "Xno"])
 AM_CONDITIONAL(OPT_440d, [test "X$OPT_440d" != "Xno"])
 AM_CONDITIONAL(OPT_QPX, [test "X$OPT_QPX" != "Xno"])
-AM_CONDITIONAL(NC2, [test "X$NC" = "X2" -o "X$NC" = "Xall"])
-AM_CONDITIONAL(NC3, [test "X$NC" = "X3" -o "X$NC" = "Xall"])
-AM_CONDITIONAL(NCN, [test "X$NC" = "XN" -o "X$NC" = "Xall"])
+AM_CONDITIONAL(NC2, [test "X$NC2" = "X1"])
+AM_CONDITIONAL(NC3, [test "X$NC3" = "X1"])
+AM_CONDITIONAL(NCN, [test "X$NCN" = "X1"])
 
 # configuration files
 AC_CONFIG_FILES(Makefile)

@@ -48,78 +48,76 @@ int main(int argc, char *argv[]){
   /*QLA_D_Complex chkcD;*/
   QLA_Q_Real chkrQ;
   QLA_Q_Complex chkcQ;
+
+  QLA_Real sC4re      = 831.2;
+  QLA_Real sC4im      = -701.;
+  QLA_Complex sC4;
+
+  QLA_Real sR2[MAX] = {.2359, .6106, .5588, .6899, .5000,
+		.9789, .4457, .8602, .4282, .7920};
+  QLA_Real sC2re[MAX] = { .9789, -.4457, .8602, .4282, .7920,
+		     -.2359, -.6106, -.5588 -.6899, -.5000};
+  QLA_Real sC2im[MAX] = { .6188, -.1038,  .7359, -.9607,  .5032,
+		     2.1929, .7147, -2.6880, .4282, .5472};
+  QLA_Complex sC2[MAX];
+  int zI1[MAX] = { 3, 0, 7, 1, 0, 0, 3, 2, 1, 0};
+  QLA_Int sI1[MAX] = { 61, -10,  73, -96,  50,
+  		   92,  34, -21, -67, 104};
+  QLA_Int sI2[MAX] = {-2359, -6106, -5588, -6899, -5000,
+		9789, -4457, 8602, 4282, 7920};
+  QLA_Int sI3[MAX] = { 92,  34, -21, -67, 104,
+		   61, -10,  73, -96,  50};
+  int sR3x[MAX] = {8,3,2,5,6,9,7,4,0,1};
+  int sC2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
+  int sI1x[MAX] = {4,9,0,2,1,3,7,8,5,6};
+  int sI2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
+  int sI3x[MAX] = {8,3,2,5,6,9,7,4,0,1};
+
+  QLA_Int /**nI1p[MAX],*/ *zI1p[MAX];
+  QLA_Int *sI1p[MAX], *sI2p[MAX], *sI3p[MAX];
+  QLA_Real *sR2p[MAX], *sR3p[MAX];
+  QLA_Complex *sC2p[MAX]/*, *sC3p[MAX]*/;
 #endif
   
   QLA_Real sR1[MAX] = { 61.88, -10.38,  73.59, -96.07,  50.32,
 		92.37,   34.58, -21.10, -67.05, 104.01};
 
-  QLA_Real sR2[MAX] = {.2359, .6106, .5588, .6899, .5000,
-		.9789, .4457, .8602, .4282, .7920};
-  
   QLA_Real sR3[MAX] = {-23.59, -56.32, -55.88, -11.55, 145.46, 
 		 219.29, 71.47, -268.80, 42.82, 54.72};
 
   QLA_Real sC1re[MAX] = { 92.37,   34.58, -21.10, -67.05, 104.01,
 		      61.88, -10.38,  73.59, -96.07,  50.32};
 
-  QLA_Real sC2re[MAX] = { .9789, -.4457, .8602, .4282, .7920,
-		     -.2359, -.6106, -.5588 -.6899, -.5000};
-  
   QLA_Real sC3re[MAX] = {219.29, 71.47, -268.80, 42.82, 54.72,
 		     -23.59, -56.32, -55.88, -11.55, 145.46}; 
 
   QLA_Real sC1im[MAX] = {-23.59, -61.06, -55.88 -68.99, -50.00,
 		      92.37,   34.58, -21.10, -67.05, 104.01};
 
-  QLA_Real sC2im[MAX] = { .6188, -.1038,  .7359, -.9607,  .5032,
-		     2.1929, .7147, -2.6880, .4282, .5472};
-  
   QLA_Real sC3im[MAX] = {-23.59, -56.32, -55.88, -11.55, 145.46, 
 		      97.89, -44.57, 86.02, 42.82, 79.20};
 
-  QLA_Real sC4re      = 831.2;
-  QLA_Real sC4im      = -701.;
-
-  QLA_Complex sC1[MAX],sC2[MAX],sC3[MAX];
-  QLA_Complex sC4;
+  QLA_Complex sC1[MAX],sC3[MAX];
 
   QLA_RandomState sS1[MAX];
 
   int nI1[MAX] = { 3, 12, 7, 1, 5, 8, 3, 2, 1, 5};
-  int zI1[MAX] = { 3, 0, 7, 1, 0, 0, 3, 2, 1, 0};
-
-  QLA_Int sI1[MAX] = { 61, -10,  73, -96,  50,
-		   92,  34, -21, -67, 104};
-
-  QLA_Int sI2[MAX] = {-2359, -6106, -5588, -6899, -5000,
-		9789, -4457, 8602, 4282, 7920};
-
-  QLA_Int sI3[MAX] = { 92,  34, -21, -67, 104,
-		   61, -10,  73, -96,  50};
 
   QLA_Int sI4      = 5001;
 
   int dRx[MAX]  = {8,5,6,7,1,2,9,0,3,4};
   int sR1x[MAX] = {3,0,1,8,2,4,5,9,7,6};
   int sR2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
-  int sR3x[MAX] = {8,3,2,5,6,9,7,4,0,1};
 
   int dCx[MAX]  = {8,3,2,5,6,9,7,4,0,1};
   int sC1x[MAX] = {8,5,6,7,1,2,9,0,3,4};
-  int sC2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
-
-  int sI1x[MAX] = {4,9,0,2,1,3,7,8,5,6};
-  int sI2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
-  int sI3x[MAX] = {8,3,2,5,6,9,7,4,0,1};
 
   int sS1x[MAX] = {1,3,8,5,9,4,7,6,0,2};
 
-  QLA_Int *nI1p[MAX], *zI1p[MAX];
-  QLA_Int *sI1p[MAX], *sI2p[MAX], *sI3p[MAX];
-  QLA_Real *sR1p[MAX], *sR2p[MAX], *sR3p[MAX];
-  QLA_Complex *sC1p[MAX], *sC2p[MAX], *sC3p[MAX];
+  QLA_Real *sR1p[MAX];
+  QLA_Complex *sC1p[MAX];
   QLA_RandomState *sS1p[MAX];
-  
+
   QLA_Real destR[MAX],chkR[MAX];
   QLA_Complex destC[MAX],chkC[MAX];
 
@@ -139,31 +137,37 @@ int main(int argc, char *argv[]){
 
   for(i = 0; i < MAX; i++){
     sR1p[i] = &sR1[sR2x[i]];
+    sC1p[i] = &sC1[sC1x[i]];
+    sS1p[i] = &sS1[sS1x[i]];
+
+#if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
     sR2p[i] = &sR2[sR3x[i]];
     sR3p[i] = &sR3[sR1x[i]];
 
-    sC1p[i] = &sC1[sC1x[i]];
     sC2p[i] = &sC2[sC2x[i]];
-    sC3p[i] = &sC3[sC2x[i]];
+    //sC3p[i] = &sC3[sC2x[i]];
 
     sI1p[i] = &sI1[sI1x[i]];
     sI2p[i] = &sI2[sI2x[i]];
     sI3p[i] = &sI3[sI3x[i]];
 
-    nI1p[i] = &nI1[sR3x[i]];
+    //nI1p[i] = &nI1[sR3x[i]];
     zI1p[i] = &zI1[sR2x[i]];
-
-    sS1p[i] = &sS1[sS1x[i]];
+#endif
   }
 
   /* Create complex variables with known real and imaginary parts */
 
   for(i = 0; i < MAX; i++){
     QLA_c_eq_r_plus_ir(sC1[i],sC1re[i],sC1im[i]);
+#if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
     QLA_c_eq_r_plus_ir(sC2[i],sC2re[i],sC2im[i]);
+#endif
     QLA_c_eq_r_plus_ir(sC3[i],sC3re[i],sC3im[i]);
   }
+#if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
   QLA_c_eq_r_plus_ir(sC4,sC4re,sC4im);
+#endif
 
   /* Independent check of vector copy */
 

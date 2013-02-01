@@ -99,17 +99,17 @@ int main(int argc, char *argv[]){
   int sP1x[MAX] = {3,7,9,0,2,4,1,8,5,6};
   int sP2x[MAX] = {2,9,5,6,7,8,1,0,3,4};
 
-  QLA_D_ColorMatrix         *sMD1p[MAX], *sMD2p[MAX], *sMD3p[MAX];
-  QLA_D_HalfFermion         *sHD1p[MAX], *sHD2p[MAX], *sHD3p[MAX];
-  QLA_D_DiracFermion        *sDD1p[MAX], *sDD2p[MAX], *sDD3p[MAX];
-  QLA_D_ColorVector         *sVD1p[MAX], *sVD2p[MAX], *sVD3p[MAX];
-  QLA_D_DiracPropagator     *sPD1p[MAX], *sPD2p[MAX], *sPD3p[MAX];
+  QLA_D_ColorMatrix         *sMD1p[MAX]/*, *sMD2p[MAX], *sMD3p[MAX]*/;
+  QLA_D_HalfFermion         *sHD1p[MAX]/*, *sHD2p[MAX], *sHD3p[MAX]*/;
+  QLA_D_DiracFermion        *sDD1p[MAX]/*, *sDD2p[MAX], *sDD3p[MAX]*/;
+  QLA_D_ColorVector         *sVD1p[MAX]/*, *sVD2p[MAX], *sVD3p[MAX]*/;
+  QLA_D_DiracPropagator     *sPD1p[MAX]/*, *sPD2p[MAX], *sPD3p[MAX]*/;
 			       		     	       	 	 
-  QLA_F_ColorMatrix         *sMF1p[MAX], *sMF2p[MAX], *sMF3p[MAX];
-  QLA_F_HalfFermion         *sHF1p[MAX], *sHF2p[MAX], *sHF3p[MAX];
-  QLA_F_DiracFermion        *sDF1p[MAX], *sDF2p[MAX], *sDF3p[MAX];
-  QLA_F_ColorVector         *sVF1p[MAX], *sVF2p[MAX], *sVF3p[MAX];
-  QLA_F_DiracPropagator     *sPF1p[MAX], *sPF2p[MAX], *sPF3p[MAX];
+  QLA_F_ColorMatrix         *sMF1p[MAX], *sMF2p[MAX]/*, *sMF3p[MAX]*/;
+  QLA_F_HalfFermion         *sHF1p[MAX], *sHF2p[MAX]/*, *sHF3p[MAX]*/;
+  QLA_F_DiracFermion        *sDF1p[MAX], *sDF2p[MAX]/*, *sDF3p[MAX]*/;
+  QLA_F_ColorVector         *sVF1p[MAX], *sVF2p[MAX]/*, *sVF3p[MAX]*/;
+  QLA_F_DiracPropagator     *sPF1p[MAX], *sPF2p[MAX]/*, *sPF3p[MAX]*/;
 
   int i;
   int ic,jc,is,js;
@@ -130,53 +130,52 @@ int main(int argc, char *argv[]){
   for(i = 0; i < MAX; i++){
 
     sMD1p[i] = &sMD1[sM1x[i]];
-    sMD2p[i] = &sMD2[sM2x[i]];
-    sMD3p[i] = &sMD3[sM2x[i]];
+    //sMD2p[i] = &sMD2[sM2x[i]];
+    //sMD3p[i] = &sMD3[sM2x[i]];
 
     sHD1p[i] = &sHD1[sH1x[i]];
-    sHD2p[i] = &sHD2[sH2x[i]];
-    sHD3p[i] = &sHD3[sH2x[i]];
+    //sHD2p[i] = &sHD2[sH2x[i]];
+    //sHD3p[i] = &sHD3[sH2x[i]];
 
     sDD1p[i] = &sDD1[sD1x[i]];
-    sDD2p[i] = &sDD2[sD2x[i]];
-    sDD3p[i] = &sDD3[sD2x[i]];
+    //sDD2p[i] = &sDD2[sD2x[i]];
+    //sDD3p[i] = &sDD3[sD2x[i]];
 
     sVD1p[i] = &sVD1[sV1x[i]];
-    sVD2p[i] = &sVD2[sV2x[i]];
-    sVD3p[i] = &sVD3[sV2x[i]];
+    //sVD2p[i] = &sVD2[sV2x[i]];
+    //sVD3p[i] = &sVD3[sV2x[i]];
 
     sPD1p[i] = &sPD1[sP1x[i]];
-    sPD2p[i] = &sPD2[sP2x[i]];
-    sPD3p[i] = &sPD3[sP2x[i]];
+    //sPD2p[i] = &sPD2[sP2x[i]];
+    //sPD3p[i] = &sPD3[sP2x[i]];
 
     sMD1p[i] = &sMD1[sM1x[i]];
-    sMD2p[i] = &sMD2[sM2x[i]];
-    sMD3p[i] = &sMD3[sM2x[i]];
+    //sMD2p[i] = &sMD2[sM2x[i]];
+    //sMD3p[i] = &sMD3[sM2x[i]];
 
     sMF1p[i] = &sMF1[sM1x[i]];
     sMF2p[i] = &sMF2[sM2x[i]];
-    sMF3p[i] = &sMF3[sM2x[i]];
+    //sMF3p[i] = &sMF3[sM2x[i]];
 
     sHF1p[i] = &sHF1[sH1x[i]];
     sHF2p[i] = &sHF2[sH2x[i]];
-    sHF3p[i] = &sHF3[sH2x[i]];
+    //sHF3p[i] = &sHF3[sH2x[i]];
 
     sDF1p[i] = &sDF1[sD1x[i]];
     sDF2p[i] = &sDF2[sD2x[i]];
-    sDF3p[i] = &sDF3[sD2x[i]];
+    //sDF3p[i] = &sDF3[sD2x[i]];
 
     sVF1p[i] = &sVF1[sV1x[i]];
     sVF2p[i] = &sVF2[sV2x[i]];
-    sVF3p[i] = &sVF3[sV2x[i]];
+    //sVF3p[i] = &sVF3[sV2x[i]];
 
     sPF1p[i] = &sPF1[sP1x[i]];
     sPF2p[i] = &sPF2[sP2x[i]];
-    sPF3p[i] = &sPF3[sP2x[i]];
+    //sPF3p[i] = &sPF3[sP2x[i]];
 
     sMF1p[i] = &sMF1[sM1x[i]];
     sMF2p[i] = &sMF2[sM2x[i]];
-    sMF3p[i] = &sMF3[sM2x[i]];
-
+    //sMF3p[i] = &sMF3[sM2x[i]];
   }
 
   /* Create random test values */

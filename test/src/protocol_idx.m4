@@ -922,6 +922,150 @@ define(binary2,`
 ')
 
 rem(`
+     Generic multi field binary
+')
+rem(`binaryn(td,eq,t1,op,t2,v1,v2)')
+define(binaryn,`
+binaryn1($@)
+binaryn2($@)
+')
+
+define(setn,`
+    for(int d=0; d<ND; d++) argx($1)t[d]=&argx($1)[d][$2]')
+define(setnp,`
+    for(int d=0; d<ND; d++) argx($1)t[d]=argxp($1)[d][$2]')
+
+define(binaryn1,`
+  /* qla_name2(,$1,,$2,n,$3,$4,n,$5) */
+
+  strcpy(name,"qla_name2(,$1,v,$2,n,$3,$4,n,$5)");
+  resetdt($1)
+  qla_name2(,$1,v,$2,n,$3,$4,n,$5)(argd($1),argx($6),argx($7),MAX,ND);
+  for(i=0;i<MAX;i++) { setn($6,i); setn($7,i);
+    qla_name2(,$1,,$2,n,$3,$4,n,$5)(&argt($1)[i],argx($6)t,argx($7)t,ND);
+  }
+  checkeqidx$1$1(argt($1),argd($1),name,fp);
+
+  strcpy(name,"qla_name2(,$1,x,$2,n,$3,$4,n,$5)");
+  resetdt($1)
+  qla_name2(,$1,x,$2,n,$3,$4,n,$5)(argd($1),argx($6),argx($7),idxx($6),MAX,ND);
+  for(i=0;i<MAX;i++) { setn($6,idxx($6)[i]); setn($7,idxx($6)[i]);
+    qla_name2(,$1,,$2,n,$3,$4,n,$5)(&argt($1)[idxx($6)[i]],argx($6)t,argx($7)t,ND);
+  }
+  checkeqidx$1$1(argt($1),argd($1),name,fp);
+
+#ifdef QLA_INDEX_ALL
+  strcpy(name,"qla_name2(x,$1,,$2,n,$3,$4,n,$5)");
+  resetdt($1)
+  qla_name2(x,$1,,$2,n,$3,$4,n,$5)(argd($1),idxd($1),argx($6),argx($7),MAX,ND);
+  for(i=0;i<MAX;i++) { setn($6,i); setn($7,i);
+    qla_name2(,$1,,$2,n,$3,$4,n,$5)(&argt($1)[idxd($1)[i]],argx($6)t,argx($7)t,ND);
+  }
+  checkeqidx$1$1(argt($1),argd($1),name,fp);
+
+  strcpy(name,"qla_name2(,$1,,$2,nx,$3,$4,n,$5)");
+  resetdt($1)
+  qla_name2(,$1,,$2,nx,$3,$4,n,$5)(argd($1),argx($6),idxx($6),argx($7),MAX,ND);
+  for(i=0;i<MAX;i++) { setn($6,idxx($6)[i]); setn($7,i);
+    qla_name2(,$1,,$2,n,$3,$4,n,$5)(&argt($1)[i],argx($6)t,argx($7)t,ND);
+  }
+  checkeqidx$1$1(argt($1),argd($1),name,fp);
+
+  strcpy(name,"qla_name2(,$1,,$2,n,$3,$4,nx,$5)");
+  resetdt($1)
+  qla_name2(,$1,,$2,n,$3,$4,nx,$5)(argd($1),argx($6),argx($7),idxx($7),MAX,ND);
+  for(i=0;i<MAX;i++) { setn($6,i); setn($7,idxx($7)[i]);
+    qla_name2(,$1,,$2,n,$3,$4,n,$5)(&argt($1)[i],argx($6)t,argx($7)t,ND);
+  }
+  checkeqidx$1$1(argt($1),argd($1),name,fp);
+
+  strcpy(name,"qla_name2(x,$1,,$2,nx,$3,$4,n,$5)");
+  resetdt($1)
+  qla_name2(x,$1,,$2,nx,$3,$4,n,$5)(argd($1),idxd($1),argx($6),idxx($6),argx($7),MAX,ND);
+  for(i=0;i<MAX;i++) { setn($6,idxx($6)[i]); setn($7,i);
+    qla_name2(,$1,,$2,n,$3,$4,n,$5)(&argt($1)[idxd($1)[i]],argx($6)t,argx($7)t,ND);
+  }
+  checkeqidx$1$1(argt($1),argd($1),name,fp);
+
+  strcpy(name,"qla_name2(x,$1,,$2,n,$3,$4,nx,$5)");
+  resetdt($1)
+  qla_name2(x,$1,,$2,n,$3,$4,nx,$5)(argd($1),idxd($1),argx($6),argx($7),idxx($7),MAX,ND);
+  for(i=0;i<MAX;i++) { setn($6,i); setn($7,idxx($7)[i]);
+    qla_name2(,$1,,$2,n,$3,$4,n,$5)(&argt($1)[idxd($1)[i]],argx($6)t,argx($7)t,ND);
+  }
+  checkeqidx$1$1(argt($1),argd($1),name,fp);
+#endif
+')
+
+define(binaryn2,`
+#ifdef QLA_INDEX_ALL
+  strcpy(name,"qla_name2(,$1,,$2,nx,$3,$4,nx,$5)");
+  resetdt($1)
+  qla_name2(,$1,,$2,nx,$3,$4,nx,$5)(argd($1),argx($6),idxx($6),argx($7),idxx($7),MAX,ND);
+  for(i=0;i<MAX;i++) { setn($6,idxx($6)[i]); setn($7,idxx($7)[i]);
+    qla_name2(,$1,,$2,n,$3,$4,n,$5)(&argt($1)[i],argx($6)t,argx($7)t,ND);
+  }
+  checkeqidx$1$1(argt($1),argd($1),name,fp);
+
+  strcpy(name,"qla_name2(x,$1,,$2,nx,$3,$4,nx,$5)");
+  resetdt($1)
+  qla_name2(x,$1,,$2,nx,$3,$4,nx,$5)(argd($1),idxd($1),argx($6),idxx($6),argx($7),idxx($7),MAX,ND);
+  for(i=0;i<MAX;i++) { setn($6,idxx($6)[i]); setn($7,idxx($7)[i]);
+    qla_name2(,$1,,$2,n,$3,$4,n,$5)(&argt($1)[idxd($1)[i]],argx($6)t,argx($7)t,ND);
+  }
+  checkeqidx$1$1(argt($1),argd($1),name,fp);
+#endif
+
+  strcpy(name,"qla_name2(,$1,v,$2,np,$3,$4,n,$5)");
+  resetdt($1)
+  qla_name2(,$1,v,$2,np,$3,$4,n,$5)(argd($1),argxp($6),argx($7),MAX,ND);
+  for(i=0;i<MAX;i++) { setnp($6,i); setn($7,i);
+    qla_name2(,$1,,$2,n,$3,$4,n,$5)(&argt($1)[i],argx($6)t,argx($7)t,ND);
+  }
+  checkeqidx$1$1(argt($1),argd($1),name,fp);
+
+  strcpy(name,"qla_name2(,$1,v,$2,n,$3,$4,np,$5)");
+  resetdt($1)
+  qla_name2(,$1,v,$2,n,$3,$4,np,$5)(argd($1),argx($6),argxp($7),MAX,ND);
+  for(i=0;i<MAX;i++) { setn($6,i); setnp($7,i);
+    qla_name2(,$1,,$2,n,$3,$4,n,$5)(&argt($1)[i],argx($6)t,argx($7)t,ND);
+  }
+  checkeqidx$1$1(argt($1),argd($1),name,fp);
+
+  strcpy(name,"qla_name2(,$1,v,$2,np,$3,$4,np,$5)");
+  resetdt($1)
+  qla_name2(,$1,v,$2,np,$3,$4,np,$5)(argd($1),argxp($6),argxp($7),MAX,ND);
+  for(i=0;i<MAX;i++) { setnp($6,i); setnp($7,i);
+    qla_name2(,$1,,$2,n,$3,$4,n,$5)(&argt($1)[i],argx($6)t,argx($7)t,ND);
+  }
+  checkeqidx$1$1(argt($1),argd($1),name,fp);
+
+  strcpy(name,"qla_name2(,$1,x,$2,np,$3,$4,n,$5)");
+  resetdt($1)
+  qla_name2(,$1,x,$2,np,$3,$4,n,$5)(argd($1),argxp($6),argx($7),idxx($6),MAX,ND);
+  for(i=0;i<MAX;i++) { setnp($6,idxx($6)[i]); setn($7,idxx($6)[i]);
+    qla_name2(,$1,,$2,n,$3,$4,n,$5)(&argt($1)[idxx($6)[i]],argx($6)t,argx($7)t,ND);
+  }
+  checkeqidx$1$1(argt($1),argd($1),name,fp);
+
+  strcpy(name,"qla_name2(,$1,x,$2,n,$3,$4,np,$5)");
+  resetdt($1)
+  qla_name2(,$1,x,$2,n,$3,$4,np,$5)(argd($1),argx($6),argxp($7),idxx($6),MAX,ND);
+  for(i=0;i<MAX;i++) { setn($6,idxx($6)[i]); setnp($7,idxx($6)[i]);
+    qla_name2(,$1,,$2,n,$3,$4,n,$5)(&argt($1)[idxx($6)[i]],argx($6)t,argx($7)t,ND);
+  }
+  checkeqidx$1$1(argt($1),argd($1),name,fp);
+
+  strcpy(name,"qla_name2(,$1,x,$2,np,$3,$4,np,$5)");
+  resetdt($1)
+  qla_name2(,$1,x,$2,np,$3,$4,np,$5)(argd($1),argxp($6),argxp($7),idxx($6),MAX,ND);
+  for(i=0;i<MAX;i++) { setnp($6,idxx($6)[i]); setnp($7,idxx($6)[i]);
+    qla_name2(,$1,,$2,n,$3,$4,n,$5)(&argt($1)[idxx($6)[i]],argx($6)t,argx($7)t,ND);
+  }
+  checkeqidx$1$1(argt($1),argd($1),name,fp);
+')
+
+rem(`
      Global dot product for complex values
 ')
 rem(`qla_name2_spec(pd,td,pe,eq,p1,t1,op,p2,t2,spec)')

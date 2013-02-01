@@ -37,7 +37,9 @@ $QLA_complex_header = "<qla_complex.h>";
 $QLA_types_header = "<qla_types.h>";
 
 # Current header file (based on global name header_file)
-$QLA_this_header = "<$qla_header_file>";
+# strip off leading path
+($QLA_this_header = $qla_header_file) =~ s|.*/||;
+$QLA_this_header = "<". $QLA_this_header .">";
 
 # Headers needed by the library
 @headers = (

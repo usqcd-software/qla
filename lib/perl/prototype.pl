@@ -48,6 +48,8 @@ require("operatortypes.pl");
 #                           and the source code directory
 #  prefix_precision output  partial prefix, as in QLA_F in place of QLA_F3
 #                           used to build the color-generic name
+#  prefix_color     output  partial prefix, as in QLA_3 in place of QLA_F3
+#                           used to build the precision-generic name
 #  src_filename     output  name of the source code file
 #  func_name        output  function name
 #  nc               output  number of colors ("2", "3", or the nc argument)
@@ -156,7 +158,7 @@ sub open_qla_header {
 #   e.g. QLA_D_G_eq_G is mapped to QLA_D3_G_eq_G
 
 sub open_generic_defines_header {
-    local($file,$do_gen,$do_col_gen) = @_;
+    local($file,$do_gen,$do_col_gen,$do_prec_gen) = @_;
 
     # The fully generic file name takes the header name and adds "_generic"
     # e.g. qla_f3.h -> qla_f3_generic.h
@@ -168,11 +170,19 @@ sub open_generic_defines_header {
     $color_generic_header = $file;
     $color_generic_header =~ s/\.h/_color_generic.h/;
 
+    # The precision-generic file name uses "_precision_generic"
+    # e.g. qla_f3.h -> qla_f3_precision_generic.h
+    $precision_generic_header = $file;
+    $precision_generic_header =~ s/\.h/_precision_generic.h/;
+
     $generic_header_stripped = $generic_header;
     $generic_header_stripped =~ s^.*/^^;
 
     $color_generic_header_stripped = $color_generic_header;
     $color_generic_header_stripped =~ s^.*/^^;
+
+    $precision_generic_header_stripped = $precision_generic_header;
+    $precision_generic_header_stripped =~ s^.*/^^;
 
     if($do_gen){
 	open(QLA_GEN_HDR,">$generic_header") || 
@@ -191,6 +201,14 @@ sub open_generic_defines_header {
 	print QLA_COL_GEN_HDR "#define $suppress_color_generic_header_dups\n";
     }
 
+    if($do_prec_gen){
+	open(QLA_PREC_GEN_HDR,">$precision_generic_header") || 
+	    die "Can't open $precision_generic_header\n";
+	$suppress_precision_generic_header_dups = &make_id_macro($precision_generic_header);
+	print QLA_PREC_GEN_HDR "#ifndef $suppress_precision_generic_header_dups\n";
+	print QLA_PREC_GEN_HDR "#define $suppress_precision_generic_header_dups\n";
+    }
+
 }
 
 #---------------------------------------------------------------------
@@ -198,7 +216,17 @@ sub open_generic_defines_header {
 #---------------------------------------------------------------------
 
 sub close_generic_defines_header {
-    local($do_gen,$do_col_gen) = @_;
+    local($do_gen,$do_col_gen,$do_prec_gen) = @_;
+
+    if($do_prec_gen){
+	# Print include directive for precision generic header in primary header file
+	print QLA_HDR "\n\n/* Translation to precision-generic names */\n\n";
+	print QLA_HDR "#if QLA_Precision == \'$precision\'\n\n";
+	print QLA_HDR "#include <$precision_generic_header_stripped>\n\n";
+	print QLA_HDR "#endif\n";
+	print QLA_PREC_GEN_HDR "#endif /* $suppress_precision_generic_header_dups */\n";
+	close(QLA_PREC_GEN_HDR);
+    }
 
     if($do_col_gen){
 	# Print include directive for color generic header in primary header file
@@ -227,7 +255,6 @@ sub close_generic_defines_header {
 	print QLA_HDR "\n\n";
 	print QLA_HDR "#include <$generic_header_stripped>\n\n";
 	print QLA_HDR "#endif\n";
-
 	print QLA_GEN_HDR "#endif /* $suppress_generic_header_dups */\n";
 	close(QLA_GEN_HDR);
     }
@@ -248,7 +275,7 @@ sub close_qla_header {
 # to "a[index[i]]".
 
 sub make_atomic_value {
-    local($ptr_pfx,$t,$name,$index_name,$gang_index_name,$dim_name) = @_;
+    local($multi,$ptr_pfx,$t,$name,$index_name,$gang_index_name,$dim_name) = @_;
     local($index,$scalar_value);
 
     # If name is null, return null
@@ -256,9 +283,17 @@ sub make_atomic_value {
 
     else{
 	# Return dereferenced name if a scalar operation or scalar argument
-	if($dim_name eq "" || $datatype_scalar{$t} == 1){
-	    $scalar_value = "*$name";
+      if($dim_name eq "" || $datatype_scalar{$t} == 1){
+	if($multi eq "") {
+	  $scalar_value = "*$name";
+	} else {
+	  if($datatype_scalar{$t} == 1) {
+	    $scalar_value = "$name"."[d]";
+	  } else {
+	    $scalar_value = "*$name"."[d]";
+	  }
 	}
+      }
 	# Return indexed name if a vector operation
 	else{
 	    if($gang_index_name eq ""){
@@ -268,6 +303,7 @@ sub make_atomic_value {
 	    else{
 		$index = "$gang_index_name\[$var_i]";
 	    }
+	    if($multi ne "") { $name .= "[d]"; }
 	    $scalar_value = "$name\[$index]";
 	    if($ptr_pfx ne ""){
 		$scalar_value = "*$scalar_value";
@@ -290,7 +326,7 @@ sub make_atomic_value {
 
 sub func_prefix {
     local($colorful,$floating,$force_precision) = @_;
-    local($prefix,$prefix_precision);
+    local($prefix,$prefix_precision,$prefix_color);
 
     # Append precision suffix if needed
     $prefix_precision = $namespace;
@@ -304,6 +340,7 @@ sub func_prefix {
     }
     # Append color suffix if needed
     $prefix = $prefix_precision;
+    $prefix_color = $namespace;
     if($colorful > 0){
 	if($force_precision ne "" || $floating == 1){
 	    $prefix .= $colors;
@@ -311,8 +348,9 @@ sub func_prefix {
 	else{
 	    $prefix .= $dash.$colors;
 	}
+	$prefix_color .= $dash.$colors;
     }
-    ("$prefix","$prefix_precision");
+    ("$prefix","$prefix_precision","$prefix_color");
 }
 
 #---------------------------------------------------------------------
@@ -320,13 +358,14 @@ sub func_prefix {
 #---------------------------------------------------------------------
 
 sub make_arg {
-    local($type,$ptr,$arg,$index_name) = @_;
+    local($type,$multi,$ptr,$arg,$index_name) = @_;
     local($string);
     local($Ncolor) = 0;
     if($type =~ /QLA_.N/) { $Ncolor = 1; }
 
     $string = $type;
     if($Ncolor) { $string .= "($arg_nc, ("; }
+    if($multi ne '') { $arg = '*'.$arg; }
     if($ptr eq $pointer_pfx){$string = $string." *restrict *$arg";}
     else {$string = $string." *restrict $arg";}
     if($Ncolor) { $string .= "))"; }
@@ -445,7 +484,7 @@ sub make_prototype {
 	$datatype_floatpt{$def{'src1_t'}} | 
 	$datatype_floatpt{$def{'src2_t'}} | 
 	$datatype_floatpt{$def{'src3_t'}};
-    ($def{'prefix'},$def{'prefix_precision'}) = 
+    ($def{'prefix'},$def{'prefix_precision'},$def{'prefix_color'}) = 
 	&func_prefix($colorful,$floating,$def{'precision'});
 
     # Stop here if prefix does not match target or its alternate
@@ -462,14 +501,14 @@ sub make_prototype {
 
 	    $def{$arg.'_ptr_pfx'} = $ind_ptr_prefix{"$arg,$indexing"};
 	    $def{$arg.'_idx_pfx'} = $ind_idx_prefix{"$arg,$indexing"};
-	    $argstring{$arg} = $def{$arg.'_ptr_pfx'}.$def{$arg.'_idx_pfx'}.
+	    $argstring{$arg} = $def{$arg.'_multi'}.$def{$arg.'_ptr_pfx'}.$def{$arg.'_idx_pfx'}.
 		$def{$arg.'_t'}.$def{$arg.'_adj'}.$def{$arg.'_sfx'};
 
 	    $mangled_t = $def{$arg.'_t'};
 	    if($mangled_t =~ /[a-z]/) {
 	      $mangled_t = $mangled_t."1";
 	    }
-	    $argstring_mangled{$arg} = $def{$arg.'_ptr_pfx'}.
+	    $argstring_mangled{$arg} = $def{$arg.'_multi'}.$def{$arg.'_ptr_pfx'}.
 	      $def{$arg.'_idx_pfx'}.$mangled_t.
 		$def{$arg.'_adj'}.$def{$arg.'_sfx'};
 
@@ -530,6 +569,11 @@ sub make_prototype {
 
     $func_name_color_generic = $def{'prefix_precision'}.$dash.$func_name;
 
+    # The precision-generic name leaves off the precision but keeps the
+    # color label
+
+    $func_name_precision_generic = $def{'prefix_color'}.$dash.$func_name;
+
     # The specific function name has the full prefix
 
     $func_name = $def{'prefix'}.$dash.$func_name;
@@ -586,6 +630,7 @@ sub make_prototype {
     # Destination argument
 
     $declaration .= &make_arg($def{'dest_type'},
+			      $def{'dest_multi'},
 			      $def{'dest_ptr_pfx'},
                               $def{'dest_name'},
 			      $def{'dest_index_name'});
@@ -603,6 +648,7 @@ sub make_prototype {
 	if(defined($def{$arg.'_t'})){
 	    $v = $def{$arg.'_type'};
 	    $declaration .= &make_arg(", $v",
+				      $def{$arg.'_multi'},
 				      $def{$arg.'_ptr_pfx'},
                                       $def{$arg.'_name'},
 				      $def{$arg.'_index_name'});
@@ -620,7 +666,7 @@ sub make_prototype {
     #---------------------------------------------
 
     if($ind_needs_gang_index{$indexing} == 1){
-	$declaration .= ", int *$arg_gang_index ";
+	$declaration .= ", int *$arg_gang_index";
 	$def{'gang_index_name'} = $arg_gang_index;
     }
 
@@ -629,8 +675,12 @@ sub make_prototype {
     #--------------------------------------------
 
     if($ind_needs_dim{$indexing} == 1){
-	$declaration .= ", int $arg_dim ";
+	$declaration .= ", int $arg_dim";
 	$def{'dim_name'} = $arg_dim;
+    }
+
+    if($def{'src1_multi'} ne '' || $def{'src2_multi'} ne '') {
+      $declaration .= ", int nd";
     }
 
     # Close parenthesis
@@ -667,13 +717,20 @@ sub make_prototype {
 	print QLA_COL_GEN_HDR "#define @define_map\n";
     }
 
+    if($func_name ne $func_name_precision_generic &&
+       $func_name_generic ne $func_name_precision_generic){
+	@define_map = &make_define_map($func_name,$func_name_precision_generic,
+				       $declaration);
+	print QLA_PREC_GEN_HDR "#define @define_map\n";
+    }
+
     ############################################################
     # Build names of indexed, dereferenced values for code
     ############################################################
 
     foreach $arg ( 'dest','src1','src2','src3' ){
 	$def{$arg.'_value'} = &make_atomic_value(
-             @def{$arg.'_ptr_pfx',$arg.'_t',$arg.'_name',
+             @def{$arg.'_multi',$arg.'_ptr_pfx',$arg.'_t',$arg.'_name',
 		  $arg.'_index_name','gang_index_name','dim_name'});
     }
 

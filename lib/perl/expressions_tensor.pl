@@ -788,7 +788,7 @@ sub print_MV {
   print QLA_SRC "test\n";
 }
 
-sub print_val_eqop_val_op_val {
+sub print_val_eqop_val_op_val_single {
   my($ddef,$eqop,$imre,$s1def,$op,$s2def) = @_;
 
   my $inline = 1;
@@ -997,6 +997,26 @@ sub print_val_eqop_val_op_val {
   }
 
 }
+
+sub print_val_eqop_val_op_val {
+  my($ddef,$eqop,$imre,$s1def,$op,$s2def) = @_;
+
+  if($def{'src1_multi'} ne '' || $def{'src2_multi'} ne '') {
+    my $eqop2 = $eqop;
+    if($eqop2 eq $eqop_eq)  { $eqop2 = $eqop_peq; }
+    if($eqop2 eq $eqop_eqm) { $eqop2 = $eqop_meq; }
+    open_iter('d','1');
+    print_val_eqop_val_op_val_single($ddef,$eqop,$imre,$s1def,$op,$s2def);
+    close_iter('d');
+    open_iter('d','nd','1');
+    print_val_eqop_val_op_val_single($ddef,$eqop2,$imre,$s1def,$op,$s2def);
+    close_iter('d');
+  } else {
+    print_val_eqop_val_op_val_single($ddef,$eqop,$imre,$s1def,$op,$s2def);
+  }
+
+}
+
 
 #---------------------------------------------------------------------
 #  Binary operation on integers and reals

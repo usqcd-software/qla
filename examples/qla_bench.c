@@ -190,9 +190,9 @@ main(int argc, char *argv[])
   d1 = myalloc(QLA_DiracFermion, n);
   d2 = myalloc(QLA_DiracFermion, n);
   dp1 = myalloc(QLA_DiracFermion *, n);
-  //QLA_ColorMatrix *ma[4] = { m1, m2, m3, m4 };
+  QLA_ColorMatrix *ma[4] = { m1, m2, m3, m4 };
   //QLA_ColorVector *va[4] = { v2, v3, v4, v5 };
-  //QLA_ColorVector **vpa[4] = { vp1, vp2, vp3, vp4 };
+  QLA_ColorVector **vpa[4] = { vp1, vp2, vp3, vp4 };
 
   printf("QLA version %s (%i)\n", QLA_version_str(), QLA_version_int());
   printf("len = %i\n", n);
@@ -226,7 +226,7 @@ main(int argc, char *argv[])
   printf("%12g time=%5.2f mem=%5.0f mflops=%5.0f\n", sum, time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
 
   set_fields;
-  mem = 2*(2+QLA_Nc)*QLA_Nc*REALBYTES;
+  mem = 2*(3+QLA_Nc)*QLA_Nc*REALBYTES;
   flop = 8*QLA_Nc*QLA_Nc;
   c = cf/(flop+mem);
   time1 = clock();
@@ -239,28 +239,20 @@ main(int argc, char *argv[])
   printf("%-32s:", "QLA_V_vpeq_M_times_pV");
   printf("%12g time=%5.2f mem=%5.0f mflops=%5.0f\n", sum, time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
 
-#if 0
-#if QLA_Precision == 'D' && QLA_Colors == 3
-  extern void
-    QLA_D3_V_vpeq_nM_times_npV(QLA_D3_ColorVector *restrict r,
-			       QLA_D3_ColorMatrix *restrict *a,
-			       QLA_D3_ColorVector *restrict **b,
-			       int n,
-			       int nd);
+#if 1
   set_fields;
-  mem = 4*2*(2+QLA_Nc)*QLA_Nc*REALBYTES;
+  mem = 4*2*(3+QLA_Nc)*QLA_Nc*REALBYTES;
   flop = 4*8*QLA_Nc*QLA_Nc;
   c = cf/(flop+mem);
   time1 = clock();
   for(i=0; i<c; ++i) {
-    QLA_D3_V_vpeq_nM_times_npV(v1, ma, vpa, n, 4);
+    QLA_V_vpeq_nM_times_npV(v1, ma, vpa, n, 4);
   }
   time1 = clock() - time1;
   time1 /= CLOCKS_PER_SEC;
   sum = sum_V(v1, n);
   printf("%-32s:", "QLA_V_vpeq_nM_times_npV");
   printf("%12g time=%5.2f mem=%5.0f mflops=%5.0f\n", sum, time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
-#endif
 #endif
 
   set_fields;
@@ -278,7 +270,7 @@ main(int argc, char *argv[])
   printf("%12g time=%5.2f mem=%5.0f mflops=%5.0f\n", sum, time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
 
   set_fields;
-  mem = 4*QLA_Nc*REALBYTES;
+  mem = 6*QLA_Nc*REALBYTES;
   flop = 2*QLA_Nc;
   c = cf/(flop+mem);
   time1 = clock();
@@ -306,7 +298,7 @@ main(int argc, char *argv[])
   printf("%12g time=%5.2f mem=%5.0f mflops=%5.0f\n", sum, time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
 
   set_fields;
-  mem = 2*(6+QLA_Nc)*QLA_Nc*REALBYTES;
+  mem = 2*(10+QLA_Nc)*QLA_Nc*REALBYTES;
   flop = (16*QLA_Nc+4)*QLA_Nc;
   c = cf/(flop+mem);
   time1 = clock();
@@ -320,7 +312,7 @@ main(int argc, char *argv[])
   printf("%12g time=%5.2f mem=%5.0f mflops=%5.0f\n", sum, time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
 
   set_fields;
-  mem = 2*(8+QLA_Nc)*QLA_Nc*REALBYTES;
+  mem = 2*(12+QLA_Nc)*QLA_Nc*REALBYTES;
   flop = (16*QLA_Nc+8)*QLA_Nc;
   c = cf/(flop+mem);
   time1 = clock();
@@ -336,7 +328,7 @@ main(int argc, char *argv[])
   set_fields;
   //mem = 16*QLA_Nc*REALBYTES;
   //flop = 12*QLA_Nc;
-  mem = 8*QLA_Nc*REALBYTES; // for gamma5
+  mem = 12*QLA_Nc*REALBYTES; // for gamma5
   flop = 4*QLA_Nc; // for gamma5
   c = cf/(flop+mem);
   time1 = clock();

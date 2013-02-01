@@ -142,10 +142,11 @@ sub close_siteloop_reduce {
 }
 
 sub open_iter {
-  my($i,$max)= @_;
+  my($i,$max,$min)= @_;
 
   if($i ne "" && $max ne ""){
-    print QLA_SRC @indent,"for(int $i=0; $i<$max; $i++) {\n";
+    if($min eq "" ) { $min = '0'; }
+    print QLA_SRC @indent,"for(int $i=$min; $i<$max; $i++) {\n";
     &open_block();
 #	&open_brace();
   }

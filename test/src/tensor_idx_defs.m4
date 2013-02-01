@@ -30,7 +30,7 @@ static  QLA_DiracPropagator       destP[MAX],chkP[MAX];
   QLA_D_ColorVector         chkVD[MAX];
   QLA_D_DiracPropagator     chkPD[MAX];
 #endif
-			    
+
 #if 0
   QLA_D_Real                chkrD;
   QLA_D_Complex             chkcD;
@@ -92,16 +92,30 @@ static  int sM2x[MAX] = {6,1,4,5,0,7,9,2,8,3};
 
 static  int sS1x[MAX] = {1,3,8,5,9,4,7,6,0,2};
 
-static  QLA_Int *nI1p[MAX], *zI1p[MAX];
+static  QLA_Int                 *nI1p[MAX], *zI1p[MAX];
 static  QLA_Int                 *sI1p[MAX];
 static  QLA_Real                *sR1p[MAX], *sR2p[MAX], *sR3p[MAX];
 static  QLA_Complex             *sC1p[MAX], *sC2p[MAX], *sC3p[MAX], *chkCp[MAX];
 static  QLA_ColorMatrix         *sM1p[MAX], *sM2p[MAX], *sM3p[MAX];
 static  QLA_HalfFermion         *sH1p[MAX], *sH2p[MAX], *sH3p[MAX];
 static  QLA_DiracFermion        *sD1p[MAX], *sD2p[MAX], *sD3p[MAX], *chkDp[MAX];
-static  QLA_ColorVector    *sV1p[MAX], *sV2p[MAX], *sV3p[MAX], *chkVp[MAX];
+static  QLA_ColorVector         *sV1p[MAX], *sV2p[MAX], *sV3p[MAX], *chkVp[MAX];
 static  QLA_DiracPropagator     *sP1p[MAX], *sP2p[MAX], *sP3p[MAX];
 static  QLA_RandomState         *sS1p[MAX];
+
+#if ( QLA_Precision != 'Q' )
+#ifdef MULTISOURCE
+//static int *sV1nx = sV1x;
+static int *sM1nx = sM1x;
+#define ND 3
+static  QLA_ColorVector *sV1n[ND] = {sV1,sV2,sV3};
+static  QLA_ColorMatrix *sM1n[ND] = {sM1,sM2,sM3};
+static  QLA_ColorVector **sV1np[ND] = {sV1p,sV2p,sV3p};
+static  QLA_ColorMatrix **sM1np[ND] = {sM1p,sM2p,sM3p};
+static  QLA_ColorVector *sV1nt[ND];
+static  QLA_ColorMatrix *sM1nt[ND];
+#endif
+#endif
 
 static  char name[64];
 

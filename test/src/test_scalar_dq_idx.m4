@@ -28,20 +28,22 @@ int main(int argc, char *argv[]){
   QLA_Q_Real sCQ1re[MAX] = { 92.37,   34.58, -21.10, -67.05, 104.01,
 		      61.88, -10.38,  73.59, -96.07,  50.32};
 
-  QLA_Q_Real sCQ3re[MAX] = {219.29, 71.47, -268.80, 42.82, 54.72,
-		     -23.59, -56.32, -55.88, -11.55, 145.46}; 
-
   QLA_Q_Real sCQ1im[MAX] = {-23.59, -61.06, -55.88 -68.99, -50.00,
 		      92.37,   34.58, -21.10, -67.05, 104.01};
 
+/*
+  QLA_Q_Real sCQ3re[MAX] = {219.29, 71.47, -268.80, 42.82, 54.72,
+		     -23.59, -56.32, -55.88, -11.55, 145.46}; 
+
   QLA_Q_Real sCQ3im[MAX] = {-23.59, -56.32, -55.88, -11.55, 145.46, 
 		      97.89, -44.57, 86.02, 42.82, 79.20};
+*/
 
   QLA_Q_Complex /*destCQ[MAX],*/chkCQ[MAX];
 
   QLA_Q_Complex destcQ,chkcQ;
 
-  QLA_Q_Complex sCQ1[MAX],sCQ3[MAX];
+  QLA_Q_Complex sCQ1[MAX]/*,sCQ3[MAX]*/;
 
   /*int dRx[MAX]   = {8,5,6,7,1,2,9,0,3,4};*/
   int sR1x[MAX]  = {3,0,1,8,2,4,5,9,7,6};
@@ -121,7 +123,7 @@ int main(int argc, char *argv[]){
 
   for(i = 0; i < MAX; i++){
     QLA_c_eq_r_plus_ir(sCQ1[i],sCQ1re[i],sCQ1im[i]);
-    QLA_c_eq_r_plus_ir(sCQ3[i],sCQ3re[i],sCQ3im[i]);
+    //QLA_c_eq_r_plus_ir(sCQ3[i],sCQ3re[i],sCQ3im[i]);
     QLA_c_eq_r_plus_ir(sCD1[i],sCD1re[i],sCD1im[i]);
     QLA_c_eq_r_plus_ir(sCD2[i],sCD2re[i],sCD2im[i]);
     QLA_c_eq_r_plus_ir(sCD3[i],sCD3re[i],sCD3im[i]);

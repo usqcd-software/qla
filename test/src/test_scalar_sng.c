@@ -33,6 +33,10 @@ int main(int argc, char *argv[]){
   QLA_Int sI1 = -4123;
   QLA_Int sI4 = -17;
   QLA_Real sR3 = -3.6694280525381038;
+  QLA_Real sC3re =  5.1209437364852809;
+  QLA_Real sC3im =  3.2319023055820679;
+  QLA_Complex sC3;
+  QLA_c_eq_r_plus_ir(sC3,sC3re,sC3im);
 #endif
 
   QLA_Int sI2 = 0;
@@ -45,10 +49,7 @@ int main(int argc, char *argv[]){
   QLA_Real sC1im =  5.7248575675626134;
   QLA_Real sC2re =  2.6141415406703029;
   QLA_Real sC2im = -9.6994509499895247;
-  QLA_Real sC3re =  5.1209437364852809;
-  QLA_Real sC3im =  3.2319023055820679;
-
-  QLA_Complex sC1,sC2,sC3;
+  QLA_Complex sC1,sC2;
 
   QLA_RandomState sS1;
 
@@ -72,7 +73,6 @@ int main(int argc, char *argv[]){
 
   QLA_c_eq_r_plus_ir(sC1,sC1re,sC1im);
   QLA_c_eq_r_plus_ir(sC2,sC2re,sC2im);
-  QLA_c_eq_r_plus_ir(sC3,sC3re,sC3im);
 
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 

@@ -5,37 +5,95 @@
 extern "C" {
 #endif
 
-/* The following macros specify the prevailing color and precision */
-/* Defaults to SU(3) single precision */
-#ifndef QLA_Nc
-#define QLA_Nc 3
-#endif
-
+  // allow the user to specify QLA_Precision and/or QLA_PrecisionInt
+  // default to single precision
 #ifndef QLA_Precision
-#define QLA_Precision 'F'
-#endif
-
-/* allow numeric precision specification */
-#if QLA_Precision == 1
-#undef QLA_Precision
-#define QLA_Precision 'F'
-#endif
-#if QLA_Precision == 2
-#undef QLA_Precision
-#define QLA_Precision 'D'
-#endif
-
-/* Apply rule for default color namespace, based on QLA_Nc */
-#if QLA_Nc == 2
-#if QLA_Colors != 'N'
-#define QLA_Colors 2
-#endif
-#elif QLA_Nc == 3
-#if QLA_Colors != 'N'
-#define QLA_Colors 3
-#endif
+#  ifndef QLA_PrecisionInt
+#    define QLA_PrecisionInt 1
+#  endif
+#  if QLA_PrecisionInt == 1
+#    define QLA_Precision 'F'
+#    define QLA_PrecisionLetter F
+#  elif QLA_PrecisionInt == 2
+#    define QLA_Precision 'D'
+#    define QLA_PrecisionLetter D
+#  elif QLA_PrecisionInt == 4
+#    define QLA_Precision 'Q'
+#    define QLA_PrecisionLetter Q
+#  else
+#    error "bad QLA_PrecisionInt"
+#  endif
 #else
-#define QLA_Colors 'N'
+#  ifndef QLA_PrecisionInt
+#    if QLA_Precision == 'F'
+#      define QLA_PrecisionInt 1
+#      define QLA_PrecisionLetter F
+#    elif QLA_Precision == 'D'
+#      define QLA_PrecisionInt 2
+#      define QLA_PrecisionLetter D
+#    elif QLA_Precision == 'Q'
+#      define QLA_PrecisionInt 4
+#      define QLA_PrecisionLetter Q
+#    else
+#      error "bad QLA_Precision"
+#    endif
+#  else
+#    if QLA_Precision == 'F'
+#      if QLA_PrecisionInt != 1
+#        error "inconsistent QLA_Precision='F' and QLA_PrecisionInt"
+#      endif
+#      define QLA_PrecisionLetter F
+#    elif QLA_Precision == 'D'
+#      if QLA_PrecisionInt != 2
+#        error "inconsistent QLA_Precision='D' and QLA_PrecisionInt"
+#      endif
+#      define QLA_PrecisionLetter D
+#    elif QLA_Precision == 'Q'
+#      if QLA_PrecisionInt != 4
+#        error "inconsistent QLA_Precision='Q' and QLA_PrecisionInt"
+#      endif
+#      define QLA_PrecisionLetter Q
+#    else
+#      error "bad QLA_Precision"
+#    endif
+#  endif
+#endif
+
+  // allow the user to specify QLA_Colors and/or QLA_Nc
+  // default to Nc=3
+#ifndef QLA_Colors
+#  ifndef QLA_Nc
+#    define QLA_Nc 3
+#  endif
+#  if QLA_Nc == 2 || QLA_Nc == 3
+#    define QLA_Colors QLA_Nc
+#  elif QLA_Nc > 0
+#    define QLA_Colors 'N'
+#  else
+#    error "bad QLA_Nc"
+#  endif
+#else
+#  ifndef QLA_Nc
+#    if QLA_Colors == 2 || QLA_Colors == 3
+#      define QLA_Nc QLA_Colors
+#    elif QLA_Colors == 'N'
+#      define QLA_Nc 3
+#    else
+#      error "bad QLA_Colors"
+#    endif
+#  else
+#    if QLA_Colors == 2 || QLA_Colors == 3
+#      if QLA_Colors != QLA_Nc
+#        error "inconsistent QLA_Colors and QLA_Nc"
+#      endif
+#    elif QLA_Colors == 'N'
+#      if QLA_Nc <= 0
+#        error "bad QLA_Nc"
+#      endif
+#    else
+#      error "bad QLA_Colors"
+#    endif
+#  endif
 #endif
 
 #ifndef QLA_RESTRICT
@@ -66,8 +124,6 @@ extern "C" {
 #elif ( QLA_Colors == 'N' )
 #include <qla_dfn.h>
 #include <qla_dqn.h>
-#else
-NONSTANDARD_QLA_Colors
 #endif
 
 /* Headers we define regardless of color */
@@ -77,8 +133,6 @@ NONSTANDARD_QLA_Colors
 #include <qla_d.h>
 #elif ( QLA_Precision == 'Q' )
 #include <qla_q.h>
-#else
-#error "unrecognized QLA_Precision"
 #endif
 
 /* Headers specific to color and precision */

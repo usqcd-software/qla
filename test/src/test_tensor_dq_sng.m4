@@ -31,11 +31,11 @@ int main(int argc, char * argv[]){
   QLA_Q_Real sRQ1 =  0.17320508075688772;
   QLA_Q_Real sRQ2 =  0.28723479823477934;
 
-  QLA_Q_ColorMatrix         sMQ1,sMQ2,sMQ3;
-  QLA_Q_HalfFermion         sHQ1,sHQ2,sHQ3;
-  QLA_Q_DiracFermion        sDQ1,sDQ2,sDQ3;
-  QLA_Q_ColorVector         sVQ1,sVQ2,sVQ3;
-  QLA_Q_DiracPropagator     sPQ1,sPQ2,sPQ3;
+  QLA_Q_ColorMatrix         sMQ1/*,sMQ2,sMQ3*/;
+  QLA_Q_HalfFermion         sHQ1/*,sHQ2,sHQ3*/;
+  QLA_Q_DiracFermion        sDQ1/*,sDQ2,sDQ3*/;
+  QLA_Q_ColorVector         sVQ1/*,sVQ2,sVQ3*/;
+  QLA_Q_DiracPropagator     sPQ1/*,sPQ2,sPQ3*/;
 
   QLA_Q_Real                destRQ,chkRQ;
   QLA_Q_Complex             destCQ,chkCQ;
@@ -97,27 +97,27 @@ int main(int argc, char * argv[]){
   QLA_D_M_eq_gaussian_S(&sMD2,&sS1);
   QLA_D_M_eq_gaussian_S(&sMD3,&sS1);
 '
-  /* Single precision */
+  /* "Quad" precision */
 
   makeGaussianQ(H,sHQ1);
-  makeGaussianQ(H,sHQ2);
-  makeGaussianQ(H,sHQ3);
+  /*makeGaussianQ(H,sHQ2);*/
+  /*makeGaussianQ(H,sHQ3);*/
 
   makeGaussianQ(D,sDQ1);
-  makeGaussianQ(D,sDQ2);
-  makeGaussianQ(D,sDQ3);
+  /*makeGaussianQ(D,sDQ2);*/
+  /*makeGaussianQ(D,sDQ3);*/
 
   makeGaussianQ(V,sVQ1);
-  makeGaussianQ(V,sVQ2);
-  makeGaussianQ(V,sVQ3);
+  /*makeGaussianQ(V,sVQ2);*/
+  /*makeGaussianQ(V,sVQ3);*/
 
   makeGaussianQ(P,sPQ1);
-  makeGaussianQ(P,sPQ2);
-  makeGaussianQ(P,sPQ3);
+  /*makeGaussianQ(P,sPQ2);*/
+  /*makeGaussianQ(P,sPQ3);*/
 
   makeGaussianQ(M,sMQ1);
-  makeGaussianQ(M,sMQ2);
-  makeGaussianQ(M,sMQ3);
+  /*makeGaussianQ(M,sMQ2);*/
+  /*makeGaussianQ(M,sMQ3);*/
 
 /* Assignments */
 
@@ -128,9 +128,7 @@ alltensors(`chkNorm2QD');
 alltensors(`chkDotQD');
 alltensors(`chkRealDotQD');
 alltensors(`chkSumQD');
-
 `
   return 0;
 }
-
 '
