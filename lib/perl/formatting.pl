@@ -223,7 +223,8 @@ sub print_function_def {
 sub print_align_top {
   foreach $arg ( 'dest','src1','src2','src3' ) {
     if(defined($def{$arg.'_t'})) {
-      if($def{$arg.'_ptr_pfx'} ne $pointer_pfx) {
+      if($def{$arg.'_ptr_pfx'} ne $pointer_pfx &&
+	 $def{$arg.'_multi'} eq '') {
 	#print QLA_SRC "#ifdef __xlc__\n";
 	print QLA_SRC @indent,"__alignx(16,$def{$arg.'_name'});\n";
 	#print QLA_SRC "#endif\n";
@@ -235,7 +236,24 @@ sub print_align_top {
 sub print_align_indx {
   foreach $arg ( 'dest','src1','src2','src3' ) {
     if(defined($def{$arg.'_t'})) {
-      if($def{$arg.'_ptr_pfx'} eq $pointer_pfx) {
+      if($def{$arg.'_ptr_pfx'} eq $pointer_pfx &&
+	 $def{$arg.'_multi'} eq '') {
+	my $value = $def{$arg.'_value'};
+	if( !($value =~ s/^\*//) ) {
+	  $value = "&".$value;
+	}
+	print QLA_SRC "#ifdef HAVE_XLC\n";
+	print QLA_SRC @indent,"__alignx(16,$value);\n";
+	print QLA_SRC "#endif\n";
+      }
+    }
+  }
+}
+
+sub print_align_multi {
+  foreach $arg ( 'dest','src1','src2','src3' ) {
+    if(defined($def{$arg.'_t'})) {
+      if($def{$arg.'_multi'} ne '') {
 	my $value = $def{$arg.'_value'};
 	if( !($value =~ s/^\*//) ) {
 	  $value = "&".$value;

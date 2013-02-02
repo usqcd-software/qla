@@ -654,6 +654,7 @@ sub make_prototype {
 				      $def{$arg.'_index_name'});
 
 	    my $disjoint_ptr = "";
+	    if($def{$arg.'_multi'} ne '') { $disjoint_ptr .= "*"; }
 	    if($def{$arg.'_ptr_pfx'} eq $pointer_pfx) { $disjoint_ptr .= "*"; }
 	    $disjoint_ptr .= "*$def{$arg.'_name'}";
 	    push @disjoint_list, $disjoint_ptr;

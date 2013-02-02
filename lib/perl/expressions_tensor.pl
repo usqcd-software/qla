@@ -1006,9 +1006,11 @@ sub print_val_eqop_val_op_val {
     if($eqop2 eq $eqop_eq)  { $eqop2 = $eqop_peq; }
     if($eqop2 eq $eqop_eqm) { $eqop2 = $eqop_meq; }
     open_iter('d','1');
+    &print_align_multi();
     print_val_eqop_val_op_val_single($ddef,$eqop,$imre,$s1def,$op,$s2def);
     close_iter('d');
     open_iter('d','nd','1');
+    &print_align_multi();
     print_val_eqop_val_op_val_single($ddef,$eqop2,$imre,$s1def,$op,$s2def);
     close_iter('d');
   } else {
