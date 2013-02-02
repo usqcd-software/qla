@@ -5,6 +5,7 @@
 	Added QLA_PrecisionInt macro.
 	Added experimental multi-source functions.
 	Added some QPX routines.
+	Added precision generic headers.
 
 ===============================================================================
 2012-01-11	version 1.7.0-a7 (7th alpha release of 1.7.0)
