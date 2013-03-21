@@ -1,4 +1,4 @@
-SUBDIRS = . doc include lib bin test examples
+SUBDIRS = . doc include lib bin test examples .
 
 all-local:
-	@-echo "build started: `date`"
+	@-echo "timestamp: `date`"

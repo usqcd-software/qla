@@ -14,7 +14,7 @@
 #include <math.h>
 
 #ifdef HAVE_XLC
-#define ALIGNX(...) __alignx(_VA_ARGS_)
+#define ALIGNX(...) __alignx(__VA_ARGS__)
 #else
 #define ALIGNX(...) (void)0
 #endif

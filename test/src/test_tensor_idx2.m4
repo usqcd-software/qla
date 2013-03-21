@@ -113,6 +113,8 @@ alleqops(`binary(P,',`,P,times,P,sP1,sP2)')
 alleqops(`binary(P,',`,P,times,Pa,sP1,sP2)')
 alleqops(`binary(P,',`,Pa,times,P,sP1,sP2)')
 alleqops(`binary(P,',`,Pa,times,Pa,sP1,sP2)')
+
+binary(V,eq,M,inverse,V,sM1,sV2)
 }
 
   /* Outer product */

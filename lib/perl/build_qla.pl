@@ -1647,6 +1647,36 @@ if(!$quadprecision){
   }
 }
 
+#---------------------------------------------------------------------
+&header2("Color matrix field inverse times vector field");
+#---------------------------------------------------------------------
+
+require("make_code_binary.pl");
+
+if(!$quadprecision){
+  @assign_list = ( $eqop_eq );
+
+  @src1_field_list = ($datatype_colormatrix_abbrev);
+  @src2_field_list = ($datatype_colorvector_abbrev);
+
+  foreach $assgn ( @assign_list ){
+    $eqop_notation = $eqop_notation{$assgn};
+
+    foreach $s1 ( @src1_field_list ){
+      foreach $s2 ( @src2_field_list ){
+	&header3(" $datatype_generic_name{$s2} r $eqop_notation M^-1 b");
+	foreach $indexing ( @ind_binary_list ){
+	  %def = ();
+	  ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($s2,$s1,$s2);
+	  $def{'op'} = "inverse";
+	  if(&make_prototype($indexing,$assgn)){
+	    &make_code_binary($assgn);
+	  }
+	}
+      }
+    }
+  }
+}
 
 #---------------------------------------------------------------------
 &header2("multiple color matrix fields times vector fields");
@@ -2617,10 +2647,12 @@ $codedir="$path/code-templates";
   "M_eq_sqrt_M.c",
   "M_eq_invsqrt_M.c",
   "M_eq_exp_M.c",
-  "M_eq_log_M.c"
+  "M_eq_log_M.c",
+  "V_eq_M_inverse_V.c"
     );
 
 @targets = (
+  "F2 D2 F3 D3 FN DN",
   "F2 D2 F3 D3 FN DN",
   "F2 D2 F3 D3 FN DN",
   "F2 D2 F3 D3 FN DN",

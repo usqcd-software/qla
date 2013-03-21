@@ -993,7 +993,14 @@ sub print_val_eqop_val_op_val_single {
   }
 
   else{
-    die "Can't do op $op\n";
+    #die "Can't do op $op\n";
+    my $func = "QLA_${precision}${colors}_".$$ddef{'t'}."_".$eqop."_".
+	$$s1def{'t'}."_".$op."_".$$s2def{'t'};
+    my $ncvar = "";
+    if($def{'nc'} eq $arg_nc) {
+      $ncvar = "$arg_nc, ";
+    }
+    print QLA_SRC @indent,"$func(${ncvar}&($$ddef{'value'}), &($$s1def{'value'}), &($$s2def{'value'}));\n";
   }
 
 }

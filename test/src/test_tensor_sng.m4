@@ -257,6 +257,9 @@ alltensors(`chkRCMult');
 chkUniformMult(M);
 chkUniformMult(P);
 
+  /* Matrix inverse times field */
+chkMatInverseX(V);
+
   /* ColorMatrix from outer product */
 chkOuterprod;
 

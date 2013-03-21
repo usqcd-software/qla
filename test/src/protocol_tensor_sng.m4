@@ -751,6 +751,17 @@ chkAssignUniformMultAdj($1,meq)
 ')
 
 rem(`
+     Matrix inverse times field
+')
+rem(`chkMatInverseX')
+define(chkMatInverseX,`
+  strcpy(name,"QLA_$1_eq_M_inverse_$1");
+  QLA_$1_eq_M_inverse_$1(&argd($1),&arg1(M),&arg2($1));
+  QLA_$1_eq_M_times_$1(&argt($1),&arg1(M),&argd($1));
+  checkeqsng$1$1(&argt($1),&arg2($1),name,fp);
+')
+
+rem(`
      Outer products
 ')
 rem(`chkAssignOuterprod(td,eq)')
