@@ -398,6 +398,56 @@ define(chkMatDet,`
 ')
 
 rem(`
+     Matrix eigenvalues
+')
+rem(`chkMatEigenvals')
+define(chkMatEigenvals,`
+  strcpy(name,"QLA_V_eq_eigenvals_M");
+  for(ic=0; ic<nc; ic++) {
+    QLA_c_eq_c(QLA_elem_V(argt(V),ic), QLA_elem_M(arg1(M),ic,ic));
+  }
+  for(ic=0; ic<nc; ic++) {  // sort
+    QLA_Real t = QLA_norm2_c(QLA_elem_V(argt(V),ic));
+    int imin = ic;
+    for(jc=ic+1; jc<nc; jc++) {
+      QLA_Real t2 = QLA_norm2_c(QLA_elem_V(argt(V),jc));
+      if(t2<t) { t = t2; imin = jc; }
+    }
+    if(imin!=ic) {
+      QLA_Complex tc;
+      QLA_c_eq_c(tc, QLA_elem_V(argt(V),ic));
+      QLA_c_eq_c(QLA_elem_V(argt(V),ic), QLA_elem_V(argt(V),imin));
+      QLA_c_eq_c(QLA_elem_V(argt(V),imin), tc);
+    }
+  }
+  QLA_M_eq_zero(&arg2(M));
+  for(ic=0; ic<nc; ic++) {
+    QLA_c_eq_c(QLA_elem_M(arg2(M),ic,ic), QLA_elem_V(argt(V),ic));
+  }
+  QLA_M_eq_inverse_M(&arg3(M),&arg1(M));
+  QLA_M_eq_M_times_M(&argd(M),&arg2(M),&arg1(M));
+  QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argd(M));
+  QLA_V_eq_eigenvals_M(&argd(V),&arg2(M));
+  for(ic=0; ic<nc; ic++) {  // sort
+    QLA_Real t = QLA_norm2_c(QLA_elem_V(argd(V),ic));
+    int imin = ic;
+    for(jc=ic+1; jc<nc; jc++) {
+      QLA_Real t2 = QLA_norm2_c(QLA_elem_V(argd(V),jc));
+      if(t2<t) { t = t2; imin = jc; }
+    }
+    if(imin!=ic) {
+      QLA_Complex tc;
+      QLA_c_eq_c(tc, QLA_elem_V(argd(V),ic));
+      QLA_c_eq_c(QLA_elem_V(argd(V),ic), QLA_elem_V(argd(V),imin));
+      QLA_c_eq_c(QLA_elem_V(argd(V),imin), tc);
+    }
+  }
+  checkeqsngVV(&argd(V),&argt(V),name,fp);
+  QLA_M_eq_gaussian_S(&arg2(M),&sS1);
+  QLA_M_eq_gaussian_S(&arg3(M),&sS1);
+')
+
+rem(`
      Matrix inverse
 ')
 rem(`chkMatInverse')
@@ -421,9 +471,27 @@ rem(`
 rem(`chkMatSqrt')
 define(chkMatSqrt,`
   strcpy(name,"QLA_M_eq_sqrt_M");
-  QLA_M_eq_sqrt_M(&argd(M),&arg1(M));
-  QLA_M_eq_M_times_M(&argt(M),&argd(M),&argd(M));
-  checkeqsngMM(&arg1(M),&argt(M),name,fp);
+  //QLA_M_eq_sqrt_M(&argd(M),&arg1(M));
+  //QLA_M_eq_M_times_M(&argt(M),&argd(M),&argd(M));
+  //checkeqsngMM(&arg1(M),&argt(M),name,fp);
+  QLA_M_eq_inverse_M(&arg3(M),&arg1(M));
+  QLA_M_eq_zero(&arg2(M));
+  for(ic=0; ic<nc; ic++) {
+    QLA_Complex t;
+    QLA_c_eq_c(t, QLA_elem_M(arg1(M),ic,ic));
+    if(QLA_real(t)>0) QLA_c_eqm_c(t, t);
+    QLA_c_eq_c(QLA_elem_M(arg2(M),ic,ic), t);
+  }
+  QLA_M_eq_M_times_M(&argd(M),&arg2(M),&arg1(M));
+  QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argd(M));
+  QLA_M_eq_sqrt_M(&argd(M),&arg2(M));
+  QLA_M_eq_zero(&arg2(M));
+  for(ic=0;ic<nc;ic++) QLA_C_eq_csqrt_C(&QLA_elem_M(arg2(M),ic,ic),&QLA_elem_M(arg1(M),ic,ic));
+  QLA_M_eq_M_times_M(&argt(M),&arg2(M),&arg1(M));
+  QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argt(M));
+  checkeqsngMM(&argd(M),&arg2(M),name,fp);
+  QLA_M_eq_gaussian_S(&arg2(M),&sS1);
+  QLA_M_eq_gaussian_S(&arg3(M),&sS1);
 ')
 
 rem(`
@@ -432,10 +500,32 @@ rem(`
 rem(`chkMatInvsqrt')
 define(chkMatInvsqrt,`
   strcpy(name,"QLA_M_eq_invsqrt_M");
-  QLA_M_eq_invsqrt_M(&argd(M),&arg1(M));
-  QLA_M_eq_M_times_M(&argt(M),&argd(M),&argd(M));
-  QLA_M_eq_inverse_M(&arg2(M),&arg1(M));
-  checkeqsngMM(&arg2(M),&argt(M),name,fp);
+  //QLA_M_eq_invsqrt_M(&argd(M),&arg1(M));
+  //QLA_M_eq_M_times_M(&argt(M),&argd(M),&argd(M));
+  //QLA_M_eq_inverse_M(&arg2(M),&arg1(M));
+  //checkeqsngMM(&arg2(M),&argt(M),name,fp);
+  QLA_M_eq_inverse_M(&arg3(M),&arg1(M));
+  QLA_M_eq_zero(&arg2(M));
+  for(ic=0; ic<nc; ic++) {
+    QLA_Complex t;
+    QLA_c_eq_c(t, QLA_elem_M(arg1(M),ic,ic));
+    if(QLA_real(t)>0) QLA_c_eqm_c(t, t);
+    QLA_c_eq_c(QLA_elem_M(arg2(M),ic,ic), t);
+  }
+  QLA_M_eq_M_times_M(&argd(M),&arg2(M),&arg1(M));
+  QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argd(M));
+  QLA_M_eq_invsqrt_M(&argd(M),&arg2(M));
+  QLA_M_eq_zero(&arg2(M));
+  for(ic=0; ic<nc; ic++) {
+    QLA_Complex t;
+    QLA_C_eq_csqrt_C(&t, &QLA_elem_M(arg1(M),ic,ic));
+    QLA_c_eq_r_div_c(QLA_elem_M(arg2(M),ic,ic), 1, t);
+  }
+  QLA_M_eq_M_times_M(&argt(M),&arg2(M),&arg1(M));
+  QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argt(M));
+  checkeqsngMM(&argd(M),&arg2(M),name,fp);
+  QLA_M_eq_gaussian_S(&arg2(M),&sS1);
+  QLA_M_eq_gaussian_S(&arg3(M),&sS1);
 ')
 
 define(printMat,`
@@ -481,7 +571,12 @@ define(chkMatLog,`
   //for(ic=0;ic<nc;ic++) for(jc=0;jc<nc;jc++) if(ic!=jc) QLA_c_eq_r(QLA_elem_M(arg1(M),ic,jc),0);
   QLA_M_eq_inverse_M(&arg3(M),&arg1(M));
   QLA_M_eq_zero(&arg2(M));
-  for(ic=0;ic<nc;ic++) QLA_c_eq_c(QLA_elem_M(arg2(M),ic,ic),QLA_elem_M(arg1(M),ic,ic));
+  for(ic=0; ic<nc; ic++) {
+    QLA_Complex t;
+    QLA_c_eq_c(t, QLA_elem_M(arg1(M),ic,ic));
+    if(QLA_real(t)>0) QLA_c_eqm_c(t, t);
+    QLA_c_eq_c(QLA_elem_M(arg2(M),ic,ic), t);
+  }
   QLA_M_eq_M_times_M(&argd(M),&arg2(M),&arg1(M));
   QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argd(M));
   QLA_M_eq_log_M(&argd(M),&arg2(M));
@@ -1257,26 +1352,40 @@ rem(`
 ')
 rem(`chkConstDest(td,t1)')
 define(chkConstDest,`
-  strcpy(name,"QLA_$1_eq_$2");
+  strcpy(name,"QLA_$1_$2_$3");
   QLA_$1_eq_$1(&argd($1),&arg2($1));
-  QLA_$1_eq_$2(&argd($1),&arg1($1));
-  checkeqsng$1$1(&argd($1),&arg1($1),name,fp);
+  QLA_$1_$2_$3(&argd($1),&arg1($1));
+  QLA_$1_eq_$1(&argt($1),&arg2($1));
+  QLA_$1_$2_$1(&argt($1),&arg1($1));
+  checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
 
 rem(`chkConst(t1)')
 define(chkConst,`
-chkConstDest($1,lower($1))
+chkConstDest($1,eq,lower($1))
+chkConstDest($1,peq,lower($1))
+chkConstDest($1,eqm,lower($1))
+chkConstDest($1,meq,lower($1))
 ')
 
 rem(`
      Diagonal gauge constant fill
 ')
+rem(`chkMConstEqop(eq)')
+define(chkMConstEqop,`
+  strcpy(name,"QLA_M_$1_c");
+  QLA_M_eq_M(&argd(M),&arg2(M));
+  QLA_M_$1_c(&argd(M),&arg1(C));
+  QLA_M_eq_M(&argt(M),&arg2(M));
+  for(ic=0;ic<nc;ic++)for(jc=0;jc<nc;jc++)
+    QLA_c_$1_c(QLA_elem_M(argt(M),ic,jc),(ic==jc)?arg1(C):zeroC);
+  checkeqsngMM(&argd(M),&argt(M),name,fp);
+')
+
 rem(`chkMConst')
 define(chkMConst,`
-  strcpy(name,"QLA_M_eq_c");
-  QLA_M_eq_M(&argd(M),&arg2(M));
-  QLA_M_eq_c(&argd(M),&arg1(C));
-  QLA_M_eq_zero(&argt(M));
-  for(ic=0;ic<nc;ic++)QLA_elem_M(argt(M),ic,ic) = arg1(C);
-  checkeqsngMM(&argd(M),&argt(M),name,fp);
+chkMConstEqop(eq)
+chkMConstEqop(peq)
+chkMConstEqop(eqm)
+chkMConstEqop(meq)
 ')

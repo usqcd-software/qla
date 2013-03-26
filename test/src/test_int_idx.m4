@@ -130,7 +130,7 @@ binary(S,eq,S,mask,I,sS1,zI1);
   /* Fills */
 
 unaryconstzero(I,eq_zero)
-unaryconst(I,eq_i)
+unaryconst(I,i)
 
   /* Seed random number generator */
 

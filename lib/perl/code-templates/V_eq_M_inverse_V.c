@@ -58,6 +58,11 @@ QLAPC(V_eq_M_inverse_V)(NCARG QLAN(ColorVector,(*restrict x)), QLAN(ColorMatrix,
   __alignx(16,b);
 #endif
 
+  if(NC==1) {
+    QLA_c_eq_c_div_c(QLA_elem_V(*x,0), QLA_elem_V(*b,0), QLA_elem_M(*a,0,0));
+    return;
+  }
+
   QLAN(ColorMatrix, c);
   QLAN(ColorVector, d);
   int row[NC];

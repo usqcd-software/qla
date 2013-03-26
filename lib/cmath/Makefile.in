@@ -77,7 +77,8 @@ ARFLAGS = cru
 ___libqla_cmath_a_AR = $(AR) $(ARFLAGS)
 ___libqla_cmath_a_LIBADD =
 am____libqla_cmath_a_OBJECTS = QLA_cexp.$(OBJEXT) QLA_cexpi.$(OBJEXT) \
-	QLA_clog.$(OBJEXT) QLA_csqrt.$(OBJEXT)
+	QLA_clog.$(OBJEXT) QLA_csqrt.$(OBJEXT) QLA_csinh.$(OBJEXT) \
+	QLA_ccosh.$(OBJEXT)
 ___libqla_cmath_a_OBJECTS = $(am____libqla_cmath_a_OBJECTS)
 am__dirstamp = $(am__leading_dot)dirstamp
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)/include
@@ -204,7 +205,9 @@ ___libqla_cmath_a_SOURCES = \
 	QLA_cexp.c  \
 	QLA_cexpi.c \
 	QLA_clog.c  \
-	QLA_csqrt.c
+	QLA_csqrt.c \
+	QLA_csinh.c \
+	QLA_ccosh.c
 
 all: all-am
 
@@ -284,9 +287,11 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/QLA_ccosh.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/QLA_cexp.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/QLA_cexpi.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/QLA_clog.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/QLA_csinh.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/QLA_csqrt.Po@am__quote@
 
 .c.o:

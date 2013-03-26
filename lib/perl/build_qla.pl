@@ -1006,17 +1006,33 @@ if(!$quadprecision) {
 require("make_code_unary.pl");
 
 if(!$quadprecision) {
-
   $assgn = $eqop_eq;
-
   foreach $indexing ( @ind_unary_list ) {
     %def = ();
     ($def{'dest_t'},$def{'src1_t'}) = 
 	($datatype_complex_abbrev,$datatype_colormatrix_abbrev);
     $def{'qualifier'} = "det";
-
     if(&make_prototype($indexing,$assgn)) {
-      &make_code_matrix_det($assgn);
+      &make_code_matrix_func($assgn,"det");
+    }
+  }
+}
+
+#---------------------------------------------------------------------
+&header2("Matrix eigenvalues");
+#---------------------------------------------------------------------
+
+require("make_code_unary.pl");
+
+if(!$quadprecision) {
+  $assgn = $eqop_eq;
+  foreach $indexing ( @ind_unary_list ) {
+    %def = ();
+    ($def{'dest_t'},$def{'src1_t'}) = 
+	($datatype_colorvector_abbrev,$datatype_colormatrix_abbrev);
+    $def{'qualifier'} = "eigenvals";
+    if(&make_prototype($indexing,$assgn)) {
+      &make_code_matrix_func($assgn,"eigenvals");
     }
   }
 }
@@ -1028,7 +1044,6 @@ if(!$quadprecision) {
 require("make_code_unary.pl");
 
 if(!$quadprecision) {
-
   $assgn = $eqop_eq;
   @funcs = ( "inverse", "sqrt", "invsqrt", "exp", "log" );
   foreach $func ( @funcs ) {
@@ -1648,7 +1663,7 @@ if(!$quadprecision){
 }
 
 #---------------------------------------------------------------------
-&header2("Color matrix field inverse times vector field");
+&header2("Color matrix field inverse times vector/matrix field");
 #---------------------------------------------------------------------
 
 require("make_code_binary.pl");
@@ -1657,11 +1672,10 @@ if(!$quadprecision){
   @assign_list = ( $eqop_eq );
 
   @src1_field_list = ($datatype_colormatrix_abbrev);
-  @src2_field_list = ($datatype_colorvector_abbrev);
+  @src2_field_list = ($datatype_colorvector_abbrev,$datatype_colormatrix_abbrev);
 
   foreach $assgn ( @assign_list ){
     $eqop_notation = $eqop_notation{$assgn};
-
     foreach $s1 ( @src1_field_list ){
       foreach $s2 ( @src2_field_list ){
 	&header3(" $datatype_generic_name{$s2} r $eqop_notation M^-1 b");
@@ -2500,18 +2514,17 @@ require("make_code_unary.pl");
 @data_list   = @datatype_arithmetic_abbrev;
 
 foreach $assgn ( @assign_list ){
-    foreach $t ( @data_list ){
-	
-	&header3(" $datatype_generic_name{$t} (r = zero)");
-	foreach $indexing ( @ind_fill_list ){
-	    %def = ();
-	    $def{'dest_t'} = $t;
-	    $def{'qualifier'} = "zero";
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_unary($assgn,"zero");
-	    }
-	}
+  foreach $t ( @data_list ){
+    &header3(" $datatype_generic_name{$t} (r = zero)");
+    foreach $indexing ( @ind_fill_list ){
+      %def = ();
+      $def{'dest_t'} = $t;
+      $def{'qualifier'} = "zero";
+      if(&make_prototype($indexing,$assgn)){
+	&make_code_unary($assgn,"zero");
+      }
     }
+  }
 }
 
 #---------------------------------------------------------------------
@@ -2521,35 +2534,35 @@ foreach $assgn ( @assign_list ){
 require("make_code_unary.pl");
 
 if(!$quadprecision){
-@assign_list = ( $eqop_eq );
-@data_list   = @datatype_arithmetic_abbrev;
+  @assign_list = @eqop_all;
+  @data_list   = @datatype_arithmetic_abbrev;
 
-foreach $assgn ( @assign_list ){
+  foreach $assgn ( @assign_list ){
     foreach $t ( @data_list ){
-	
-	&header3(" $datatype_generic_name{$t} (r = const)");
-	foreach $indexing ( @ind_fill_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'}) = ($t,$datatype_scalar_abbrev{$t});
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_unary($assgn,"identity");
-	    }
+      &header3(" $datatype_generic_name{$t} (r = const)");
+      foreach $indexing ( @ind_fill_list ){
+	%def = ();
+	($def{'dest_t'},$def{'src1_t'}) = ($t,$datatype_scalar_abbrev{$t});
+	if(&make_prototype($indexing,$assgn)){
+	  &make_code_unary($assgn,"identity");
 	}
+      }
     }
-}
+  }
 
-$assgn = $eqop_eq;
-$dest_t = $datatype_colormatrix_abbrev;
-$srce_t = $datatype_scalar_abbrev{$datatype_complex_abbrev};
-
-&header3(" diag($datatype_generic_name{$dest_t}) = const");
-foreach $indexing ( @ind_fill_list ){
-    %def = ();
-    ($def{'dest_t'},$def{'src1_t'}) = ($dest_t,$srce_t);
-    if(&make_prototype($indexing,$assgn)){
+  @assign_list = @eqop_all;
+  $dest_t = $datatype_colormatrix_abbrev;
+  $srce_t = $datatype_scalar_abbrev{$datatype_complex_abbrev};
+  foreach $assgn ( @assign_list ) {
+    &header3(" diag($datatype_generic_name{$dest_t}) = const");
+    foreach $indexing ( @ind_fill_list ) {
+      %def = ();
+      ($def{'dest_t'},$def{'src1_t'}) = ($dest_t,$srce_t);
+      if(&make_prototype($indexing,$assgn)){
 	&make_code_unary($assgn,"diagfill");
+      }
     }
-}
+  }
 }
 
 #---------------------------------------------------------------------
@@ -2559,19 +2572,17 @@ foreach $indexing ( @ind_fill_list ){
 require("make_code_unary.pl");
 
 if(!$quadprecision){
-$assgn = $eqop_eq;
-
-$t = $datatype_real_abbrev;
-
-foreach $indexing ( @ind_unary_list ){
+  $assgn = $eqop_eq;
+  $t = $datatype_real_abbrev;
+  foreach $indexing ( @ind_unary_list ){
     %def = ();
     $def{'dest_t'} = $t;
     $def{'src1_t'} = $datatype_randomstate_abbrev;
     $def{'qualifier'} = "random";
     if(&make_prototype($indexing,$assgn)){
-	&make_code_unary($assgn,"random");
+      &make_code_unary($assgn,"random");
     }
-}
+  }
 }
 
 #---------------------------------------------------------------------
@@ -2604,32 +2615,35 @@ foreach $assgn ( @assign_list ){
 require("make_code_unary.pl");
 
 if(!$quadprecision){
-@assign_list = ( $eqop_eq );
-@data_list   = ( $datatype_integer_abbrev );
+  @assign_list = ( $eqop_eq );
+  @data_list   = ( $datatype_integer_abbrev );
 
-foreach $assgn ( @assign_list ){
+  foreach $assgn ( @assign_list ){
     foreach $t ( @data_list ){
-	&header3(" $datatype_generic_name{$t} (r = seed generator from a) ");
-	foreach $indexing ( @ind_unary_list ){
-	    %def = ();
-	    $def{'dest_t'} = $datatype_randomstate_abbrev;
-	    $def{'dest_extra_arg'} = ", int $arg_seed";
-	    $def{'src1_t'} = $t;
-	    $def{'qualifier'} = "seed".$dash.
-		$datatype_scalar_abbrev{$datatype_integer_abbrev};
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_unary($assgn,"seed");
-	    }
+      &header3(" $datatype_generic_name{$t} (r = seed generator from a) ");
+      foreach $indexing ( @ind_unary_list ){
+	%def = ();
+	$def{'dest_t'} = $datatype_randomstate_abbrev;
+	$def{'dest_extra_arg'} = ", int $arg_seed";
+	$def{'src1_t'} = $t;
+	$def{'qualifier'} = "seed".$dash.
+	    $datatype_scalar_abbrev{$datatype_integer_abbrev};
+	if(&make_prototype($indexing,$assgn)){
+	  &make_code_unary($assgn,"seed");
 	}
+      }
     }
+  }
 }
-}
+
 ######################################################################
 
-if($do_generic_defines || $do_color_generic_defines || $do_precision_generic_defines){
-    &close_generic_defines_header($do_generic_defines,
-				  $do_color_generic_defines,
-				  $do_precision_generic_defines);
+if($do_generic_defines ||
+   $do_color_generic_defines ||
+   $do_precision_generic_defines){
+  &close_generic_defines_header($do_generic_defines,
+				$do_color_generic_defines,
+				$do_precision_generic_defines);
 }
 
 &close_qla_header;
@@ -2643,15 +2657,19 @@ $codedir="$path/code-templates";
 
 @files = (
   "C_eq_det_M.c",
+  "V_eq_eigenvals_M.c",
   "M_eq_inverse_M.c",
   "M_eq_sqrt_M.c",
   "M_eq_invsqrt_M.c",
   "M_eq_exp_M.c",
   "M_eq_log_M.c",
-  "V_eq_M_inverse_V.c"
+  "V_eq_M_inverse_V.c",
+  "M_eq_M_inverse_M.c"
     );
 
 @targets = (
+  "F2 D2 F3 D3 FN DN",
+  "F2 D2 F3 D3 FN DN",
   "F2 D2 F3 D3 FN DN",
   "F2 D2 F3 D3 FN DN",
   "F2 D2 F3 D3 FN DN",

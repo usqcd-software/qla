@@ -345,8 +345,8 @@ unaryconstzero(C,eq_zero)
 
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 
-unaryconst(R,eq_r)
-unaryconst(C,eq_c)
+unaryconst(R,r)
+unaryconst(C,c)
 
   /* Random numbers */
 

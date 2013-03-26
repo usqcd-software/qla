@@ -30,6 +30,7 @@ unary(R,eq_im_trace,M)
 unary(C,eq_trace,M)
 unary(M,eq_antiherm,M)
 unary(C,eq_det,M)
+unary(V,eq_eigenvals,M)
 unary(M,eq_inverse,M)
 unary(M,eq_sqrt,M)
 unary(M,eq_invsqrt,M)
@@ -115,6 +116,7 @@ alleqops(`binary(P,',`,Pa,times,P,sP1,sP2)')
 alleqops(`binary(P,',`,Pa,times,Pa,sP1,sP2)')
 
 binary(V,eq,M,inverse,V,sM1,sV2)
+binary(M,eq,M,inverse,M,sM1,sM2)
 }
 
   /* Outer product */

@@ -851,6 +851,36 @@ int main(int argc, char *argv[]){
   chkR1 = 0.; chkR2 = 0.;
   CHECKeqsngCC(&destC,&sC2,name,fp);
 
+  destR = sR1;
+  strcpy(name,"QLA_R_peq_r");
+  QLA_R_peq_r(&destR,&sR2);
+  CHECKeqsngRR(destR,sR1+sR2,name,fp);
+
+  QLA_c_eq_c(destC,sC1);
+  strcpy(name,"QLA_C_peq_c");
+  QLA_C_peq_c(&destC,&sC2);
+  QLA_c_eq_c_plus_c(chkC,sC1,sC2);
+  CHECKeqsngCC(&destC,&chkC,name,fp);
+
+  strcpy(name,"QLA_R_eqm_r");
+  QLA_R_eqm_r(&destR,&sR1);
+  CHECKeqsngRR(destR,-sR1,name,fp);
+
+  strcpy(name,"QLA_C_eqm_c");
+  QLA_C_eqm_c(&destC,&sC1);
+  CHECKeqsngCRR(&destC,-sC1re,-sC1im,name,fp);
+
+  destR = sR1;
+  strcpy(name,"QLA_R_meq_r");
+  QLA_R_meq_r(&destR,&sR2);
+  CHECKeqsngRR(destR,sR1-sR2,name,fp);
+
+  QLA_c_eq_c(destC,sC1);
+  strcpy(name,"QLA_C_meq_c");
+  QLA_C_meq_c(&destC,&sC2);
+  QLA_c_eq_c_minus_c(chkC,sC1,sC2);
+  CHECKeqsngCC(&destC,&chkC,name,fp);
+
   /* Random fills */
   /* Here we just verify that the underlying routines are called as
      expected */

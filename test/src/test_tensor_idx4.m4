@@ -159,13 +159,13 @@ unaryconstzero(M,eq_zero)
 
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 
-unaryconst(H,eq_h)
-unaryconst(D,eq_d)
-unaryconst(V,eq_v)
-unaryconst(P,eq_p)
-unaryconst(M,eq_m)
+unaryconst(H,h)
+unaryconst(D,d)
+unaryconst(V,v)
+unaryconst(P,p)
+unaryconst(M,m)
 
-unarydiagconst(M,eq_c)
+unarydiagconst(M)
 
 #endif /* QLA_Precision != Q */
 `

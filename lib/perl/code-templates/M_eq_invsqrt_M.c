@@ -9,11 +9,11 @@
 #include <float.h>
 
 #if QLA_Precision == 'F'
-#  define QLAP(x,...) QLA_F_ ## x (__VA_ARGS__)
+#  define QLAP(y) QLA_F ## _ ## y
 #  define QLAPX(x,y) QLA_F ## x ## _ ## y
 #  define EPS FLT_EPSILON
 #else
-#  define QLAP(x,...) QLA_D_ ## x (__VA_ARGS__)
+#  define QLAP(y) QLA_D ## _ ## y
 #  define QLAPX(x,y) QLA_D ## x ## _ ## y
 #  define EPS DBL_EPSILON
 #endif

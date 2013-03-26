@@ -62,47 +62,60 @@ define(unaryconstzero,`
   qla_name0(,$1,x,$2)(argd($1),idxd($1),MAX);
   for(i = 0; i < MAX; i++){qla_name0(,$1,,$2)(&argt($1)[idxd($1)[i]]);}
   checkeqidx$1$1(argt($1),argd($1),name,fp);
-
 ')
 
 rem(`
      Unary set const
 ')
-rem(`unaryconst(td,eq)')
-define(unaryconst,`/* qla_name0(,$1,,$2) */
+rem(`unaryconst2(td,eq,ts)')
+define(unaryconst2,`/* qla_name0(,$1,,$2_$3) */
 
-  strcpy(name,"qla_name0(,$1,v,$2)");
+  strcpy(name,"qla_name0(,$1,v,$2_$3)");
   resetdt($1)
-  qla_name0(,$1,v,$2)(argd($1),&arg4($1),MAX);
-  for(i = 0; i < MAX; i++){qla_name0(,$1,,$2)(&argt($1)[i],&arg4($1));}
+  qla_name0(,$1,v,$2_$3)(argd($1),&arg4($1),MAX);
+  for(i = 0; i < MAX; i++){qla_name0(,$1,,$2_$3)(&argt($1)[i],&arg4($1));}
   checkeqidx$1$1(argt($1),argd($1),name,fp);
 
-  strcpy(name,"qla_name0(,$1,x,$2)");
+  strcpy(name,"qla_name0(,$1,x,$2_$3)");
   resetdt($1)
-  qla_name0(,$1,x,$2)(argd($1),&arg4($1),idxd($1),MAX);
-  for(i = 0; i < MAX; i++){qla_name0(,$1,,$2)(&argt($1)[idxd($1)[i]],&arg4($1));}
+  qla_name0(,$1,x,$2_$3)(argd($1),&arg4($1),idxd($1),MAX);
+  for(i = 0; i < MAX; i++){qla_name0(,$1,,$2_$3)(&argt($1)[idxd($1)[i]],&arg4($1));}
   checkeqidx$1$1(argt($1),argd($1),name,fp);
+')
 
+rem(`unaryconst(t1,t2)')
+define(unaryconst,`
+unaryconst2($1,eq,$2)
+unaryconst2($1,peq,$2)
+unaryconst2($1,eqm,$2)
+unaryconst2($1,meq,$2)
 ')
 
 rem(`
      Unary set diag const
 ')
-rem(`unarydiagconst(td,eq)')
-define(unarydiagconst,`/* qla_name0(,$1,,$2) */
+rem(`unarydiagconst2(td,eq,ts)')
+define(unarydiagconst2,`/* qla_name0(,$1,,$2_$3) */
 
-  strcpy(name,"qla_name0(,$1,v,$2)");
+  strcpy(name,"qla_name0(,$1,v,$2_$3)");
   resetdt($1)
-  qla_name0(,$1,v,$2)(argd($1),&arg4(C),MAX);
-  for(i = 0; i < MAX; i++){qla_name0(,$1,,$2)(&argt($1)[i],&arg4(C));}
+  qla_name0(,$1,v,$2_$3)(argd($1),&arg4(C),MAX);
+  for(i = 0; i < MAX; i++){qla_name0(,$1,,$2_$3)(&argt($1)[i],&arg4(C));}
   checkeqidx$1$1(argt($1),argd($1),name,fp);
 
-  strcpy(name,"qla_name0(,$1,x,$2)");
+  strcpy(name,"qla_name0(,$1,x,$2_$3)");
   resetdt($1)
-  qla_name0(,$1,x,$2)(argd($1),&arg4(C),idxd($1),MAX);
-  for(i = 0; i < MAX; i++){qla_name0(,$1,,$2)(&argt($1)[idxd($1)[i]],&arg4(C));}
+  qla_name0(,$1,x,$2_$3)(argd($1),&arg4(C),idxd($1),MAX);
+  for(i = 0; i < MAX; i++){qla_name0(,$1,,$2_$3)(&argt($1)[idxd($1)[i]],&arg4(C));}
   checkeqidx$1$1(argt($1),argd($1),name,fp);
+')
 
+rem(`unarydiagconst(t1)')
+define(unarydiagconst,`
+unarydiagconst2($1,eq,c)
+unarydiagconst2($1,peq,c)
+unarydiagconst2($1,eqm,c)
+unarydiagconst2($1,meq,c)
 ')
 
 rem(`
@@ -163,7 +176,6 @@ define(unaryglobalnorm2,`
   }
   argt$5($1) = argtQ($1);
   checkeqsng$5RR(&argd$5($1),&argt$5($1),name,fp);
-
 ')
 
 rem(`
@@ -199,7 +211,6 @@ define(unaryglobalnorm2real,`/* qla_name1_spec(,$1,,$2,,$3,$4) */
   for(i=0;i<MAX;i++)argtQ($1) += (*arg2$6p($3)[idx2($3)[i]])*(*arg2$6p($3)[idx2($3)[i]]);
   argt$5($1) = argtQ($1);
   checkeqsng$5RR(&argd$5($1),&argt$5($1),name,fp);
-
 ')
 
 rem(`
@@ -416,7 +427,6 @@ define(unaryseed,`
   qla_name1(,$1,x,$2,p,$3)(argd($1),arg4($3),nI1p,idx1($3),MAX);
   for(i = 0; i < MAX; i++)qla_name1(,$1,,$2,,$3)(&argt($1)[idx1($3)[i]],arg4($3),nI1p[idx1($3)[i]]);
   checkeqidx$1$1(argt($1),argd($1),name,fp);
-
 ')
 
 rem(`

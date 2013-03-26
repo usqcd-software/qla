@@ -66,21 +66,6 @@ sub make_code_antiherm_part {
 }
 
 #---------------------------------------------------------------------
-# Code for matrix determinant
-#---------------------------------------------------------------------
-
-sub make_code_matrix_det {
-    my($eqop) = @_;
-
-    &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
-    if($def{'dim_name'} ne "") {
-      &print_c_eqop_det_m($eqop);
-    } else {
-    }
-    &print_end_matter($var_i,$def{'dim_name'});
-}
-
-#---------------------------------------------------------------------
 # Code for matrix function
 #---------------------------------------------------------------------
 
@@ -89,7 +74,7 @@ sub make_code_matrix_func {
 
     &print_top_matter($def{'declaration'},$var_i,$def{'dim_name'});
     if($def{'dim_name'} ne "") {
-      &print_m_eqop_func_m($eqop,$func);
+      &print_t_eqop_func_m($eqop,$func);
     } else {
     }
     &print_end_matter($var_i,$def{'dim_name'});

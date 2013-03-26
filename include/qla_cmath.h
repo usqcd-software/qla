@@ -17,6 +17,14 @@ QLA_F_Complex QLA_F_csqrt( QLA_F_Complex *z );
 QLA_D_Complex QLA_D_csqrt( QLA_D_Complex *z );
 #define QLA_csqrt(x) QLA_D_csqrt(x)
 
+QLA_F_Complex QLA_F_csinh( QLA_F_Complex *z );
+QLA_D_Complex QLA_D_csinh( QLA_D_Complex *z );
+#define QLA_csinh(x) QLA_D_csinh(x)
+
+QLA_F_Complex QLA_F_ccosh( QLA_F_Complex *z );
+QLA_D_Complex QLA_D_ccosh( QLA_D_Complex *z );
+#define QLA_ccosh(x) QLA_D_ccosh(x)
+
 /*********************************************************************/
 /* If the compiler doesn't know about "round" (C99 standard) 
    we have to define it   */

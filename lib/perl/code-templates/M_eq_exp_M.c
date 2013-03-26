@@ -8,10 +8,10 @@
 #include <math.h>
 
 #if QLA_Precision == 'F'
-#  include <qla_f.h>
+#  define QLAP(y) QLA_F ## _ ## y
 #  define QLAPX(x,y) QLA_F ## x ## _ ## y
 #else
-#  include <qla_d.h>
+#  define QLAP(y) QLA_D ## _ ## y
 #  define QLAPX(x,y) QLA_D ## x ## _ ## y
 #endif
 
@@ -90,27 +90,59 @@ maxev(NCARG QLAN(ColorMatrix,(*a)))
 }
 
 void
-QLAPC(M_eq_exp_M)(NCARG QLAN(ColorMatrix,(*restrict a)), QLAN(ColorMatrix,(*restrict b)))
+QLAPC(M_eq_exp_M)(NCARG QLAN(ColorMatrix,(*restrict r)), QLAN(ColorMatrix,(*restrict a)))
 {
 #ifdef HAVE_XLC
-#pragma disjoint(*a, *b)
+#pragma disjoint(*r, *a)
+  __alignx(16,r);
   __alignx(16,a);
-  __alignx(16,b);
 #endif
 
   if(NC==1) {
-    QLA_C_eq_cexp_C(&QLA_elem_M(*a,0,0),&QLA_elem_M(*b,0,0));
+    QLA_elem_M(*r,0,0) = QLAP(cexp)(&QLA_elem_M(*a,0,0));
     return;
   }
   if(NC==2) {
+    QLA_Complex tr, det;
+    QLA_c_eq_c_plus_c(tr, QLA_elem_M(*a,0,0), QLA_elem_M(*a,1,1));
+    QLA_c_eq_c_times_c (det, QLA_elem_M(*a,0,0), QLA_elem_M(*a,1,1));
+    QLA_c_meq_c_times_c(det, QLA_elem_M(*a,0,1), QLA_elem_M(*a,1,0));
+    // s = 0.5*tr;  t = sqrt(s^2 - det)
+    QLA_Complex s, s2;
+    QLA_c_eq_r_times_c(s, 0.5, tr);
+    QLA_c_eq_c_times_c(s2, s, s);
+    QLA_c_meq_c(s2, det);
+    QLA_Complex t = QLAP(csqrt)(&s2);
+    // c0 = exp(s)[cosh(t) - s*sinh(t)/t];  c1 = exp(s) sinh(t)/t
+    QLA_Complex sh, st, ch;
+    if(QLA_real(t)==0 && QLA_imag(t)==0) {
+      QLA_c_eq_r(sh, 0);
+      QLA_c_eq_r(st, 1);
+      QLA_c_eq_r(ch, 1);
+    } else {
+      sh = QLAP(csinh)(&t);
+      QLA_c_eq_c_div_c(st, sh, t);
+      ch = QLAP(ccosh)(&t);
+    }
+    QLA_Complex c0, c1, es;
+    es = QLAP(cexp)(&s);
+    QLA_c_eq_c_times_c(c1, es, st);
+    QLA_c_meq_c_times_c(ch, s, st);
+    QLA_c_eq_c_times_c(c0, es, ch);
+    // c0 + c1*a
+    QLA_c_eq_c_times_c_plus_c(QLA_elem_M(*r,0,0), c1, QLA_elem_M(*a,0,0), c0);
+    QLA_c_eq_c_times_c(QLA_elem_M(*r,0,1), c1, QLA_elem_M(*a,0,1));
+    QLA_c_eq_c_times_c(QLA_elem_M(*r,1,0), c1, QLA_elem_M(*a,1,0));
+    QLA_c_eq_c_times_c_plus_c(QLA_elem_M(*r,1,1), c1, QLA_elem_M(*a,1,1), c0);
+    return;
   }
 
   /* get the integer scale */
-  double ds = 2 * maxev(NCVAR b);
+  double ds = 2 * maxev(NCVAR a);
   unsigned int s = (unsigned int)(ceil(ds));
   //printf("s = %i\n", s);
   if (s == 0) {
-    M_eq_d(a, 1);
+    M_eq_d(r, 1);
     return;
   }
   if (s > 1024) s = 1024;
@@ -128,7 +160,7 @@ QLAPC(M_eq_exp_M)(NCARG QLAN(ColorMatrix,(*restrict a)), QLAN(ColorMatrix,(*rest
   QLAN(ColorMatrix,(*vb1));
 
   QLA_Real dsi = 1.0/ds;
-  QLAN(M_eq_r_times_M, &bs, &dsi, b);
+  QLAN(M_eq_r_times_M, &bs, &dsi, a);
   M_eq_d(&pb, P[0]);
   M_eq_d(&qb, Q[0]);
   QLAN(M_eq_M_times_M, &bs2, &bs, &bs);
@@ -148,7 +180,7 @@ QLAPC(M_eq_exp_M)(NCARG QLAN(ColorMatrix,(*restrict a)), QLAN(ColorMatrix,(*rest
 
   /* construct the full result a = exp(b) */
   if (s == 1) {
-    QLAN(M_eq_M, a, &pb);
+    QLAN(M_eq_M, r, &pb);
     return;
   }
 
@@ -168,5 +200,5 @@ QLAPC(M_eq_exp_M)(NCARG QLAN(ColorMatrix,(*restrict a)), QLAN(ColorMatrix,(*rest
       void *tmp = vb1; vb1 = vb0; vb0 = tmp;
     }
   }
-  QLAN(M_eq_M, a, va0);
+  QLAN(M_eq_M, r, va0);
 }

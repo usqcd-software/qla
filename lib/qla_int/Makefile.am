@@ -27,14 +27,17 @@ QLA_I_eq_I_plus_I.c \
 QLA_I_eq_I_rshift_I.c \
 QLA_I_eq_I_times_I.c \
 QLA_I_eq_I_xor_I.c \
+QLA_I_eqm_i1.c \
 QLA_I_eqm_i1_times_I.c \
 QLA_I_eqm_I.c \
 QLA_I_eqm_I_times_I.c \
 QLA_I_eq_not_I.c \
 QLA_I_eq_zero.c \
+QLA_I_meq_i1.c \
 QLA_I_meq_i1_times_I.c \
 QLA_I_meq_I.c \
 QLA_I_meq_I_times_I.c \
+QLA_I_peq_i1.c \
 QLA_I_peq_i1_times_I.c \
 QLA_I_peq_I.c \
 QLA_I_peq_I_times_I.c \
@@ -88,6 +91,7 @@ QLA_I_veq_I_times_I.c \
 QLA_I_veq_I_times_pI.c \
 QLA_I_veq_I_xor_I.c \
 QLA_I_veq_I_xor_pI.c \
+QLA_I_veqm_i1.c \
 QLA_I_veqm_i1_times_I.c \
 QLA_I_veqm_i1_times_pI.c \
 QLA_I_veqm_I.c \
@@ -138,6 +142,7 @@ QLA_I_veq_pI_times_pI.c \
 QLA_I_veq_pI_xor_I.c \
 QLA_I_veq_pI_xor_pI.c \
 QLA_I_veq_zero.c \
+QLA_I_vmeq_i1.c \
 QLA_I_vmeq_i1_times_I.c \
 QLA_I_vmeq_i1_times_pI.c \
 QLA_I_vmeq_I.c \
@@ -146,6 +151,7 @@ QLA_I_vmeq_I_times_pI.c \
 QLA_I_vmeq_pI.c \
 QLA_I_vmeq_pI_times_I.c \
 QLA_I_vmeq_pI_times_pI.c \
+QLA_I_vpeq_i1.c \
 QLA_I_vpeq_i1_times_I.c \
 QLA_I_vpeq_i1_times_pI.c \
 QLA_I_vpeq_I.c \
@@ -204,6 +210,7 @@ QLA_I_xeq_I_times_I.c \
 QLA_I_xeq_I_times_pI.c \
 QLA_I_xeq_I_xor_I.c \
 QLA_I_xeq_I_xor_pI.c \
+QLA_I_xeqm_i1.c \
 QLA_I_xeqm_i1_times_I.c \
 QLA_I_xeqm_i1_times_pI.c \
 QLA_I_xeqm_I.c \
@@ -254,6 +261,7 @@ QLA_I_xeq_pI_times_pI.c \
 QLA_I_xeq_pI_xor_I.c \
 QLA_I_xeq_pI_xor_pI.c \
 QLA_I_xeq_zero.c \
+QLA_I_xmeq_i1.c \
 QLA_I_xmeq_i1_times_I.c \
 QLA_I_xmeq_i1_times_pI.c \
 QLA_I_xmeq_I.c \
@@ -262,6 +270,7 @@ QLA_I_xmeq_I_times_pI.c \
 QLA_I_xmeq_pI.c \
 QLA_I_xmeq_pI_times_I.c \
 QLA_I_xmeq_pI_times_pI.c \
+QLA_I_xpeq_i1.c \
 QLA_I_xpeq_i1_times_I.c \
 QLA_I_xpeq_i1_times_pI.c \
 QLA_I_xpeq_I.c \
@@ -315,14 +324,17 @@ QLA_I_eq_I_plus_I.o \
 QLA_I_eq_I_rshift_I.o \
 QLA_I_eq_I_times_I.o \
 QLA_I_eq_I_xor_I.o \
+QLA_I_eqm_i1.o \
 QLA_I_eqm_i1_times_I.o \
 QLA_I_eqm_I.o \
 QLA_I_eqm_I_times_I.o \
 QLA_I_eq_not_I.o \
 QLA_I_eq_zero.o \
+QLA_I_meq_i1.o \
 QLA_I_meq_i1_times_I.o \
 QLA_I_meq_I.o \
 QLA_I_meq_I_times_I.o \
+QLA_I_peq_i1.o \
 QLA_I_peq_i1_times_I.o \
 QLA_I_peq_I.o \
 QLA_I_peq_I_times_I.o \
@@ -376,6 +388,7 @@ QLA_I_veq_I_times_I.o \
 QLA_I_veq_I_times_pI.o \
 QLA_I_veq_I_xor_I.o \
 QLA_I_veq_I_xor_pI.o \
+QLA_I_veqm_i1.o \
 QLA_I_veqm_i1_times_I.o \
 QLA_I_veqm_i1_times_pI.o \
 QLA_I_veqm_I.o \
@@ -426,6 +439,7 @@ QLA_I_veq_pI_times_pI.o \
 QLA_I_veq_pI_xor_I.o \
 QLA_I_veq_pI_xor_pI.o \
 QLA_I_veq_zero.o \
+QLA_I_vmeq_i1.o \
 QLA_I_vmeq_i1_times_I.o \
 QLA_I_vmeq_i1_times_pI.o \
 QLA_I_vmeq_I.o \
@@ -434,6 +448,7 @@ QLA_I_vmeq_I_times_pI.o \
 QLA_I_vmeq_pI.o \
 QLA_I_vmeq_pI_times_I.o \
 QLA_I_vmeq_pI_times_pI.o \
+QLA_I_vpeq_i1.o \
 QLA_I_vpeq_i1_times_I.o \
 QLA_I_vpeq_i1_times_pI.o \
 QLA_I_vpeq_I.o \
@@ -492,6 +507,7 @@ QLA_I_xeq_I_times_I.o \
 QLA_I_xeq_I_times_pI.o \
 QLA_I_xeq_I_xor_I.o \
 QLA_I_xeq_I_xor_pI.o \
+QLA_I_xeqm_i1.o \
 QLA_I_xeqm_i1_times_I.o \
 QLA_I_xeqm_i1_times_pI.o \
 QLA_I_xeqm_I.o \
@@ -542,6 +558,7 @@ QLA_I_xeq_pI_times_pI.o \
 QLA_I_xeq_pI_xor_I.o \
 QLA_I_xeq_pI_xor_pI.o \
 QLA_I_xeq_zero.o \
+QLA_I_xmeq_i1.o \
 QLA_I_xmeq_i1_times_I.o \
 QLA_I_xmeq_i1_times_pI.o \
 QLA_I_xmeq_I.o \
@@ -550,6 +567,7 @@ QLA_I_xmeq_I_times_pI.o \
 QLA_I_xmeq_pI.o \
 QLA_I_xmeq_pI_times_I.o \
 QLA_I_xmeq_pI_times_pI.o \
+QLA_I_xpeq_i1.o \
 QLA_I_xpeq_i1_times_I.o \
 QLA_I_xpeq_i1_times_pI.o \
 QLA_I_xpeq_I.o \

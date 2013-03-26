@@ -228,6 +228,20 @@ int main(int argc, char *argv[]){
   QLA_I_eq_i(&destI,&sI4);
   CHECKeqsngII(destI,sI4,name,fp);
 
+  chkI = destI;
+  strcpy(name,"QLA_I_peq_i");
+  QLA_I_peq_i(&destI,&sI1);
+  CHECKeqsngII(destI,chkI+sI1,name,fp);
+
+  strcpy(name,"QLA_I_eqm_i");
+  QLA_I_eqm_i(&destI,&sI1);
+  CHECKeqsngII(destI,-sI1,name,fp);
+
+  chkI = destI;
+  strcpy(name,"QLA_I_meq_i");
+  QLA_I_meq_i(&destI,&sI1);
+  CHECKeqsngII(destI,chkI-sI1,name,fp);
+
   strcpy(name,"QLA_S_eq_seed_i_I");
   QLA_S_eq_seed_i_I(&destS,sI4,&nI1);
   QLA_seed_random(&chkS,sI4,nI1);

@@ -67,7 +67,7 @@ int main(int argc, char *argv[]){
   QLA_Complex sC1,sC2/*,sC3*/;
 
   QLA_Real                destR,chkR;
-  QLA_Complex             destC,chkC;
+  QLA_Complex             destC,chkC,zeroC;
 
 #define ND 3
   QLA_ColorVector *sV2n[] = {&sV1,&sV2,&sV3};
@@ -77,6 +77,7 @@ int main(int argc, char *argv[]){
   chkR = 0.;
   QLA_c_eq_r(destC, 0.);
   QLA_c_eq_r(chkC, 0.);
+  QLA_c_eq_r(zeroC, 0.);
 
   /* Assign values for complex constants */
   QLA_c_eq_r_plus_ir(sC1,sC1re,sC1im);
@@ -203,6 +204,10 @@ chkAntiherm;
 
 chkMatDet;
 
+  /* QLA_M_eq_eigenvals_M */
+
+chkMatEigenvals;
+
   /* QLA_M_eq_inverse_M */
 
 chkMatInverse;
@@ -259,6 +264,7 @@ chkUniformMult(P);
 
   /* Matrix inverse times field */
 chkMatInverseX(V);
+chkMatInverseX(M);
 
   /* ColorMatrix from outer product */
 chkOuterprod;
@@ -332,10 +338,10 @@ alltensors(`chkZero');
 
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 
-  /* QLA_T_eq_t */
+  /* QLA_T_eqop_t */
 alltensors(`chkConst')
 
-  /* QLA_M_eq_c */
+  /* QLA_M_eqop_c */
 chkMConst;
 
 #endif /* QLA_Precision != Q */

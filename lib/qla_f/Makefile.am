@@ -38,6 +38,7 @@ QLA_F_C_eq_C_times_Ca.c \
 QLA_F_C_eq_C_times_C.c \
 QLA_F_C_eq_gaussian_S.c \
 QLA_F_C_eq_i_C.c \
+QLA_F_C_eqm_c1.c \
 QLA_F_C_eqm_c1_times_C.c \
 QLA_F_C_eqm_Ca.c \
 QLA_F_C_eqm_Ca_times_Ca.c \
@@ -56,6 +57,7 @@ QLA_F_C_eq_R.c \
 QLA_F_C_eq_R_plus_i_R.c \
 QLA_F_C_eq_R_times_C.c \
 QLA_F_C_eq_zero.c \
+QLA_F_C_meq_c1.c \
 QLA_F_C_meq_c1_times_C.c \
 QLA_F_C_meq_Ca.c \
 QLA_F_C_meq_Ca_times_Ca.c \
@@ -67,6 +69,7 @@ QLA_F_C_meq_C_times_C.c \
 QLA_F_C_meq_i_C.c \
 QLA_F_C_meq_r1_times_C.c \
 QLA_F_C_meq_R_times_C.c \
+QLA_F_C_peq_c1.c \
 QLA_F_C_peq_c1_times_C.c \
 QLA_F_C_peq_Ca.c \
 QLA_F_C_peq_Ca_times_Ca.c \
@@ -121,6 +124,7 @@ QLA_F_C_veq_gaussian_pS.c \
 QLA_F_C_veq_gaussian_S.c \
 QLA_F_C_veq_i_C.c \
 QLA_F_C_veq_i_pC.c \
+QLA_F_C_veqm_c1.c \
 QLA_F_C_veqm_c1_times_C.c \
 QLA_F_C_veqm_c1_times_pC.c \
 QLA_F_C_veqm_Ca.c \
@@ -196,6 +200,7 @@ QLA_F_C_veq_R_plus_i_R.c \
 QLA_F_C_veq_R_times_C.c \
 QLA_F_C_veq_R_times_pC.c \
 QLA_F_C_veq_zero.c \
+QLA_F_C_vmeq_c1.c \
 QLA_F_C_vmeq_c1_times_C.c \
 QLA_F_C_vmeq_c1_times_pC.c \
 QLA_F_C_vmeq_Ca.c \
@@ -230,6 +235,7 @@ QLA_F_C_vmeq_r1_times_C.c \
 QLA_F_C_vmeq_r1_times_pC.c \
 QLA_F_C_vmeq_R_times_C.c \
 QLA_F_C_vmeq_R_times_pC.c \
+QLA_F_C_vpeq_c1.c \
 QLA_F_C_vpeq_c1_times_C.c \
 QLA_F_C_vpeq_c1_times_pC.c \
 QLA_F_C_vpeq_Ca.c \
@@ -307,6 +313,7 @@ QLA_F_C_xeq_gaussian_pS.c \
 QLA_F_C_xeq_gaussian_S.c \
 QLA_F_C_xeq_i_C.c \
 QLA_F_C_xeq_i_pC.c \
+QLA_F_C_xeqm_c1.c \
 QLA_F_C_xeqm_c1_times_C.c \
 QLA_F_C_xeqm_c1_times_pC.c \
 QLA_F_C_xeqm_Ca.c \
@@ -382,6 +389,7 @@ QLA_F_C_xeq_R_plus_i_R.c \
 QLA_F_C_xeq_R_times_C.c \
 QLA_F_C_xeq_R_times_pC.c \
 QLA_F_C_xeq_zero.c \
+QLA_F_C_xmeq_c1.c \
 QLA_F_C_xmeq_c1_times_C.c \
 QLA_F_C_xmeq_c1_times_pC.c \
 QLA_F_C_xmeq_Ca.c \
@@ -416,6 +424,7 @@ QLA_F_C_xmeq_r1_times_C.c \
 QLA_F_C_xmeq_r1_times_pC.c \
 QLA_F_C_xmeq_R_times_C.c \
 QLA_F_C_xmeq_R_times_pC.c \
+QLA_F_C_xpeq_c1.c \
 QLA_F_C_xpeq_c1_times_C.c \
 QLA_F_C_xpeq_c1_times_pC.c \
 QLA_F_C_xpeq_Ca.c \
@@ -493,16 +502,7 @@ QLA_F_I_xeq_pR_ge_R.c \
 QLA_F_I_xeq_pR_gt_pR.c \
 QLA_F_I_xeq_pR_gt_R.c \
 QLA_F_I_xeq_pR_le_pR.c \
-QLA_F_I_xeq_pR_le_R.c \
-QLA_F_I_xeq_pR_lt_pR.c \
-QLA_F_I_xeq_pR_lt_R.c \
-QLA_F_I_xeq_pR_ne_pR.c \
-QLA_F_I_xeq_pR_ne_R.c \
-QLA_F_I_xeq_R_eq_pR.c \
-QLA_F_I_xeq_R_eq_R.c \
-QLA_F_I_xeq_R_ge_pR.c \
-QLA_F_I_xeq_R_ge_R.c \
-QLA_F_I_xeq_R_gt_pR.c
+QLA_F_I_xeq_pR_le_R.c
 
 QLAOBJ1 = \
 QLA_F_c1_eq_C_dot_C.o \
@@ -540,6 +540,7 @@ QLA_F_C_eq_C_times_Ca.o \
 QLA_F_C_eq_C_times_C.o \
 QLA_F_C_eq_gaussian_S.o \
 QLA_F_C_eq_i_C.o \
+QLA_F_C_eqm_c1.o \
 QLA_F_C_eqm_c1_times_C.o \
 QLA_F_C_eqm_Ca.o \
 QLA_F_C_eqm_Ca_times_Ca.o \
@@ -558,6 +559,7 @@ QLA_F_C_eq_R.o \
 QLA_F_C_eq_R_plus_i_R.o \
 QLA_F_C_eq_R_times_C.o \
 QLA_F_C_eq_zero.o \
+QLA_F_C_meq_c1.o \
 QLA_F_C_meq_c1_times_C.o \
 QLA_F_C_meq_Ca.o \
 QLA_F_C_meq_Ca_times_Ca.o \
@@ -569,6 +571,7 @@ QLA_F_C_meq_C_times_C.o \
 QLA_F_C_meq_i_C.o \
 QLA_F_C_meq_r1_times_C.o \
 QLA_F_C_meq_R_times_C.o \
+QLA_F_C_peq_c1.o \
 QLA_F_C_peq_c1_times_C.o \
 QLA_F_C_peq_Ca.o \
 QLA_F_C_peq_Ca_times_Ca.o \
@@ -623,6 +626,7 @@ QLA_F_C_veq_gaussian_pS.o \
 QLA_F_C_veq_gaussian_S.o \
 QLA_F_C_veq_i_C.o \
 QLA_F_C_veq_i_pC.o \
+QLA_F_C_veqm_c1.o \
 QLA_F_C_veqm_c1_times_C.o \
 QLA_F_C_veqm_c1_times_pC.o \
 QLA_F_C_veqm_Ca.o \
@@ -698,6 +702,7 @@ QLA_F_C_veq_R_plus_i_R.o \
 QLA_F_C_veq_R_times_C.o \
 QLA_F_C_veq_R_times_pC.o \
 QLA_F_C_veq_zero.o \
+QLA_F_C_vmeq_c1.o \
 QLA_F_C_vmeq_c1_times_C.o \
 QLA_F_C_vmeq_c1_times_pC.o \
 QLA_F_C_vmeq_Ca.o \
@@ -732,6 +737,7 @@ QLA_F_C_vmeq_r1_times_C.o \
 QLA_F_C_vmeq_r1_times_pC.o \
 QLA_F_C_vmeq_R_times_C.o \
 QLA_F_C_vmeq_R_times_pC.o \
+QLA_F_C_vpeq_c1.o \
 QLA_F_C_vpeq_c1_times_C.o \
 QLA_F_C_vpeq_c1_times_pC.o \
 QLA_F_C_vpeq_Ca.o \
@@ -809,6 +815,7 @@ QLA_F_C_xeq_gaussian_pS.o \
 QLA_F_C_xeq_gaussian_S.o \
 QLA_F_C_xeq_i_C.o \
 QLA_F_C_xeq_i_pC.o \
+QLA_F_C_xeqm_c1.o \
 QLA_F_C_xeqm_c1_times_C.o \
 QLA_F_C_xeqm_c1_times_pC.o \
 QLA_F_C_xeqm_Ca.o \
@@ -884,6 +891,7 @@ QLA_F_C_xeq_R_plus_i_R.o \
 QLA_F_C_xeq_R_times_C.o \
 QLA_F_C_xeq_R_times_pC.o \
 QLA_F_C_xeq_zero.o \
+QLA_F_C_xmeq_c1.o \
 QLA_F_C_xmeq_c1_times_C.o \
 QLA_F_C_xmeq_c1_times_pC.o \
 QLA_F_C_xmeq_Ca.o \
@@ -918,6 +926,7 @@ QLA_F_C_xmeq_r1_times_C.o \
 QLA_F_C_xmeq_r1_times_pC.o \
 QLA_F_C_xmeq_R_times_C.o \
 QLA_F_C_xmeq_R_times_pC.o \
+QLA_F_C_xpeq_c1.o \
 QLA_F_C_xpeq_c1_times_C.o \
 QLA_F_C_xpeq_c1_times_pC.o \
 QLA_F_C_xpeq_Ca.o \
@@ -995,18 +1004,18 @@ QLA_F_I_xeq_pR_ge_R.o \
 QLA_F_I_xeq_pR_gt_pR.o \
 QLA_F_I_xeq_pR_gt_R.o \
 QLA_F_I_xeq_pR_le_pR.o \
-QLA_F_I_xeq_pR_le_R.o \
-QLA_F_I_xeq_pR_lt_pR.o \
-QLA_F_I_xeq_pR_lt_R.o \
-QLA_F_I_xeq_pR_ne_pR.o \
-QLA_F_I_xeq_pR_ne_R.o \
-QLA_F_I_xeq_R_eq_pR.o \
-QLA_F_I_xeq_R_eq_R.o \
-QLA_F_I_xeq_R_ge_pR.o \
-QLA_F_I_xeq_R_ge_R.o \
-QLA_F_I_xeq_R_gt_pR.o
+QLA_F_I_xeq_pR_le_R.o
 
 QLASRC2 = \
+QLA_F_I_xeq_pR_lt_pR.c \
+QLA_F_I_xeq_pR_lt_R.c \
+QLA_F_I_xeq_pR_ne_pR.c \
+QLA_F_I_xeq_pR_ne_R.c \
+QLA_F_I_xeq_R_eq_pR.c \
+QLA_F_I_xeq_R_eq_R.c \
+QLA_F_I_xeq_R_ge_pR.c \
+QLA_F_I_xeq_R_ge_R.c \
+QLA_F_I_xeq_R_gt_pR.c \
 QLA_F_I_xeq_R_gt_R.c \
 QLA_F_I_xeq_R_le_pR.c \
 QLA_F_I_xeq_R_le_R.c \
@@ -1086,6 +1095,7 @@ QLA_F_R_eq_im_C.c \
 QLA_F_R_eq_log10_R.c \
 QLA_F_R_eq_log_R.c \
 QLA_F_R_eqm_norm2_C.c \
+QLA_F_R_eqm_r1.c \
 QLA_F_R_eqm_r1_times_R.c \
 QLA_F_R_eqm_R.c \
 QLA_F_R_eqm_re_C_dot_C.c \
@@ -1119,11 +1129,13 @@ QLA_F_R_eq_tanh_R.c \
 QLA_F_R_eq_tan_R.c \
 QLA_F_R_eq_zero.c \
 QLA_F_R_meq_norm2_C.c \
+QLA_F_R_meq_r1.c \
 QLA_F_R_meq_r1_times_R.c \
 QLA_F_R_meq_R.c \
 QLA_F_R_meq_re_C_dot_C.c \
 QLA_F_R_meq_R_times_R.c \
 QLA_F_R_peq_norm2_C.c \
+QLA_F_R_peq_r1.c \
 QLA_F_R_peq_r1_times_R.c \
 QLA_F_R_peq_R.c \
 QLA_F_R_peq_re_C_dot_C.c \
@@ -1162,6 +1174,7 @@ QLA_F_R_veqm_norm2_pC.c \
 QLA_F_R_veqm_pR.c \
 QLA_F_R_veqm_pR_times_pR.c \
 QLA_F_R_veqm_pR_times_R.c \
+QLA_F_R_veqm_r1.c \
 QLA_F_R_veqm_r1_times_pR.c \
 QLA_F_R_veqm_r1_times_R.c \
 QLA_F_R_veqm_R.c \
@@ -1259,6 +1272,7 @@ QLA_F_R_vmeq_norm2_pC.c \
 QLA_F_R_vmeq_pR.c \
 QLA_F_R_vmeq_pR_times_pR.c \
 QLA_F_R_vmeq_pR_times_R.c \
+QLA_F_R_vmeq_r1.c \
 QLA_F_R_vmeq_r1_times_pR.c \
 QLA_F_R_vmeq_r1_times_R.c \
 QLA_F_R_vmeq_R.c \
@@ -1273,6 +1287,7 @@ QLA_F_R_vpeq_norm2_pC.c \
 QLA_F_R_vpeq_pR.c \
 QLA_F_R_vpeq_pR_times_pR.c \
 QLA_F_R_vpeq_pR_times_R.c \
+QLA_F_R_vpeq_r1.c \
 QLA_F_R_vpeq_r1_times_pR.c \
 QLA_F_R_vpeq_r1_times_R.c \
 QLA_F_R_vpeq_R.c \
@@ -1316,6 +1331,7 @@ QLA_F_R_xeqm_norm2_pC.c \
 QLA_F_R_xeqm_pR.c \
 QLA_F_R_xeqm_pR_times_pR.c \
 QLA_F_R_xeqm_pR_times_R.c \
+QLA_F_R_xeqm_r1.c \
 QLA_F_R_xeqm_r1_times_pR.c \
 QLA_F_R_xeqm_r1_times_R.c \
 QLA_F_R_xeqm_R.c \
@@ -1413,6 +1429,7 @@ QLA_F_R_xmeq_norm2_pC.c \
 QLA_F_R_xmeq_pR.c \
 QLA_F_R_xmeq_pR_times_pR.c \
 QLA_F_R_xmeq_pR_times_R.c \
+QLA_F_R_xmeq_r1.c \
 QLA_F_R_xmeq_r1_times_pR.c \
 QLA_F_R_xmeq_r1_times_R.c \
 QLA_F_R_xmeq_R.c \
@@ -1427,6 +1444,7 @@ QLA_F_R_xpeq_norm2_pC.c \
 QLA_F_R_xpeq_pR.c \
 QLA_F_R_xpeq_pR_times_pR.c \
 QLA_F_R_xpeq_pR_times_R.c \
+QLA_F_R_xpeq_r1.c \
 QLA_F_R_xpeq_r1_times_pR.c \
 QLA_F_R_xpeq_r1_times_R.c \
 QLA_F_R_xpeq_R.c \
@@ -1438,6 +1456,15 @@ QLA_F_R_xpeq_R_times_pR.c \
 QLA_F_R_xpeq_R_times_R.c
 
 QLAOBJ2 = \
+QLA_F_I_xeq_pR_lt_pR.o \
+QLA_F_I_xeq_pR_lt_R.o \
+QLA_F_I_xeq_pR_ne_pR.o \
+QLA_F_I_xeq_pR_ne_R.o \
+QLA_F_I_xeq_R_eq_pR.o \
+QLA_F_I_xeq_R_eq_R.o \
+QLA_F_I_xeq_R_ge_pR.o \
+QLA_F_I_xeq_R_ge_R.o \
+QLA_F_I_xeq_R_gt_pR.o \
 QLA_F_I_xeq_R_gt_R.o \
 QLA_F_I_xeq_R_le_pR.o \
 QLA_F_I_xeq_R_le_R.o \
@@ -1517,6 +1544,7 @@ QLA_F_R_eq_im_C.o \
 QLA_F_R_eq_log10_R.o \
 QLA_F_R_eq_log_R.o \
 QLA_F_R_eqm_norm2_C.o \
+QLA_F_R_eqm_r1.o \
 QLA_F_R_eqm_r1_times_R.o \
 QLA_F_R_eqm_R.o \
 QLA_F_R_eqm_re_C_dot_C.o \
@@ -1550,11 +1578,13 @@ QLA_F_R_eq_tanh_R.o \
 QLA_F_R_eq_tan_R.o \
 QLA_F_R_eq_zero.o \
 QLA_F_R_meq_norm2_C.o \
+QLA_F_R_meq_r1.o \
 QLA_F_R_meq_r1_times_R.o \
 QLA_F_R_meq_R.o \
 QLA_F_R_meq_re_C_dot_C.o \
 QLA_F_R_meq_R_times_R.o \
 QLA_F_R_peq_norm2_C.o \
+QLA_F_R_peq_r1.o \
 QLA_F_R_peq_r1_times_R.o \
 QLA_F_R_peq_R.o \
 QLA_F_R_peq_re_C_dot_C.o \
@@ -1593,6 +1623,7 @@ QLA_F_R_veqm_norm2_pC.o \
 QLA_F_R_veqm_pR.o \
 QLA_F_R_veqm_pR_times_pR.o \
 QLA_F_R_veqm_pR_times_R.o \
+QLA_F_R_veqm_r1.o \
 QLA_F_R_veqm_r1_times_pR.o \
 QLA_F_R_veqm_r1_times_R.o \
 QLA_F_R_veqm_R.o \
@@ -1690,6 +1721,7 @@ QLA_F_R_vmeq_norm2_pC.o \
 QLA_F_R_vmeq_pR.o \
 QLA_F_R_vmeq_pR_times_pR.o \
 QLA_F_R_vmeq_pR_times_R.o \
+QLA_F_R_vmeq_r1.o \
 QLA_F_R_vmeq_r1_times_pR.o \
 QLA_F_R_vmeq_r1_times_R.o \
 QLA_F_R_vmeq_R.o \
@@ -1704,6 +1736,7 @@ QLA_F_R_vpeq_norm2_pC.o \
 QLA_F_R_vpeq_pR.o \
 QLA_F_R_vpeq_pR_times_pR.o \
 QLA_F_R_vpeq_pR_times_R.o \
+QLA_F_R_vpeq_r1.o \
 QLA_F_R_vpeq_r1_times_pR.o \
 QLA_F_R_vpeq_r1_times_R.o \
 QLA_F_R_vpeq_R.o \
@@ -1747,6 +1780,7 @@ QLA_F_R_xeqm_norm2_pC.o \
 QLA_F_R_xeqm_pR.o \
 QLA_F_R_xeqm_pR_times_pR.o \
 QLA_F_R_xeqm_pR_times_R.o \
+QLA_F_R_xeqm_r1.o \
 QLA_F_R_xeqm_r1_times_pR.o \
 QLA_F_R_xeqm_r1_times_R.o \
 QLA_F_R_xeqm_R.o \
@@ -1844,6 +1878,7 @@ QLA_F_R_xmeq_norm2_pC.o \
 QLA_F_R_xmeq_pR.o \
 QLA_F_R_xmeq_pR_times_pR.o \
 QLA_F_R_xmeq_pR_times_R.o \
+QLA_F_R_xmeq_r1.o \
 QLA_F_R_xmeq_r1_times_pR.o \
 QLA_F_R_xmeq_r1_times_R.o \
 QLA_F_R_xmeq_R.o \
@@ -1858,6 +1893,7 @@ QLA_F_R_xpeq_norm2_pC.o \
 QLA_F_R_xpeq_pR.o \
 QLA_F_R_xpeq_pR_times_pR.o \
 QLA_F_R_xpeq_pR_times_R.o \
+QLA_F_R_xpeq_r1.o \
 QLA_F_R_xpeq_r1_times_pR.o \
 QLA_F_R_xpeq_r1_times_R.o \
 QLA_F_R_xpeq_R.o \

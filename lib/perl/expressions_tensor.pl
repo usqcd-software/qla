@@ -233,48 +233,22 @@ sub print_g_eqop_antiherm_g {
 }
 
 #---------------------------------------------------------------------
-# Matrix determinant
-#---------------------------------------------------------------------
-
-sub print_c_eqop_det_m {
-  my($eqop) = @_;
-  my $ddef  = \%dest_def;
-  my $s1def = \%src1_def;
-
-  # type checking
-  $$ddef{'t'} eq $datatype_complex_abbrev &&
-      $$s1def{'t'} eq $datatype_colormatrix_abbrev ||
-      die "matrix det supports only colormatrix field\n";
-
-  $eqop eq $eqop_eq ||
-      die "matrix det supports only replacement\n";
-
-  my $func = "QLA_${precision}${colors}_C_eq_det_M";
-  my $ncvar = "";
-  if($def{'nc'} eq $arg_nc) {
-    $ncvar = "$arg_nc, ";
-  }
-  print QLA_SRC @indent,"$func(${ncvar}&($$ddef{'value'}), &($$s1def{'value'}));\n";
-}
-
-#---------------------------------------------------------------------
 # Matrix function
 #---------------------------------------------------------------------
 
-sub print_m_eqop_func_m {
+sub print_t_eqop_func_m {
   my($eqop,$mfunc) = @_;
   my $ddef  = \%dest_def;
   my $s1def = \%src1_def;
 
   # type checking
-  $$ddef{'t'} eq $datatype_colormatrix_abbrev &&
-      $$s1def{'t'} eq $datatype_colormatrix_abbrev ||
+  $$s1def{'t'} eq $datatype_colormatrix_abbrev ||
       die "matrix function (".$mfunc.") supports only colormatrix field\n";
 
   $eqop eq $eqop_eq ||
       die "matrix function (".$mfunc.") supports only replacement\n";
 
-  my $func = "QLA_${precision}${colors}_M_eq_".$mfunc."_M";
+  my $func = "QLA_${precision}${colors}_$$ddef{'t'}_eq_".$mfunc."_M";
   my $ncvar = "";
   if($def{'nc'} eq $arg_nc) {
     $ncvar = "$arg_nc, ";

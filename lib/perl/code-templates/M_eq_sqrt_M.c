@@ -9,11 +9,11 @@
 #include <float.h>
 
 #if QLA_Precision == 'F'
-#  define QLAP(x,...) QLA_F_ ## x (__VA_ARGS__)
+#  define QLAP(y) QLA_F ## _ ## y
 #  define QLAPX(x,y) QLA_F ## x ## _ ## y
 #  define EPS FLT_EPSILON
 #else
-#  define QLAP(x,...) QLA_D_ ## x (__VA_ARGS__)
+#  define QLAP(y) QLA_D ## _ ## y
 #  define QLAPX(x,y) QLA_D ## x ## _ ## y
 #  define EPS DBL_EPSILON
 #endif
@@ -81,18 +81,44 @@ maxev(NCARG QLAN(ColorMatrix,(*a)))
 }
 
 void
-QLAPC(M_eq_sqrt_M)(NCARG QLAN(ColorMatrix,(*restrict a)), QLAN(ColorMatrix,(*restrict b)))
+QLAPC(M_eq_sqrt_M)(NCARG QLAN(ColorMatrix,(*restrict r)), QLAN(ColorMatrix,(*restrict a)))
 {
 #ifdef HAVE_XLC
-#pragma disjoint(*a, *b)
+#pragma disjoint(*r, *a)
+  __alignx(16,r);
   __alignx(16,a);
-  __alignx(16,b);
 #endif
 
-  double ds = maxev(NCVAR b);
+  if(NC==1) {
+    QLA_elem_M(*r,0,0) = QLAP(csqrt)(&QLA_elem_M(*a,0,0));
+    return;
+  }
+  if(NC==2) {
+    QLA_Complex tr, det;
+    QLA_c_eq_c_plus_c(tr, QLA_elem_M(*a,0,0), QLA_elem_M(*a,1,1));
+    QLA_c_eq_c_times_c (det, QLA_elem_M(*a,0,0), QLA_elem_M(*a,1,1));
+    QLA_c_meq_c_times_c(det, QLA_elem_M(*a,0,1), QLA_elem_M(*a,1,0));
+    // c0 = c1*sqrt(det);  c1 = 1/sqrt(tr+2sqrt(det))
+    QLA_Complex sd = QLAP(csqrt)(&det);
+    QLA_c_peq_r_times_c(tr, 2, sd);
+    QLA_Complex c0, c1;
+    //if(QLA_real(tr)==0 && QLA_imag(tr)==0) {
+    
+    QLA_Complex st = QLAP(csqrt)(&tr);
+    QLA_c_eq_r_div_c(c1, 1, st);
+    QLA_c_eq_c_times_c(c0, c1, sd);
+    // c0 + c1*a
+    QLA_c_eq_c_times_c_plus_c(QLA_elem_M(*r,0,0), c1, QLA_elem_M(*a,0,0), c0);
+    QLA_c_eq_c_times_c(QLA_elem_M(*r,0,1), c1, QLA_elem_M(*a,0,1));
+    QLA_c_eq_c_times_c(QLA_elem_M(*r,1,0), c1, QLA_elem_M(*a,1,0));
+    QLA_c_eq_c_times_c_plus_c(QLA_elem_M(*r,1,1), c1, QLA_elem_M(*a,1,1), c0);
+    return;
+  }
+
+  double ds = maxev(NCVAR a);
   //printf("ds = %g\n", ds);
   if (ds == 0) {
-    QLAN(M_eq_zero, a);
+    QLAN(M_eq_zero, r);
     return;
   }
 
@@ -102,7 +128,7 @@ QLAPC(M_eq_sqrt_M)(NCARG QLAN(ColorMatrix,(*restrict a)), QLAN(ColorMatrix,(*res
   QLAN(ColorMatrix,t1);
   QLAN(ColorMatrix,t2);
 
-  M_eq_d_times_M(&x, 1/ds, b);   // x = b/ds = A
+  M_eq_d_times_M(&x, 1/ds, a);   // x = b/ds = A
   M_eq_d(&e, 0.5);
   M_peq_d_times_M(&e, -0.5, &x); // e = 0.5 - 0.5 * x
   QLAN(M_peq_M, &x, &e);
@@ -121,11 +147,11 @@ QLAPC(M_eq_sqrt_M)(NCARG QLAN(ColorMatrix,(*restrict a)), QLAN(ColorMatrix,(*res
     //printf("%i enorm = %g\n", nit, enorm);
   } while(nit<maxit && enorm>estop);
 
-  M_eq_d_times_M(a, sqrt(ds), &x);
+  M_eq_d_times_M(r, sqrt(ds), &x);
 
 #if 0
-  QLAN(M_eq_M_times_M, &x, a, a);
-  QLAN(M_meq_M, &x, b);
+  QLAN(M_eq_M_times_M, &x, r, r);
+  QLAN(M_meq_M, &x, a);
   enorm = maxev(NCVAR &x);
   printf("%i %g %g %g\n", nit, enorm, enorm/ds, EPS);
 #endif

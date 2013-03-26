@@ -49,20 +49,46 @@
 #endif
 
 void
-QLAPC(C_eq_det_M)(NCARG QLA_Complex *a, QLAN(ColorMatrix,(*b)))
+QLAPC(C_eq_det_M)(NCARG QLA_Complex *x, QLAN(ColorMatrix,(*a)))
 {
 #ifdef HAVE_XLC
+  __alignx(16,x);
   __alignx(16,a);
-  __alignx(16,b);
 #endif
+
+  if(NC==1) {
+    QLA_c_eq_c(*x, QLA_elem_M(*a,0,0));
+    return;
+  }
+  if(NC==2) {
+    QLA_Complex det;
+    QLA_c_eq_c_times_c (det, QLA_elem_M(*a,0,0), QLA_elem_M(*a,1,1));
+    QLA_c_meq_c_times_c(det, QLA_elem_M(*a,0,1), QLA_elem_M(*a,1,0));
+    QLA_c_eq_c(*x, det);
+    return;
+  }
+  if(NC==3) {
+    QLA_Complex det, det0, det1, det2;
+    QLA_c_eq_c_times_c (det2, QLA_elem_M(*a,0,0), QLA_elem_M(*a,1,1));
+    QLA_c_meq_c_times_c(det2, QLA_elem_M(*a,0,1), QLA_elem_M(*a,1,0));
+    QLA_c_eq_c_times_c (det1, QLA_elem_M(*a,0,2), QLA_elem_M(*a,1,0));
+    QLA_c_meq_c_times_c(det1, QLA_elem_M(*a,0,0), QLA_elem_M(*a,1,2));
+    QLA_c_eq_c_times_c (det0, QLA_elem_M(*a,0,1), QLA_elem_M(*a,1,2));
+    QLA_c_meq_c_times_c(det0, QLA_elem_M(*a,0,2), QLA_elem_M(*a,1,1));
+    QLA_c_eq_c_times_c (det, det2, QLA_elem_M(*a,2,2));
+    QLA_c_peq_c_times_c(det, det1, QLA_elem_M(*a,2,1));
+    QLA_c_peq_c_times_c(det, det0, QLA_elem_M(*a,2,0));
+    QLA_c_eq_c(*x, det);
+    return;
+  }
 
   QLAN(ColorMatrix, c);
   int row[NC], nswaps=0;
-  QLA_c_eq_r(*a, 1);
+  QLA_c_eq_r(*x, 1);
 
   for(int i=0; i<NC; i++) {
     for(int j=0; j<NC; j++) {
-      QLA_c_eq_c(QLA_elem_M(c,i,j), QLA_elem_M(*b,i,j));
+      QLA_c_eq_c(QLA_elem_M(c,i,j), QLA_elem_M(*a,i,j));
     }
     row[i] = i;
   }
@@ -86,7 +112,7 @@ QLAPC(C_eq_det_M)(NCARG QLA_Complex *a, QLAN(ColorMatrix,(*b)))
       if(r>rmax) { rmax = r; jmax = j; }
     }
     if(rmax==0) { // matrix is singular
-      QLA_c_eq_r(*a, 0);
+      QLA_c_eq_r(*x, 0);
       return;
     }
     if(jmax!=j) {
@@ -96,8 +122,8 @@ QLAPC(C_eq_det_M)(NCARG QLA_Complex *a, QLAN(ColorMatrix,(*b)))
 
     {
       QLA_Complex z;
-      QLA_c_eq_c(z, *a);
-      QLA_c_eq_c_times_c(*a, z, C(j,j));
+      QLA_c_eq_c(z, *x);
+      QLA_c_eq_c_times_c(*x, z, C(j,j));
     }
 
     for(int i=j+1; i<NC; i++) {
@@ -110,5 +136,5 @@ QLAPC(C_eq_det_M)(NCARG QLA_Complex *a, QLAN(ColorMatrix,(*b)))
 
   }
 
-  if(nswaps&1) QLA_c_eqm_c(*a, *a);
+  if(nswaps&1) QLA_c_eqm_c(*x, *x);
 }
