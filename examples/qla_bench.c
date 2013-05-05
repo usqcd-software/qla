@@ -70,7 +70,7 @@ dtime(void)
 #else
   struct timeval tv;
   gettimeofday(&tv, NULL);
-  return CLOCKS_PER_SEC*(tv.tv_sec + 1e-6*tv.tv_usec);
+  return tv.tv_sec + 1e-6*tv.tv_usec;
 #endif
 }
 
