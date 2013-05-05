@@ -2255,11 +2255,14 @@ QLA_D2_M_eq_colorvec_V.c \
 QLA_D2_M_eq_conj_M.c \
 QLA_D2_M_eq_C_times_M.c \
 QLA_D2_M_eq_elem_C.c \
+QLA_D2_M_eq_expA_M.c \
 QLA_D2_M_eq_exp_M.c \
+QLA_D2_M_eq_expTA_M.c \
 QLA_D2_M_eq_gaussian_S.c \
 QLA_D2_M_eq_i_M.c \
 QLA_D2_M_eq_inverse_M.c \
 QLA_D2_M_eq_invsqrt_M.c \
+QLA_D2_M_eq_invsqrtPH_M.c \
 QLA_D2_M_eq_log_M.c \
 QLA_D2_M_eq_m1.c \
 QLA_D2_M_eq_Ma.c \
@@ -2294,6 +2297,7 @@ QLA_D2_M_eq_r1_times_M_plus_M.c \
 QLA_D2_M_eq_R_times_M.c \
 QLA_D2_M_eq_spintrace_P.c \
 QLA_D2_M_eq_sqrt_M.c \
+QLA_D2_M_eq_sqrtPH_M.c \
 QLA_D2_M_eq_transpose_M.c \
 QLA_D2_M_eq_V_times_Va.c \
 QLA_D2_M_eq_zero.c \
@@ -2350,14 +2354,20 @@ QLA_D2_M_veq_C_times_M.c \
 QLA_D2_M_veq_C_times_pM.c \
 QLA_D2_M_veq_elem_C.c \
 QLA_D2_M_veq_elem_pC.c \
+QLA_D2_M_veq_expA_M.c \
+QLA_D2_M_veq_expA_pM.c \
 QLA_D2_M_veq_exp_M.c \
 QLA_D2_M_veq_exp_pM.c \
+QLA_D2_M_veq_expTA_M.c \
+QLA_D2_M_veq_expTA_pM.c \
 QLA_D2_M_veq_gaussian_pS.c \
 QLA_D2_M_veq_gaussian_S.c \
 QLA_D2_M_veq_i_M.c \
 QLA_D2_M_veq_inverse_M.c \
 QLA_D2_M_veq_inverse_pM.c \
 QLA_D2_M_veq_invsqrt_M.c \
+QLA_D2_M_veq_invsqrtPH_M.c \
+QLA_D2_M_veq_invsqrtPH_pM.c \
 QLA_D2_M_veq_invsqrt_pM.c \
 QLA_D2_M_veq_i_pM.c \
 QLA_D2_M_veq_log_M.c \
@@ -2464,6 +2474,8 @@ QLA_D2_M_veq_R_times_pM.c \
 QLA_D2_M_veq_spintrace_P.c \
 QLA_D2_M_veq_spintrace_pP.c \
 QLA_D2_M_veq_sqrt_M.c \
+QLA_D2_M_veq_sqrtPH_M.c \
+QLA_D2_M_veq_sqrtPH_pM.c \
 QLA_D2_M_veq_sqrt_pM.c \
 QLA_D2_M_veq_transpose_M.c \
 QLA_D2_M_veq_transpose_pM.c \
@@ -2498,19 +2510,7 @@ QLA_D2_M_vmeq_pMa_times_M.c \
 QLA_D2_M_vmeq_pMa_times_pMa.c \
 QLA_D2_M_vmeq_pMa_times_pM.c \
 QLA_D2_M_vmeq_pM.c \
-QLA_D2_M_vmeq_pM_times_Ma.c \
-QLA_D2_M_vmeq_pM_times_M.c \
-QLA_D2_M_vmeq_pM_times_pMa.c \
-QLA_D2_M_vmeq_pM_times_pM.c \
-QLA_D2_M_vmeq_pR_times_M.c \
-QLA_D2_M_vmeq_pR_times_pM.c \
-QLA_D2_M_vmeq_pV_times_pVa.c \
-QLA_D2_M_vmeq_pV_times_Va.c \
-QLA_D2_M_vmeq_r1_times_M.c \
-QLA_D2_M_vmeq_r1_times_pM.c \
-QLA_D2_M_vmeq_R_times_M.c \
-QLA_D2_M_vmeq_R_times_pM.c \
-QLA_D2_M_vmeq_transpose_M.c
+QLA_D2_M_vmeq_pM_times_Ma.c
 
 QLAOBJ3 = \
 QLA_D2_H_vmeq_spproj_D.o \
@@ -2757,11 +2757,14 @@ QLA_D2_M_eq_colorvec_V.o \
 QLA_D2_M_eq_conj_M.o \
 QLA_D2_M_eq_C_times_M.o \
 QLA_D2_M_eq_elem_C.o \
+QLA_D2_M_eq_expA_M.o \
 QLA_D2_M_eq_exp_M.o \
+QLA_D2_M_eq_expTA_M.o \
 QLA_D2_M_eq_gaussian_S.o \
 QLA_D2_M_eq_i_M.o \
 QLA_D2_M_eq_inverse_M.o \
 QLA_D2_M_eq_invsqrt_M.o \
+QLA_D2_M_eq_invsqrtPH_M.o \
 QLA_D2_M_eq_log_M.o \
 QLA_D2_M_eq_m1.o \
 QLA_D2_M_eq_Ma.o \
@@ -2796,6 +2799,7 @@ QLA_D2_M_eq_r1_times_M_plus_M.o \
 QLA_D2_M_eq_R_times_M.o \
 QLA_D2_M_eq_spintrace_P.o \
 QLA_D2_M_eq_sqrt_M.o \
+QLA_D2_M_eq_sqrtPH_M.o \
 QLA_D2_M_eq_transpose_M.o \
 QLA_D2_M_eq_V_times_Va.o \
 QLA_D2_M_eq_zero.o \
@@ -2852,14 +2856,20 @@ QLA_D2_M_veq_C_times_M.o \
 QLA_D2_M_veq_C_times_pM.o \
 QLA_D2_M_veq_elem_C.o \
 QLA_D2_M_veq_elem_pC.o \
+QLA_D2_M_veq_expA_M.o \
+QLA_D2_M_veq_expA_pM.o \
 QLA_D2_M_veq_exp_M.o \
 QLA_D2_M_veq_exp_pM.o \
+QLA_D2_M_veq_expTA_M.o \
+QLA_D2_M_veq_expTA_pM.o \
 QLA_D2_M_veq_gaussian_pS.o \
 QLA_D2_M_veq_gaussian_S.o \
 QLA_D2_M_veq_i_M.o \
 QLA_D2_M_veq_inverse_M.o \
 QLA_D2_M_veq_inverse_pM.o \
 QLA_D2_M_veq_invsqrt_M.o \
+QLA_D2_M_veq_invsqrtPH_M.o \
+QLA_D2_M_veq_invsqrtPH_pM.o \
 QLA_D2_M_veq_invsqrt_pM.o \
 QLA_D2_M_veq_i_pM.o \
 QLA_D2_M_veq_log_M.o \
@@ -2966,6 +2976,8 @@ QLA_D2_M_veq_R_times_pM.o \
 QLA_D2_M_veq_spintrace_P.o \
 QLA_D2_M_veq_spintrace_pP.o \
 QLA_D2_M_veq_sqrt_M.o \
+QLA_D2_M_veq_sqrtPH_M.o \
+QLA_D2_M_veq_sqrtPH_pM.o \
 QLA_D2_M_veq_sqrt_pM.o \
 QLA_D2_M_veq_transpose_M.o \
 QLA_D2_M_veq_transpose_pM.o \
@@ -3000,21 +3012,21 @@ QLA_D2_M_vmeq_pMa_times_M.o \
 QLA_D2_M_vmeq_pMa_times_pMa.o \
 QLA_D2_M_vmeq_pMa_times_pM.o \
 QLA_D2_M_vmeq_pM.o \
-QLA_D2_M_vmeq_pM_times_Ma.o \
-QLA_D2_M_vmeq_pM_times_M.o \
-QLA_D2_M_vmeq_pM_times_pMa.o \
-QLA_D2_M_vmeq_pM_times_pM.o \
-QLA_D2_M_vmeq_pR_times_M.o \
-QLA_D2_M_vmeq_pR_times_pM.o \
-QLA_D2_M_vmeq_pV_times_pVa.o \
-QLA_D2_M_vmeq_pV_times_Va.o \
-QLA_D2_M_vmeq_r1_times_M.o \
-QLA_D2_M_vmeq_r1_times_pM.o \
-QLA_D2_M_vmeq_R_times_M.o \
-QLA_D2_M_vmeq_R_times_pM.o \
-QLA_D2_M_vmeq_transpose_M.o
+QLA_D2_M_vmeq_pM_times_Ma.o
 
 QLASRC4 = \
+QLA_D2_M_vmeq_pM_times_M.c \
+QLA_D2_M_vmeq_pM_times_pMa.c \
+QLA_D2_M_vmeq_pM_times_pM.c \
+QLA_D2_M_vmeq_pR_times_M.c \
+QLA_D2_M_vmeq_pR_times_pM.c \
+QLA_D2_M_vmeq_pV_times_pVa.c \
+QLA_D2_M_vmeq_pV_times_Va.c \
+QLA_D2_M_vmeq_r1_times_M.c \
+QLA_D2_M_vmeq_r1_times_pM.c \
+QLA_D2_M_vmeq_R_times_M.c \
+QLA_D2_M_vmeq_R_times_pM.c \
+QLA_D2_M_vmeq_transpose_M.c \
 QLA_D2_M_vmeq_transpose_pM.c \
 QLA_D2_M_vmeq_V_times_pVa.c \
 QLA_D2_M_vmeq_V_times_Va.c \
@@ -3083,14 +3095,20 @@ QLA_D2_M_xeq_C_times_M.c \
 QLA_D2_M_xeq_C_times_pM.c \
 QLA_D2_M_xeq_elem_C.c \
 QLA_D2_M_xeq_elem_pC.c \
+QLA_D2_M_xeq_expA_M.c \
+QLA_D2_M_xeq_expA_pM.c \
 QLA_D2_M_xeq_exp_M.c \
 QLA_D2_M_xeq_exp_pM.c \
+QLA_D2_M_xeq_expTA_M.c \
+QLA_D2_M_xeq_expTA_pM.c \
 QLA_D2_M_xeq_gaussian_pS.c \
 QLA_D2_M_xeq_gaussian_S.c \
 QLA_D2_M_xeq_i_M.c \
 QLA_D2_M_xeq_inverse_M.c \
 QLA_D2_M_xeq_inverse_pM.c \
 QLA_D2_M_xeq_invsqrt_M.c \
+QLA_D2_M_xeq_invsqrtPH_M.c \
+QLA_D2_M_xeq_invsqrtPH_pM.c \
 QLA_D2_M_xeq_invsqrt_pM.c \
 QLA_D2_M_xeq_i_pM.c \
 QLA_D2_M_xeq_log_M.c \
@@ -3197,6 +3215,8 @@ QLA_D2_M_xeq_R_times_pM.c \
 QLA_D2_M_xeq_spintrace_P.c \
 QLA_D2_M_xeq_spintrace_pP.c \
 QLA_D2_M_xeq_sqrt_M.c \
+QLA_D2_M_xeq_sqrtPH_M.c \
+QLA_D2_M_xeq_sqrtPH_pM.c \
 QLA_D2_M_xeq_sqrt_pM.c \
 QLA_D2_M_xeq_transpose_M.c \
 QLA_D2_M_xeq_transpose_pM.c \
@@ -3494,29 +3514,21 @@ QLA_D2_P_veqm_P_times_pM.c \
 QLA_D2_P_veqm_P_times_pPa.c \
 QLA_D2_P_veqm_P_times_pP.c \
 QLA_D2_P_veqm_r1_times_P.c \
-QLA_D2_P_veqm_r1_times_pP.c \
-QLA_D2_P_veqm_R_times_P.c \
-QLA_D2_P_veqm_R_times_pP.c \
-QLA_D2_P_veq_M_times_Pa.c \
-QLA_D2_P_veq_M_times_P.c \
-QLA_D2_P_veq_M_times_pPa.c \
-QLA_D2_P_veq_M_times_pP.c \
-QLA_D2_P_veqm_transpose_P.c \
-QLA_D2_P_veqm_transpose_pP.c \
-QLA_D2_P_veq_p1.c \
-QLA_D2_P_veq_Pa.c \
-QLA_D2_P_veq_Pa_times_Ma.c \
-QLA_D2_P_veq_Pa_times_M.c \
-QLA_D2_P_veq_Pa_times_Pa.c \
-QLA_D2_P_veq_Pa_times_P.c \
-QLA_D2_P_veq_Pa_times_pMa.c \
-QLA_D2_P_veq_Pa_times_pM.c \
-QLA_D2_P_veq_Pa_times_pPa.c \
-QLA_D2_P_veq_Pa_times_pP.c \
-QLA_D2_P_veq_P.c \
-QLA_D2_P_veq_pC_times_P.c
+QLA_D2_P_veqm_r1_times_pP.c
 
 QLAOBJ4 = \
+QLA_D2_M_vmeq_pM_times_M.o \
+QLA_D2_M_vmeq_pM_times_pMa.o \
+QLA_D2_M_vmeq_pM_times_pM.o \
+QLA_D2_M_vmeq_pR_times_M.o \
+QLA_D2_M_vmeq_pR_times_pM.o \
+QLA_D2_M_vmeq_pV_times_pVa.o \
+QLA_D2_M_vmeq_pV_times_Va.o \
+QLA_D2_M_vmeq_r1_times_M.o \
+QLA_D2_M_vmeq_r1_times_pM.o \
+QLA_D2_M_vmeq_R_times_M.o \
+QLA_D2_M_vmeq_R_times_pM.o \
+QLA_D2_M_vmeq_transpose_M.o \
 QLA_D2_M_vmeq_transpose_pM.o \
 QLA_D2_M_vmeq_V_times_pVa.o \
 QLA_D2_M_vmeq_V_times_Va.o \
@@ -3585,14 +3597,20 @@ QLA_D2_M_xeq_C_times_M.o \
 QLA_D2_M_xeq_C_times_pM.o \
 QLA_D2_M_xeq_elem_C.o \
 QLA_D2_M_xeq_elem_pC.o \
+QLA_D2_M_xeq_expA_M.o \
+QLA_D2_M_xeq_expA_pM.o \
 QLA_D2_M_xeq_exp_M.o \
 QLA_D2_M_xeq_exp_pM.o \
+QLA_D2_M_xeq_expTA_M.o \
+QLA_D2_M_xeq_expTA_pM.o \
 QLA_D2_M_xeq_gaussian_pS.o \
 QLA_D2_M_xeq_gaussian_S.o \
 QLA_D2_M_xeq_i_M.o \
 QLA_D2_M_xeq_inverse_M.o \
 QLA_D2_M_xeq_inverse_pM.o \
 QLA_D2_M_xeq_invsqrt_M.o \
+QLA_D2_M_xeq_invsqrtPH_M.o \
+QLA_D2_M_xeq_invsqrtPH_pM.o \
 QLA_D2_M_xeq_invsqrt_pM.o \
 QLA_D2_M_xeq_i_pM.o \
 QLA_D2_M_xeq_log_M.o \
@@ -3699,6 +3717,8 @@ QLA_D2_M_xeq_R_times_pM.o \
 QLA_D2_M_xeq_spintrace_P.o \
 QLA_D2_M_xeq_spintrace_pP.o \
 QLA_D2_M_xeq_sqrt_M.o \
+QLA_D2_M_xeq_sqrtPH_M.o \
+QLA_D2_M_xeq_sqrtPH_pM.o \
 QLA_D2_M_xeq_sqrt_pM.o \
 QLA_D2_M_xeq_transpose_M.o \
 QLA_D2_M_xeq_transpose_pM.o \
@@ -3996,29 +4016,29 @@ QLA_D2_P_veqm_P_times_pM.o \
 QLA_D2_P_veqm_P_times_pPa.o \
 QLA_D2_P_veqm_P_times_pP.o \
 QLA_D2_P_veqm_r1_times_P.o \
-QLA_D2_P_veqm_r1_times_pP.o \
-QLA_D2_P_veqm_R_times_P.o \
-QLA_D2_P_veqm_R_times_pP.o \
-QLA_D2_P_veq_M_times_Pa.o \
-QLA_D2_P_veq_M_times_P.o \
-QLA_D2_P_veq_M_times_pPa.o \
-QLA_D2_P_veq_M_times_pP.o \
-QLA_D2_P_veqm_transpose_P.o \
-QLA_D2_P_veqm_transpose_pP.o \
-QLA_D2_P_veq_p1.o \
-QLA_D2_P_veq_Pa.o \
-QLA_D2_P_veq_Pa_times_Ma.o \
-QLA_D2_P_veq_Pa_times_M.o \
-QLA_D2_P_veq_Pa_times_Pa.o \
-QLA_D2_P_veq_Pa_times_P.o \
-QLA_D2_P_veq_Pa_times_pMa.o \
-QLA_D2_P_veq_Pa_times_pM.o \
-QLA_D2_P_veq_Pa_times_pPa.o \
-QLA_D2_P_veq_Pa_times_pP.o \
-QLA_D2_P_veq_P.o \
-QLA_D2_P_veq_pC_times_P.o
+QLA_D2_P_veqm_r1_times_pP.o
 
 QLASRC5 = \
+QLA_D2_P_veqm_R_times_P.c \
+QLA_D2_P_veqm_R_times_pP.c \
+QLA_D2_P_veq_M_times_Pa.c \
+QLA_D2_P_veq_M_times_P.c \
+QLA_D2_P_veq_M_times_pPa.c \
+QLA_D2_P_veq_M_times_pP.c \
+QLA_D2_P_veqm_transpose_P.c \
+QLA_D2_P_veqm_transpose_pP.c \
+QLA_D2_P_veq_p1.c \
+QLA_D2_P_veq_Pa.c \
+QLA_D2_P_veq_Pa_times_Ma.c \
+QLA_D2_P_veq_Pa_times_M.c \
+QLA_D2_P_veq_Pa_times_Pa.c \
+QLA_D2_P_veq_Pa_times_P.c \
+QLA_D2_P_veq_Pa_times_pMa.c \
+QLA_D2_P_veq_Pa_times_pM.c \
+QLA_D2_P_veq_Pa_times_pPa.c \
+QLA_D2_P_veq_Pa_times_pP.c \
+QLA_D2_P_veq_P.c \
+QLA_D2_P_veq_pC_times_P.c \
 QLA_D2_P_veq_pC_times_pP.c \
 QLA_D2_P_veq_P_mask_I.c \
 QLA_D2_P_veq_P_mask_pI.c \
@@ -4498,29 +4518,29 @@ QLA_D2_P_xpeq_M_times_P.c \
 QLA_D2_P_xpeq_M_times_pPa.c \
 QLA_D2_P_xpeq_M_times_pP.c \
 QLA_D2_P_xpeq_p1.c \
-QLA_D2_P_xpeq_Pa.c \
-QLA_D2_P_xpeq_Pa_times_Ma.c \
-QLA_D2_P_xpeq_Pa_times_M.c \
-QLA_D2_P_xpeq_Pa_times_Pa.c \
-QLA_D2_P_xpeq_Pa_times_P.c \
-QLA_D2_P_xpeq_Pa_times_pMa.c \
-QLA_D2_P_xpeq_Pa_times_pM.c \
-QLA_D2_P_xpeq_Pa_times_pPa.c \
-QLA_D2_P_xpeq_Pa_times_pP.c \
-QLA_D2_P_xpeq_P.c \
-QLA_D2_P_xpeq_pC_times_P.c \
-QLA_D2_P_xpeq_pC_times_pP.c \
-QLA_D2_P_xpeq_pMa_times_Pa.c \
-QLA_D2_P_xpeq_pMa_times_P.c \
-QLA_D2_P_xpeq_pMa_times_pPa.c \
-QLA_D2_P_xpeq_pMa_times_pP.c \
-QLA_D2_P_xpeq_pM_times_Pa.c \
-QLA_D2_P_xpeq_pM_times_P.c \
-QLA_D2_P_xpeq_pM_times_pPa.c \
-QLA_D2_P_xpeq_pM_times_pP.c \
-QLA_D2_P_xpeq_pPa.c
+QLA_D2_P_xpeq_Pa.c
 
 QLAOBJ5 = \
+QLA_D2_P_veqm_R_times_P.o \
+QLA_D2_P_veqm_R_times_pP.o \
+QLA_D2_P_veq_M_times_Pa.o \
+QLA_D2_P_veq_M_times_P.o \
+QLA_D2_P_veq_M_times_pPa.o \
+QLA_D2_P_veq_M_times_pP.o \
+QLA_D2_P_veqm_transpose_P.o \
+QLA_D2_P_veqm_transpose_pP.o \
+QLA_D2_P_veq_p1.o \
+QLA_D2_P_veq_Pa.o \
+QLA_D2_P_veq_Pa_times_Ma.o \
+QLA_D2_P_veq_Pa_times_M.o \
+QLA_D2_P_veq_Pa_times_Pa.o \
+QLA_D2_P_veq_Pa_times_P.o \
+QLA_D2_P_veq_Pa_times_pMa.o \
+QLA_D2_P_veq_Pa_times_pM.o \
+QLA_D2_P_veq_Pa_times_pPa.o \
+QLA_D2_P_veq_Pa_times_pP.o \
+QLA_D2_P_veq_P.o \
+QLA_D2_P_veq_pC_times_P.o \
 QLA_D2_P_veq_pC_times_pP.o \
 QLA_D2_P_veq_P_mask_I.o \
 QLA_D2_P_veq_P_mask_pI.o \
@@ -5000,29 +5020,29 @@ QLA_D2_P_xpeq_M_times_P.o \
 QLA_D2_P_xpeq_M_times_pPa.o \
 QLA_D2_P_xpeq_M_times_pP.o \
 QLA_D2_P_xpeq_p1.o \
-QLA_D2_P_xpeq_Pa.o \
-QLA_D2_P_xpeq_Pa_times_Ma.o \
-QLA_D2_P_xpeq_Pa_times_M.o \
-QLA_D2_P_xpeq_Pa_times_Pa.o \
-QLA_D2_P_xpeq_Pa_times_P.o \
-QLA_D2_P_xpeq_Pa_times_pMa.o \
-QLA_D2_P_xpeq_Pa_times_pM.o \
-QLA_D2_P_xpeq_Pa_times_pPa.o \
-QLA_D2_P_xpeq_Pa_times_pP.o \
-QLA_D2_P_xpeq_P.o \
-QLA_D2_P_xpeq_pC_times_P.o \
-QLA_D2_P_xpeq_pC_times_pP.o \
-QLA_D2_P_xpeq_pMa_times_Pa.o \
-QLA_D2_P_xpeq_pMa_times_P.o \
-QLA_D2_P_xpeq_pMa_times_pPa.o \
-QLA_D2_P_xpeq_pMa_times_pP.o \
-QLA_D2_P_xpeq_pM_times_Pa.o \
-QLA_D2_P_xpeq_pM_times_P.o \
-QLA_D2_P_xpeq_pM_times_pPa.o \
-QLA_D2_P_xpeq_pM_times_pP.o \
-QLA_D2_P_xpeq_pPa.o
+QLA_D2_P_xpeq_Pa.o
 
 QLASRC6 = \
+QLA_D2_P_xpeq_Pa_times_Ma.c \
+QLA_D2_P_xpeq_Pa_times_M.c \
+QLA_D2_P_xpeq_Pa_times_Pa.c \
+QLA_D2_P_xpeq_Pa_times_P.c \
+QLA_D2_P_xpeq_Pa_times_pMa.c \
+QLA_D2_P_xpeq_Pa_times_pM.c \
+QLA_D2_P_xpeq_Pa_times_pPa.c \
+QLA_D2_P_xpeq_Pa_times_pP.c \
+QLA_D2_P_xpeq_P.c \
+QLA_D2_P_xpeq_pC_times_P.c \
+QLA_D2_P_xpeq_pC_times_pP.c \
+QLA_D2_P_xpeq_pMa_times_Pa.c \
+QLA_D2_P_xpeq_pMa_times_P.c \
+QLA_D2_P_xpeq_pMa_times_pPa.c \
+QLA_D2_P_xpeq_pMa_times_pP.c \
+QLA_D2_P_xpeq_pM_times_Pa.c \
+QLA_D2_P_xpeq_pM_times_P.c \
+QLA_D2_P_xpeq_pM_times_pPa.c \
+QLA_D2_P_xpeq_pM_times_pP.c \
+QLA_D2_P_xpeq_pPa.c \
 QLA_D2_P_xpeq_pPa_times_Ma.c \
 QLA_D2_P_xpeq_pPa_times_M.c \
 QLA_D2_P_xpeq_pPa_times_Pa.c \
@@ -5430,6 +5450,7 @@ QLA_D2_V_eq_colorvec_M.c \
 QLA_D2_V_eq_colorvec_P.c \
 QLA_D2_V_eq_conj_V.c \
 QLA_D2_V_eq_C_times_V.c \
+QLA_D2_V_eq_eigenvalsH_M.c \
 QLA_D2_V_eq_eigenvals_M.c \
 QLA_D2_V_eq_elem_C.c \
 QLA_D2_V_eq_gaussian_S.c \
@@ -5501,30 +5522,29 @@ QLA_D2_V_veq_colorvec_M.c \
 QLA_D2_V_veq_colorvec_P.c \
 QLA_D2_V_veq_colorvec_pD.c \
 QLA_D2_V_veq_colorvec_pH.c \
-QLA_D2_V_veq_colorvec_pM.c \
-QLA_D2_V_veq_colorvec_pP.c \
-QLA_D2_V_veq_conj_pV.c \
-QLA_D2_V_veq_conj_V.c \
-QLA_D2_V_veq_C_times_pV.c \
-QLA_D2_V_veq_C_times_V.c \
-QLA_D2_V_veq_eigenvals_M.c \
-QLA_D2_V_veq_eigenvals_pM.c \
-QLA_D2_V_veq_elem_C.c \
-QLA_D2_V_veq_elem_pC.c \
-QLA_D2_V_veq_gaussian_pS.c \
-QLA_D2_V_veq_gaussian_S.c \
-QLA_D2_V_veq_i_pV.c \
-QLA_D2_V_veq_i_V.c \
-QLA_D2_V_veq_Ma_times_pV.c \
-QLA_D2_V_veq_Ma_times_V.c \
-QLA_D2_V_veqm_c1_times_pV.c \
-QLA_D2_V_veqm_c1_times_V.c \
-QLA_D2_V_veqm_conj_pV.c \
-QLA_D2_V_veqm_conj_V.c \
-QLA_D2_V_veqm_C_times_pV.c \
-QLA_D2_V_veqm_C_times_V.c
+QLA_D2_V_veq_colorvec_pM.c
 
 QLAOBJ6 = \
+QLA_D2_P_xpeq_Pa_times_Ma.o \
+QLA_D2_P_xpeq_Pa_times_M.o \
+QLA_D2_P_xpeq_Pa_times_Pa.o \
+QLA_D2_P_xpeq_Pa_times_P.o \
+QLA_D2_P_xpeq_Pa_times_pMa.o \
+QLA_D2_P_xpeq_Pa_times_pM.o \
+QLA_D2_P_xpeq_Pa_times_pPa.o \
+QLA_D2_P_xpeq_Pa_times_pP.o \
+QLA_D2_P_xpeq_P.o \
+QLA_D2_P_xpeq_pC_times_P.o \
+QLA_D2_P_xpeq_pC_times_pP.o \
+QLA_D2_P_xpeq_pMa_times_Pa.o \
+QLA_D2_P_xpeq_pMa_times_P.o \
+QLA_D2_P_xpeq_pMa_times_pPa.o \
+QLA_D2_P_xpeq_pMa_times_pP.o \
+QLA_D2_P_xpeq_pM_times_Pa.o \
+QLA_D2_P_xpeq_pM_times_P.o \
+QLA_D2_P_xpeq_pM_times_pPa.o \
+QLA_D2_P_xpeq_pM_times_pP.o \
+QLA_D2_P_xpeq_pPa.o \
 QLA_D2_P_xpeq_pPa_times_Ma.o \
 QLA_D2_P_xpeq_pPa_times_M.o \
 QLA_D2_P_xpeq_pPa_times_Pa.o \
@@ -5932,6 +5952,7 @@ QLA_D2_V_eq_colorvec_M.o \
 QLA_D2_V_eq_colorvec_P.o \
 QLA_D2_V_eq_conj_V.o \
 QLA_D2_V_eq_C_times_V.o \
+QLA_D2_V_eq_eigenvalsH_M.o \
 QLA_D2_V_eq_eigenvals_M.o \
 QLA_D2_V_eq_elem_C.o \
 QLA_D2_V_eq_gaussian_S.o \
@@ -6003,30 +6024,32 @@ QLA_D2_V_veq_colorvec_M.o \
 QLA_D2_V_veq_colorvec_P.o \
 QLA_D2_V_veq_colorvec_pD.o \
 QLA_D2_V_veq_colorvec_pH.o \
-QLA_D2_V_veq_colorvec_pM.o \
-QLA_D2_V_veq_colorvec_pP.o \
-QLA_D2_V_veq_conj_pV.o \
-QLA_D2_V_veq_conj_V.o \
-QLA_D2_V_veq_C_times_pV.o \
-QLA_D2_V_veq_C_times_V.o \
-QLA_D2_V_veq_eigenvals_M.o \
-QLA_D2_V_veq_eigenvals_pM.o \
-QLA_D2_V_veq_elem_C.o \
-QLA_D2_V_veq_elem_pC.o \
-QLA_D2_V_veq_gaussian_pS.o \
-QLA_D2_V_veq_gaussian_S.o \
-QLA_D2_V_veq_i_pV.o \
-QLA_D2_V_veq_i_V.o \
-QLA_D2_V_veq_Ma_times_pV.o \
-QLA_D2_V_veq_Ma_times_V.o \
-QLA_D2_V_veqm_c1_times_pV.o \
-QLA_D2_V_veqm_c1_times_V.o \
-QLA_D2_V_veqm_conj_pV.o \
-QLA_D2_V_veqm_conj_V.o \
-QLA_D2_V_veqm_C_times_pV.o \
-QLA_D2_V_veqm_C_times_V.o
+QLA_D2_V_veq_colorvec_pM.o
 
 QLASRC7 = \
+QLA_D2_V_veq_colorvec_pP.c \
+QLA_D2_V_veq_conj_pV.c \
+QLA_D2_V_veq_conj_V.c \
+QLA_D2_V_veq_C_times_pV.c \
+QLA_D2_V_veq_C_times_V.c \
+QLA_D2_V_veq_eigenvalsH_M.c \
+QLA_D2_V_veq_eigenvalsH_pM.c \
+QLA_D2_V_veq_eigenvals_M.c \
+QLA_D2_V_veq_eigenvals_pM.c \
+QLA_D2_V_veq_elem_C.c \
+QLA_D2_V_veq_elem_pC.c \
+QLA_D2_V_veq_gaussian_pS.c \
+QLA_D2_V_veq_gaussian_S.c \
+QLA_D2_V_veq_i_pV.c \
+QLA_D2_V_veq_i_V.c \
+QLA_D2_V_veq_Ma_times_pV.c \
+QLA_D2_V_veq_Ma_times_V.c \
+QLA_D2_V_veqm_c1_times_pV.c \
+QLA_D2_V_veqm_c1_times_V.c \
+QLA_D2_V_veqm_conj_pV.c \
+QLA_D2_V_veqm_conj_V.c \
+QLA_D2_V_veqm_C_times_pV.c \
+QLA_D2_V_veqm_C_times_V.c \
 QLA_D2_V_veq_M_inverse_pV.c \
 QLA_D2_V_veq_M_inverse_V.c \
 QLA_D2_V_veqm_i_pV.c \
@@ -6198,6 +6221,8 @@ QLA_D2_V_xeq_conj_pV.c \
 QLA_D2_V_xeq_conj_V.c \
 QLA_D2_V_xeq_C_times_pV.c \
 QLA_D2_V_xeq_C_times_V.c \
+QLA_D2_V_xeq_eigenvalsH_M.c \
+QLA_D2_V_xeq_eigenvalsH_pM.c \
 QLA_D2_V_xeq_eigenvals_M.c \
 QLA_D2_V_xeq_eigenvals_pM.c \
 QLA_D2_V_xeq_elem_C.c \
@@ -6365,6 +6390,29 @@ QLA_D2_V_xpeq_v1.c \
 QLA_D2_V_xpeq_V.c
 
 QLAOBJ7 = \
+QLA_D2_V_veq_colorvec_pP.o \
+QLA_D2_V_veq_conj_pV.o \
+QLA_D2_V_veq_conj_V.o \
+QLA_D2_V_veq_C_times_pV.o \
+QLA_D2_V_veq_C_times_V.o \
+QLA_D2_V_veq_eigenvalsH_M.o \
+QLA_D2_V_veq_eigenvalsH_pM.o \
+QLA_D2_V_veq_eigenvals_M.o \
+QLA_D2_V_veq_eigenvals_pM.o \
+QLA_D2_V_veq_elem_C.o \
+QLA_D2_V_veq_elem_pC.o \
+QLA_D2_V_veq_gaussian_pS.o \
+QLA_D2_V_veq_gaussian_S.o \
+QLA_D2_V_veq_i_pV.o \
+QLA_D2_V_veq_i_V.o \
+QLA_D2_V_veq_Ma_times_pV.o \
+QLA_D2_V_veq_Ma_times_V.o \
+QLA_D2_V_veqm_c1_times_pV.o \
+QLA_D2_V_veqm_c1_times_V.o \
+QLA_D2_V_veqm_conj_pV.o \
+QLA_D2_V_veqm_conj_V.o \
+QLA_D2_V_veqm_C_times_pV.o \
+QLA_D2_V_veqm_C_times_V.o \
 QLA_D2_V_veq_M_inverse_pV.o \
 QLA_D2_V_veq_M_inverse_V.o \
 QLA_D2_V_veqm_i_pV.o \
@@ -6536,6 +6584,8 @@ QLA_D2_V_xeq_conj_pV.o \
 QLA_D2_V_xeq_conj_V.o \
 QLA_D2_V_xeq_C_times_pV.o \
 QLA_D2_V_xeq_C_times_V.o \
+QLA_D2_V_xeq_eigenvalsH_M.o \
+QLA_D2_V_xeq_eigenvalsH_pM.o \
 QLA_D2_V_xeq_eigenvals_M.o \
 QLA_D2_V_xeq_eigenvals_pM.o \
 QLA_D2_V_xeq_elem_C.o \

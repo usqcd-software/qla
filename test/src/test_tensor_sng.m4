@@ -204,25 +204,30 @@ chkAntiherm;
 
 chkMatDet;
 
-  /* QLA_M_eq_eigenvals_M */
+  /* QLA_M_eq_eigenvals(H)_M */
 
 chkMatEigenvals;
+chkMatEigenvals(H);
 
   /* QLA_M_eq_inverse_M */
 
 chkMatInverse;
 
-  /* QLA_M_eq_sqrt_M */
+  /* QLA_M_eq_sqrt(H)_M */
 
 chkMatSqrt;
+chkMatSqrt(PH);
 
   /* QLA_M_eq_invsqrt_M */
 
 chkMatInvsqrt;
+chkMatInvsqrt(PH);
 
   /* QLA_M_eq_exp_M */
 
 chkMatExp;
+chkMatExp(A);
+chkMatExp(TA);
 
   /* QLA_M_eq_sqrt_M */
 

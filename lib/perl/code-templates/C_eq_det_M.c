@@ -106,17 +106,17 @@ QLAPC(C_eq_det_M)(NCARG QLA_Complex *x, QLAN(ColorMatrix,(*a)))
     }
 
     QLA_Real rmax = QLA_norm2_c(C(j,j));
-    int jmax = j;
+    int kmax = j;
     for(int k=j+1; k<NC; k++) {
       QLA_Real r = QLA_norm2_c(C(k,j));
-      if(r>rmax) { rmax = r; jmax = j; }
+      if(r>rmax) { rmax = r; kmax = k; }
     }
     if(rmax==0) { // matrix is singular
       QLA_c_eq_r(*x, 0);
       return;
     }
-    if(jmax!=j) {
-      int rj = row[j]; row[j] = row[jmax]; row[jmax] = rj;
+    if(kmax!=j) {
+      int rj = row[j]; row[j] = row[kmax]; row[kmax] = rj;
       nswaps++;
     }
 
@@ -126,12 +126,15 @@ QLAPC(C_eq_det_M)(NCARG QLA_Complex *x, QLAN(ColorMatrix,(*a)))
       QLA_c_eq_c_times_c(*x, z, C(j,j));
     }
 
+    QLA_Real ri = 1/rmax;
+    QLA_Complex Cjji;
+    QLA_c_eq_r_times_ca(Cjji, ri, C(j,j));
     for(int i=j+1; i<NC; i++) {
       QLA_Complex t2;
       QLA_c_eq_c(t2, C(j,i));
       for(int k=0; k<j; k++)
         QLA_c_meq_c_times_c(t2, C(j,k), C(k,i));
-      QLA_c_eq_c_div_c(C(j,i), t2, C(j,j));
+      QLA_c_eq_c_times_c(C(j,i), t2, Cjji);
     }
 
   }

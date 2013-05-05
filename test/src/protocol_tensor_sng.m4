@@ -386,9 +386,9 @@ define(chkMatDet,`
     QLA_c_eq_c(argd(C), argt(C));
     QLA_c_eq_c_times_c(argt(C), argd(C), QLA_elem_M(arg1(M),ic,ic));
   }
-  QLA_M_eq_inverse_M(&arg3(M),&arg1(M));
   QLA_M_eq_zero(&arg2(M));
   for(ic=0;ic<nc;ic++) QLA_c_eq_c(QLA_elem_M(arg2(M),ic,ic),QLA_elem_M(arg1(M),ic,ic));
+  QLA_M_eq_inverse_M(&arg3(M),&arg1(M));
   QLA_M_eq_M_times_M(&argd(M),&arg2(M),&arg1(M));
   QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argd(M));
   QLA_C_eq_det_M(&argd(C),&arg2(M));
@@ -400,11 +400,14 @@ define(chkMatDet,`
 rem(`
      Matrix eigenvalues
 ')
-rem(`chkMatEigenvals')
+rem(`chkMatEigenvals({""|"H"})')
 define(chkMatEigenvals,`
-  strcpy(name,"QLA_V_eq_eigenvals_M");
-  for(ic=0; ic<nc; ic++) {
-    QLA_c_eq_c(QLA_elem_V(argt(V),ic), QLA_elem_M(arg1(M),ic,ic));
+  strcpy(name,"QLA_V_eq_eigenvals$1_M");
+  for(ic=0; ic<nc; ic++) {  // set eigenvalues
+    ifelse($1,`H',
+    `QLA_c_eq_r(QLA_elem_V(argt(V),ic), QLA_real(QLA_elem_M(arg1(M),ic,ic)));',
+    `QLA_c_eq_c(QLA_elem_V(argt(V),ic), QLA_elem_M(arg1(M),ic,ic));')
+    //QLA_c_eq_c(QLA_elem_V(argt(V),ic), QLA_elem_M(arg1(M),0,0));
   }
   for(ic=0; ic<nc; ic++) {  // sort
     QLA_Real t = QLA_norm2_c(QLA_elem_V(argt(V),ic));
@@ -427,7 +430,7 @@ define(chkMatEigenvals,`
   QLA_M_eq_inverse_M(&arg3(M),&arg1(M));
   QLA_M_eq_M_times_M(&argd(M),&arg2(M),&arg1(M));
   QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argd(M));
-  QLA_V_eq_eigenvals_M(&argd(V),&arg2(M));
+  QLA_V_eq_eigenvals$1_M(&argd(V),&arg2(M));
   for(ic=0; ic<nc; ic++) {  // sort
     QLA_Real t = QLA_norm2_c(QLA_elem_V(argd(V),ic));
     int imin = ic;
@@ -442,6 +445,12 @@ define(chkMatEigenvals,`
       QLA_c_eq_c(QLA_elem_V(argd(V),imin), tc);
     }
   }
+//  for(ic=0; ic<nc; ic++) {
+//#define C(x) QLA_real(x), QLA_imag(x)
+//    printf("(%g,%g)  (%g,%g)\n",
+//      C(QLA_elem_V(argd(V),ic)), C(QLA_elem_V(argt(V),ic)));
+//#undef C
+//  }
   checkeqsngVV(&argd(V),&argt(V),name,fp);
   QLA_M_eq_gaussian_S(&arg2(M),&sS1);
   QLA_M_eq_gaussian_S(&arg3(M),&sS1);
@@ -468,25 +477,30 @@ define(chkMatInverse,`
 rem(`
      Matrix square root
 ')
-rem(`chkMatSqrt')
+rem(`chkMatSqrt({""|"PH"})')
 define(chkMatSqrt,`
-  strcpy(name,"QLA_M_eq_sqrt_M");
+  strcpy(name,"QLA_M_eq_sqrt$1_M");
   //QLA_M_eq_sqrt_M(&argd(M),&arg1(M));
   //QLA_M_eq_M_times_M(&argt(M),&argd(M),&argd(M));
   //checkeqsngMM(&arg1(M),&argt(M),name,fp);
-  QLA_M_eq_inverse_M(&arg3(M),&arg1(M));
   QLA_M_eq_zero(&arg2(M));
-  for(ic=0; ic<nc; ic++) {
+  for(ic=0; ic<nc; ic++) {  // set matrix with desired eigenvalues
     QLA_Complex t;
     QLA_c_eq_c(t, QLA_elem_M(arg1(M),ic,ic));
-    if(QLA_real(t)>0) QLA_c_eqm_c(t, t);
+    ifelse($1,`PH',
+    `QLA_c_eq_r(t, fabs(QLA_real(t)));',
+    `if(QLA_real(t)>0) QLA_c_eqm_c(t, t);')
     QLA_c_eq_c(QLA_elem_M(arg2(M),ic,ic), t);
   }
+  QLA_M_eq_inverse_M(&arg3(M),&arg1(M));
   QLA_M_eq_M_times_M(&argd(M),&arg2(M),&arg1(M));
-  QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argd(M));
-  QLA_M_eq_sqrt_M(&argd(M),&arg2(M));
-  QLA_M_eq_zero(&arg2(M));
-  for(ic=0;ic<nc;ic++) QLA_C_eq_csqrt_C(&QLA_elem_M(arg2(M),ic,ic),&QLA_elem_M(arg1(M),ic,ic));
+  QLA_M_eq_M_times_M(&argt(M),&arg3(M),&argd(M));
+  QLA_M_eq_sqrt$1_M(&argd(M),&argt(M));
+  for(ic=0; ic<nc; ic++) {
+    QLA_Complex t;
+    QLA_c_eq_c(t, QLA_elem_M(arg2(M),ic,ic));
+    QLA_C_eq_csqrt_C(&QLA_elem_M(arg2(M),ic,ic), &t);
+  }
   QLA_M_eq_M_times_M(&argt(M),&arg2(M),&arg1(M));
   QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argt(M));
   checkeqsngMM(&argd(M),&arg2(M),name,fp);
@@ -497,29 +511,31 @@ define(chkMatSqrt,`
 rem(`
      Matrix inverse square root
 ')
-rem(`chkMatInvsqrt')
+rem(`chkMatInvsqrt({""|"PH"})')
 define(chkMatInvsqrt,`
-  strcpy(name,"QLA_M_eq_invsqrt_M");
+  strcpy(name,"QLA_M_eq_invsqrt$1_M");
   //QLA_M_eq_invsqrt_M(&argd(M),&arg1(M));
   //QLA_M_eq_M_times_M(&argt(M),&argd(M),&argd(M));
   //QLA_M_eq_inverse_M(&arg2(M),&arg1(M));
   //checkeqsngMM(&arg2(M),&argt(M),name,fp);
-  QLA_M_eq_inverse_M(&arg3(M),&arg1(M));
   QLA_M_eq_zero(&arg2(M));
   for(ic=0; ic<nc; ic++) {
     QLA_Complex t;
     QLA_c_eq_c(t, QLA_elem_M(arg1(M),ic,ic));
-    if(QLA_real(t)>0) QLA_c_eqm_c(t, t);
+    ifelse($1,`PH',
+    `QLA_c_eq_r(t, fabs(QLA_real(t)));',
+    `if(QLA_real(t)>0) QLA_c_eqm_c(t, t);')
     QLA_c_eq_c(QLA_elem_M(arg2(M),ic,ic), t);
   }
+  QLA_M_eq_inverse_M(&arg3(M),&arg1(M));
   QLA_M_eq_M_times_M(&argd(M),&arg2(M),&arg1(M));
-  QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argd(M));
-  QLA_M_eq_invsqrt_M(&argd(M),&arg2(M));
-  QLA_M_eq_zero(&arg2(M));
+  QLA_M_eq_M_times_M(&argt(M),&arg3(M),&argd(M));
+  QLA_M_eq_invsqrt$1_M(&argd(M),&argt(M));
   for(ic=0; ic<nc; ic++) {
-    QLA_Complex t;
-    QLA_C_eq_csqrt_C(&t, &QLA_elem_M(arg1(M),ic,ic));
-    QLA_c_eq_r_div_c(QLA_elem_M(arg2(M),ic,ic), 1, t);
+    QLA_Complex t, t2;
+    QLA_c_eq_c(t, QLA_elem_M(arg2(M),ic,ic));
+    QLA_C_eq_csqrt_C(&t2, &t);
+    QLA_c_eq_r_div_c(QLA_elem_M(arg2(M),ic,ic), 1, t2);
   }
   QLA_M_eq_M_times_M(&argt(M),&arg2(M),&arg1(M));
   QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argt(M));
@@ -539,20 +555,34 @@ define(printMat,`
 rem(`
      Matrix exponential
 ')
-rem(`chkMatExp')
+rem(`chkMatExp({""|"A"|"TA"})')
 define(chkMatExp,`
-  strcpy(name,"QLA_M_eq_exp_M");
+  strcpy(name,"QLA_M_eq_exp$1_M");
   //QLA_M_eq_zero(&arg1(M));
   //for(ic=0;ic<nc;ic++) QLA_c_eq_r_plus_ir(QLA_elem_M(arg1(M),ic,ic),0,1);
   //for(ic=0;ic<nc;ic++) for(jc=0;jc<nc;jc++) if(ic!=jc) QLA_c_eq_r(QLA_elem_M(arg1(M),ic,jc),0);
+  QLA_M_eq_zero(&arg2(M));
+  for(ic=0;ic<nc;ic++) {
+    QLA_Complex t;
+    ifelse($1,`',`QLA_c_eq_c(t, QLA_elem_M(arg1(M),ic,ic));')
+    ifelse($1,`A',`QLA_c_eq_r_plus_ir(t, 0, QLA_real(QLA_elem_M(arg1(M),ic,ic)));')
+    ifelse($1,`TA',`QLA_c_eq_r_plus_ir(t, 0, QLA_real(QLA_elem_M(arg1(M),ic,ic)));')
+    ifelse($1,`iH',`QLA_c_eq_r_plus_ir(t, QLA_real(QLA_elem_M(arg1(M),ic,ic)), 0);')
+    QLA_c_eq_c(QLA_elem_M(arg2(M),ic,ic), t);
+  }
+  ifelse($1,`TA',`QLA_M_eq_antiherm_M(&arg3(M), &arg2(M));
+                  QLA_M_eq_M(&arg2(M), &arg3(M));')
   QLA_M_eq_inverse_M(&arg3(M),&arg1(M));
-  QLA_M_eq_zero(&arg2(M));
-  for(ic=0;ic<nc;ic++) QLA_c_eq_c(QLA_elem_M(arg2(M),ic,ic),QLA_elem_M(arg1(M),ic,ic));
   QLA_M_eq_M_times_M(&argd(M),&arg2(M),&arg1(M));
-  QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argd(M));
-  QLA_M_eq_exp_M(&argd(M),&arg2(M));
-  QLA_M_eq_zero(&arg2(M));
-  for(ic=0;ic<nc;ic++) QLA_C_eq_cexp_C(&QLA_elem_M(arg2(M),ic,ic),&QLA_elem_M(arg1(M),ic,ic));
+  QLA_M_eq_M_times_M(&argt(M),&arg3(M),&argd(M));
+  QLA_M_eq_exp$1_M(&argd(M),&argt(M));
+  for(ic=0;ic<nc;ic++) {
+    QLA_Complex t, t2;
+    QLA_c_eq_c(t, QLA_elem_M(arg2(M),ic,ic));
+    QLA_c_eq_c(t2, t);
+    ifelse($1,`iH',`QLA_c_eq_r_plus_ir(t2, -QLA_imag(t), QLA_real(t));')
+    QLA_C_eq_cexp_C(&QLA_elem_M(arg2(M),ic,ic), &t2);
+  }
   QLA_M_eq_M_times_M(&argt(M),&arg2(M),&arg1(M));
   QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argt(M));
   checkeqsngMM(&argd(M),&arg2(M),name,fp);
@@ -569,7 +599,6 @@ define(chkMatLog,`
   //QLA_M_eq_zero(&arg1(M));
   //for(ic=0;ic<nc;ic++) QLA_c_eq_r_plus_ir(QLA_elem_M(arg1(M),ic,ic),1,0);
   //for(ic=0;ic<nc;ic++) for(jc=0;jc<nc;jc++) if(ic!=jc) QLA_c_eq_r(QLA_elem_M(arg1(M),ic,jc),0);
-  QLA_M_eq_inverse_M(&arg3(M),&arg1(M));
   QLA_M_eq_zero(&arg2(M));
   for(ic=0; ic<nc; ic++) {
     QLA_Complex t;
@@ -577,11 +606,17 @@ define(chkMatLog,`
     if(QLA_real(t)>0) QLA_c_eqm_c(t, t);
     QLA_c_eq_c(QLA_elem_M(arg2(M),ic,ic), t);
   }
+  QLA_M_eq_inverse_M(&arg3(M),&arg1(M));
   QLA_M_eq_M_times_M(&argd(M),&arg2(M),&arg1(M));
   QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argd(M));
   QLA_M_eq_log_M(&argd(M),&arg2(M));
   QLA_M_eq_zero(&arg2(M));
-  for(ic=0;ic<nc;ic++) QLA_C_eq_clog_C(&QLA_elem_M(arg2(M),ic,ic),&QLA_elem_M(arg1(M),ic,ic));
+  for(ic=0; ic<nc; ic++) {
+    QLA_Complex t;
+    QLA_c_eq_c(t, QLA_elem_M(arg1(M),ic,ic));
+    if(QLA_real(t)>0) QLA_c_eqm_c(t, t);
+    QLA_C_eq_clog_C(&QLA_elem_M(arg2(M),ic,ic), &t);
+  }
   QLA_M_eq_M_times_M(&argt(M),&arg2(M),&arg1(M));
   QLA_M_eq_M_times_M(&arg2(M),&arg3(M),&argt(M));
   checkeqsngMM(&argd(M),&arg2(M),name,fp);

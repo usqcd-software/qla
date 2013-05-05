@@ -1,4 +1,4 @@
-/**************** QLA_V_eq_eigenvals_M.c ********************/
+/**************** QLA_V_eq_eigenvalsH_M.c ********************/
 
 #include <stdio.h>
 #include <qla_config.h>
@@ -11,10 +11,16 @@
 #  define QLAP(y) QLA_F ## _ ## y
 #  define QLAPX(x,y) QLA_F ## x ## _ ## y
 #  define EPS FLT_EPSILON
+#  define fabsP fabsf
+#  define sqrtP sqrtf
+#  define copysignP copysignf
 #else
 #  define QLAP(y) QLA_D ## _ ## y
 #  define QLAPX(x,y) QLA_D ## x ## _ ## y
 #  define EPS DBL_EPSILON
+#  define fabsP fabs
+#  define sqrtP sqrt
+#  define copysignP copysign
 #endif
 
 #if QLA_Colors == 2
@@ -70,40 +76,23 @@ static void
 QLA_eigenvals_2x2(QLA_Complex *v0, QLA_Complex *v1, QLA_Complex *m00,
 		  QLA_Complex *m01, QLA_Complex *m10, QLA_Complex *m11)
 {
-#if 0  // quick but less accurate
-  QLA_Complex a00, a11, tr, s, mdet;
-  QLA_c_eq_c(a00, *m00);
-  QLA_c_eq_c(a11, *m11);
-  QLA_c_eq_c_plus_c(tr, a00, a11);
-  QLA_c_eq_r_times_c(s, 0.5, tr);
-  QLA_c_meq_c(a00, s);
-  QLA_c_meq_c(a11, s);
-  QLA_c_eq_c_times_c (mdet, *m01, *m10);
-  QLA_c_meq_c_times_c(mdet, a00, a11);
-  // lambda = 0.5*(tr \pm sqrt(tr^2 - 4*det) ) = s \pm sqrt(mdet)
-  QLA_Complex sd = QLAP(csqrt)(&mdet);
-  //QLA_Complex sd; QLA_c_eq_r_plus_ir(sd,sqrt(QLA_real(mdet)),0);
-  QLA_c_eq_c_minus_c(*v0, s, sd);
-  QLA_c_eq_c_plus_c(*v1, s, sd);
-#else  // more accurate
-  QLA_Complex tr, s, det, d;
-  QLA_c_eq_c_plus_c(tr, *m00, *m11);
-  QLA_c_eq_r_times_c(s, 0.5, tr);
-  QLA_c_eq_c_times_c (det, *m00, *m11);
-  QLA_c_meq_c_times_c(det, *m01, *m10);
+  // flops: 12  sqrt: 1  div: 1
+  QLA_Real tr, s, det, d;
+  tr = QLA_real(*m00) + QLA_real(*m11);
+  s = 0.5*tr;
+  QLA_r_eq_Re_c_times_c (det, *m00, *m11);
+  QLA_r_meq_Re_c_times_c(det, *m01, *m10);
   // lambda = 0.5*(tr \pm sqrt(tr^2 - 4*det) ) = s \pm sqrt(s^2 - det)
-  QLA_c_eq_c_times_c(d, s, s);
-  QLA_c_meq_c(d, det);
-  QLA_Complex sd = QLAP(csqrt)(&d);
-  QLA_Real ts;
-  QLA_r_eq_Re_ca_times_c(ts, s, sd);
-  if(ts>=0) {
-    QLA_c_eq_c_plus_c(*v1, s, sd);
+  d = s*s - det;
+  QLA_Real sd = sqrtP(fabsP(d));
+  QLA_Real l0, l1 = s + copysignP(sd, s);
+  if(det==0) {
+    l0 = 0;
   } else {
-    QLA_c_eq_c_minus_c(*v1, s, sd);
+    l0 = det / l1;
   }
-  QLA_c_eq_c_div_c(*v0, det, *v1);
-#endif
+  QLA_c_eq_r(*v0, l0);
+  QLA_c_eq_r(*v1, l1);
 }
 
 static void
@@ -246,8 +235,8 @@ QLA_eigenvals_3x3(QLA_Complex *v0, QLA_Complex *v1, QLA_Complex *v2,
 }
 
 void
-QLAPC(V_eq_eigenvals_M)(NCARG QLAN(ColorVector,(*restrict r)),
-			QLAN(ColorMatrix,(*restrict a)))
+QLAPC(V_eq_eigenvalsH_M)(NCARG QLAN(ColorVector,(*restrict r)),
+			 QLAN(ColorMatrix,(*restrict a)))
 {
 #ifdef HAVE_XLC
 #pragma disjoint(*r, *a)

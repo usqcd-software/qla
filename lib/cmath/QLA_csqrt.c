@@ -1,14 +1,10 @@
-/********************** csqrt.c **********************/
-/* MILC version 6 */
-/* Subroutines for operations on complex numbers */
-/* complex square root */
-
 #include <qla_config.h>
 #include <qla_types.h>
 #include <qla_cmath.h>
 #include <math.h>
 
-#if (__STDC_VERSION__ >= 199901L) && !defined(__STDC_NO_COMPLEX__)
+//#if (__STDC_VERSION__ >= 199901L) && !defined(__STDC_NO_COMPLEX__)
+#if 0
 #include <complex.h>
 
 QLA_F_Complex
@@ -35,26 +31,30 @@ QLA_D_csqrt(QLA_D_Complex *a)
 
 #else
 
-QLA_F_Complex QLA_F_csqrt( QLA_F_Complex *z ){
+QLA_F_Complex
+QLA_F_csqrt(QLA_F_Complex *z)
+{
+  QLA_F_Real n = QLA_F_norm_c(*z);
+  QLA_F_Real r = QLA_real(*z);
+  QLA_F_Real i = QLA_imag(*z);
+  QLA_F_Real sr = sqrtf(0.5*(n+r));
+  QLA_F_Real si = copysignf(sqrtf(0.5*(n-r)), i);
   QLA_F_Complex c;
-  float theta,r;
-
-  r = sqrtf((float)QLA_norm_c(*z));
-  theta = 0.5*QLA_arg_c(*z);
-  c = QLA_F_cexpi(theta);
-  QLA_c_eq_c_times_r(c,c,r);
-  return(c);
+  QLA_c_eq_r_plus_ir(c, sr, si);
+  return c;
 }
 
-QLA_D_Complex QLA_D_csqrt( QLA_D_Complex *z ){
+QLA_D_Complex
+QLA_D_csqrt(QLA_D_Complex *z)
+{
+  QLA_D_Real n = QLA_D_norm_c(*z);
+  QLA_D_Real r = QLA_real(*z);
+  QLA_D_Real i = QLA_imag(*z);
+  QLA_D_Real sr = sqrt(0.5*(n+r));
+  QLA_D_Real si = copysign(sqrt(0.5*(n-r)), i);
   QLA_D_Complex c;
-  double theta,r;
-
-  r = sqrt((double)QLA_norm_c(*z));
-  theta = 0.5*QLA_arg_c(*z);
-  c = QLA_D_cexpi(theta);
-  QLA_c_eq_c_times_r(c,c,r);
-  return(c);
+  QLA_c_eq_r_plus_ir(c, sr, si);
+  return c;
 }
 
 #endif

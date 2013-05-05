@@ -1,3 +1,9 @@
+===============================================================================
+2013-05-04	version 1.7.2
+===============================================================================
+2013-05-04: James Osborn
+	Added a few more matrix functions and optimized many for Nc=2,3.
+
 2013-03-26: James Osborn
 	Added more matrix and scalar fill functions.
 

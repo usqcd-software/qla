@@ -62,33 +62,45 @@ QLAPC(M_eq_inverse_M)(NCARG QLAN(ColorMatrix,(*restrict x)), QLAN(ColorMatrix,(*
     return;
   }
   if(NC==2) {
-    QLA_Complex det;
-    QLA_c_eq_c_times_c (det, QLA_elem_M(*a,0,0), QLA_elem_M(*a,1,1));
-    QLA_c_meq_c_times_c(det, QLA_elem_M(*a,0,1), QLA_elem_M(*a,1,0));
-    QLA_Complex idet;
+    QLA_Complex a00, a01, a10, a11, det, idet;
+    QLA_c_eq_c(a00, QLA_elem_M(*a,0,0));
+    QLA_c_eq_c(a01, QLA_elem_M(*a,0,1));
+    QLA_c_eq_c(a10, QLA_elem_M(*a,1,0));
+    QLA_c_eq_c(a11, QLA_elem_M(*a,1,1));
+    QLA_c_eq_c_times_c (det, a00, a11);
+    QLA_c_meq_c_times_c(det, a01, a10);
     QLA_c_eq_r_div_c(idet, 1, det);
-    QLA_c_eq_c_times_c (QLA_elem_M(*x,0,0), QLA_elem_M(*a,1,1), idet);
-    QLA_c_eqm_c_times_c(QLA_elem_M(*x,0,1), QLA_elem_M(*a,0,1), idet);
-    QLA_c_eqm_c_times_c(QLA_elem_M(*x,1,0), QLA_elem_M(*a,1,0), idet);
-    QLA_c_eq_c_times_c (QLA_elem_M(*x,1,1), QLA_elem_M(*a,0,0), idet);
+    QLA_c_eq_c_times_c (QLA_elem_M(*x,0,0), a11, idet);
+    QLA_c_eqm_c_times_c(QLA_elem_M(*x,0,1), a01, idet);
+    QLA_c_eqm_c_times_c(QLA_elem_M(*x,1,0), a10, idet);
+    QLA_c_eq_c_times_c (QLA_elem_M(*x,1,1), a00, idet);
     return;
   }
   if(NC==3) {
-    QLA_Complex det, det0, det1, det2;
-    QLA_c_eq_c_times_c (det2, QLA_elem_M(*a,0,0), QLA_elem_M(*a,1,1));
-    QLA_c_meq_c_times_c(det2, QLA_elem_M(*a,0,1), QLA_elem_M(*a,1,0));
-    QLA_c_eq_c_times_c (det1, QLA_elem_M(*a,0,2), QLA_elem_M(*a,1,0));
-    QLA_c_meq_c_times_c(det1, QLA_elem_M(*a,0,0), QLA_elem_M(*a,1,2));
-    QLA_c_eq_c_times_c (det0, QLA_elem_M(*a,0,1), QLA_elem_M(*a,1,2));
-    QLA_c_meq_c_times_c(det0, QLA_elem_M(*a,0,2), QLA_elem_M(*a,1,1));
-    QLA_c_eq_c_times_c (det, det2, QLA_elem_M(*a,2,2));
-    QLA_c_peq_c_times_c(det, det1, QLA_elem_M(*a,2,1));
-    QLA_c_peq_c_times_c(det, det0, QLA_elem_M(*a,2,0));
-    QLA_Complex idet;
+    QLA_Complex a00, a01, a02, a10, a11, a12, a20, a21, a22;
+    QLA_Complex det0, det1, det2, det, idet;
+    QLA_c_eq_c(a00, QLA_elem_M(*a,0,0));
+    QLA_c_eq_c(a01, QLA_elem_M(*a,0,1));
+    QLA_c_eq_c(a02, QLA_elem_M(*a,0,2));
+    QLA_c_eq_c(a10, QLA_elem_M(*a,1,0));
+    QLA_c_eq_c(a11, QLA_elem_M(*a,1,1));
+    QLA_c_eq_c(a12, QLA_elem_M(*a,1,2));
+    QLA_c_eq_c(a20, QLA_elem_M(*a,2,0));
+    QLA_c_eq_c(a21, QLA_elem_M(*a,2,1));
+    QLA_c_eq_c(a22, QLA_elem_M(*a,2,2));
+    QLA_c_eq_c_times_c (det2, a00, a11);
+    QLA_c_meq_c_times_c(det2, a01, a10);
+    QLA_c_eq_c_times_c (det1, a02, a10);
+    QLA_c_meq_c_times_c(det1, a00, a12);
+    QLA_c_eq_c_times_c (det0, a01, a12);
+    QLA_c_meq_c_times_c(det0, a02, a11);
+    QLA_c_eq_c_times_c (det, det2, a22);
+    QLA_c_peq_c_times_c(det, det1, a21);
+    QLA_c_peq_c_times_c(det, det0, a20);
     QLA_c_eq_r_div_c(idet, 1, det);
 #define set(i0,j0,i1,j1,i2,j2) \
-    QLA_c_eq_c_times_c (det, QLA_elem_M(*a,i1,j1), QLA_elem_M(*a,i2,j2)); \
-    QLA_c_meq_c_times_c(det, QLA_elem_M(*a,i1,j2), QLA_elem_M(*a,i2,j1)); \
+    QLA_c_eq_c_times_c (det, a##i1##j1, a##i2##j2); \
+    QLA_c_meq_c_times_c(det, a##i1##j2, a##i2##j1); \
     QLA_c_eq_c_times_c(QLA_elem_M(*x,i0,j0), det, idet);
     set(0,0,1,1,2,2);
     set(0,1,2,1,0,2);

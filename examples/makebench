@@ -1,0 +1,57 @@
+#!/bin/bash
+
+IFS="|"
+#cat functions.txt |grep -v "^#" |while read func mem flop; do
+cat functions.txt |while read line; do
+  #echo "$line"
+  if [ "X$line" = "X" ]; then continue; fi
+  firstchar=`echo "$line" |sed 's/^\(.\).*/\1/'`
+  if [ "X$firstchar" = "X#" ]; then continue; fi
+  if [ "X$firstchar" = "X@" ]; then  # remove '@' and echo code
+    echo "$line" |sed 's/^.//'
+    continue
+  fi
+  read func mem flop < <(echo "$line")
+  #echo $func : $mem : $flop
+  func="`echo "$func" |sed 's/^ *//'`"
+  func="`echo "$func" |sed 's/[ \t]*$//'`"
+  mem="`echo "$mem" |sed 's/^ *//'`"
+  mem="`echo "$mem" |sed 's/[ \t]*$//'`"
+  flop="`echo "$flop" |sed 's/^ *//'`"
+  flop="`echo "$flop" |sed 's/[ \t]*$//'`"
+  dt=`echo $func |sed 's/^\(.\).*/\1/'`
+  if expr "$dt" : '[A-Z]' >&/dev/null; then  # upper case (array)
+    if expr $func : '.*_nM_.*' >&/dev/null; then  # multi field
+      arg=`echo $func |sed 's/.*\(([^,]*\).*\(,[^,]*\),.*/\1\2)/'`
+    else
+      arg=`echo $func |sed 's/.*\(([^,]*\).*\(,[^,]*)\).*/\1\2/'`
+    fi
+    chk="sum_$dt$arg"
+  else  # lower case (single site)
+    if [ "$dt" = r ]; then
+      chk=`echo $func |sed 's/.*(\([^,]*\).*/*\1/'`
+    elif [ "$dt" = c ]; then
+      arg=`echo $func |sed 's/.*(\([^,]*\).*/\1/'`
+      chk="QLA_norm2_c(*$arg)"
+    fi
+  fi
+  func="QLA_$func"
+  func0="`echo $func |sed 's/\(.*\)(.*/\1/'`"
+  #echo $chk
+cat <<EOF
+  set_fields;
+  mem = $mem*REALBYTES;
+  flop = $flop;
+  c = 1 + cf/(flop+mem);
+  time1 = dtime();
+  for(int i=0; i<c; ++i) {
+    $func;
+  }
+  time1 = dtime() - time1;
+  sum = $chk;
+  printf("%-32s:", "$func0");
+  printf("%12g time=%5.2f mem=%5.0f mflops=%5.0f\n",
+         sum, time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
+
+EOF
+done

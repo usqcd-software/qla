@@ -1026,13 +1026,16 @@ require("make_code_unary.pl");
 
 if(!$quadprecision) {
   $assgn = $eqop_eq;
-  foreach $indexing ( @ind_unary_list ) {
-    %def = ();
-    ($def{'dest_t'},$def{'src1_t'}) = 
-	($datatype_colorvector_abbrev,$datatype_colormatrix_abbrev);
-    $def{'qualifier'} = "eigenvals";
-    if(&make_prototype($indexing,$assgn)) {
-      &make_code_matrix_func($assgn,"eigenvals");
+  @funcs = ( "eigenvals", "eigenvalsH" );
+  foreach $func ( @funcs ) {
+    foreach $indexing ( @ind_unary_list ) {
+      %def = ();
+      ($def{'dest_t'},$def{'src1_t'}) = 
+	  ($datatype_colorvector_abbrev,$datatype_colormatrix_abbrev);
+      $def{'qualifier'} = $func;
+      if(&make_prototype($indexing,$assgn)) {
+        &make_code_matrix_func($assgn,$func);
+      }
     }
   }
 }
@@ -1045,7 +1048,7 @@ require("make_code_unary.pl");
 
 if(!$quadprecision) {
   $assgn = $eqop_eq;
-  @funcs = ( "inverse", "sqrt", "invsqrt", "exp", "log" );
+  @funcs = ( "inverse", "sqrt", "sqrtPH", "invsqrt", "invsqrtPH", "exp", "expA", "expTA", "log" );
   foreach $func ( @funcs ) {
     foreach $indexing ( @ind_unary_list ) {
       %def = ();
@@ -2658,16 +2661,26 @@ $codedir="$path/code-templates";
 @files = (
   "C_eq_det_M.c",
   "V_eq_eigenvals_M.c",
+  "V_eq_eigenvalsH_M.c",
   "M_eq_inverse_M.c",
   "M_eq_sqrt_M.c",
+  "M_eq_sqrtPH_M.c",
   "M_eq_invsqrt_M.c",
+  "M_eq_invsqrtPH_M.c",
   "M_eq_exp_M.c",
+  "M_eq_expA_M.c",
+  "M_eq_expTA_M.c",
   "M_eq_log_M.c",
   "V_eq_M_inverse_V.c",
   "M_eq_M_inverse_M.c"
     );
 
 @targets = (
+  "F2 D2 F3 D3 FN DN",
+  "F2 D2 F3 D3 FN DN",
+  "F2 D2 F3 D3 FN DN",
+  "F2 D2 F3 D3 FN DN",
+  "F2 D2 F3 D3 FN DN",
   "F2 D2 F3 D3 FN DN",
   "F2 D2 F3 D3 FN DN",
   "F2 D2 F3 D3 FN DN",

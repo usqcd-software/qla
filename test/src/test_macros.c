@@ -4,6 +4,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#if (__STDC_VERSION__ >= 199901L) && !defined(__STDC_NO_COMPLEX__)
+#include <complex.h>
+#endif
 #include "compare.h"
 
 #define CHECKeqsngII(a,b,c,d) {QLA_Int tmp1,tmp2; tmp1 = (a); tmp2 = (b); \
@@ -12,7 +15,7 @@
 #define CHECKeqsngRR(a,b,c,d) {QLA_Real tmp1,tmp2; tmp1 = (a); tmp2 = (b); \
     checkeqsngRR(&tmp1,&tmp2,c,d); (a) = -999.999; }
 
-#define CHECKeqsngCC(a,b,c,d) {checkeqsngCC(a,b,c,d); QLA_c_eq_r_plus_ir(a,-999.999,99.99); }
+#define CHECKeqsngCC(a,b,c,d) {checkeqsngCC(&a,&b,c,d); QLA_c_eq_r_plus_ir(a,-999.999,99.99); }
 
 #define CHECKeqsngCRR(a,b,c,d,e) {QLA_Real tmp1,tmp2; tmp1 = (b); tmp2 = (c); \
     checkeqsngCRR(&a,&tmp1,&tmp2,d,e); QLA_c_eq_r_plus_ir(a,-999.999,99.99); }
@@ -20,6 +23,10 @@
 #define STR(x) #x
 #define STRM(x) STR(x)
 #define MACROP "MACRO " STRM(QLA_Precision) " "
+#define IDENT(x) x
+#define QLAP3(x,y) QLA_ ## x ## _ ## y
+#define QLAP2(x,y) QLAP3(x,y)
+#define QLAP(x) QLAP2(QLA_PrecisionLetter,x)
 
 int main(int argc, char *argv[]){
 
@@ -55,6 +62,20 @@ int main(int argc, char *argv[]){
   QLA_c_eq_r_plus_ir(sC2,sC2re,sC2im);
   QLA_c_eq_r_plus_ir(sC3,sC3re,sC3im);
 
+  /* Test checks */
+
+  strcpy(name,MACROP"CHECKeqsngRR");
+  destR = sC1re;
+  CHECKeqsngRR(destR,destR,name,fp);
+
+  strcpy(name,MACROP"CHECKeqsngCRR");
+  destC = sC1;
+  CHECKeqsngCRR(destC,sC1re,sC1im,name,fp);
+
+  strcpy(name,MACROP"CHECKeqsngCC");
+  destC = sC1;
+  CHECKeqsngCC(destC,sC1,name,fp);
+
   /* Test accessors */
 
   strcpy(name,MACROP"QLA_real");
@@ -81,6 +102,43 @@ int main(int argc, char *argv[]){
   destR = QLA_arg_c(sC1);
   chkR = atan2(sC1im,sC1re);
   CHECKeqsngRR(destR,chkR,name,fp);
+
+#if (__STDC_VERSION__ >= 199901L) && !defined(__STDC_NO_COMPLEX__)
+  {
+#if QLA_Precision == 'F'
+    float _Complex z99 = 0;
+#elif QLA_Precision == 'D'
+    double _Complex z99 = 0;
+#else
+    long double _Complex z99 = 0;
+#endif
+
+    strcpy(name,MACROP"QLA_c99_eq_c");
+    QLA_c99_eq_c(z99, sC1);
+    destR = creall(z99);
+    CHECKeqsngRR(destR,sC1re,name,fp);
+    destR = cimagl(z99);
+    CHECKeqsngRR(destR,sC1im,name,fp);
+
+    strcpy(name,MACROP"QLA_c_eq_c99");
+    QLA_c_eq_c99(destC, z99);
+    CHECKeqsngCC(destC,sC1,name,fp);
+  }
+#endif
+
+#if QLA_Precision != 'Q'
+
+  strcpy(name,MACROP"QLA_" STRM(QLA_PrecisionLetter) "_norm_c");
+  destR = QLAP(norm_c)(sC1);
+  chkR = sqrt(sC1re*sC1re + sC1im*sC1im);
+  CHECKeqsngRR(destR,chkR,name,fp);
+
+  strcpy(name,MACROP"QLA_" STRM(QLA_PrecisionLetter) "_arg_c");
+  destR = QLAP(arg_c)(sC1);
+  chkR = atan2(sC1im,sC1re);
+  CHECKeqsngRR(destR,chkR,name,fp);
+
+#endif
 
   /* Test precision conversion */
 
@@ -683,6 +741,17 @@ int main(int argc, char *argv[]){
 
   strcpy(name,MACROP"QLA_c_eq_c_div_c");
   QLA_c_eq_c_div_c(destC,sC1,sC2);
+  destR = QLA_norm2_c(sC2);
+  CHECKeqsngCRR(destC,(sC1re*sC2re+sC1im*sC2im)/destR,
+		(-sC1re*sC2im+sC1im*sC2re)/destR,name,fp);
+
+  strcpy(name,MACROP"QLA_" STRM(QLA_PrecisionLetter) "_c_eq_r_div_c");
+  QLAP(c_eq_r_div_c)(destC,sR1,sC2);
+  destR = sR1/QLA_norm2_c(sC2);
+  CHECKeqsngCRR(destC,sC2re*destR,-sC2im*destR,name,fp);
+
+  strcpy(name,MACROP"QLA_" STRM(QLA_PrecisionLetter) "_c_eq_c_div_c");
+  QLAP(c_eq_c_div_c)(destC,sC1,sC2);
   destR = QLA_norm2_c(sC2);
   CHECKeqsngCRR(destC,(sC1re*sC2re+sC1im*sC2im)/destR,
 		(-sC1re*sC2im+sC1im*sC2re)/destR,name,fp);
