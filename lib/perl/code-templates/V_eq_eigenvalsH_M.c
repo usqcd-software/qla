@@ -13,6 +13,8 @@
 #  define EPS FLT_EPSILON
 #  define fabsP fabsf
 #  define sqrtP sqrtf
+#  define cbrtP cbrtf
+#  define acosP acosf
 #  define copysignP copysignf
 #else
 #  define QLAP(y) QLA_D ## _ ## y
@@ -20,6 +22,8 @@
 #  define EPS DBL_EPSILON
 #  define fabsP fabs
 #  define sqrtP sqrt
+#  define cbrtP cbrt
+#  define acosP acos
 #  define copysignP copysign
 #endif
 
@@ -77,22 +81,23 @@ QLA_eigenvals_2x2(QLA_Complex *v0, QLA_Complex *v1, QLA_Complex *m00,
 		  QLA_Complex *m01, QLA_Complex *m10, QLA_Complex *m11)
 {
   // flops: 12  sqrt: 1  div: 1
-  QLA_Real tr, s, det, d;
-  tr = QLA_real(*m00) + QLA_real(*m11);
-  s = 0.5*tr;
+  QLA_Real tr, det;
   QLA_r_eq_Re_c_times_c (det, *m00, *m11);
   QLA_r_meq_Re_c_times_c(det, *m01, *m10);
-  // lambda = 0.5*(tr \pm sqrt(tr^2 - 4*det) ) = s \pm sqrt(s^2 - det)
-  d = s*s - det;
-  QLA_Real sd = sqrtP(fabsP(d));
-  QLA_Real l0, l1 = s + copysignP(sd, s);
+  tr = QLA_real(*m00) + QLA_real(*m11);
   if(det==0) {
-    l0 = 0;
+    QLA_c_eq_r(*v0, 0);
+    QLA_c_eq_r(*v1, tr);
   } else {
+    QLA_Real s = 0.5*tr;
+    // lambda = 0.5*(tr \pm sqrt(tr^2 - 4*det) ) = s \pm sqrt(s^2 - det)
+    QLA_Real d = s*s - det;
+    QLA_Real sd = sqrtP(fabsP(d));
+    QLA_Real l0, l1 = s + copysignP(sd, s);
     l0 = det / l1;
+    QLA_c_eq_r(*v0, l0);
+    QLA_c_eq_r(*v1, l1);
   }
-  QLA_c_eq_r(*v0, l0);
-  QLA_c_eq_r(*v1, l1);
 }
 
 static void
@@ -101,137 +106,58 @@ QLA_eigenvals_3x3(QLA_Complex *v0, QLA_Complex *v1, QLA_Complex *v2,
 		  QLA_Complex *m10, QLA_Complex *m11, QLA_Complex *m12,
 		  QLA_Complex *m20, QLA_Complex *m21, QLA_Complex *m22)
 {
-#if 0  // quick but less accurate
-  QLA_Complex a00, a11, a22, s1, s2, det0, det1, det2, det;
+  QLA_Complex a00, a11, a22, det0, det1, det2;
+  QLA_Real s1, s2, det;
   QLA_c_eq_c(a00, *m00);
   QLA_c_eq_c(a11, *m11);
   QLA_c_eq_c(a22, *m22);
-  QLA_c_eq_c_plus_c(s1, a00, a11);
-  QLA_c_peq_c(s1, a22);
-  QLA_c_eq_r_times_c(s1, 1./3., s1);
-  QLA_c_meq_c(a00, s1);
-  QLA_c_meq_c(a11, s1);
-  QLA_c_meq_c(a22, s1);
+  s1 = (1./3.)*(QLA_real(a00) + QLA_real(a11) + QLA_real(a22));
+  QLA_c_meq_r(a00, s1);
+  QLA_c_meq_r(a11, s1);
+  QLA_c_meq_r(a22, s1);
   QLA_c_eq_c_times_c (det2, a00, a11);
   QLA_c_meq_c_times_c(det2, *m01, *m10);
   QLA_c_eq_c_times_c (det1, *m02, *m10);
   QLA_c_meq_c_times_c(det1, a00, *m12);
   QLA_c_eq_c_times_c (det0, *m01, *m12);
   QLA_c_meq_c_times_c(det0, *m02, a11);
-  QLA_c_eq_c_times_c (det, det2, a22);
-  QLA_c_peq_c_times_c(det, det1, *m21);
-  QLA_c_peq_c_times_c(det, det0, *m20);
-  QLA_c_eq_c(s2, det2);
-  QLA_c_peq_c_times_c(s2, a00, a22);
-  QLA_c_meq_c_times_c(s2, *m02, *m20);
-  QLA_c_peq_c_times_c(s2, a11, a22);
-  QLA_c_meq_c_times_c(s2, *m12, *m21);
-  QLA_c_eq_r_times_c(s2, 1./3., s2);
+  QLA_r_eq_Re_c_times_c (det, det2, a22);
+  QLA_r_peq_Re_c_times_c(det, det1, *m21);
+  QLA_r_peq_Re_c_times_c(det, det0, *m20);
+  QLA_r_eq_Re_c(s2, det2);
+  QLA_r_peq_Re_c_times_c(s2, a00, a22);
+  QLA_r_meq_Re_c_times_c(s2, *m02, *m20);
+  QLA_r_peq_Re_c_times_c(s2, a11, a22);
+  QLA_r_meq_Re_c_times_c(s2, *m12, *m21);
   //#define C(x) QLA_real(x), QLA_imag(x)
   //printf("s1 (%g,%g)\n", C(s1));
   //printf("s2 (%g,%g)\n", C(s2));
   //printf("det (%g,%g)\n", C(det));
-  // solve: x^3 + 3*s2 x - det = 0
-  QLA_Complex p, q, p2, q2, t, d, w0, w1, w2, w, e0, e1, e2;
-  QLA_c_eq_c(p, s2);
-  QLA_c_eq_r_times_c(q, -0.5, det);
-  QLA_c_eq_c_times_c(p2, p, p);
-  QLA_c_eq_c_times_c(q2, q, q);
-  QLA_c_eq_c_times_c_plus_c(d, p, p2, q2);
-  t = QLAP(csqrt)(&d);
-  QLA_Real ts;
-  QLA_r_eq_Re_ca_times_c(ts, q, t);
-  if(ts>=0) {
-    QLA_c_peq_c(q, t);
+  // solve: x^3 + s2 x - det = 0
+  QLA_Real q, r;
+  q = (-1./3.)*s2;
+  r = -0.5*det;
+  QLA_Real sq = sqrtP(fabsP(q));
+  QLA_Real sq3 = sq*sq*sq;
+  if(sq3>fabsP(r)) {
+    QLA_Real t = acosP(r/sq3);
+    QLA_Complex sct = QLAP(cexpi)((1./3.)*t);
+    QLA_Real sqc = sq*QLA_real(sct);
+    QLA_Real sqs = 1.73205080756887729352*sq*QLA_imag(sct);  // sqrt(3)
+    QLA_Real e0 = s1 - 2*sqc;
+    QLA_Real ee = s1 + sqc;
+    QLA_Real e1 = ee + sqs;
+    QLA_Real e2 = ee - sqs;
+    QLA_c_eq_r(*v0, e0);
+    QLA_c_eq_r(*v1, e1);
+    QLA_c_eq_r(*v2, e2);
   } else {
-    QLA_c_meq_c(q, t);
+    // assume sq3 = |r|
+    QLA_Real a = -cbrtP(r);
+    QLA_c_eq_r(*v0, s1 + 2*a);
+    QLA_c_eq_r(*v1, s1 - a);
+    QLA_c_eq_r(*v2, s1 - a);
   }
-  w0 = QLAP(cpow)(&q, 1./3.);
-  QLA_c_eq_r_plus_ir(w, -0.5, 0.86602540378443864676); // -0.5+i*sqrt(3)/2
-  QLA_c_eq_c_times_c(w1, w, w0);
-  QLA_c_eq_ca_times_c(w2, w, w0);
-  QLA_c_eq_c_div_c(e0, p, w0);
-  QLA_c_peq_c_minus_c(e0, s1, w0);
-  QLA_c_eq_c_div_c(e1, p, w1);
-  QLA_c_peq_c_minus_c(e1, s1, w1);
-  QLA_c_eq_c_div_c(e2, p, w2);
-  QLA_c_peq_c_minus_c(e2, s1, w2);
-  QLA_c_eq_c(*v0, e0);
-  QLA_c_eq_c(*v1, e1);
-  QLA_c_eq_c(*v2, e2);
-#else  // more accurate
-  QLA_Complex s1, s2, det, det0, det1, det2;
-  QLA_c_eq_c_plus_c(s1, *m00, *m11);
-  QLA_c_peq_c(s1, *m22);
-  QLA_c_eq_c_times_c (det2, *m00, *m11);
-  QLA_c_meq_c_times_c(det2, *m01, *m10);
-  QLA_c_eq_c_times_c (det1, *m02, *m10);
-  QLA_c_meq_c_times_c(det1, *m00, *m12);
-  QLA_c_eq_c_times_c (det0, *m01, *m12);
-  QLA_c_meq_c_times_c(det0, *m02, *m11);
-  QLA_c_eq_c_times_c (det, det2, *m22);
-  QLA_c_peq_c_times_c(det, det1, *m21);
-  QLA_c_peq_c_times_c(det, det0, *m20);
-  QLA_c_eq_c(s2, det2);
-  QLA_c_peq_c_times_c(s2, *m00, *m22);
-  QLA_c_meq_c_times_c(s2, *m02, *m20);
-  QLA_c_peq_c_times_c(s2, *m11, *m22);
-  QLA_c_meq_c_times_c(s2, *m12, *m21);
-  QLA_c_eq_r_times_c(s1, 1./3., s1);
-  QLA_c_eq_r_times_c(s2, 1./3., s2);
-  //#define C(x) QLA_real(x), QLA_imag(x)
-  //printf("s1 (%g,%g)\n", C(s1));
-  //printf("s2 (%g,%g)\n", C(s2));
-  //printf("det (%g,%g)\n", C(det));
-  // solve: x^3 - 3*s1 x^2 + 3*s2 x - det = 0
-  QLA_Complex s12, t, p, q;
-  QLA_c_eq_c_times_c(s12, s1, s1);
-  QLA_c_eq_c_minus_c(p, s2, s12);
-  QLA_c_eq_r_times_c_minus_c(t, 1.5, s2, s12);
-  QLA_c_eq_c_times_c(q, s1, t);
-  QLA_c_meq_r_times_c(q, 0.5, det);
-  // x = s1 + t; t^3 + 3*p t + 2*q = 0
-  if(QLA_real(p)==0 && QLA_imag(p)==0) {
-    if(QLA_real(q)==0 && QLA_imag(q)==0) {
-      QLA_c_eq_c(*v0, s1);
-      QLA_c_eq_c(*v1, s1);
-      QLA_c_eq_c(*v2, s1);
-    } else {
-      QLA_Complex w, w0;
-      QLA_c_eq_r_times_c(q, 2, q);
-      w0 = QLAP(cpow)(&q, 1./3.);
-      QLA_c_eq_r_plus_ir(w, -0.5, 0.86602540378443864676); // -0.5+i*sqrt(3)/2
-      QLA_c_eq_c_plus_c(*v0, w0, s1);
-      QLA_c_eq_c_times_c_plus_c(*v1, w, w0, s1);
-      QLA_c_eq_ca_times_c(*v2, w, w0);
-      QLA_c_peq_c(*v2, s1);
-    }
-  } else {
-    QLA_Complex p2, q2, d, t2, w0, w, pw0, e0, e1, e2;
-    QLA_c_eq_c_times_c(p2, p, p);
-    QLA_c_eq_c_times_c(q2, q, q);
-    QLA_c_eq_c_times_c_plus_c(d, p, p2, q2);
-    t2 = QLAP(csqrt)(&d);
-    QLA_Real ts;
-    QLA_r_eq_Re_ca_times_c(ts, q, t2);
-    if(ts>=0) {
-      QLA_c_peq_c(q, t2);
-    } else {
-      QLA_c_meq_c(q, t2);
-    }
-    w0 = QLAP(cpow)(&q, 1./3.);
-    QLA_c_eq_r_plus_ir(w, -0.5, 0.86602540378443864676); // -0.5+i*sqrt(3)/2
-    QLA_c_eq_c_div_c(pw0, p, w0);
-    QLA_c_eq_c_minus_c(e0, pw0, w0);
-    QLA_c_eq_c_plus_c(*v0, s1, e0);
-    QLA_c_eq_ca_times_c(e1, w, pw0);
-    QLA_c_meq_c_times_c(e1, w, w0);
-    QLA_c_eq_c_plus_c(*v1, s1, e1);
-    QLA_c_eq_c_times_c(e2, w, pw0);
-    QLA_c_meq_ca_times_c(e2, w, w0);
-    QLA_c_eq_c_plus_c(*v2, s1, e2);
-  }
-#endif
 }
 
 void

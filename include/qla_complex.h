@@ -428,18 +428,6 @@ typedef struct {
 
 /* Ternary operations */
 
-#define QLA_c_eq_c_times_c_plus_c(c,a,x,b) \
-                      {QLA_real(c) = QLA_real(a)*QLA_real(x)\
-                                   - QLA_imag(a)*QLA_imag(x) + QLA_real(b); \
-		       QLA_imag(c) = QLA_real(a)*QLA_imag(x)\
-                                   + QLA_imag(a)*QLA_real(x) + QLA_imag(b);}
-
-#define QLA_c_eq_c_times_c_minus_c(c,a,x,b) \
-                      {QLA_real(c) = QLA_real(a)*QLA_real(x)\
-                                   - QLA_imag(a)*QLA_imag(x) - QLA_real(b); \
-		       QLA_imag(c) = QLA_real(a)*QLA_imag(x)\
-                                   + QLA_imag(a)*QLA_real(x) - QLA_imag(b);}
-
 #define QLA_c_eq_c_times_r_plus_r(c,a,x,b) \
                       {QLA_real(c) = QLA_real(a)*(x) + (b); \
 		       QLA_imag(c) = QLA_imag(a)*(x);}
@@ -455,6 +443,30 @@ typedef struct {
 #define QLA_c_eq_r_times_c_minus_c(c,a,x,b) \
                       {QLA_real(c) = (a)*QLA_real(x) - QLA_real(b); \
 		       QLA_imag(c) = (a)*QLA_imag(x) - QLA_imag(b);}
+
+#define QLA_c_eq_c_times_c_plus_c(c,a,x,b) \
+                      {QLA_real(c) = QLA_real(a)*QLA_real(x)\
+                                   - QLA_imag(a)*QLA_imag(x) + QLA_real(b); \
+		       QLA_imag(c) = QLA_real(a)*QLA_imag(x)\
+                                   + QLA_imag(a)*QLA_real(x) + QLA_imag(b);}
+
+#define QLA_c_eq_c_times_c_minus_c(c,a,x,b) \
+                      {QLA_real(c) = QLA_real(a)*QLA_real(x)\
+                                   - QLA_imag(a)*QLA_imag(x) - QLA_real(b); \
+		       QLA_imag(c) = QLA_real(a)*QLA_imag(x)\
+                                   + QLA_imag(a)*QLA_real(x) - QLA_imag(b);}
+
+#define QLA_c_eqm_c_times_c_plus_c(c,a,x,b) \
+                      {QLA_real(c) = -QLA_real(a)*QLA_real(x)\
+                                   + QLA_imag(a)*QLA_imag(x) - QLA_real(b); \
+		       QLA_imag(c) = -QLA_real(a)*QLA_imag(x)\
+                                   - QLA_imag(a)*QLA_real(x) - QLA_imag(b);}
+
+#define QLA_c_eqm_c_times_c_minus_c(c,a,x,b) \
+                      {QLA_real(c) = -QLA_real(a)*QLA_real(x)\
+                                   + QLA_imag(a)*QLA_imag(x) + QLA_real(b); \
+		       QLA_imag(c) = -QLA_real(a)*QLA_imag(x)\
+                                   - QLA_imag(a)*QLA_real(x) + QLA_imag(b);}
 
 #endif /* USE_C99_COMPLEX */
 

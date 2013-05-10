@@ -86,34 +86,45 @@ QLAPC(M_eq_sqrt_M)(NCARG QLAN(ColorMatrix,(*restrict r)), QLAN(ColorMatrix,(*res
   }
   if(NC==2) {
     // flops: 73  rdivc: 1  cdivc: 1  csqrt: 3
-    QLA_Complex a00, a01, a10, a11, tr, s, det, d;
+    QLA_Complex a00, a01, a10, a11, tr, det, l0, l1;
     QLA_c_eq_c(a00, QLA_elem_M(*a,0,0));
     QLA_c_eq_c(a01, QLA_elem_M(*a,0,1));
     QLA_c_eq_c(a10, QLA_elem_M(*a,1,0));
     QLA_c_eq_c(a11, QLA_elem_M(*a,1,1));
-    QLA_c_eq_c_plus_c(tr, a00, a11);
-    QLA_c_eq_r_times_c(s, 0.5, tr);
     QLA_c_eq_c_times_c (det, a00, a11);
     QLA_c_meq_c_times_c(det, a01, a10);
-    // lambda = 0.5*(tr \pm sqrt(tr^2 - 4*det) ) = s \pm sqrt(s^2 - det)
-    QLA_c_eq_c_times_c(d, s, s);
-    QLA_c_meq_c(d, det);
-    QLA_Complex l0, l1, sd = QLAP(csqrt)(&d);
-    QLA_Real ts;
-    QLA_r_eq_Re_ca_times_c(ts, s, sd);
-    if(ts>=0) {
-      QLA_c_eq_c_plus_c(l1, s, sd);
+    QLA_c_eq_c_plus_c(tr, a00, a11);
+    if(QLA_real(det)==0 && QLA_imag(det)==0) {
+      QLA_c_eq_r(l0, 0);
+      QLA_c_eq_c(l1, tr);
     } else {
-      QLA_c_eq_c_minus_c(l1, s, sd);
+      QLA_Complex s, d;
+      QLA_c_eq_r_times_c(s, 0.5, tr);
+      // lambda = 0.5*(tr \pm sqrt(tr^2 - 4*det) ) = s \pm sqrt(s^2 - det)
+      QLA_c_eq_c_times_c(d, s, s);
+      QLA_c_meq_c(d, det);
+      QLA_Complex sd = QLAP(csqrt)(&d);
+      QLA_Real ts;
+      QLA_r_eq_Re_ca_times_c(ts, s, sd);
+      if(ts>=0) {
+	QLA_c_eq_c_plus_c(l1, s, sd);
+      } else {
+	QLA_c_eq_c_minus_c(l1, s, sd);
+      }
+      QLA_c_eq_c_div_c(l0, det, l1);
     }
-    QLA_c_eq_c_div_c(l0, det, l1);
     QLA_Complex sl0 = QLAP(csqrt)(&l0);
     QLA_Complex sl1 = QLAP(csqrt)(&l1);
     QLA_Complex ss, ps, c0, c1;
     QLA_c_eq_c_plus_c(ss, sl0, sl1);
     QLA_c_eq_c_times_c(ps, sl0, sl1);
-    QLA_c_eq_r_div_c(c1, 1, ss);
-    QLA_c_eq_c_times_c(c0, ps, c1);
+    if(QLA_real(ss)==0 && QLA_imag(ss)==0) {
+      QLA_c_eq_c(c0, sl0);
+      QLA_c_eq_r(c1, 0);
+    } else {
+      QLA_c_eq_r_div_c(c1, 1, ss);
+      QLA_c_eq_c_times_c(c0, ps, c1);
+    }
     // c0 + c1*a
     QLA_c_eq_c_times_c_plus_c(QLA_elem_M(*r,0,0), c1, a00, c0);
     QLA_c_eq_c_times_c(QLA_elem_M(*r,0,1), c1, a01);

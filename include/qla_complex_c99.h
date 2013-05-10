@@ -324,6 +324,8 @@ QLA_cmplx(c) = __fxcxnsma(QLA_cmplx(c),QLA_tcmplx(a),QLA_imag(QLA_tcmplx(b))); \
 
 #define QLA_c_eq_c_times_c_plus_c(c,a,x,b)  QLA_cmplx(c) = QLA_cmplx(a) * QLA_cmplx(x) + QLA_cmplx(b)
 #define QLA_c_eq_c_times_c_minus_c(c,a,x,b) QLA_cmplx(c) = QLA_cmplx(a) * QLA_cmplx(x) - QLA_cmplx(b)
+#define QLA_c_eqm_c_times_c_plus_c(c,a,x,b)  QLA_cmplx(c) = -QLA_cmplx(a) * QLA_cmplx(x) - QLA_cmplx(b)
+#define QLA_c_eqm_c_times_c_minus_c(c,a,x,b) QLA_cmplx(c) = -QLA_cmplx(a) * QLA_cmplx(x) + QLA_cmplx(b)
 
 
 #endif	/* _QLA_COMPLEX_H */

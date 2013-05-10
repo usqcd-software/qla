@@ -15,6 +15,7 @@
 #  define EPS FLT_EPSILON
 #  define fabsP fabsf
 #  define sqrtP sqrtf
+#  define cbrtP cbrtf
 #  define acosP acosf
 #else
 #  define QLAP(y) QLA_D ## _ ## y
@@ -22,6 +23,7 @@
 #  define EPS DBL_EPSILON
 #  define fabsP fabs
 #  define sqrtP sqrt
+#  define cbrtP cbrt
 #  define acosP acos
 #endif
 
@@ -78,42 +80,60 @@ maxev2(NCARG QLAN(ColorMatrix,(*a)))
   return fnorm;
 }
 
+#if (QLA_Colors == 3) || (QLA_Colors == 'N')
 static void
 getfs(QLA_Real *f0, QLA_Real *f1, QLA_Real *f2,
       QLA_Real tr, QLA_Real p2, QLA_Real det)
 {
   // flops: 38  sqrt: 4  div: 2  sincos: 1  acos: 1
-  // e2 = 0.5*(tr^2 - p2)
-  // p3 = tr*p2 - tr*e2 + 3*det = 1.5*tr*p2 - 0.5*tr^3 + 3*det
-  // s = p2/6 - tr^2/18 = 0.5*(p23-tr3^2)
-  // r = p3/6 - tr*p2/6 + tr^3/27 = det/2 + tr*p2/12 -5 tr^3/108
-  //   = 0.5*det + 0.25*tr3*(p2-5*tr3^2)
+  // solve x^3 -tr x^2 +0.5(tr^2-p2) x -det = 0
+  // q = (1.5p2-0.5tr^2)/9 = (3p2-tr^2)/18
+  // r = (-27det-2tr^3+9tr(tr^2-p2)/2)/54 = -0.5*det +5tr^3/(4*27)-tr*p2/12
   QLA_Real tr3 = (1./3.)*tr;
   QLA_Real p23 = (1./3.)*p2;
   QLA_Real tr32 = tr3*tr3;
-  QLA_Real s = 0.5*(p23-tr32);
-  QLA_Real r = 0.5*det + 0.25*tr3*(p2-5*tr32);
-  QLA_Real ss = sqrtP(fabsP(s));
-  QLA_Real s32 = ss*ss*ss;
-  QLA_Real t = acosP(r/s32);
-  QLA_Complex sct = QLAP(cexpi)((1./3.)*t);
-  QLA_Real ssc = ss*QLA_real(sct);
-  QLA_Real sss = 1.73205080756887729352*ss*QLA_imag(sct);  // sqrt(3)
-  QLA_Real g0 = tr3 + 2*ssc;
-  QLA_Real gg = tr3 - ssc;
-  QLA_Real g1 = gg + sss;
-  QLA_Real g2 = gg - sss;
-  QLA_Real sg0 = sqrtP(fabsP(g0));
-  QLA_Real sg1 = sqrtP(fabsP(g1));
-  QLA_Real sg2 = sqrtP(fabsP(g2));
-  QLA_Real u = sg0 + sg1 + sg2;
-  QLA_Real v = sg0*(sg1+sg2) + sg1*sg2;
-  QLA_Real w = sg0*sg1*sg2;
-  QLA_Real d = u*v-w;
-  QLA_Real di = 1./d;
-  *f0 = u*w*di;
-  *f1 = 0.5*(u*u+tr)*di;
-  *f2 = -di;
+  QLA_Real q = 0.5*(p23-tr32);
+  QLA_Real r = 0.25*tr3*(5*tr32-p2) - 0.5*det;
+  QLA_Real sq = sqrtP(fabsP(q));
+  QLA_Real sq3 = sq*sq*sq;
+  if(sq3>fabsP(r)) {
+    QLA_Real t = acosP(r/sq3);
+    QLA_Complex sct = QLAP(cexpi)((1./3.)*t);
+    QLA_Real sqc = sq*QLA_real(sct);
+    QLA_Real sqs = 1.73205080756887729352*sq*QLA_imag(sct);  // sqrt(3)
+    QLA_Real l0 = tr3 - 2*sqc;
+    QLA_Real ll = tr3 + sqc;
+    QLA_Real l1 = ll + sqs;
+    QLA_Real l2 = ll - sqs;
+    QLA_Real sl0 = sqrtP(fabsP(l0));
+    QLA_Real sl1 = sqrtP(fabsP(l1));
+    QLA_Real sl2 = sqrtP(fabsP(l2));
+    QLA_Real u = sl0 + sl1 + sl2;
+    QLA_Real v = sl0*(sl1+sl2) + sl1*sl2;
+    QLA_Real w = sl0*sl1*sl2;
+    //QLA_Real d = u*v-w;
+    QLA_Real d = (sl0+sl1)*(sl0+sl2)*(sl1+sl2);
+    QLA_Real di = 1./d;
+    *f0 = u*w*di;
+    *f1 = (tr+v)*di;
+    *f2 = -di;
+  } else {
+    if(r==0) {  // possibly all zero, but assume all equal to tr3
+      *f0 = sqrtP(fabsP(tr3));
+      *f1 = 0;
+      *f2 = 0;
+    } else {
+      QLA_Real a = -cbrtP(r);
+      QLA_Real l0 = tr3 + 2*a;
+      QLA_Real l1 = tr3 - a;
+      QLA_Real sl0 = sqrtP(fabsP(l0));
+      QLA_Real sl1 = sqrtP(fabsP(l1));
+      QLA_Real sl01 = sl0 + sl1;
+      *f2 = 0;
+      *f1 = (sl01==0) ? 0 : 1/sl01;
+      *f0 = sl0*sl1*(*f1);
+    }
+  }
 }
 
 static void
@@ -184,6 +204,7 @@ QLA_sqrtPH_3x3(QLA3(ColorMatrix,(*fn)), QLA3(ColorMatrix,(*m)))
   QLA_c_peq_r(QLA_elem_M(*fn,1,1), f0);
   QLA_c_peq_r(QLA_elem_M(*fn,2,2), f0);
 }
+#endif
 
 void
 QLAPC(M_eq_sqrtPH_M)(NCARG QLAN(ColorMatrix,(*restrict r)), QLAN(ColorMatrix,(*restrict a)))
@@ -203,31 +224,49 @@ QLAPC(M_eq_sqrtPH_M)(NCARG QLAN(ColorMatrix,(*restrict r)), QLAN(ColorMatrix,(*r
   if(NC==2) {
     // flops: 21  sqrt: 2  div: 1
     QLA_Complex a00, a01, a10, a11;
-    QLA_Real tr, det, sdet, c0, c1;
+    QLA_Real tr, det;
     QLA_c_eq_c(a00, QLA_elem_M(*a,0,0));
     QLA_c_eq_c(a01, QLA_elem_M(*a,0,1));
     QLA_c_eq_c(a10, QLA_elem_M(*a,1,0));
     QLA_c_eq_c(a11, QLA_elem_M(*a,1,1));
-    tr = QLA_real(a00) + QLA_real(a11);
     QLA_r_eq_Re_c_times_c (det, a00, a11);
     QLA_r_meq_Re_c_times_c(det, a01, a10);
-    sdet = sqrtP(fabsP(det));
-    // c0 = (l2*sl1-l1*sl2)/(l2-l1) = sl1*sl2/(sl1+sl2)
-    // c1 = (sl2-sl1)/(l2-l1) = 1/(sl1+sl2)
-    c1 = 1/sqrtP(fabsP(tr+2*sdet));
-    c0 = sdet*c1;
-    // c0 + c1*a
-    QLA_c_eq_c_times_r_plus_r(QLA_elem_M(*r,0,0), a00, c1, c0);
-    QLA_c_eq_c_times_r(QLA_elem_M(*r,0,1), a01, c1);
-    QLA_c_eq_c_times_r(QLA_elem_M(*r,1,0), a10, c1);
-    QLA_c_eq_c_times_r_plus_r(QLA_elem_M(*r,1,1), a11, c1, c0);
+    tr = QLA_real(a00) + QLA_real(a11);
+    if(det==0) {  // one zero eigenvalue
+      if(tr==0) {  // matrix is zero
+	QLA_c_eq_r(QLA_elem_M(*r,0,0), 0);
+	QLA_c_eq_r(QLA_elem_M(*r,0,1), 0);
+	QLA_c_eq_r(QLA_elem_M(*r,1,0), 0);
+	QLA_c_eq_r(QLA_elem_M(*r,1,1), 0);
+      } else {
+	QLA_Real c1 = 1/sqrtP(fabsP(tr));
+	QLA_c_eq_c_times_r(QLA_elem_M(*r,0,0), a00, c1);
+	QLA_c_eq_c_times_r(QLA_elem_M(*r,0,1), a01, c1);
+	QLA_c_eq_c_times_r(QLA_elem_M(*r,1,0), a10, c1);
+	QLA_c_eq_c_times_r(QLA_elem_M(*r,1,1), a11, c1);
+      }
+    } else {
+      QLA_Real sdet, c0, c1;
+      sdet = sqrtP(fabsP(det));
+      // c0 = (l2*sl1-l1*sl2)/(l2-l1) = sl1*sl2/(sl1+sl2)
+      // c1 = (sl2-sl1)/(l2-l1) = 1/(sl1+sl2)
+      c1 = 1/sqrtP(fabsP(tr+2*sdet));
+      c0 = sdet*c1;
+      // c0 + c1*a
+      QLA_c_eq_c_times_r_plus_r(QLA_elem_M(*r,0,0), a00, c1, c0);
+      QLA_c_eq_c_times_r(QLA_elem_M(*r,0,1), a01, c1);
+      QLA_c_eq_c_times_r(QLA_elem_M(*r,1,0), a10, c1);
+      QLA_c_eq_c_times_r_plus_r(QLA_elem_M(*r,1,1), a11, c1, c0);
+    }
     return;
   }
+#if (QLA_Colors == 3) || (QLA_Colors == 'N')
   if(NC==3) {
     // flops: 350  sqrt: 4  div: 2  sincos: 1  acos: 1
     QLA_sqrtPH_3x3((QLA3(ColorMatrix,(*))) r, (QLA3(ColorMatrix,(*))) a);
     return;
   }
+#endif
 
   // flops: 4n2(1+c)  sqrt: 2  div: 1
   // MpeqM: 1+c  MeqdtM: 2+c  MpeqdtM: 1  MtM: c  Minv: 0  MinvM: c

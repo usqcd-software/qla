@@ -15,12 +15,13 @@ C_veq_det_M(c1, m1, n) 	  	             | 2+2*NC*NC     | FLOP_DET(NC)
 V_veq_eigenvals_M(v1, m1, n)		     | 2*NC*(1+NC)   | FLOP_EIG(NC)
 @  setMH;
 V_veq_eigenvalsH_M(v1, m1, n)		     | 2*NC*(1+NC)   | FLOP_EIGH(NC)
-@  setM;
+@  setMNZ;
 M_veq_inverse_M(m1, m2, n)		     | 4*NC*NC	     | FLOP_INV(NC)
-M_veq_sqrt_M(m1, m2, n) 		     | 4*NC*NC	     | FLOP_SQRT(NC)
-@  setMPH;
-M_veq_sqrtPH_M(m1, m2, n) 		     | 4*NC*NC	     | FLOP_SQRTPH(NC)
 @  setM;
+M_veq_sqrt_M(m1, m2, n) 		     | 4*NC*NC	     | FLOP_SQRT(NC)
+@  setMNNH;
+M_veq_sqrtPH_M(m1, m2, n) 		     | 4*NC*NC	     | FLOP_SQRTPH(NC)
+@  setMP;
 M_veq_invsqrt_M(m1, m2, n)		     | 4*NC*NC	     | FLOP_RSQRT(NC)
 @  setMPH;
 M_veq_invsqrtPH_M(m1, m2, n)		     | 4*NC*NC	     | FLOP_RSQRTPH(NC)
@@ -30,7 +31,7 @@ M_veq_exp_M(m1, m2, n)  		     | 4*NC*NC	     | FLOP_EXP(NC)
 M_veq_expA_M(m1, m2, n)  		     | 4*NC*NC	     | FLOP_EXPA(NC)
 @  setMTA;
 M_veq_expTA_M(m1, m2, n)  		     | 4*NC*NC	     | FLOP_EXPTA(NC)
-@  setM;
+@  setMNZ;
 M_veq_log_M(m1, m2, n)			     | 4*NC*NC	     | FLOP_LOG(NC)
 V_veq_M_inverse_V(v1, m1, v2, n)	     | 2*NC*(2+NC)   | FLOP_INVV(NC)
 M_veq_M_inverse_M(m1, m2, m3, n)	     | 6*NC*NC	     | FLOP_INVM(NC)

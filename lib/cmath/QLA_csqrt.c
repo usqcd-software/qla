@@ -37,8 +37,8 @@ QLA_F_csqrt(QLA_F_Complex *z)
   QLA_F_Real n = QLA_F_norm_c(*z);
   QLA_F_Real r = QLA_real(*z);
   QLA_F_Real i = QLA_imag(*z);
-  QLA_F_Real sr = sqrtf(0.5*(n+r));
-  QLA_F_Real si = copysignf(sqrtf(0.5*(n-r)), i);
+  QLA_F_Real sr = sqrtf(fabsf(0.5*(n+r)));
+  QLA_F_Real si = copysignf(sqrtf(fabsf(0.5*(n-r))), i);
   QLA_F_Complex c;
   QLA_c_eq_r_plus_ir(c, sr, si);
   return c;
@@ -50,8 +50,8 @@ QLA_D_csqrt(QLA_D_Complex *z)
   QLA_D_Real n = QLA_D_norm_c(*z);
   QLA_D_Real r = QLA_real(*z);
   QLA_D_Real i = QLA_imag(*z);
-  QLA_D_Real sr = sqrt(0.5*(n+r));
-  QLA_D_Real si = copysign(sqrt(0.5*(n-r)), i);
+  QLA_D_Real sr = sqrt(fabs(0.5*(n+r)));
+  QLA_D_Real si = copysign(sqrt(fabs(0.5*(n-r))), i);
   QLA_D_Complex c;
   QLA_c_eq_r_plus_ir(c, sr, si);
   return c;

@@ -209,7 +209,7 @@
   printf("%12g time=%5.2f mem=%5.0f mflops=%5.0f\n",
          sum, time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
 
-  setM;
+  setMNZ;
   set_fields;
   mem = 4*NC*NC*REALBYTES;
   flop = FLOP_INV(NC);
@@ -224,6 +224,7 @@
   printf("%12g time=%5.2f mem=%5.0f mflops=%5.0f\n",
          sum, time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
 
+  setM;
   set_fields;
   mem = 4*NC*NC*REALBYTES;
   flop = FLOP_SQRT(NC);
@@ -238,7 +239,7 @@
   printf("%12g time=%5.2f mem=%5.0f mflops=%5.0f\n",
          sum, time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
 
-  setMPH;
+  setMNNH;
   set_fields;
   mem = 4*NC*NC*REALBYTES;
   flop = FLOP_SQRTPH(NC);
@@ -253,7 +254,7 @@
   printf("%12g time=%5.2f mem=%5.0f mflops=%5.0f\n",
          sum, time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
 
-  setM;
+  setMP;
   set_fields;
   mem = 4*NC*NC*REALBYTES;
   flop = FLOP_RSQRT(NC);
@@ -328,7 +329,7 @@
   printf("%12g time=%5.2f mem=%5.0f mflops=%5.0f\n",
          sum, time1, mem*n*c/(1e6*time1), flop*n*c/(1e6*time1));
 
-  setM;
+  setMNZ;
   set_fields;
   mem = 4*NC*NC*REALBYTES;
   flop = FLOP_LOG(NC);

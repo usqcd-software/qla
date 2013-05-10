@@ -116,16 +116,27 @@ set_D(QLA_DiracFermion *d, int i)
   }
 }
 
+#define MtypeH  1
+#define MtypeP  2
+#define MtypeA  4
+#define MtypeT  8
+#define MtypeNZ 16
+#define MtypeNN 32
 static int Mtype = 0;
 #define setM Mtype = 0
-#define setMH Mtype = 1
-#define setMPH Mtype = 2
-#define setMA Mtype = 3
-#define setMTA Mtype = 4
+#define setMH Mtype = MtypeH
+#define setMPH Mtype = MtypeP|MtypeH|MtypeNN|MtypeNZ
+#define setMA Mtype = MtypeA
+#define setMTA Mtype = MtypeT|MtypeA
+#define setMP Mtype = MtypeP|MtypeNN|MtypeNZ
+#define setMNZ Mtype = MtypeNZ
+#define setMNNH Mtype = MtypeNN|MtypeH
 
 void
 set_M(QLA_ColorMatrix *m, int i)
 {
+#if 0
+  static QLA_ColorMatrix t;
   for(int j=0; j<QLA_Nc; j++) {
     for(int k=0; k<QLA_Nc; k++) {
       QLA_c_eq_r_plus_ir(QLA_elem_M(*m,j,k),
@@ -135,28 +146,56 @@ set_M(QLA_ColorMatrix *m, int i)
       //QLA_imag(QLA_elem_M(*m,j,k)) = 0;
     }
   }
-  if(Mtype==1) { // make Hermitian
+#endif
+  for(int j=0; j<QLA_Nc; j++) {
+    for(int k=0; k<QLA_Nc; k++) {
+      QLA_c_eq_r(QLA_elem_M(*m,j,k), 0);
+    }
+  }
+  QLA_Real step = 1e-5;
+  if(Mtype&MtypeNZ) {
+    for(int j=0; j<QLA_Nc; j++) {
+      QLA_c_peq_r_plus_ir(QLA_elem_M(*m,j,j), step, -step);
+    }
+  }
+  int ii=i;
+  if((Mtype&MtypeNN)==0) ii>>=QLA_Nc;
+  for(int j=0,k=1; ii; ii>>=1,j++) {
+    if(j>=QLA_Nc) { j=0; k*=2; }
+    if(ii&1) QLA_c_peq_r_plus_ir(QLA_elem_M(*m,j,j), k*step, -k*step);
+  }
+  ii = i;
+  if((Mtype&MtypeNN)==0) {
+    for(int j=0; j<QLA_Nc; j++) {
+      if(ii&1) QLA_c_eqm_c(QLA_elem_M(*m,j,j), QLA_elem_M(*m,j,j));
+      ii >>= 1;
+    }
+  }
+  if(Mtype&MtypeH) { // make Hermitian
     QLA_ColorMatrix m2;
     QLA_M_eq_M(&m2, m);
     QLA_M_peq_Ma(&m2, m);
     QLA_M_eq_M(m, &m2);
   }
-  if(Mtype==2) { // make positive Hermitian
+  if((Mtype&MtypeP)&&(Mtype&MtypeH)) { // make positive Hermitian
     QLA_ColorMatrix m2;
     QLA_M_eq_M_times_Ma(&m2, m, m);
     QLA_M_eq_M(m, &m2);
   }
-  if(Mtype==3) { // make anti-Hermitian
+  if(Mtype&MtypeA) { // make anti-Hermitian
     QLA_ColorMatrix m2;
     QLA_M_eq_M(&m2, m);
     QLA_M_meq_Ma(&m2, m);
     QLA_M_eq_M(m, &m2);
   }
-  if(Mtype==4) { // make traceless anti-Hermitian
+  if((Mtype&MtypeT)&&(Mtype&MtypeA)) { // make traceless anti-Hermitian
     QLA_ColorMatrix m2;
     QLA_M_eq_antiherm_M(&m2, m);
     QLA_M_eq_M(m, &m2);
   }
+  //QLA_Real n2;
+  //QLA_r_eq_norm2_M(&n2, m);
+  //printf("%i\t%g\n", i, n2);
 }
 
 QLA_Real
@@ -164,7 +203,10 @@ sum_C(QLA_Complex *d, int n)
 {
   QLA_Real t=0, *r=(QLA_Real *)d;
   int nn = n*sizeof(QLA_Complex)/sizeof(QLA_Real);
-  for(int i=0; i<nn; i++) t += r[i];
+  for(int i=0; i<nn; i++) {
+    t += r[i];
+    //printf("%i\t%g\n", i, r[i]);
+  }
   return t/nn;
 }
 
