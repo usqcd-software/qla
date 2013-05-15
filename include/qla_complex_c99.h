@@ -27,8 +27,10 @@ typedef union {
 
 #define QLA_F_c_eq_c99(x,y) x = y
 #define QLA_D_c_eq_c99(x,y) x = y
+#define QLA_Q_c_eq_c99(x,y) x = y
 #define QLA_F_c99_eq_c(x,y) x = y
 #define QLA_D_c99_eq_c(x,y) x = y
+#define QLA_Q_c99_eq_c(x,y) x = y
 
 #if 0
 #define QLA_real(a) ((a).r)
@@ -141,8 +143,10 @@ typedef union {
 /* Macros for complex arithmetic */
 
 #define QLA_norm2_c(a) (QLA_real(a)*QLA_real(a) + QLA_imag(a)*QLA_imag(a))
-#define QLA_norm_c(a)  sqrt(QLA_norm2_c(a))
-#define QLA_arg_c(a)   atan2((double)QLA_imag(a), (double)QLA_real(a))
+#define QLA_F_norm_c(a) sqrtf(QLA_norm2_c(a))
+#define QLA_D_norm_c(a) sqrt(QLA_norm2_c(a))
+#define QLA_F_arg_c(a)  atan2f(QLA_imag(a), QLA_real(a))
+#define QLA_D_arg_c(a)  atan2(QLA_imag(a), QLA_real(a))
 
 
 /* Unary operations */
@@ -310,8 +314,12 @@ QLA_cmplx(c) = __fxcxnsma(QLA_cmplx(c),QLA_tcmplx(a),QLA_imag(QLA_tcmplx(b))); \
 #define QLA_r_meq_Im_ca_times_ca(c,a,b) (c) -= QLA_imag(QLA_conj(QLA_tcmplx(a))*QLA_conj(QLA_tcmplx(b)))
 
 #define QLA_c_eq_c_div_r(c,a,b) QLA_cmplx(c) = QLA_tcmplx(a)/QLA_treal(b)
-#define QLA_c_eq_r_div_c(c,a,b) QLA_cmplx(c) = QLA_treal(a)/QLA_tcmplx(b)
-#define QLA_c_eq_c_div_c(c,a,b) QLA_cmplx(c) = QLA_tcmplx(a)/QLA_tcmplx(b)
+#define QLA_F_c_eq_r_div_c(c,a,b) QLA_cmplx(c) = QLA_treal(a)/QLA_tcmplx(b)
+#define QLA_F_c_eq_c_div_c(c,a,b) QLA_cmplx(c) = QLA_tcmplx(a)/QLA_tcmplx(b)
+#define QLA_D_c_eq_r_div_c(c,a,b) QLA_cmplx(c) = QLA_treal(a)/QLA_tcmplx(b)
+#define QLA_D_c_eq_c_div_c(c,a,b) QLA_cmplx(c) = QLA_tcmplx(a)/QLA_tcmplx(b)
+#define QLA_Q_c_eq_r_div_c(c,a,b) QLA_cmplx(c) = QLA_treal(a)/QLA_tcmplx(b)
+#define QLA_Q_c_eq_c_div_c(c,a,b) QLA_cmplx(c) = QLA_tcmplx(a)/QLA_tcmplx(b)
 
 
 /* Ternary operations */

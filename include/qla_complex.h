@@ -40,17 +40,23 @@ typedef struct {
 } QLA_Q_Complex _ALIGNED;
 
 #if (__STDC_VERSION__ >= 199901L) && !defined(__STDC_NO_COMPLEX__)
+
 # define QLA_F_c99_eq_c(x,y) do { QLA_F_Complex _t=(y); (x)=(union{float f[2]; float _Complex z;}){.f={QLA_real(_t),QLA_imag(_t)}}.z; } while(0)
 # define QLA_D_c99_eq_c(x,y) do { QLA_D_Complex _t=(y); (x)=(union{double f[2]; double _Complex z;}){.f={QLA_real(_t),QLA_imag(_t)}}.z; } while(0)
 # define QLA_Q_c99_eq_c(x,y) do { QLA_Q_Complex _t=(y); (x)=(union{long double f[2]; long double _Complex z;}){.f={QLA_real(_t),QLA_imag(_t)}}.z; } while(0)
+
 # if defined(__xlC__)
+
 #  define QLA_F_c_eq_c99(x,y) do { float _Complex _t=(y); QLA_c_eq_r_plus_ir(x, __crealf(_t), __cimagf(_t)); } while(0)
 #  define QLA_D_c_eq_c99(x,y) do { double _Complex _t=(y); QLA_c_eq_r_plus_ir(x, __creal(_t), __cimag(_t)); } while(0)
 #  define QLA_Q_c_eq_c99(x,y) do { long double _Complex _t=(y); QLA_c_eq_r_plus_ir(x, __creall(_t), __cimagl(_t)); } while(0)
+
 # else
+
 #  define QLA_F_c_eq_c99(x,y) do { float _Complex _t=(y); QLA_c_eq_r_plus_ir(x, crealf(_t), cimagf(_t)); } while(0)
 #  define QLA_D_c_eq_c99(x,y) do { double _Complex _t=(y); QLA_c_eq_r_plus_ir(x, creal(_t), cimag(_t)); } while(0)
 #  define QLA_Q_c_eq_c99(x,y) do { long double _Complex _t=(y); QLA_c_eq_r_plus_ir(x, creall(_t), cimagl(_t)); } while(0)
+
 # endif
 #endif
 
@@ -111,10 +117,8 @@ typedef struct {
 #define QLA_norm2_c(a)  (QLA_real(a)*QLA_real(a) + QLA_imag(a)*QLA_imag(a))
 #define QLA_F_norm_c(a) sqrtf(QLA_norm2_c(a))
 #define QLA_D_norm_c(a) sqrt(QLA_norm2_c(a))
-#define QLA_norm_c(a)   QLA_D_norm_c(a)
 #define QLA_F_arg_c(a)  atan2f(QLA_imag(a), QLA_real(a))
 #define QLA_D_arg_c(a)  atan2(QLA_imag(a), QLA_real(a))
-#define QLA_arg_c(a)    QLA_D_arg_c(a)
 
 
 /* Unary operations */
@@ -482,6 +486,8 @@ typedef QLA_F_Real QLA_Real;
 typedef QLA_F_Complex QLA_Complex;
 #define QLA_c99_eq_c(x,y)       QLA_F_c99_eq_c(x,y)
 #define QLA_c_eq_c99(x,y)       QLA_F_c_eq_c99(x,y)
+#define QLA_norm_c(a)           QLA_F_norm_c(a)
+#define QLA_arg_c(a)            QLA_F_arg_c(a)
 #define QLA_c_eq_r_div_c(c,a,b) QLA_F_c_eq_r_div_c(c,a,b)
 #define QLA_c_eq_c_div_c(c,a,b) QLA_F_c_eq_c_div_c(c,a,b)
 
@@ -491,6 +497,8 @@ typedef QLA_D_Real QLA_Real;
 typedef QLA_D_Complex QLA_Complex;
 #define QLA_c99_eq_c(x,y)       QLA_D_c99_eq_c(x,y)
 #define QLA_c_eq_c99(x,y)       QLA_D_c_eq_c99(x,y)
+#define QLA_norm_c(a)           QLA_D_norm_c(a)
+#define QLA_arg_c(a)            QLA_D_arg_c(a)
 #define QLA_c_eq_r_div_c(c,a,b) QLA_D_c_eq_r_div_c(c,a,b)
 #define QLA_c_eq_c_div_c(c,a,b) QLA_D_c_eq_c_div_c(c,a,b)
 
@@ -500,6 +508,8 @@ typedef QLA_Q_Real QLA_Real;
 typedef QLA_Q_Complex QLA_Complex;
 #define QLA_c99_eq_c(x,y)       QLA_Q_c99_eq_c(x,y)
 #define QLA_c_eq_c99(x,y)       QLA_Q_c_eq_c99(x,y)
+#define QLA_norm_c(a)           QLA_Q_norm_c(a)
+#define QLA_arg_c(a)            QLA_Q_arg_c(a)
 #define QLA_c_eq_r_div_c(c,a,b) QLA_Q_c_eq_r_div_c(c,a,b)
 #define QLA_c_eq_c_div_c(c,a,b) QLA_Q_c_eq_c_div_c(c,a,b)
 
