@@ -145,8 +145,10 @@ typedef union {
 #define QLA_norm2_c(a) (QLA_real(a)*QLA_real(a) + QLA_imag(a)*QLA_imag(a))
 #define QLA_F_norm_c(a) sqrtf(QLA_norm2_c(a))
 #define QLA_D_norm_c(a) sqrt(QLA_norm2_c(a))
+#define QLA_Q_norm_c(a) sqrtl(QLA_norm2_c(a))
 #define QLA_F_arg_c(a)  atan2f(QLA_imag(a), QLA_real(a))
 #define QLA_D_arg_c(a)  atan2(QLA_imag(a), QLA_real(a))
+#define QLA_Q_arg_c(a)  atan2l(QLA_imag(a), QLA_real(a))
 
 
 /* Unary operations */
