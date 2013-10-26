@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([qla],[1.7.3],[josborn at physics.bu.edu])
+AC_INIT([qla],[1.8.0],[josborn at physics.bu.edu])
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE
 
@@ -270,6 +270,7 @@ AC_CONFIG_FILES(test/Makefile)
 AC_CONFIG_FILES(test/src/Makefile)
 AC_CONFIG_FILES(test/int/Makefile)
 AC_CONFIG_FILES(test/scalar/Makefile)
+AC_CONFIG_FILES(test/tensor1/Makefile)
 AC_CONFIG_FILES(test/tensor2/Makefile)
 AC_CONFIG_FILES(test/tensor3/Makefile)
 AC_CONFIG_FILES(test/tensorN/Makefile)

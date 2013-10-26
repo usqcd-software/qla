@@ -254,6 +254,10 @@ alleqops(`chkSpreconMult(',`,a)')
 alltensors(`chkiMult');
 alltensors(`chkrMult');
 alltensors(`chkcMult');
+chkrMultAdj(M);
+chkrMultAdj(P);
+chkcMultAdj(M);
+chkcMultAdj(P);
 
   /* Check addition/subtraction of elements */
 
@@ -262,6 +266,8 @@ alltensors(`chkMinus');
 
   /* Multiplication by Real or Complex field */
 alltensors(`chkRCMult');
+chkRCMultAdj(M);
+chkRCMultAdj(P);
 
   /* Multiplication - uniform types */
 chkUniformMult(M);

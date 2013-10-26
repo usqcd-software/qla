@@ -133,6 +133,55 @@ typedef QLA_dpdef(Q,2,2,QLA_Q2_DiracPropagator);
 #define QLA_Q2_elem_P(a,ic,is,jc,js) QLA_elem_P(a,ic,is,jc,js)
 
 
+/* SU(1) single precision */
+typedef QLA_cvdef(F,1,1,QLA_F1_ColorVector);
+typedef QLA_hfdef(F,1,1,QLA_F1_HalfFermion);
+typedef QLA_dfdef(F,1,1,QLA_F1_DiracFermion);
+typedef QLA_cmdef(F,1,1,QLA_F1_ColorMatrix);
+typedef QLA_dpdef(F,1,1,QLA_F1_DiracPropagator);
+
+#define QLA_F1_elem_I(a) QLA_elem_I(a)
+#define QLA_F1_elem_R(a) QLA_elem_R(a)
+#define QLA_F1_elem_C(a) QLA_elem_C(a)
+#define QLA_F1_elem_V(a,ic) QLA_elem_V(a,ic)
+#define QLA_F1_elem_H(a,ic,is) QLA_elem_H(a,ic,is)
+#define QLA_F1_elem_D(a,ic,is) QLA_elem_D(a,ic,is)
+#define QLA_F1_elem_M(a,ic,jc) QLA_elem_M(a,ic,jc)
+#define QLA_F1_elem_P(a,ic,is,jc,js) QLA_elem_P(a,ic,is,jc,js)
+
+/* SU(1) double precision */
+typedef QLA_cvdef(D,1,1,QLA_D1_ColorVector);
+typedef QLA_hfdef(D,1,1,QLA_D1_HalfFermion);
+typedef QLA_dfdef(D,1,1,QLA_D1_DiracFermion);
+typedef QLA_cmdef(D,1,1,QLA_D1_ColorMatrix);
+typedef QLA_dpdef(D,1,1,QLA_D1_DiracPropagator);
+
+#define QLA_D1_elem_I(a) QLA_elem_I(a)
+#define QLA_D1_elem_R(a) QLA_elem_R(a)
+#define QLA_D1_elem_C(a) QLA_elem_C(a)
+#define QLA_D1_elem_V(a,ic) QLA_elem_V(a,ic)
+#define QLA_D1_elem_H(a,ic,is) QLA_elem_H(a,ic,is)
+#define QLA_D1_elem_D(a,ic,is) QLA_elem_D(a,ic,is)
+#define QLA_D1_elem_M(a,ic,jc) QLA_elem_M(a,ic,jc)
+#define QLA_D1_elem_P(a,ic,is,jc,js) QLA_elem_P(a,ic,is,jc,js)
+
+/* SU(1) long double precision */
+typedef QLA_cvdef(Q,1,1,QLA_Q1_ColorVector);
+typedef QLA_hfdef(Q,1,1,QLA_Q1_HalfFermion);
+typedef QLA_dfdef(Q,1,1,QLA_Q1_DiracFermion);
+typedef QLA_cmdef(Q,1,1,QLA_Q1_ColorMatrix);
+typedef QLA_dpdef(Q,1,1,QLA_Q1_DiracPropagator);
+
+#define QLA_Q1_elem_I(a) QLA_elem_I(a)
+#define QLA_Q1_elem_R(a) QLA_elem_R(a)
+#define QLA_Q1_elem_C(a) QLA_elem_C(a)
+#define QLA_Q1_elem_V(a,ic) QLA_elem_V(a,ic)
+#define QLA_Q1_elem_H(a,ic,is) QLA_elem_H(a,ic,is)
+#define QLA_Q1_elem_D(a,ic,is) QLA_elem_D(a,ic,is)
+#define QLA_Q1_elem_M(a,ic,jc) QLA_elem_M(a,ic,jc)
+#define QLA_Q1_elem_P(a,ic,is,jc,js) QLA_elem_P(a,ic,is,jc,js)
+
+
 /* SU(N) single precision */
 #define QLA_FN_ColorVector(NC,V)      QLA_cvdef(F,N,NC,V)
 #define QLA_FN_HalfFermion(NC,V)      QLA_hfdef(F,N,NC,V)
@@ -284,6 +333,55 @@ typedef QLA_Q2_DiracPropagator     QLA_Q_DiracPropagator;
 #define QLA_Q_elem_V QLA_Q2_elem_V 
 #define QLA_Q_elem_P QLA_Q2_elem_P 
 #define QLA_Q_elem_M QLA_Q2_elem_M 
+
+#elif ( QLA_Colors == 1 )
+
+/* These types specify precision but are generic with respect to color */
+
+typedef QLA_F1_ColorMatrix         QLA_F_ColorMatrix;
+typedef QLA_F1_ColorVector         QLA_F_ColorVector;
+typedef QLA_F1_HalfFermion         QLA_F_HalfFermion;
+typedef QLA_F1_DiracFermion        QLA_F_DiracFermion;
+typedef QLA_F1_DiracPropagator     QLA_F_DiracPropagator;
+
+#define QLA_F_elem_R QLA_F1_elem_R 
+#define QLA_F_elem_C QLA_F1_elem_C 
+#define QLA_F_elem_I QLA_F1_elem_I 
+#define QLA_F_elem_H QLA_F1_elem_H 
+#define QLA_F_elem_D QLA_F1_elem_D 
+#define QLA_F_elem_V QLA_F1_elem_V 
+#define QLA_F_elem_P QLA_F1_elem_P 
+#define QLA_F_elem_M QLA_F1_elem_M 
+
+typedef QLA_D1_ColorMatrix         QLA_D_ColorMatrix;
+typedef QLA_D1_ColorVector         QLA_D_ColorVector;
+typedef QLA_D1_HalfFermion         QLA_D_HalfFermion;
+typedef QLA_D1_DiracFermion        QLA_D_DiracFermion;
+typedef QLA_D1_DiracPropagator     QLA_D_DiracPropagator;
+
+#define QLA_D_elem_R QLA_D1_elem_R 
+#define QLA_D_elem_C QLA_D1_elem_C 
+#define QLA_D_elem_I QLA_D1_elem_I 
+#define QLA_D_elem_H QLA_D1_elem_H 
+#define QLA_D_elem_D QLA_D1_elem_D 
+#define QLA_D_elem_V QLA_D1_elem_V 
+#define QLA_D_elem_P QLA_D1_elem_P 
+#define QLA_D_elem_M QLA_D1_elem_M 
+
+typedef QLA_Q1_ColorMatrix         QLA_Q_ColorMatrix;
+typedef QLA_Q1_ColorVector         QLA_Q_ColorVector;
+typedef QLA_Q1_HalfFermion         QLA_Q_HalfFermion;
+typedef QLA_Q1_DiracFermion        QLA_Q_DiracFermion;
+typedef QLA_Q1_DiracPropagator     QLA_Q_DiracPropagator;
+
+#define QLA_Q_elem_R QLA_Q1_elem_R 
+#define QLA_Q_elem_C QLA_Q1_elem_C 
+#define QLA_Q_elem_I QLA_Q1_elem_I 
+#define QLA_Q_elem_H QLA_Q1_elem_H 
+#define QLA_Q_elem_D QLA_Q1_elem_D 
+#define QLA_Q_elem_V QLA_Q1_elem_V 
+#define QLA_Q_elem_P QLA_Q1_elem_P 
+#define QLA_Q_elem_M QLA_Q1_elem_M 
 
 #elif ( QLA_Colors == 'N' )
 #ifndef QLA_Nc

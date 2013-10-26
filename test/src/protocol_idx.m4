@@ -714,52 +714,52 @@ define(unaryDQ,`
 rem(`
      Binary mult by const
 ')
-rem(`binaryconst(td,eq,tc,t1)')
+rem(`binaryconst(td,eq,tc,t1,a1)')
 define(binaryconst,`
-  /* qla_name1(,$1,,$2,,$4) */
+  /* qla_name1(,$1,,$2,,$4$5) */
 
-  strcpy(name,"qla_name1(,$1,v,$2,,$4)");
+  strcpy(name,"qla_name1(,$1,v,$2,,$4$5)");
   resetdt($1)
-  qla_name1(,$1,v,$2,,$4)(argd($1),&arg4($3),arg1($4),MAX);
-  for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$4)(&argt($1)[i],&arg4($3),&arg1($4)[i]);}
+  qla_name1(,$1,v,$2,,$4$5)(argd($1),&arg4($3),arg1($4),MAX);
+  for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$4$5)(&argt($1)[i],&arg4($3),&arg1($4)[i]);}
   checkeqidx$1$1(argt($1),argd($1),name,fp);
 
-  strcpy(name,"qla_name1(,$1,x,$2,,$4)");
+  strcpy(name,"qla_name1(,$1,x,$2,,$4$5)");
   resetdt($1)
-  qla_name1(,$1,x,$2,,$4)(argd($1),&arg4($3),arg1($4),idx1($4),MAX);
-  for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$4)(&argt($1)[idx1($4)[i]],&arg4($3),&arg1($4)[idx1($4)[i]]);}
+  qla_name1(,$1,x,$2,,$4$5)(argd($1),&arg4($3),arg1($4),idx1($4),MAX);
+  for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$4$5)(&argt($1)[idx1($4)[i]],&arg4($3),&arg1($4)[idx1($4)[i]]);}
   checkeqidx$1$1(argt($1),argd($1),name,fp);
 
 #ifdef QLA_INDEX_ALL
-  strcpy(name,"qla_name1(x,$1,,$2,,$4)");
+  strcpy(name,"qla_name1(x,$1,,$2,,$4$5)");
   resetdt($1)
-  qla_name1(x,$1,,$2,,$4)(argd($1),idxd($1),&arg4($3),arg1($4),MAX);
-  for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$4)(&argt($1)[idxd($1)[i]],&arg4($3),&arg1($4)[i]);}
+  qla_name1(x,$1,,$2,,$4$5)(argd($1),idxd($1),&arg4($3),arg1($4),MAX);
+  for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$4$5)(&argt($1)[idxd($1)[i]],&arg4($3),&arg1($4)[i]);}
   checkeqidx$1$1(argt($1),argd($1),name,fp);
 
-  strcpy(name,"qla_name1(,$1,,$2,x,$4)");
+  strcpy(name,"qla_name1(,$1,,$2,x,$4$5)");
   resetdt($1)
-  qla_name1(,$1,,$2,x,$4)(argd($1),&arg4($3),arg1($4),idx1($4),MAX);
-  for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$4)(&argt($1)[i],&arg4($3),&arg1($4)[idx1($4)[i]]);}
+  qla_name1(,$1,,$2,x,$4$5)(argd($1),&arg4($3),arg1($4),idx1($4),MAX);
+  for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$4$5)(&argt($1)[i],&arg4($3),&arg1($4)[idx1($4)[i]]);}
   checkeqidx$1$1(argt($1),argd($1),name,fp);
 
-  strcpy(name,"qla_name1(x,$1,,$2,x,$4)");
+  strcpy(name,"qla_name1(x,$1,,$2,x,$4$5)");
   resetdt($1)
-  qla_name1(x,$1,,$2,x,$4)(argd($1),idxd($1),&arg4($3),arg1($4),idx1($4),MAX);
-  for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$4)(&argt($1)[idxd($1)[i]],&arg4($3),&arg1($4)[idx1($4)[i]]);}
+  qla_name1(x,$1,,$2,x,$4$5)(argd($1),idxd($1),&arg4($3),arg1($4),idx1($4),MAX);
+  for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$4$5)(&argt($1)[idxd($1)[i]],&arg4($3),&arg1($4)[idx1($4)[i]]);}
   checkeqidx$1$1(argt($1),argd($1),name,fp);
 #endif
 
-  strcpy(name,"qla_name1(,$1,v,$2,p,$4)");
+  strcpy(name,"qla_name1(,$1,v,$2,p,$4$5)");
   resetdt($1)
-  qla_name1(,$1,v,$2,p,$4)(argd($1),&arg4($3),arg1p($4),MAX);
-  for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$4)(&argt($1)[i],&arg4($3),arg1p($4)[i]);}
+  qla_name1(,$1,v,$2,p,$4$5)(argd($1),&arg4($3),arg1p($4),MAX);
+  for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$4$5)(&argt($1)[i],&arg4($3),arg1p($4)[i]);}
   checkeqidx$1$1(argt($1),argd($1),name,fp);
 
-  strcpy(name,"qla_name1(,$1,x,$2,p,$4)");
+  strcpy(name,"qla_name1(,$1,x,$2,p,$4$5)");
   resetdt($1)
-  qla_name1(,$1,x,$2,p,$4)(argd($1),&arg4($3),arg1p($4),idx1($4),MAX);
-  for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$4)(&argt($1)[idx1($4)[i]],&arg4($3),arg1p($4)[idx1($4)[i]]);}
+  qla_name1(,$1,x,$2,p,$4$5)(argd($1),&arg4($3),arg1p($4),idx1($4),MAX);
+  for(i = 0; i < MAX; i++){qla_name1(,$1,,$2,,$4$5)(&argt($1)[idx1($4)[i]],&arg4($3),arg1p($4)[idx1($4)[i]]);}
   checkeqidx$1$1(argt($1),argd($1),name,fp);
 
 ')

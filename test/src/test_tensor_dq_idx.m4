@@ -12,6 +12,9 @@ include(protocol_idx.m4)
 #elif QLA_Nc == 2
 #include <qla_d2.h>
 #include <qla_f2.h>
+#elif QLA_Nc == 1
+#include <qla_d1.h>
+#include <qla_f1.h>
 #else
 #include <qla_dn.h>
 #include <qla_fn.h>

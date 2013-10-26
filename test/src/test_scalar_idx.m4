@@ -256,23 +256,12 @@ unary(I,eq_round,R)
 
   /* Multiplication by real or complex constant */
 
-binaryconst(R,eq_r_times,R,R)
-binaryconst(C,eq_r_times,R,C)
-binaryconst(R,peq_r_times,R,R)
-binaryconst(C,peq_r_times,R,C)
-binaryconst(R,eqm_r_times,R,R)
-binaryconst(C,eqm_r_times,R,C)
-binaryconst(R,meq_r_times,R,R)
-binaryconst(C,meq_r_times,R,C)
-binaryconst(C,eq_c_times,C,C)
-binaryconst(C,peq_c_times,C,C)
-binaryconst(C,eqm_c_times,C,C)
-binaryconst(C,meq_c_times,C,C)
-binaryconst(C,meq_r_times,R,C)
-unarytimesi(C,eq_i,C)
-unarytimesi(C,peq_i,C)
-unarytimesi(C,eqm_i,C)
-unarytimesi(C,meq_i,C)
+alleqops(`binaryconst(R,',`_r_times,R,R)')
+alleqops(`binaryconst(C,',`_r_times,R,C)')
+alleqops(`binaryconst(C,',`_r_times,R,C,a)')
+alleqops(`binaryconst(C,',`_c_times,C,C)')
+alleqops(`binaryconst(C,',`_c_times,C,C,a)')
+alleqops(`unarytimesi(C,',`_i,C)')
 
   /* Division */
 
@@ -290,6 +279,7 @@ binary(C,eq,C,minus,C,sC1,sC2)
 
 alleqops(`binary(R,',`,R,times,R,sR1,sR2)')
 alleqops(`binary(C,',`,R,times,C,sR1,sC1)')
+alleqops(`binary(C,',`,R,times,Ca,sR1,sC1)')
 alleqops(`binary(C,',`,C,times,C,sC1,sC2)')
 alleqops(`binary(C,',`,C,times,Ca,sC1,sC2)')
 alleqops(`binary(C,',`,Ca,times,C,sC1,sC2)')

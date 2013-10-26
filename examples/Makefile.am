@@ -1,6 +1,12 @@
 ALL_CFLAGS = -I$(top_srcdir)/include -I$(top_builddir)/include
 ALL_LDADD = -L$(top_builddir)/lib -lqla_int -lqla_cmath -lqla_random -lm
 
+F1_CFLAGS = -DQLA_PrecisionInt=1 -DQLA_Nc=1 $(ALL_CFLAGS)
+F1_LDADD = -lqla_dfn -lqla_fn -lqla_dn -lqla_df -lqla_f -lqla_d $(ALL_LDADD)
+
+D1_CFLAGS = -DQLA_PrecisionInt=2 -DQLA_Nc=1 $(ALL_CFLAGS)
+D1_LDADD = -lqla_dqn -lqla_dn -lqla_qn -lqla_dq -lqla_d -lqla_q $(ALL_LDADD)
+
 F2_CFLAGS = -DQLA_PrecisionInt=1 -DQLA_Nc=2 $(ALL_CFLAGS)
 F2_LDADD = -lqla_df2 -lqla_f2 -lqla_d2 -lqla_df -lqla_f -lqla_d $(ALL_LDADD)
 
@@ -27,8 +33,16 @@ if NC3
   check_PROGRAMS += qla_bench_f3 qla_bench_d3
 endif
 if NCN
-  check_PROGRAMS += qla_bench_fn qla_bench_dn
+  check_PROGRAMS += qla_bench_fn qla_bench_dn qla_bench_f1 qla_bench_d1
 endif
+
+qla_bench_f1_SOURCES = qla_bench.c
+qla_bench_f1_CFLAGS = $(F1_CFLAGS)
+qla_bench_f1_LDADD = $(F1_LDADD)
+
+qla_bench_d1_SOURCES = qla_bench.c
+qla_bench_d1_CFLAGS = $(D1_CFLAGS)
+qla_bench_d1_LDADD = $(D1_LDADD)
 
 qla_bench_f2_SOURCES = qla_bench.c
 qla_bench_f2_CFLAGS = $(F2_CFLAGS)

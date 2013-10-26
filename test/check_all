@@ -52,6 +52,23 @@ done
 warn_rest scalar $mfiles $sfiles
 
 
+t1files=""
+for p in f d q df dq; do
+  hdr="../include/qla_${p}1.h"
+  if [ -f $hdr ]; then
+    files="tensor1/test_tensor_${p}_sng.result tensor1/test_tensor_${p}_idx.result"
+    if exists $files; then
+      pc=`echo $p |tr 'a-z' 'A-Z'`
+      if [ $pc = DF -o $pc = DQ ]; then pc=""; fi
+      perl $srcdir/checkcomplete.pl ${pc}1 $hdr $files
+    fi
+    t1files="$t1files $files"
+  fi
+done
+
+warn_rest tensor1 $t1files
+
+
 t2files=""
 for p in f d q df dq; do
   hdr="../include/qla_${p}2.h"

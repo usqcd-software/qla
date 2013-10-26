@@ -1,3 +1,9 @@
+===============================================================================
+2013-10-26	version 1.8.0
+===============================================================================
+2013-10-13: James Osborn
+	Added virtual Nc=1 library.
+
 2013-05-15: James Osborn
 	Added precision specific versions of some macros for C99 complex.
 

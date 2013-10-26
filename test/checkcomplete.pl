@@ -61,6 +61,7 @@ while(<HEADER>){
     ($void,$prototype) = split(" ",$_);
     # Look only at lines beginning with "void"
     $begin_macros = 1 if($prototype eq "BEGIN_MACROS");
+    $begin_macros = 0 if($prototype eq "END_MACROS");
     next if( ($void ne "void") && (($void ne "#define")||(!$begin_macros)) );
     # Parse prototype
     # Strip argument list, leaving specific function name

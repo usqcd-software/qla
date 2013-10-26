@@ -725,18 +725,17 @@ define(chkGammamult,`
 rem(`
      Multiplication by real constant
 ')
-rem(`chkAssignrMult(t1,eq)')
+rem(`chkAssignrMult(t1,eq,a)')
 define(chkAssignrMult,`
-  strcpy(name,"QLA_$1_$2_r_times_$1");
+  strcpy(name,"QLA_$1_$2_r_times_$1$3");
   QLA_$1_eq_$1(&argd($1),&arg2($1));
-  QLA_$1_$2_r_times_$1(&argd($1),&sR1,&arg1($1));
+  QLA_$1_$2_r_times_$1$3(&argd($1),&sR1,&arg1($1));
   QLA_$1_eq_$1(&argt($1),&arg2($1));
   for_$1_elem{
-    QLA_c_$2_r_times_c($1_elem(argt($1)),sR1,$1_elem(arg1($1)));
+    QLA_c_$2_r_times_c$3($1_elem(argt($1)),sR1,$1$3_elem(arg1($1)));
   }
   checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
-
 rem(`chkrMult(td)')
 define(chkrMult,`
 chkAssignrMult($1,eq)
@@ -744,28 +743,41 @@ chkAssignrMult($1,peq)
 chkAssignrMult($1,eqm)
 chkAssignrMult($1,meq)
 ')
+rem(`chkrMultAdj(td)')
+define(chkrMultAdj,`
+chkAssignrMult($1,eq,a)
+chkAssignrMult($1,peq,a)
+chkAssignrMult($1,eqm,a)
+chkAssignrMult($1,meq,a)
+')
 
 rem(`
      Multiplication by complex constant
 ')
-rem(`chkAssigncMult(t1,eq)')
+rem(`chkAssigncMult(t1,eq,a)')
 define(chkAssigncMult,`
-  strcpy(name,"QLA_$1_$2_c_times_$1");
+  strcpy(name,"QLA_$1_$2_c_times_$1$3");
   QLA_$1_eq_$1(&argd($1),&arg2($1));
-  QLA_$1_$2_c_times_$1(&argd($1),&sC1,&arg1($1));
+  QLA_$1_$2_c_times_$1$3(&argd($1),&sC1,&arg1($1));
   QLA_$1_eq_$1(&argt($1),&arg2($1));
   for_$1_elem{
-    QLA_c_$2_c_times_c($1_elem(argt($1)),sC1,$1_elem(arg1($1)));
+    QLA_c_$2_c_times_c$3($1_elem(argt($1)),sC1,$1$3_elem(arg1($1)));
   }
   checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
-
 rem(`chkcMult(td)')
 define(chkcMult,`
 chkAssigncMult($1,eq)
 chkAssigncMult($1,peq)
 chkAssigncMult($1,eqm)
 chkAssigncMult($1,meq)
+')
+rem(`chkcMultAdj(td)')
+define(chkcMultAdj,`
+chkAssigncMult($1,eq,a)
+chkAssigncMult($1,peq,a)
+chkAssigncMult($1,eqm,a)
+chkAssigncMult($1,meq,a)
 ')
 
 rem(`
@@ -820,18 +832,17 @@ define(chkMinus,`
 rem(`
      Multiplication by Real and Complex fields
 ')
-rem(`chkAssignRCMult(t1,rc,eq)')
+rem(`chkAssignRCMult(t1,rc,eq,a1,a2)')
 define(chkAssignRCMult,`
-  strcpy(name,"QLA_$1_$3_$2_times_$1");
+  strcpy(name,"QLA_$1_$3_$2$4_times_$1$5");
   QLA_$1_eq_$1(&argd($1),&arg2($1));
-  QLA_$1_$3_$2_times_$1(&argd($1),&arg1($2),&arg2($1));
+  QLA_$1_$3_$2$4_times_$1$5(&argd($1),&arg1($2),&arg2($1));
   QLA_$1_eq_$1(&argt($1),&arg2($1));
   for_$1_elem{
-    QLA_c_$3_`'lower($2)_times_c($1_elem(argt($1)),$2_elem(arg1($2)),$1_elem(arg2($1)));
+    QLA_c_$3_`'lower($2)$4_times_c$5($1_elem(argt($1)),$2$4_elem(arg1($2)),$1$5_elem(arg2($1)));
   }
   checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
-
 rem(`chkRCMult(td)')
 define(chkRCMult,`
 chkAssignRCMult($1,R,eq)
@@ -842,6 +853,25 @@ chkAssignRCMult($1,C,eq)
 chkAssignRCMult($1,C,eqm)
 chkAssignRCMult($1,C,peq)
 chkAssignRCMult($1,C,meq)
+chkAssignRCMult($1,C,eq,a)
+chkAssignRCMult($1,C,eqm,a)
+chkAssignRCMult($1,C,peq,a)
+chkAssignRCMult($1,C,meq,a)
+')
+rem(`chkRCMultAdj(td)')
+define(chkRCMultAdj,`
+chkAssignRCMult($1,R,eq,,a)
+chkAssignRCMult($1,R,eqm,,a)
+chkAssignRCMult($1,R,peq,,a)
+chkAssignRCMult($1,R,meq,,a)
+chkAssignRCMult($1,C,eq,,a)
+chkAssignRCMult($1,C,eqm,,a)
+chkAssignRCMult($1,C,peq,,a)
+chkAssignRCMult($1,C,meq,,a)
+chkAssignRCMult($1,C,eq,a,a)
+chkAssignRCMult($1,C,eqm,a,a)
+chkAssignRCMult($1,C,peq,a,a)
+chkAssignRCMult($1,C,meq,a,a)
 ')
 
 rem(`
@@ -863,7 +893,6 @@ define(chkAssignUniformMult,`
   }
   checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
-
 rem(`chkAssignUniformMultAdj(td,eq)')
 define(chkAssignUniformMultAdj,`
 chkAssignUniformMult($1,$2)
@@ -871,7 +900,6 @@ chkAssignUniformMult($1,$2,a)
 chkAssignUniformMult($1,$2,,a)
 chkAssignUniformMult($1,$2,a,a)
 ')
-
 rem(`chkUniformMult(td)')
 define(chkUniformMult,`
 chkAssignUniformMultAdj($1,eq)
@@ -905,7 +933,6 @@ define(chkAssignOuterprod,`
   }
   checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
-
 rem(`chkOuterprod')
 define(chkOuterprod,`
 chkAssignOuterprod(M,eq)
@@ -930,7 +957,6 @@ define(chkLocalDoteqop,`
   QLA_C_$2_$1_dot_$1(&argd(C),&arg1($1),&arg2($1));
   checkeqsngCC(&argd(C),&argt(C),name,fp);
 ')
-
 rem(`chkLocalDot(t1)')
 define(chkLocalDot,`
 chkLocalDoteqop($1,eq)
@@ -955,7 +981,6 @@ define(chkLocalRealDoteqop,`
   QLA_R_$2_re_$1_dot_$1(&argd(R),&arg1($1),&arg2($1));
   checkeqsngRR(&argd(R),&argt(R),name,fp);
 ')
-
 rem(`chkLocalRealDot(t1)')
 define(chkLocalRealDot,`
 chkLocalRealDoteqop($1,eq)
@@ -983,8 +1008,6 @@ define(chkAssignLeftMultM,`
   }
   checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
-
-
 rem(`chkLeftMultM(td,adj)')
 define(chkLeftMultM,`
 chkAssignLeftMultM($1,eq,$2)
@@ -1010,7 +1033,6 @@ define(chkAssignLeftMultnM,`
   QLA_$1_$2_nM_times_n$1$3(&argd($1),arg1n(M),arg2n($1),ND);
   checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
-
 rem(`chkLeftMultnM(td,adj)')
 define(chkLeftMultnM,`
 chkAssignLeftMultnM($1,eq,$2)
@@ -1038,8 +1060,6 @@ define(chkAssignLeftMultMa,`
   }
   checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
-
-
 rem(`chkLeftMultMa(td,adj)')
 define(chkLeftMultMa,`
 chkAssignLeftMultMa($1,eq,$2)
@@ -1065,7 +1085,6 @@ define(chkAssignLeftMultnMa,`
   QLA_$1_$2_nMa_times_n$1$3(&argd($1),arg1n(M),arg2n($1),ND);
   checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
-
 rem(`chkLeftMultnMa(td,adj)')
 define(chkLeftMultnMa,`
 chkAssignLeftMultnMa($1,eq,$2)
@@ -1093,8 +1112,6 @@ define(chkAssignRightMultM,`
   }
   checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
-
-
 rem(`chkRightMultM(td,adj)')
 define(chkRightMultM,`
 chkAssignRightMultM($1,eq,$2)
@@ -1122,8 +1139,6 @@ define(chkAssignRightMultMa,`
   }
   checkeqsng$1$1(&argd($1),&argt($1),name,fp);
 ')
-
-
 rem(`chkRightMultMa(td,adj)')
 define(chkRightMultMa,`
 chkAssignRightMultMa($1,eq,$2)
@@ -1131,7 +1146,6 @@ chkAssignRightMultMa($1,peq,$2)
 chkAssignRightMultMa($1,eqm,$2)
 chkAssignRightMultMa($1,meq,$2)
 ')
-
 
 rem(`
      Ternary with real constant

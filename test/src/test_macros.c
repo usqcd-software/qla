@@ -126,8 +126,6 @@ int main(int argc, char *argv[]){
   }
 #endif
 
-#if QLA_Precision != 'Q'
-
   strcpy(name,MACROP"QLA_" STRM(QLA_PrecisionLetter) "_norm_c");
   destR = QLAP(norm_c)(sC1);
   chkR = sqrt(sC1re*sC1re + sC1im*sC1im);
@@ -137,8 +135,6 @@ int main(int argc, char *argv[]){
   destR = QLAP(arg_c)(sC1);
   chkR = atan2(sC1im,sC1re);
   CHECKeqsngRR(destR,chkR,name,fp);
-
-#endif
 
   /* Test precision conversion */
 
@@ -767,6 +763,16 @@ int main(int argc, char *argv[]){
   QLA_c_eq_c_times_c_minus_c(destC,sC1,sC2,sC3);
   CHECKeqsngCRR(destC,sC1re*sC2re-sC1im*sC2im-sC3re,
 		sC1re*sC2im+sC1im*sC2re-sC3im,name,fp);
+
+  strcpy(name,MACROP"QLA_c_eqm_c_times_c_plus_c");
+  QLA_c_eqm_c_times_c_plus_c(destC,sC1,sC2,sC3);
+  CHECKeqsngCRR(destC,-sC1re*sC2re+sC1im*sC2im-sC3re,
+		-sC1re*sC2im-sC1im*sC2re-sC3im,name,fp);
+
+  strcpy(name,MACROP"QLA_c_eqm_c_times_c_minus_c");
+  QLA_c_eqm_c_times_c_minus_c(destC,sC1,sC2,sC3);
+  CHECKeqsngCRR(destC,-sC1re*sC2re+sC1im*sC2im+sC3re,
+		-sC1re*sC2im-sC1im*sC2re+sC3im,name,fp);
 
   strcpy(name,MACROP"QLA_c_eq_c_times_r_plus_r");
   QLA_c_eq_c_times_r_plus_r(destC,sC1,sR2,sR3);

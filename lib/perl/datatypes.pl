@@ -230,7 +230,6 @@ foreach $t ( keys %datatype_row_spin_dim ){
    $datatype_diracpropagator_abbrev,$spins,
    $datatype_randomstate_abbrev,0
     );
-
 # Append scalar types - the values are identical
 foreach $t ( keys %datatype_col_spin_dim ){
     $s = $datatype_scalar_abbrev{$t};
@@ -255,6 +254,23 @@ foreach $t ( @datatype_abbrev )
     else{$datatype_colorful{$s} = 0;}
 }
 
+# Dimension of spin column index
+%datatype_adjoint = (
+   $datatype_integer_abbrev,0,
+   $datatype_real_abbrev,0,
+   $datatype_complex_abbrev,1,
+   $datatype_colorvector_abbrev,0,
+   $datatype_halffermion_abbrev,0,
+   $datatype_diracfermion_abbrev,0,
+   $datatype_colormatrix_abbrev,1,
+   $datatype_diracpropagator_abbrev,1,
+   $datatype_randomstate_abbrev,0
+    );
+# Append scalar types - the values are identical
+foreach $t ( keys %datatype_adjoint ){
+    $s = $datatype_scalar_abbrev{$t};
+    $datatype_adjoint{$s} = $datatype_adjoint{$t};
+}
 # Datatypes having distinct adjoints in the same class
 @datatype_adjoint_abbrev = (
      $datatype_complex_abbrev,

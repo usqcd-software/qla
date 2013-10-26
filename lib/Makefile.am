@@ -13,6 +13,28 @@ if NC3
 endif
 if NCN
   QLA_DIRS += $(QLA_CN_DIRS)
+nodist_include_HEADERS = \
+ $(top_builddir)/include/qla_f1.h \
+ $(top_builddir)/include/qla_f1_generic.h \
+ $(top_builddir)/include/qla_f1_color_generic.h \
+ $(top_builddir)/include/qla_f1_precision_generic.h \
+ $(top_builddir)/include/qla_d1.h \
+ $(top_builddir)/include/qla_d1_generic.h \
+ $(top_builddir)/include/qla_d1_color_generic.h \
+ $(top_builddir)/include/qla_d1_precision_generic.h \
+ $(top_builddir)/include/qla_q1.h \
+ $(top_builddir)/include/qla_q1_generic.h \
+ $(top_builddir)/include/qla_q1_color_generic.h \
+ $(top_builddir)/include/qla_q1_precision_generic.h \
+ $(top_builddir)/include/qla_df1.h \
+ $(top_builddir)/include/qla_df1_color_generic.h \
+ $(top_builddir)/include/qla_dq1.h \
+ $(top_builddir)/include/qla_dq1_color_generic.h
+$(nodist_include_HEADERS): makeheaders
+makeheaders:
+	$(top_srcdir)/lib/perl/make_virtualNc $(PERL) $(top_srcdir)
+clean-local:
+	-rm -f $(nodist_include_HEADERS)
 endif
 
 SUBDIRS = \
@@ -22,7 +44,7 @@ SUBDIRS = \
 	random \
 	$(QLA_DIRS) \
 	optimized \
-	$(QLA_DIRS)
+	$(QLA_DIRS) \
+	.
 
 EXTRA_DIST = make_qla_dirs
-

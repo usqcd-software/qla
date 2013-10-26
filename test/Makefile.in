@@ -88,7 +88,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 @NC2_TRUE@am__append_1 = tensor2
 @NC3_TRUE@am__append_2 = tensor3
-@NCN_TRUE@am__append_3 = tensorN
+@NCN_TRUE@am__append_3 = tensorN tensor1
 subdir = test
 DIST_COMMON = README $(srcdir)/Makefile.am $(srcdir)/Makefile.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -122,7 +122,7 @@ ETAGS = etags
 CTAGS = ctags
 am__tty_colors = \
 red=; grn=; lgn=; blu=; std=
-DIST_SUBDIRS = src int scalar tensor2 tensor3 tensorN .
+DIST_SUBDIRS = src int scalar tensor2 tensor3 tensorN tensor1 .
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 am__relativize = \
   dir0=`pwd`; \

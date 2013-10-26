@@ -118,10 +118,13 @@ define(P_elem, `QLA_elem_P($1,ic,is,jc,js)')
 define(M_elem, `QLA_elem_M($1,ic,jc)')
 
 rem(`
-     Accessors for transpose
+     Accessors for transpose (also use "a" for convenience)
 ')
 define(Mt_elem, `QLA_elem_M($1,jc,ic)')
 define(Pt_elem, `QLA_elem_P($1,jc,js,ic,is)')
+define(Ca_elem, `$1')
+define(Ma_elem, `QLA_elem_M($1,jc,ic)')
+define(Pa_elem, `QLA_elem_P($1,jc,js,ic,is)')
 
 rem(`
      Accessors for multiplicands and multipliers

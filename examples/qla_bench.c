@@ -8,6 +8,9 @@
 # include <omp.h>
 # define __USE_GNU
 # include <sched.h>
+# define PFOR _Pragma("omp parallel for")
+#else
+# define PFOR
 #endif
 
 #if QLA_Precision == 'F'
@@ -247,7 +250,7 @@ sum_M(QLA_ColorMatrix *d, int n)
 }
 
 #define set_fields { \
-  _Pragma("omp parallel for") \
+  PFOR \
   for(int i=0; i<n; ++i) { \
     set_R(&r1[i], i); \
     set_C(&c1[i], i); \

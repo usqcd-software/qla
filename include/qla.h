@@ -65,7 +65,7 @@ extern "C" {
 #  ifndef QLA_Nc
 #    define QLA_Nc 3
 #  endif
-#  if QLA_Nc == 2 || QLA_Nc == 3
+#  if QLA_Nc == 1 || QLA_Nc == 2 || QLA_Nc == 3
 #    define QLA_Colors QLA_Nc
 #  elif QLA_Nc > 0
 #    define QLA_Colors 'N'
@@ -74,7 +74,7 @@ extern "C" {
 #  endif
 #else
 #  ifndef QLA_Nc
-#    if QLA_Colors == 2 || QLA_Colors == 3
+#    if QLA_Colors == 1 || QLA_Colors == 2 || QLA_Colors == 3
 #      define QLA_Nc QLA_Colors
 #    elif QLA_Colors == 'N'
 #      define QLA_Nc 3
@@ -82,7 +82,7 @@ extern "C" {
 #      error "bad QLA_Colors"
 #    endif
 #  else
-#    if QLA_Colors == 2 || QLA_Colors == 3
+#    if QLA_Colors == 1 || QLA_Colors == 2 || QLA_Colors == 3
 #      if QLA_Colors != QLA_Nc
 #        error "inconsistent QLA_Colors and QLA_Nc"
 #      endif
@@ -121,6 +121,9 @@ extern "C" {
 #elif ( QLA_Colors == 2 )
 #include <qla_df2.h>
 #include <qla_dq2.h>
+#elif ( QLA_Colors == 1 )
+#include <qla_df1.h>
+#include <qla_dq1.h>
 #elif ( QLA_Colors == 'N' )
 #include <qla_dfn.h>
 #include <qla_dqn.h>
@@ -143,6 +146,8 @@ extern "C" {
 #include <qla_f3.h>
 #elif ( QLA_Colors == 2 )
 #include <qla_f2.h>
+#elif ( QLA_Colors == 1 )
+#include <qla_f1.h>
 #elif ( QLA_Colors == 'N' )
 #include <qla_fn.h>
 #endif
@@ -153,6 +158,8 @@ extern "C" {
 #include <qla_d3.h>
 #elif ( QLA_Colors == 2 )
 #include <qla_d2.h>
+#elif ( QLA_Colors == 1 )
+#include <qla_d1.h>
 #elif ( QLA_Colors == 'N' )
 #include <qla_dn.h>
 #endif
@@ -163,6 +170,8 @@ extern "C" {
 #include <qla_q3.h>
 #elif ( QLA_Colors == 2 )
 #include <qla_q2.h>
+#elif ( QLA_Colors == 1 )
+#include <qla_q1.h>
 #elif ( QLA_Colors == 'N' )
 #include <qla_qn.h>
 #endif

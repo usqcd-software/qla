@@ -15,4 +15,5 @@ EXTRA_DIST = \
  operatortypes.pl \
  prototype.pl \
  variable_names.pl \
+ make_virtualNc virtualNc.pl \
  code-templates

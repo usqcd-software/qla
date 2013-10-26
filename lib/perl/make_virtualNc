@@ -1,0 +1,37 @@
+#!/bin/sh
+
+perl="$1"
+src="$2"
+vnc="$src/lib/perl/virtualNc.pl"
+
+$perl $vnc ../include/qla_fn.h ../include/qla_f1.h
+$perl $vnc ../include/qla_dn.h ../include/qla_d1.h
+$perl $vnc ../include/qla_qn.h ../include/qla_q1.h
+$perl $vnc ../include/qla_dfn.h ../include/qla_df1.h
+$perl $vnc ../include/qla_dqn.h ../include/qla_dq1.h
+
+hs="
+qla_fn_color_generic.h
+qla_fn_generic.h
+qla_fn_precision_generic.h
+qla_dn_color_generic.h
+qla_dn_generic.h
+qla_dn_precision_generic.h
+qla_qn_color_generic.h
+qla_qn_generic.h
+qla_qn_precision_generic.h
+qla_dfn_color_generic.h
+qla_dqn_color_generic.h
+"
+
+spat="
+s/QLA_Nc,//;
+s/\(QLA_[DFQ]*\)N/\11/g;
+"
+
+for h in $hs; do
+    h2="`echo $h |sed 's/\([fdq]\)n/\11/'`"
+    #echo "$h : $h2"
+    #echo "$spat"
+    cat ../include/$h |sed "$spat" >../include/$h2
+done

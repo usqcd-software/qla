@@ -439,6 +439,7 @@ sub print_val_assign_spin_tr {
 
 sub times_pattern {
     my($md,$nd,$m1,$n1,$m2,$n2) = @_;
+    #print(join(" ",@_),"\n");
 
     if($m2.$n2 eq "00" && $md == $m1 && $nd == $n1){"XI";}
     elsif($m1.$n1 eq "00" && $md == $m2 && $nd == $n2){"IX";}
