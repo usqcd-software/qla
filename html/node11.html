@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Constant Arguments</TITLE>
+<META NAME="description" CONTENT="Constant Arguments">
+<META NAME="keywords" CONTENT="qla">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="qla.css">
+
+<LINK REL="next" HREF="node12.html">
+<LINK REL="previous" HREF="node10.html">
+<LINK REL="up" HREF="node7.html">
+<LINK REL="next" HREF="node12.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html241"
+  HREF="node12.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html239"
+  HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html233"
+  HREF="node10.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html242"
+  HREF="node12.html">Indirect Addressing for Binary</A>
+<B> Up:</B> <A NAME="tex2html240"
+  HREF="node7.html">Function Naming Conventions</A>
+<B> Previous:</B> <A NAME="tex2html234"
+  HREF="node10.html">Indirect Addressing for Binary</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00034000000000000000">
+Constant Arguments</A>
+</H2>
+
+<P>
+As illustrated above, functions generally have vector and scalar
+variants.  In this example, the vector variants require all operands
+to be indexed.  However, in some cases it is desirable to keep some
+arguments constant - i.e. never subscripted.  For example the
+function
+<PRE>
+   QLA_V_veq_c_times_V(c,z,b,n)
+</PRE>
+multiplies an array of color vectors by a complex constant as in
+<PRE>
+   c[i] = z*b[i]
+</PRE>
+for <!-- MATH
+ $i = 1\ldots{}n$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="73" HEIGHT="17" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="$i = 1\ldots{}n$"></SPAN>.  In this case we specify that the argument is
+constant (nonsubscripted) by converting the type abbreviation to lower
+case: ``<TT>c</TT>''.
+
+<P>
+<BR><HR>
+<ADDRESS>
+James Osborn
+2006-06-25
+</ADDRESS>
+</BODY>
+</HTML>

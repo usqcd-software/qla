@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Gamma matrices</TITLE>
+<META NAME="description" CONTENT="Gamma matrices">
+<META NAME="keywords" CONTENT="qla">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="qla.css">
+
+<LINK REL="next" HREF="node30.html">
+<LINK REL="previous" HREF="node24.html">
+<LINK REL="up" HREF="node21.html">
+<LINK REL="next" HREF="node30.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html431"
+  HREF="node30.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html429"
+  HREF="node21.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html423"
+  HREF="node28.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html432"
+  HREF="node30.html">Random numbers</A>
+<B> Up:</B> <A NAME="tex2html430"
+  HREF="node21.html">Auxiliary Features</A>
+<B> Previous:</B> <A NAME="tex2html424"
+  HREF="node28.html">Complex macros with four</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00054000000000000000">
+Gamma matrices</A>
+</H2>
+
+<P>
+The gamma matrix basis used is:
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\begin{array}{ccccccc}
+\gamma_1
+ &=& \left(\begin{array}{rrrr}
+   0&0&0&i\\
+   0&0&i&0\\
+   0&-i&0&0\\
+   -i&0&0&0\\
+ \end{array}\right)
+ &=& \left(\begin{array}{rr}
+   0&i\sigma_1\\
+   -i\sigma_1&0
+ \end{array}\right)
+ &=& -\sigma_2\!\otimes\!\sigma_1\\
+\gamma_2
+ &=& \left(\begin{array}{rrrr}
+   0&0&0&-1\\
+   0&0&1&0\\
+   0&1&0&0\\
+   -1&0&0&0\\
+ \end{array}\right)
+ &=& \left(\begin{array}{rr}
+   0&-i\sigma_2\\
+   i\sigma_2&0
+ \end{array}\right)
+ &=& \sigma_2\!\otimes\!\sigma_2\\
+\gamma_3
+ &=& \left(\begin{array}{rrrr}
+   0&0&i&0\\
+   0&0&0&-i\\
+   -i&0&0&0\\
+   0&i&0&0\\
+ \end{array}\right)
+ &=& \left(\begin{array}{rr}
+   0&i\sigma_3\\
+   -i\sigma_3&0
+ \end{array}\right)
+ &=& -\sigma_2\!\otimes\!\sigma_3\\
+\gamma_4
+ &=& \left(\begin{array}{rrrr}
+   0&0&1&0\\
+   0&0&0&1\\
+   1&0&0&0\\
+   0&1&0&0\\
+ \end{array}\right)
+ &=& \left(\begin{array}{rr}
+   0&\mathbf{1}\\
+   \mathbf{1}&0
+ \end{array}\right)
+ &=& \sigma_1\!\otimes\!1\\
+\end{array}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="465" HEIGHT="312" BORDER="0"
+ SRC="img67.png"
+ ALT="\begin{displaymath}
+\begin{array}{ccccccc}
+\gamma_1
+&amp;=&amp; \left(\begin{array}{rrr...
+...&amp;0
+\end{array}\right)
+&amp;=&amp; \sigma_1\!\otimes\!1\\
+\end{array}\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<P>
+This is a chiral basis and is the same basis currently used in QDP++.
+
+<P>
+For functions that multiply by a gamma matrix the gamma matrix is
+specified by an integer between 0 and 15.  The mapping from the integer
+to a general gamma matrix is:
+ <BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+\Gamma(n) = \gamma_1^{n_0} \gamma_2^{n_1} \gamma_3^{n_2} \gamma_4^{n_3}
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="147" HEIGHT="28" BORDER="0"
+ SRC="img68.png"
+ ALT="\begin{displaymath}
+\Gamma(n) = \gamma_1^{n_0} \gamma_2^{n_1} \gamma_3^{n_2} \gamma_4^{n_3}
+\end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+where the binary representation of <SPAN CLASS="MATH"><I>n</I></SPAN> is <!-- MATH
+ $n_3 n_2 n_1 n_0$
+ -->
+<SPAN CLASS="MATH"><I>n</I><SUB>3</SUB> <I>n</I><SUB>2</SUB> <I>n</I><SUB>1</SUB> <I>n</I><SUB>0</SUB></SPAN>.
+
+<P>
+<BR><HR>
+<ADDRESS>
+James Osborn
+2006-06-25
+</ADDRESS>
+</BODY>
+</HTML>

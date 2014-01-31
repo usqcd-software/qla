@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Indirect Addressing for Unary Operations</TITLE>
+<META NAME="description" CONTENT="Indirect Addressing for Unary Operations">
+<META NAME="keywords" CONTENT="qla">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="qla.css">
+
+<LINK REL="next" HREF="node14.html">
+<LINK REL="previous" HREF="node12.html">
+<LINK REL="up" HREF="node7.html">
+<LINK REL="next" HREF="node14.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html261"
+  HREF="node14.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html259"
+  HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html253"
+  HREF="node12.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html262"
+  HREF="node14.html">Indirect Addressing for Unary</A>
+<B> Up:</B> <A NAME="tex2html260"
+  HREF="node7.html">Function Naming Conventions</A>
+<B> Previous:</B> <A NAME="tex2html254"
+  HREF="node12.html">Indirect Addressing for Binary</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00036000000000000000">
+Indirect Addressing for Unary Operations</A>
+</H2>
+
+<P>
+For unary operations the list is also shorter.  For example, for copying an
+SU(N) staggered fermion vector the variants are as follows.
+
+<P>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="RIGHT">&nbsp;</TD>
+<TD ALIGN="LEFT">function name</TD>
+<TD ALIGN="LEFT">meaning</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">1</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_eq_V(c,b)              </TT></TD>
+<TD ALIGN="LEFT"><TT>c = b                         </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">2</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_veq_V(c,b,n)           </TT></TD>
+<TD ALIGN="LEFT"><TT>c[i] = b[i]                </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">3</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_xeq_V(c,b,j,n)         </TT></TD>
+<TD ALIGN="LEFT"><TT>c[j[i]] = b[j[i]]       </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">5</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_eq_xV(c,b,jb,n)        </TT></TD>
+<TD ALIGN="LEFT"><TT>c[i] = b[jb[i]]            </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">6</TD>
+<TD ALIGN="LEFT"><TT>QLA_xV_eq_V(c,jc,b,n)        </TT></TD>
+<TD ALIGN="LEFT"><TT>c[jc[i]] = b[i]            </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">8</TD>
+<TD ALIGN="LEFT"><TT>QLA_xV_eq_xV(c,jc,b,jb,n)    </TT></TD>
+<TD ALIGN="LEFT"><TT>c[jc[i]] = b[jb[i]]        </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">12</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_veq_pV(c,b,n)          </TT></TD>
+<TD ALIGN="LEFT"><TT>c[i] = (*b[i])             </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">15</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_xeq_pV(c,b,j,n)       </TT></TD>
+<TD ALIGN="LEFT"><TT>c[j[i]] = (*b[j[i]])     </TT></TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+<BR><HR>
+<ADDRESS>
+James Osborn
+2006-06-25
+</ADDRESS>
+</BODY>
+</HTML>

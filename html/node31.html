@@ -1,0 +1,279 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Function Details</TITLE>
+<META NAME="description" CONTENT="Function Details">
+<META NAME="keywords" CONTENT="qla">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="qla.css">
+
+<LINK REL="next" HREF="node119.html">
+<LINK REL="previous" HREF="node21.html">
+<LINK REL="up" HREF="qla.html">
+<LINK REL="next" HREF="node32.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html449"
+  HREF="node32.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html447"
+  HREF="qla.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html441"
+  HREF="node30.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html450"
+  HREF="node32.html">Unary Operations</A>
+<B> Up:</B> <A NAME="tex2html448"
+  HREF="qla.html">QLA Linear Algebra Interface</A>
+<B> Previous:</B> <A NAME="tex2html442"
+  HREF="node30.html">Random numbers</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00060000000000000000"></A>
+<A NAME="sec:details"></A>
+<BR>
+Function Details
+</H1>
+
+<P>
+This section describes in some detail the names and functionality for
+all functions in the interface.  Because of the variety of indexing
+schemes, datatypes, and assignment operations, there are several
+thousand names altogether.  However, there are only a couple dozen
+categories.  It is hoped that the construction of the names is
+sufficiently natural that with only a little practice, the user can
+guess the name of any function and determine its functionality without
+consulting a list.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A NAME="tex2html451"
+  HREF="node32.html">Unary Operations</A>
+<UL>
+<LI><A NAME="tex2html452"
+  HREF="node33.html">Elementary unary functions on reals</A>
+<LI><A NAME="tex2html453"
+  HREF="node34.html">Elementary unary functions real to complex</A>
+<LI><A NAME="tex2html454"
+  HREF="node35.html">Elementary unary functions complex to real</A>
+<LI><A NAME="tex2html455"
+  HREF="node36.html">Elementary unary functions on complex values</A>
+<LI><A NAME="tex2html456"
+  HREF="node37.html">Elementary binary functions on reals</A>
+<LI><A NAME="tex2html457"
+  HREF="node38.html">Elementary binary functions on integers</A>
+<LI><A NAME="tex2html458"
+  HREF="node39.html">Copying and incrementing</A>
+<LI><A NAME="tex2html459"
+  HREF="node40.html">Hermitian conjugate</A>
+<LI><A NAME="tex2html460"
+  HREF="node41.html">Transpose</A>
+<LI><A NAME="tex2html461"
+  HREF="node42.html">Complex conjugate</A>
+<LI><A NAME="tex2html462"
+  HREF="node43.html">Local squared norm: uniform precision</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html463"
+  HREF="node44.html">Type conversion and component extraction and insertion</A>
+<UL>
+<LI><A NAME="tex2html464"
+  HREF="node45.html">Convert float to double</A>
+<LI><A NAME="tex2html465"
+  HREF="node46.html">Convert double to float</A>
+<LI><A NAME="tex2html466"
+  HREF="node47.html">Convert long double to double</A>
+<LI><A NAME="tex2html467"
+  HREF="node48.html">Convert real to complex (zero imaginary part)</A>
+<LI><A NAME="tex2html468"
+  HREF="node49.html">Convert real and imaginary to complex</A>
+<LI><A NAME="tex2html469"
+  HREF="node50.html">Real part of complex</A>
+<LI><A NAME="tex2html470"
+  HREF="node51.html">Imaginary part of complex</A>
+<LI><A NAME="tex2html471"
+  HREF="node52.html">Integer to real</A>
+<LI><A NAME="tex2html472"
+  HREF="node53.html">Real to integer (truncate)</A>
+<LI><A NAME="tex2html473"
+  HREF="node54.html">Real to integer (round)</A>
+<LI><A NAME="tex2html474"
+  HREF="node55.html">Accessing a color matrix element</A>
+<LI><A NAME="tex2html475"
+  HREF="node56.html">Inserting a color matrix element</A>
+<LI><A NAME="tex2html476"
+  HREF="node57.html">Accessing a half fermion or Dirac fermion spinor element</A>
+<LI><A NAME="tex2html477"
+  HREF="node58.html">Inserting a half fermion or Dirac fermion spinor element</A>
+<LI><A NAME="tex2html478"
+  HREF="node59.html">Accessing a staggered fermion spinor element</A>
+<LI><A NAME="tex2html479"
+  HREF="node60.html">Inserting a staggered fermion spinor element</A>
+<LI><A NAME="tex2html480"
+  HREF="node61.html">Accessing a Dirac propagator matrix element</A>
+<LI><A NAME="tex2html481"
+  HREF="node62.html">Inserting a Dirac propagator matrix element</A>
+<LI><A NAME="tex2html482"
+  HREF="node63.html">Extracting a color column vector from a color matrix</A>
+<LI><A NAME="tex2html483"
+  HREF="node64.html">Inserting a color vector into a color matrix</A>
+<LI><A NAME="tex2html484"
+  HREF="node65.html">Extracting a color column vector from a half fermion or Dirac fermion spinor</A>
+<LI><A NAME="tex2html485"
+  HREF="node66.html">Inserting a color column vector into a half fermion or Dirac fermion spinor</A>
+<LI><A NAME="tex2html486"
+  HREF="node67.html">Extracting a Dirac column vector from a Dirac propagator matrix</A>
+<LI><A NAME="tex2html487"
+  HREF="node68.html">Inserting a Dirac column vector into a Dirac propagator matrix</A>
+<LI><A NAME="tex2html488"
+  HREF="node69.html">Trace of color matrix</A>
+<LI><A NAME="tex2html489"
+  HREF="node70.html">Real trace of color matrix</A>
+<LI><A NAME="tex2html490"
+  HREF="node71.html">Imaginary trace of color matrix</A>
+<LI><A NAME="tex2html491"
+  HREF="node72.html">Traceless antihermitian part of color matrix</A>
+<LI><A NAME="tex2html492"
+  HREF="node73.html">Spin trace of Dirac propagator</A>
+<LI><A NAME="tex2html493"
+  HREF="node74.html">Dirac spin projection</A>
+<LI><A NAME="tex2html494"
+  HREF="node75.html">Dirac spin reconstruction</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html495"
+  HREF="node76.html">Binary Operations with Constants</A>
+<UL>
+<LI><A NAME="tex2html496"
+  HREF="node77.html">Multiplication by real constant</A>
+<LI><A NAME="tex2html497"
+  HREF="node78.html">Multiplication by complex constant</A>
+<LI><A NAME="tex2html498"
+  HREF="node79.html">Multiplication by i</A>
+<LI><A NAME="tex2html499"
+  HREF="node80.html">Left multiplication by gamma matrix</A>
+<LI><A NAME="tex2html500"
+  HREF="node81.html">Right multiplication by gamma matrix</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html501"
+  HREF="node82.html">Binary Operations with Fields</A>
+<UL>
+<LI><A NAME="tex2html502"
+  HREF="node83.html">Division of real, complex, and integer fields</A>
+<LI><A NAME="tex2html503"
+  HREF="node84.html">Addition</A>
+<LI><A NAME="tex2html504"
+  HREF="node85.html">Subtraction</A>
+<LI><A NAME="tex2html505"
+  HREF="node86.html">Multiplication: uniform types</A>
+<LI><A NAME="tex2html506"
+  HREF="node87.html">Local inner product</A>
+<LI><A NAME="tex2html507"
+  HREF="node88.html">Color matrix from outer product</A>
+<LI><A NAME="tex2html508"
+  HREF="node89.html">Left multiplication by color matrix</A>
+<LI><A NAME="tex2html509"
+  HREF="node90.html">Adjoint of color matrix times adjoint of color matrix</A>
+<LI><A NAME="tex2html510"
+  HREF="node91.html">Left multiplication by adjoint of color matrix</A>
+<LI><A NAME="tex2html511"
+  HREF="node92.html">Right multiplication by color matrix</A>
+<LI><A NAME="tex2html512"
+  HREF="node93.html">Right multiplication by adjoint of color matrix</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html513"
+  HREF="node94.html">Ternary Operations with Fields</A>
+<UL>
+<LI><A NAME="tex2html514"
+  HREF="node95.html">Addition with real scalar multiplication</A>
+<LI><A NAME="tex2html515"
+  HREF="node96.html">Subtraction with real scalar multiplication</A>
+<LI><A NAME="tex2html516"
+  HREF="node97.html">Addition with complex scalar multiplication</A>
+<LI><A NAME="tex2html517"
+  HREF="node98.html">Subtraction with complex scalar multiplication</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html518"
+  HREF="node99.html">Boolean and Bit Operations</A>
+<UL>
+<LI><A NAME="tex2html519"
+  HREF="node100.html">Comparisons of integers and reals</A>
+<LI><A NAME="tex2html520"
+  HREF="node101.html">Boolean Operations</A>
+<LI><A NAME="tex2html521"
+  HREF="node102.html">Copymask</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html522"
+  HREF="node103.html">Reductions</A>
+<UL>
+<LI><A NAME="tex2html523"
+  HREF="node104.html">Global squared norm: uniform precision</A>
+<LI><A NAME="tex2html524"
+  HREF="node105.html">Global squared norm: float to double</A>
+<LI><A NAME="tex2html525"
+  HREF="node106.html">Global squared norm: double to long double</A>
+<LI><A NAME="tex2html526"
+  HREF="node107.html">Global inner product</A>
+<LI><A NAME="tex2html527"
+  HREF="node108.html">Global inner product: float to double</A>
+<LI><A NAME="tex2html528"
+  HREF="node109.html">Global inner product: double to long double</A>
+<LI><A NAME="tex2html529"
+  HREF="node110.html">Global sums</A>
+<LI><A NAME="tex2html530"
+  HREF="node111.html">Global sums: float to double</A>
+<LI><A NAME="tex2html531"
+  HREF="node112.html">Global sums: double to long double</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html532"
+  HREF="node113.html">Fills</A>
+<UL>
+<LI><A NAME="tex2html533"
+  HREF="node114.html">Zero fills</A>
+<LI><A NAME="tex2html534"
+  HREF="node115.html">Constant fills and random numbers</A>
+<LI><A NAME="tex2html535"
+  HREF="node116.html">Uniform random number fills</A>
+<LI><A NAME="tex2html536"
+  HREF="node117.html">Gaussian random number fills</A>
+<LI><A NAME="tex2html537"
+  HREF="node118.html">Seeding the random number generator field from an integer field</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+<BR><HR>
+<ADDRESS>
+James Osborn
+2006-06-25
+</ADDRESS>
+</BODY>
+</HTML>

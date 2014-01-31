@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Indirect Addressing for Binary Operations with a Constant</TITLE>
+<META NAME="description" CONTENT="Indirect Addressing for Binary Operations with a Constant">
+<META NAME="keywords" CONTENT="qla">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="qla.css">
+
+<LINK REL="next" HREF="node13.html">
+<LINK REL="previous" HREF="node11.html">
+<LINK REL="up" HREF="node7.html">
+<LINK REL="next" HREF="node13.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html251"
+  HREF="node13.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html249"
+  HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html243"
+  HREF="node11.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html252"
+  HREF="node13.html">Indirect Addressing for Unary</A>
+<B> Up:</B> <A NAME="tex2html250"
+  HREF="node7.html">Function Naming Conventions</A>
+<B> Previous:</B> <A NAME="tex2html244"
+  HREF="node11.html">Constant Arguments</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00035000000000000000">
+Indirect Addressing for Binary Operations with a Constant</A>
+</H2>
+
+<P>
+When an argument in a binary operation is a constant it is never
+subscripted by definition.  The list of variants is shorter.  For
+example, for multiplication of an SU(N) vector by a constant we have
+the following.
+
+<P>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="RIGHT">&nbsp;</TD>
+<TD ALIGN="LEFT">function name</TD>
+<TD ALIGN="LEFT">meaning</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">1</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_eq_c_times_V(c,z,b)              </TT></TD>
+<TD ALIGN="LEFT"><TT>c = z*b                         </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">2</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_veq_c_times_V(c,z,b,n)           </TT></TD>
+<TD ALIGN="LEFT"><TT>c[i] = z*b[i]                </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">3</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_xeq_c_times_V(c,z,b,j,n)         </TT></TD>
+<TD ALIGN="LEFT"><TT>c[j[i]] = z*b[j[i]]       </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">5</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_eq_c_times_xV(c,z,b,jb,n)        </TT></TD>
+<TD ALIGN="LEFT"><TT>c[i] = z*b[jb[i]]            </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">6</TD>
+<TD ALIGN="LEFT"><TT>QLA_xV_eq_c_times_V(c,jc,z,b,n)        </TT></TD>
+<TD ALIGN="LEFT"><TT>c[jc[i]] = z*b[i]            </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">8</TD>
+<TD ALIGN="LEFT"><TT>QLA_xV_eq_c_times_xV(c,jc,z,b,jb,n)    </TT></TD>
+<TD ALIGN="LEFT"><TT>c[jc[i]] = z*b[jb[i]]        </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">12</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_veq_c_times_pV(c,z,b,n)          </TT></TD>
+<TD ALIGN="LEFT"><TT>c[i] = z*(*b[i])             </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">15</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_xeq_c_times_pV(c,z,b,j,n)       </TT></TD>
+<TD ALIGN="LEFT"><TT>c[j[i]] = z*(*b[j[i]])     </TT></TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+The scalar variant <TT>QLA_V_eq_C_times_V(c,z,b)</TT> is also
+in the library and is equivalent to variant 1 above.
+
+<P>
+<BR><HR>
+<ADDRESS>
+James Osborn
+2006-06-25
+</ADDRESS>
+</BODY>
+</HTML>

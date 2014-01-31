@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Random numbers</TITLE>
+<META NAME="description" CONTENT="Random numbers">
+<META NAME="keywords" CONTENT="qla">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="qla.css">
+
+<LINK REL="previous" HREF="node29.html">
+<LINK REL="up" HREF="node21.html">
+<LINK REL="next" HREF="node31.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html439"
+  HREF="node31.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html437"
+  HREF="node21.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html433"
+  HREF="node29.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html440"
+  HREF="node31.html">Function Details</A>
+<B> Up:</B> <A NAME="tex2html438"
+  HREF="node21.html">Auxiliary Features</A>
+<B> Previous:</B> <A NAME="tex2html434"
+  HREF="node29.html">Gamma matrices</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00055000000000000000">
+Random numbers</A>
+</H2>
+
+<P>
+The generation of random numbers is based on the state of the
+generator, stored in an implementation-specific structure of type <TT>RandomState</TT>.  The following functions are provided for seeding and
+accessing random numbers.
+
+<P>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">name</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>RealF QLA_random(RandomState *s);            </code></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>RealF QLA_gaussian(RandomState *s);          </code></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>void QLA_seed_random(RandomState *s, Int seed, Int i); </code></TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+The first of these returns a random real value uniformly distributed
+on <SPAN CLASS="MATH">[0,1]</SPAN>.  The second returns a real Gaussian normal deviate
+<SPAN CLASS="MATH"><I>N</I>(0,1)</SPAN>.  The third seeds a single random number generator from a
+pair of integers <TT>seed, i</TT>.  In typical usage, many generators are
+maintained.  Thus the integer <TT>i</TT> distinguishes them and the
+integer <TT>seed</TT> seeds it, resulting in the initial state <TT>s</TT>.
+It is assumed that storage for the state <TT>s</TT> has been allocated
+prior to the call.
+
+<P>
+<BR><HR>
+<ADDRESS>
+James Osborn
+2006-06-25
+</ADDRESS>
+</BODY>
+</HTML>

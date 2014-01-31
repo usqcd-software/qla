@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Complex macros with two arguments</TITLE>
+<META NAME="description" CONTENT="Complex macros with two arguments">
+<META NAME="keywords" CONTENT="qla">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="qla.css">
+
+<LINK REL="next" HREF="node27.html">
+<LINK REL="previous" HREF="node25.html">
+<LINK REL="up" HREF="node24.html">
+<LINK REL="next" HREF="node27.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html403"
+  HREF="node27.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html401"
+  HREF="node24.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html395"
+  HREF="node25.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html404"
+  HREF="node27.html">Complex macros with three</A>
+<B> Up:</B> <A NAME="tex2html402"
+  HREF="node24.html">Complex variable macros</A>
+<B> Previous:</B> <A NAME="tex2html396"
+  HREF="node25.html">Complex macros with one</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H4><A NAME="SECTION00053020000000000000">
+Complex macros with two arguments</A>
+</H4>
+
+<P>
+The naming conventions follow closely those for the functions, except
+that the arguments are all values, rather than pointers.
+
+<P>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">name</TD>
+<TD ALIGN="LEFT">meaning</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eq_r(c,a)      </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = a \ \ \mbox{(real)}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="90" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$ c = a \ \ \mbox{(real)} $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eq_c(c,a)      </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>a</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eqm_c(c,a)     </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = -<I>a</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eqm_c(c,a)     </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = -<I>a</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eqm_r(c,a)     </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = -a \ \ \mbox{(real)}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="102" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$ c = -a \ \ \mbox{(real)} $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_peq_r(c,a)     </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c +  a \ \ \mbox{(real)}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$ c = c + a \ \ \mbox{(real)} $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_peq_c(c,a)     </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>c</I> + <I>a</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_meq_r(c,a)     </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c -  a \ \ \mbox{(real)}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="116" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$ c = c - a \ \ \mbox{(real)} $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_meq_c(c,a)     </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>c</I> - <I>a</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_meq_c(c,a)     </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>c</I> - <I>a</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eq_ca(c,a)     </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>a</I><SUP>*</SUP></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_peq_ca(c,a)    </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>c</I> + <I>a</I><SUP>*</SUP></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_meq_ca(c,a)    </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>c</I> - <I>a</I><SUP>*</SUP></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eqm_ca(c,a)    </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> =- <I>a</I><SUP>*</SUP></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eq_Re_c(c,a)   </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = \mathop{\rm Re}(a)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="72" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.png"
+ ALT="$ c = \mathop{\rm Re}(a) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eq_Im_c(c,a)   </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = \mathop{\rm Im}(a)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="72" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img15.png"
+ ALT="$ c = \mathop{\rm Im}(a) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_peq_Re_c(c,a)  </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c +  \mathop{\rm Re}(a)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="98" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$ c = c + \mathop{\rm Re}(a) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_peq_Im_c(c,a)  </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c +  \mathop{\rm Im}(a)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="99" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$ c = c + \mathop{\rm Im}(a) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_meq_Re_c(c,a)  </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c -  \mathop{\rm Re}(a)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="98" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$ c = c - \mathop{\rm Re}(a) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_meq_Im_c(c,a)  </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c -  \mathop{\rm Im}(a)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="99" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$ c = c - \mathop{\rm Im}(a) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eqm_Re_c(c,a)  </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c =- \mathop{\rm Re}(a)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="87" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img20.png"
+ ALT="$ c =- \mathop{\rm Re}(a) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eqm_Im_c(c,a)  </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c =- \mathop{\rm Im}(a)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="87" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img21.png"
+ ALT="$ c =- \mathop{\rm Im}(a) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eq_ic(c,a)     </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>ia</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eqm_ic(c,a)    </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = -<I>ia</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_peq_ic(c,a)    </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>c</I> + <I>ia</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_meq_ic(c,a)    </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>c</I> - <I>ia</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_meq_ic(c,a)    </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>c</I> - <I>ia</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eqm_ic(c,a)    </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = -<I>ia</I></SPAN></TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html403"
+  HREF="node27.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html401"
+  HREF="node24.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html395"
+  HREF="node25.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html404"
+  HREF="node27.html">Complex macros with three</A>
+<B> Up:</B> <A NAME="tex2html402"
+  HREF="node24.html">Complex variable macros</A>
+<B> Previous:</B> <A NAME="tex2html396"
+  HREF="node25.html">Complex macros with one</A></DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+James Osborn
+2006-06-25
+</ADDRESS>
+</BODY>
+</HTML>

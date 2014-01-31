@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Generic Names</TITLE>
+<META NAME="description" CONTENT="Generic Names">
+<META NAME="keywords" CONTENT="qla">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="qla.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html154"
+  HREF="node4.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html152"
+  HREF="node2.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html146"
+  HREF="node2.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html155"
+  HREF="node4.html">Specific Types for Color</A>
+<B> Up:</B> <A NAME="tex2html153"
+  HREF="node2.html">Datatypes</A>
+<B> Previous:</B> <A NAME="tex2html147"
+  HREF="node2.html">Datatypes</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00021000000000000000">
+Generic Names</A>
+</H2>
+
+<P>
+There are two levels of generic naming: fully generic in which both
+color and precision may be controlled globally through two macros and
+color-generic in which precision is explicit but not color.  Generic
+naming applies to datatypes, module names, and accessor macros and
+follows similar rules.
+
+<P>
+Names for fully generic datatypes are listed in the table below.
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">name</TD>
+<TD ALIGN="LEFT">abbreviation</TD>
+<TD ALIGN="LEFT">description</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>QLA_Real </TT></TD>
+<TD ALIGN="LEFT"><TT>R</TT></TD>
+<TD ALIGN="LEFT">real</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>QLA_Complex </TT></TD>
+<TD ALIGN="LEFT"><TT>C</TT></TD>
+<TD ALIGN="LEFT">complex</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>QLA_Int </TT></TD>
+<TD ALIGN="LEFT"><TT>I</TT></TD>
+<TD ALIGN="LEFT">integer</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>QLA_ColorMatrix </TT></TD>
+<TD ALIGN="LEFT"><TT>M</TT></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $N_c \times N_c$
+ -->
+<SPAN CLASS="MATH"><I>N</I><SUB><I>c</I></SUB> x <I>N</I><SUB><I>c</I></SUB></SPAN> complex matrix</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>QLA_HalfFermion </TT></TD>
+<TD ALIGN="LEFT"><TT>H</TT></TD>
+<TD ALIGN="LEFT">two-spin, <SPAN CLASS="MATH"><I>N</I><SUB><I>c</I></SUB></SPAN> color spinor</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>QLA_DiracFermion </TT></TD>
+<TD ALIGN="LEFT"><TT>D</TT></TD>
+<TD ALIGN="LEFT">four-spin, <SPAN CLASS="MATH"><I>N</I><SUB><I>c</I></SUB></SPAN> color spinor</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>QLA_ColorVector </TT></TD>
+<TD ALIGN="LEFT"><TT>V</TT></TD>
+<TD ALIGN="LEFT">one-spin,  <SPAN CLASS="MATH"><I>N</I><SUB><I>c</I></SUB></SPAN> color spinor</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>QLA_DiracPropagator </TT></TD>
+<TD ALIGN="LEFT"><TT>P</TT></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $4N_c \times 4N_c$
+ -->
+<SPAN CLASS="MATH">4<I>N</I><SUB><I>c</I></SUB> x 4<I>N</I><SUB><I>c</I></SUB></SPAN> complex matrix</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>QLA_RandomState </TT></TD>
+<TD ALIGN="LEFT"><TT>S</TT></TD>
+<TD ALIGN="LEFT">implementation dependent</TD>
+</TR>
+</TABLE>
+</DIV>
+Names for color-generic datatypes are obtained by inserting an
+<TT>_F</TT> for single precision, <TT>_D</TT> for double
+precision, or <TT>_Q</TT> for extended precision after <TT>QLA</TT>
+where appropriate.  Thus <TT>QLA_D_</TT>ColorMatrix
+specifies a double precision color matrix with color to be set through
+a global macro.
+
+<P>
+An extended precision type with abbreviation <TT>Q</TT> is also defined,
+but it is currently intended only for extending precision in the
+global reduction of double precision data, and then only where the
+architecture and compiler supports it.  Only a handful of functions
+use it, namely, reduction, type conversion and some copying and
+incrementing.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html154"
+  HREF="node4.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html152"
+  HREF="node2.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html146"
+  HREF="node2.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html155"
+  HREF="node4.html">Specific Types for Color</A>
+<B> Up:</B> <A NAME="tex2html153"
+  HREF="node2.html">Datatypes</A>
+<B> Previous:</B> <A NAME="tex2html147"
+  HREF="node2.html">Datatypes</A></DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+James Osborn
+2006-06-25
+</ADDRESS>
+</BODY>
+</HTML>

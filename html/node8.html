@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Scalar Example</TITLE>
+<META NAME="description" CONTENT="Scalar Example">
+<META NAME="keywords" CONTENT="qla">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="qla.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="node7.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html211"
+  HREF="node9.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html209"
+  HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html203"
+  HREF="node7.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html212"
+  HREF="node9.html">Vector Example</A>
+<B> Up:</B> <A NAME="tex2html210"
+  HREF="node7.html">Function Naming Conventions</A>
+<B> Previous:</B> <A NAME="tex2html204"
+  HREF="node7.html">Function Naming Conventions</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00031000000000000000">
+Scalar Example</A>
+</H2>
+
+<P>
+Function names are constructed with a pattern that suggests their
+functionality.  Thus the function
+<PRE>
+  QLA_V_eq_M_times_V(c,u,b)
+</PRE>
+carries out the product
+<BR><P></P>
+<DIV ALIGN="CENTER" CLASS="mathdisplay">
+<!-- MATH
+ \begin{displaymath}
+c = ub
+\end{displaymath}
+ -->
+
+<SPAN CLASS="MATH">
+ <I>c</I> = <I>ub</I>
+</SPAN>
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+where <TT>c</TT> and <TT>b</TT> are pointers to staggered fermion vectors
+and <TT>u</TT> is a pointer to a color matrix.  The elements of the
+function name are separated by an underscore ``<TT>_</TT>'' for
+readability.  All function names in this interface begin with ``<TT>QLA</TT>''.  The specific name continues with a precision and color label
+as in 
+<PRE>
+   QLA_F3_V_eq_M_times_V
+</PRE>
+for single precision <SPAN CLASS="MATH"><I>SU</I>(3)</SPAN>.  Then comes a string of elements that
+mimics the algebraic expression.  The next character ``<TT>V</TT>''
+abbreviates the type for the destination operand, in this case the
+argument ``<TT>c</TT>''.  The abbreviations are listed in
+Sec.&nbsp;<A HREF="node2.html#sec.datatypes">2</A>.  The next string ``<TT>eq</TT>'' specifies the
+assignment operator.  In this case it is a straight replacement, but
+increments of various types are also supported, as described below.
+Then comes the first rhs operand type ``<TT>M</TT>'' followed by a string
+``<TT>times</TT>'' specifying the operation and a character ``<TT>V</TT>''
+specifying the second rhs operand type.
+
+<P>
+Supported variants of the assignment operator are tabulated below.
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">abbreviation</TD>
+<TD ALIGN="LEFT">meaning</TD>
+</TR>
+<TR><TD ALIGN="LEFT">eq</TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH">=</SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT">peq</TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH">+=</SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT">meq</TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH">-=</SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT">eqm</TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH">=-</SPAN></TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+Some functions allow all of these and some take only a simple
+replacement (<SPAN CLASS="MATH">=</SPAN>).
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html211"
+  HREF="node9.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html209"
+  HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html203"
+  HREF="node7.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html212"
+  HREF="node9.html">Vector Example</A>
+<B> Up:</B> <A NAME="tex2html210"
+  HREF="node7.html">Function Naming Conventions</A>
+<B> Previous:</B> <A NAME="tex2html204"
+  HREF="node7.html">Function Naming Conventions</A></DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+James Osborn
+2006-06-25
+</ADDRESS>
+</BODY>
+</HTML>

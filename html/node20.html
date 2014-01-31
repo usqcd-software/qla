@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Nonuniform color and precision</TITLE>
+<META NAME="description" CONTENT="Nonuniform color and precision">
+<META NAME="keywords" CONTENT="qla">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="qla.css">
+
+<LINK REL="previous" HREF="node19.html">
+<LINK REL="up" HREF="node17.html">
+<LINK REL="next" HREF="node21.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html330"
+  HREF="node21.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html328"
+  HREF="node17.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html324"
+  HREF="node19.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html331"
+  HREF="node21.html">Auxiliary Features</A>
+<B> Up:</B> <A NAME="tex2html329"
+  HREF="node17.html">Compilation with QLA</A>
+<B> Previous:</B> <A NAME="tex2html325"
+  HREF="node19.html">Libraries</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00043000000000000000">
+Nonuniform color and precision</A>
+</H2>
+
+<P>
+Users wishing to vary color and precision within a single calculation
+must use specific type names and function names whenever these types
+and names differ from the prevailing precision and color.  For
+example, if an <SPAN CLASS="MATH"><I>SU</I>(3)</SPAN> calculation is done primarly in single
+precision, but has double precision components, the following preamble
+is appropriate:
+<PRE>
+#define QLA_Precision 'F'
+#define QLA_Colors 3
+#include &lt;qla.h&gt;
+#include &lt;qla_d.h&gt;
+#include &lt;qla_d3.h&gt;
+</PRE>
+and the following linkage to get the corresponding libraries:
+<PRE>
+  -lqla_int -lqla_f -lqla_f3 -lqla_d -lqla_df 
+      -lqla_d3 -lqla_df3 -lqla_cmath -lqla_random -lm
+</PRE>
+As in the previous example, the single precision and type conversion
+components for <SPAN CLASS="MATH"><I>SU</I>(3)</SPAN> are automatically included through <TT>qla.h</TT>.
+Then we need the corresponding double precision components.  And we
+also need the <TT>DF</TT> libraries to do conversions between single and
+double precision.  They, too have colored and noncolored members.
+
+<P>
+The following table lists all the QLA headers.
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">name</TD>
+<TD ALIGN="LEFT">purpose</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla.h </TT></TD>
+<TD ALIGN="LEFT">Master header</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_cmath.h </TT></TD>
+<TD ALIGN="LEFT">double precision <TT>cexp, clog, csqrt, cexpi</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_random.h</TT></TD>
+<TD ALIGN="LEFT">random number seed and generation</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_int.h   </TT></TD>
+<TD ALIGN="LEFT">integers, boolean</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_f.h     </TT></TD>
+<TD ALIGN="LEFT">real, complex, single precision</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_d.h     </TT></TD>
+<TD ALIGN="LEFT">real, complex, double precision</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_q.h     </TT></TD>
+<TD ALIGN="LEFT">real, complex, extended precision</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_df.h    </TT></TD>
+<TD ALIGN="LEFT">real, complex, precision conversion</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_dq.h    </TT></TD>
+<TD ALIGN="LEFT">real, complex, precision conversion</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_f3.h    </TT></TD>
+<TD ALIGN="LEFT">SU(3), single precision</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_d3.h    </TT></TD>
+<TD ALIGN="LEFT">SU(3), double precision</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_q3.h    </TT></TD>
+<TD ALIGN="LEFT">SU(3), extended precision</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_df3.h   </TT></TD>
+<TD ALIGN="LEFT">SU(3), precision conversion</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_dq3.h   </TT></TD>
+<TD ALIGN="LEFT">SU(3), precision conversion</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_f2.h    </TT></TD>
+<TD ALIGN="LEFT">SU(2), single precision</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_d2.h    </TT></TD>
+<TD ALIGN="LEFT">SU(2), double precision</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_q2.h    </TT></TD>
+<TD ALIGN="LEFT">SU(2), extended precision</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_df2.h   </TT></TD>
+<TD ALIGN="LEFT">SU(2), precision conversion</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_dq2.h   </TT></TD>
+<TD ALIGN="LEFT">SU(2), precision conversion</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_fn.h    </TT></TD>
+<TD ALIGN="LEFT">SU(N), single precision</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_dn.h    </TT></TD>
+<TD ALIGN="LEFT">SU(N), double precision</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_qn.h    </TT></TD>
+<TD ALIGN="LEFT">SU(N), extended precision</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_dfn.h   </TT></TD>
+<TD ALIGN="LEFT">SU(N), precision conversion</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>qla_dqn.h   </TT></TD>
+<TD ALIGN="LEFT">SU(N), precision conversion</TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html330"
+  HREF="node21.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html328"
+  HREF="node17.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html324"
+  HREF="node19.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html331"
+  HREF="node21.html">Auxiliary Features</A>
+<B> Up:</B> <A NAME="tex2html329"
+  HREF="node17.html">Compilation with QLA</A>
+<B> Previous:</B> <A NAME="tex2html325"
+  HREF="node19.html">Libraries</A></DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+James Osborn
+2006-06-25
+</ADDRESS>
+</BODY>
+</HTML>

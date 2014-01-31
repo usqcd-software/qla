@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Generic header and macros</TITLE>
+<META NAME="description" CONTENT="Generic header and macros">
+<META NAME="keywords" CONTENT="qla">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="qla.css">
+
+<LINK REL="next" HREF="node19.html">
+<LINK REL="previous" HREF="node17.html">
+<LINK REL="up" HREF="node17.html">
+<LINK REL="next" HREF="node19.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html312"
+  HREF="node19.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html310"
+  HREF="node17.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html304"
+  HREF="node17.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html313"
+  HREF="node19.html">Libraries</A>
+<B> Up:</B> <A NAME="tex2html311"
+  HREF="node17.html">Compilation with QLA</A>
+<B> Previous:</B> <A NAME="tex2html305"
+  HREF="node17.html">Compilation with QLA</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00041000000000000000">
+Generic header and macros</A>
+</H2>
+
+<P>
+As described above, normally the user selects a prevailing color and
+precision for the entire calculation.  In that case it is permissible
+to use the generic function names and datatypes, making it possible to
+change colors and precision with a simple recompilation, if desired.
+For this purpose the generic header file is <TT>qla.h</TT>.  The
+following macros must be defined by the user prior to including this
+header file:
+
+<P>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">required macro</TD>
+<TD ALIGN="LEFT">choices</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>QLA_Precision</TT></TD>
+<TD ALIGN="LEFT"><TT>'F','D'</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>QLA_Colors</TT></TD>
+<TD ALIGN="LEFT"><TT>2, 3, 'N'</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>QLA_Nc </TT></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>n</I><SUB><I>c</I></SUB></SPAN> if <TT>QLA_Colors= 'N'</TT></TD>
+</TR>
+</TABLE>
+</DIV>
+Single quotes are required around nonnumeric values.  
+
+<P>
+A sample code preamble for double precision <SPAN CLASS="MATH"><I>SU</I>(3)</SPAN> reads
+<PRE>
+#define QLA_Precision 'D'
+#define QLA_Colors 3
+#include &lt;qla.h&gt;
+</PRE>
+with the include search path set to <TT>$QLA_HOME/include</TT> and <TT>$QLA_HOME</TT> set to the home
+directory for QLA.  With such a preamble the generic function names
+and datatypes are automatically mapped to the requested specific
+types.  Of course the precision and color macros can also be defined
+through a compiler flag, as in
+<PRE>
+gcc  -DQLA_Precision=\'D\' -DQLA_Colors=3 ...
+</PRE>
+The single quotes are required and they must each be preceded by a
+backslash <TT>
+<BR></TT> to keep them from being eaten by the shell.
+
+<P>
+For <SPAN CLASS="MATH"><I>SU</I>(4)</SPAN> one might do
+<PRE>
+#define QLA_Precision 'F'
+#define QLA_Colors 'N'
+#define QLA_Nc 4
+#include &lt;qla.h&gt;
+</PRE>
+In the current implementation the maximum number of colors is 5,
+specified by the macro
+<PRE>
+  QLA_MAX_Nc
+</PRE>
+defined in the auxiliary header <TT>qla_types.h</TT>.
+Changing it is trivial, but requires recompiling the libraries (but
+not rebuilding the source code).
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html312"
+  HREF="node19.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html310"
+  HREF="node17.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html304"
+  HREF="node17.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html313"
+  HREF="node19.html">Libraries</A>
+<B> Up:</B> <A NAME="tex2html311"
+  HREF="node17.html">Compilation with QLA</A>
+<B> Previous:</B> <A NAME="tex2html305"
+  HREF="node17.html">Compilation with QLA</A></DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+James Osborn
+2006-06-25
+</ADDRESS>
+</BODY>
+</HTML>

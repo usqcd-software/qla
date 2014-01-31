@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Accessor macros</TITLE>
+<META NAME="description" CONTENT="Accessor macros">
+<META NAME="keywords" CONTENT="qla">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="qla.css">
+
+<LINK REL="next" HREF="node23.html">
+<LINK REL="previous" HREF="node21.html">
+<LINK REL="up" HREF="node21.html">
+<LINK REL="next" HREF="node23.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html359"
+  HREF="node23.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html357"
+  HREF="node21.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html351"
+  HREF="node21.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html360"
+  HREF="node23.html">Complex functions</A>
+<B> Up:</B> <A NAME="tex2html358"
+  HREF="node21.html">Auxiliary Features</A>
+<B> Previous:</B> <A NAME="tex2html352"
+  HREF="node21.html">Auxiliary Features</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00051000000000000000">
+Accessor macros</A>
+</H2>
+
+<P>
+The data layout for the composite types is left to the implementation.
+However, it is then necessary to provide tools for accessing the
+components of these types.  The following table lists macros that an
+implementer must supply for building the QLA library.
+
+<P>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">macro</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>QLA_</TT><I>PC</I><TT>__elem_M(a,ic,jc)</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>QLA_</TT><I>PC</I><TT>__elem_H(a,ic,is)</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>QLA_</TT><I>PC</I><TT>__elem_D(a,ic,is)</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>QLA_</TT><I>PC</I><TT>__elem_V(a,ic)</TT></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>QLA_</TT><I>PC</I><TT>__elem_D(a,ic,is,jc,js)</TT></TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+Both generic and precision-color-specific versions of these macros are
+provided.  Generic names omit the precision-color suffix <I>PC</I>, the
+symbol <I>P</I> standing for the precision label <TT>Q</TT>, <TT>D</TT> or
+<TT>F</TT>, and <I>C</I>, the color label <TT>2</TT>, <TT>3</TT>, or <TT>N</TT>.
+
+<P>
+Here are the definitions of the dummy macro arguments above:
+
+<P>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">argument</TD>
+<TD ALIGN="LEFT">meaning</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>a</TT></TD>
+<TD ALIGN="LEFT">name of structure (value, not pointer)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>ic</TT></TD>
+<TD ALIGN="LEFT">color row index</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>is</TT></TD>
+<TD ALIGN="LEFT">spin row index</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>jc</TT></TD>
+<TD ALIGN="LEFT">color column index</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>js</TT></TD>
+<TD ALIGN="LEFT">spin column index</TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+The number of Dirac spins is fixed at four for a full spinor and two
+for a half-spinor.  The number of colors is 2, 3 or <TT>QLA_Nc </TT>for
+the <SPAN CLASS="MATH"><I>SU</I>(<I>N</I>)</SPAN> case.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html359"
+  HREF="node23.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html357"
+  HREF="node21.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html351"
+  HREF="node21.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html360"
+  HREF="node23.html">Complex functions</A>
+<B> Up:</B> <A NAME="tex2html358"
+  HREF="node21.html">Auxiliary Features</A>
+<B> Previous:</B> <A NAME="tex2html352"
+  HREF="node21.html">Auxiliary Features</A></DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+James Osborn
+2006-06-25
+</ADDRESS>
+</BODY>
+</HTML>

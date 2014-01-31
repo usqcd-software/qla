@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Indirect Addressing for Binary Operations</TITLE>
+<META NAME="description" CONTENT="Indirect Addressing for Binary Operations">
+<META NAME="keywords" CONTENT="qla">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="qla.css">
+
+<LINK REL="next" HREF="node11.html">
+<LINK REL="previous" HREF="node9.html">
+<LINK REL="up" HREF="node7.html">
+<LINK REL="next" HREF="node11.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html231"
+  HREF="node11.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html229"
+  HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html223"
+  HREF="node9.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html232"
+  HREF="node11.html">Constant Arguments</A>
+<B> Up:</B> <A NAME="tex2html230"
+  HREF="node7.html">Function Naming Conventions</A>
+<B> Previous:</B> <A NAME="tex2html224"
+  HREF="node9.html">Vector Example</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00033000000000000000">
+Indirect Addressing for Binary Operations</A>
+</H2>
+
+<P>
+Various indexing schemes are supported.  The table below elaborates
+the choices for the matrix-vector product example above, including the
+two illustrated above.  In all cases it is assumed <!-- MATH
+ $i = 0\ldots{}n-1$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="100" HEIGHT="29" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$i = 0\ldots{}n-1$"></SPAN>.
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="RIGHT">&nbsp;</TD>
+<TD ALIGN="LEFT">function name</TD>
+<TD ALIGN="LEFT">meaning</TD>
+</TR>
+<TR><TD ALIGN="RIGHT">1</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_eq_M_times_V(c,u,b)              </TT></TD>
+<TD ALIGN="LEFT"><TT>c = u*b                         </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">2</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_veq_M_times_V(c,u,b,n)           </TT></TD>
+<TD ALIGN="LEFT"><TT>c[i] = u[i]*b[i]                </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">3</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_xeq_M_times_V(c,u,b,j,n)         </TT></TD>
+<TD ALIGN="LEFT"><TT>c[j[i]] = u[j[i]]*b[j[i]]       </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">4</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_eq_xM_times_V(c,u,ju,b,n)        </TT></TD>
+<TD ALIGN="LEFT"><TT>c[i] = u[ju[i]]*b[i]            </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">5</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_eq_M_times_xV(c,u,b,jb,n)        </TT></TD>
+<TD ALIGN="LEFT"><TT>c[i] = u[i]*b[jb[i]]            </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">6</TD>
+<TD ALIGN="LEFT"><TT>QLA_xV_eq_M_times_V(c,jc,u,b,n)        </TT></TD>
+<TD ALIGN="LEFT"><TT>c[jc[i]] = u[i]*b[i]            </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">7</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_eq_xM_times_xV(c,u,ju,b,jb,n)    </TT></TD>
+<TD ALIGN="LEFT"><TT>c[i] = u[ju[i]]*b[jb[i]]        </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">8</TD>
+<TD ALIGN="LEFT"><TT>QLA_xV_eq_M_times_xV(c,jc,u,b,jb,n)    </TT></TD>
+<TD ALIGN="LEFT"><TT>c[jc[i]] = u[i]*b[jb[i]]        </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">9</TD>
+<TD ALIGN="LEFT"><TT>QLA_xV_eq_xM_times_V(c,jc,u,b,jb,n)    </TT></TD>
+<TD ALIGN="LEFT"><TT>c[jc[i]] = u[ju[i]]*b[i]        </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">10</TD>
+<TD ALIGN="LEFT"><TT>QLA_xV_eq_xM_times_xV(c,jc,u,ju,b,jb,n)</TT></TD>
+<TD ALIGN="LEFT"><TT>c[jc[i]] = u[ju[i]]*b[jb[i]]    </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">11</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_veq_pM_times_V(c,u,b,n)          </TT></TD>
+<TD ALIGN="LEFT"><TT>c[i] = (*u[i])*b[i]             </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">12</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_veq_M_times_pV(c,u,b,n)          </TT></TD>
+<TD ALIGN="LEFT"><TT>c[i] = u[i]*(*b[i])             </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">13</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_veq_pM_times_pV(c,u,b,n)         </TT></TD>
+<TD ALIGN="LEFT"><TT>c[i] = (*u[i])*(*b[i])          </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">14</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_xeq_pM_times_V(c,u,b,j,n)        </TT></TD>
+<TD ALIGN="LEFT"><TT>c[j[i]] = (*u[j[i]])*b[j[i]]    </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">15</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_xeq_M_times_pV(c,u,b,j,n)       </TT></TD>
+<TD ALIGN="LEFT"><TT>c[j[i]] = (*u[i])*(*b[j[i]])     </TT></TD>
+</TR>
+<TR><TD ALIGN="RIGHT">16</TD>
+<TD ALIGN="LEFT"><TT>QLA_V_xeq_pM_times_pV(c,u,b,j,n)       </TT></TD>
+<TD ALIGN="LEFT"><TT>c[j[i]] = (*u[j[i]])*(*b[j[i]]) </TT></TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+Gang-indexing variant 3 applies the same indexing scheme to all three
+arguments simultaneously.  The convention is to place an ``<TT>x</TT>''
+before the assignment operator.  The indexing variants <SPAN CLASS="MATH">4-10</SPAN> apply an
+index to each of the operands separately in various combinations.  In
+this case the convention places an ``<TT>x</TT>'' before the type
+abbreviation for the variable that is indexed.  Variants <SPAN CLASS="MATH">11-16</SPAN>
+replace the array argument with an array of pointers.  The symbol ``<TT>p</TT>'' before the type abbreviation identifies the affected variable.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html231"
+  HREF="node11.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html229"
+  HREF="node7.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html223"
+  HREF="node9.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html232"
+  HREF="node11.html">Constant Arguments</A>
+<B> Up:</B> <A NAME="tex2html230"
+  HREF="node7.html">Function Naming Conventions</A>
+<B> Previous:</B> <A NAME="tex2html224"
+  HREF="node9.html">Vector Example</A></DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+James Osborn
+2006-06-25
+</ADDRESS>
+</BODY>
+</HTML>

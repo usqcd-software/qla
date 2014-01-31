@@ -1,0 +1,579 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Complex macros with three arguments</TITLE>
+<META NAME="description" CONTENT="Complex macros with three arguments">
+<META NAME="keywords" CONTENT="qla">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="qla.css">
+
+<LINK REL="next" HREF="node28.html">
+<LINK REL="previous" HREF="node26.html">
+<LINK REL="up" HREF="node24.html">
+<LINK REL="next" HREF="node28.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html413"
+  HREF="node28.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html411"
+  HREF="node24.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html405"
+  HREF="node26.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html414"
+  HREF="node28.html">Complex macros with four</A>
+<B> Up:</B> <A NAME="tex2html412"
+  HREF="node24.html">Complex variable macros</A>
+<B> Previous:</B> <A NAME="tex2html406"
+  HREF="node26.html">Complex macros with two</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H4><A NAME="SECTION00053030000000000000">
+Complex macros with three arguments</A>
+</H4>
+
+<P>
+Again, the naming conventions follow closely those for the functions,
+except that the arguments are all values, rather than pointers.
+
+<P>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">name</TD>
+<TD ALIGN="LEFT">meaning</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eq_c_plus_c(c,a,b)      </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>a</I> + <I>b</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eq_c_plus_ic(c,a,b)     </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>a</I> + <I>ib</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eq_r_plus_ir(c,a,b)     </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>a</I>+<I>ib</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_peq_r_plus_ir(c,a,b)    </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>c</I> + <I>a</I>+<I>ib</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eqm_r_plus_ir(c,a,b)    </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> =- <I>a</I>+<I>ib</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_meq_r_plus_ir(c,a,b)    </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>c</I> - <I>a</I>+<I>ib</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eq_c_minus_c(c,a,b)     </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>a</I> - <I>b</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eq_c_minus_ca(c,a,b)    </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>a</I> - <I>b</I><SUP>*</SUP></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eq_c_minus_c(c,a,b)     </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>a</I> - <I>ib</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eq_c_times_c(c,a,b)     </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>ab</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_peq_c_times_c(c,a,b)    </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>c</I> + <I>ab</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eqm_c_times_c(c,a,b)    </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = -<I>ab</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_meq_c_times_c(c,a,b)    </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>c</I> - <I>ab</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eq_Re_c_times_c(c,a,b)  </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = \mathop{\rm Re}(ab)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="79" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img22.png"
+ ALT="$ c = \mathop{\rm Re}(ab) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_peq_Re_c_times_c(c,a,b) </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c + \mathop{\rm Re}(ab)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="105" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img23.png"
+ ALT="$ c = c + \mathop{\rm Re}(ab) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eqm_Re_c_times_c(c,a,b) </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = -\mathop{\rm Re}(ab)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="94" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img24.png"
+ ALT="$ c = -\mathop{\rm Re}(ab) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_meq_Re_c_times_c(c,a,b) </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c -  \mathop{\rm Re}(ab)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="105" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img25.png"
+ ALT="$ c = c - \mathop{\rm Re}(ab) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eq_Im_c_times_c(c,a,b)  </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = \mathop{\rm Im}(ab)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="79" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img26.png"
+ ALT="$ c = \mathop{\rm Im}(ab) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_peq_Im_c_times_c(c,a,b) </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c + \mathop{\rm Im}(ab)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="106" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img27.png"
+ ALT="$ c = c + \mathop{\rm Im}(ab) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eqm_Im_c_times_c(c,a,b) </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = -\mathop{\rm Im}(ab)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="94" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img28.png"
+ ALT="$ c = -\mathop{\rm Im}(ab) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_meq_Im_c_times_c(c,a,b) </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c -  \mathop{\rm Im}(ab)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="106" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img29.png"
+ ALT="$ c = c - \mathop{\rm Im}(ab) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eq_c_div_c(c,a,b)       </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>a</I> / <I>b</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eq_c_times_ca(c,a,b)    </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>ab</I><SUP>*</SUP></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_peq_c_times_ca(c,a,b)   </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>c</I> + <I>ab</I><SUP>*</SUP></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eqm_c_times_ca(c,a,b)   </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = -<I>ab</I><SUP>*</SUP></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_meq_c_times_ca(c,a,b)   </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>c</I> - <I>ab</I><SUP>*</SUP></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eq_Re_c_times_ca(c,a,b) </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = \mathop{\rm Re}(ab^*)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="86" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img30.png"
+ ALT="$ c = \mathop{\rm Re}(ab^*) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_peq_Re_c_times_ca(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c +  \mathop{\rm Re}(ab^*)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="113" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img31.png"
+ ALT="$ c = c + \mathop{\rm Re}(ab^*) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eqm_Re_c_times_ca(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = -\mathop{\rm Re}(ab^*)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="101" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img32.png"
+ ALT="$ c = -\mathop{\rm Re}(ab^*) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_meq_Re_c_times_ca(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c - \mathop{\rm Re}(ab^*)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="113" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img33.png"
+ ALT="$ c = c - \mathop{\rm Re}(ab^*) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eq_Im_c_times_ca(c,a,b) </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = \mathop{\rm Im}(ab^*)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="87" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img34.png"
+ ALT="$ c = \mathop{\rm Im}(ab^*) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_peq_Im_c_times_ca(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c +  \mathop{\rm Im}(ab^*)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="113" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img35.png"
+ ALT="$ c = c + \mathop{\rm Im}(ab^*) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eqm_Im_c_times_ca(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = -\mathop{\rm Im}(ab^*)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="102" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img36.png"
+ ALT="$ c = -\mathop{\rm Im}(ab^*) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_meq_Im_c_times_ca(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c - \mathop{\rm Im}(ab^*)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="113" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img37.png"
+ ALT="$ c = c - \mathop{\rm Im}(ab^*) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eq_ca_times_c(c,a,b)    </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>a</I><SUP>*</SUP><I>b</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_peq_ca_times_c(c,a,b)   </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>c</I> + <I>a</I><SUP>*</SUP><I>b</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eqm_ca_times_c(c,a,b)   </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = -<I>a</I><SUP>*</SUP><I>b</I></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_meq_ca_times_c(c,a,b)   </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>c</I> - <I>a</I><SUP>*</SUP><I>b</I></SPAN></TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">name</TD>
+<TD ALIGN="LEFT">meaning</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eq_Re_ca_times_c(c,a,b) </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = \mathop{\rm Re}(a^*b)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="86" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img38.png"
+ ALT="$ c = \mathop{\rm Re}(a^*b) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_peq_Re_ca_times_c(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c +  \mathop{\rm Re}(a^*b)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="113" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img39.png"
+ ALT="$ c = c + \mathop{\rm Re}(a^*b) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eqm_Re_ca_times_c(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = -\mathop{\rm Re}(a^*b)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="101" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img40.png"
+ ALT="$ c = -\mathop{\rm Re}(a^*b) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_meq_Re_ca_times_c(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c -  \mathop{\rm Re}(a^*b)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="113" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img41.png"
+ ALT="$ c = c - \mathop{\rm Re}(a^*b) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eq_Im_ca_times_c(c,a,b) </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = \mathop{\rm Im}(a^*b)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="87" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img42.png"
+ ALT="$ c = \mathop{\rm Im}(a^*b) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_peq_Im_ca_times_c(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c +  \mathop{\rm Im}(a^*b)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="113" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img43.png"
+ ALT="$ c = c + \mathop{\rm Im}(a^*b) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eqm_Im_ca_times_c(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = -\mathop{\rm Im}(a^*b)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="102" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img44.png"
+ ALT="$ c = -\mathop{\rm Im}(a^*b) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_meq_Im_ca_times_c(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c -  \mathop{\rm Im}(a^*b)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="113" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img45.png"
+ ALT="$ c = c - \mathop{\rm Im}(a^*b) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eq_ca_times_ca(c,a,b)   </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = <I>a</I><SUP>*</SUP><I>b</I><SUP>*</SUP></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_peq_ca_times_ca(c,a,b)  </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c +  a^*b^*$
+ -->
+<SPAN CLASS="MATH"><I>c</I> = <I>c</I> + <I>a</I><SUP>*</SUP><I>b</I><SUP>*</SUP></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eqm_ca_times_ca(c,a,b)  </code></TD>
+<TD ALIGN="LEFT"><SPAN CLASS="MATH"><I>c</I> = -<I>a</I><SUP>*</SUP><I>b</I><SUP>*</SUP></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_meq_ca_times_ca(c,a,b)  </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c -  a^*b^*$
+ -->
+<SPAN CLASS="MATH"><I>c</I> = <I>c</I> - <I>a</I><SUP>*</SUP><I>b</I><SUP>*</SUP></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eq_Re_ca_times_ca(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = \mathop{\rm Re}(a^*b^*)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="94" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img46.png"
+ ALT="$ c = \mathop{\rm Re}(a^*b^*) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_peq_Re_ca_times_ca(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c +  \mathop{\rm Re}(a^*b^*)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="120" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img47.png"
+ ALT="$ c = c + \mathop{\rm Re}(a^*b^*) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eqm_Re_ca_times_ca(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = -\mathop{\rm Re}(a^*b^*)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img48.png"
+ ALT="$ c = -\mathop{\rm Re}(a^*b^*) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_meq_Re_ca_times_ca(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c - \mathop{\rm Re}(a^*b^*)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="120" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img49.png"
+ ALT="$ c = c - \mathop{\rm Re}(a^*b^*) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eq_Im_ca_times_ca(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = \mathop{\rm Im}(a^*b^*)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="94" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img50.png"
+ ALT="$ c = \mathop{\rm Im}(a^*b^*) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_peq_Im_ca_times_ca(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c +  \mathop{\rm Im}(a^*b^*)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="120" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img51.png"
+ ALT="$ c = c + \mathop{\rm Im}(a^*b^*) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_eqm_Im_ca_times_ca(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = -\mathop{\rm Im}(a^*b^*)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img52.png"
+ ALT="$ c = -\mathop{\rm Im}(a^*b^*) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_r_meq_Im_ca_times_ca(c,a,b)</code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c - \mathop{\rm Im}(a^*b^*)$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="120" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img53.png"
+ ALT="$ c = c - \mathop{\rm Im}(a^*b^*) $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eq_c_times_r(c,a,b)     </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = ab \ \ \mbox{($b$\  real)}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="109" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img54.png"
+ ALT="$ c = ab \ \ \mbox{($b$\ real)} $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_peq_c_times_r(c,a,b)    </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c + ab \ \ \mbox{($b$\  real)}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="135" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img55.png"
+ ALT="$ c = c + ab \ \ \mbox{($b$\ real)}$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eqm_c_times_r(c,a,b)    </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = -ab \ \ \mbox{($b$\  real)}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="121" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img56.png"
+ ALT="$ c = -ab \ \ \mbox{($b$\ real)} $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_meq_c_times_r(c,a,b)    </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c - ab \ \ \mbox{($b$\  real)}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="135" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img57.png"
+ ALT="$ c = c - ab \ \ \mbox{($b$\ real)}$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_peq_c_times_r(c,a,b)    </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c + ab \ \ \mbox{($b$\  real)}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="135" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img55.png"
+ ALT="$ c = c + ab \ \ \mbox{($b$\ real)}$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eq_r_times_c(c,a,b)     </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = ab \ \ \mbox{($a$\  real)}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="110" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img58.png"
+ ALT="$ c = ab \ \ \mbox{($a$\ real)} $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_peq_r_times_c(c,a,b)    </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c + ab \ \ \mbox{($a$\  real)}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="137" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img59.png"
+ ALT="$ c = c + ab \ \ \mbox{($a$\ real)}$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eqm_r_times_c(c,a,b)    </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = -ab \ \ \mbox{($a$\  real)}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="123" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img60.png"
+ ALT="$ c = -ab \ \ \mbox{($a$\ real)} $"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_meq_r_times_c(c,a,b)    </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c - ab \ \ \mbox{($a$\  real)}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="137" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img61.png"
+ ALT="$ c = c - ab \ \ \mbox{($a$\ real)}$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_peq_r_times_c(c,a,b)    </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = c + ab \ \ \mbox{($a$\  real)}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="137" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img59.png"
+ ALT="$ c = c + ab \ \ \mbox{($a$\ real)}$"></SPAN></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>QLA_c_eq_c_div_r(c,a,b)       </code></TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $c = a/b \ \ \mbox{($b$\  real)}$
+ -->
+<SPAN CLASS="MATH"><IMG
+ WIDTH="117" HEIGHT="32" ALIGN="MIDDLE" BORDER="0"
+ SRC="img62.png"
+ ALT="$ c = a/b \ \ \mbox{($b$\ real)} $"></SPAN></TD>
+</TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html413"
+  HREF="node28.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html411"
+  HREF="node24.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html405"
+  HREF="node26.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html414"
+  HREF="node28.html">Complex macros with four</A>
+<B> Up:</B> <A NAME="tex2html412"
+  HREF="node24.html">Complex variable macros</A>
+<B> Previous:</B> <A NAME="tex2html406"
+  HREF="node26.html">Complex macros with two</A></DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+James Osborn
+2006-06-25
+</ADDRESS>
+</BODY>
+</HTML>

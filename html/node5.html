@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Color and Precision Uniformity</TITLE>
+<META NAME="description" CONTENT="Color and Precision Uniformity">
+<META NAME="keywords" CONTENT="qla">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="qla.css">
+
+<LINK REL="next" HREF="node6.html">
+<LINK REL="previous" HREF="node4.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node6.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html174"
+  HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html172"
+  HREF="node2.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html166"
+  HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html175"
+  HREF="node6.html">Breaking Color and Precision</A>
+<B> Up:</B> <A NAME="tex2html173"
+  HREF="node2.html">Datatypes</A>
+<B> Previous:</B> <A NAME="tex2html167"
+  HREF="node4.html">Specific Types for Color</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00023000000000000000">
+Color and Precision Uniformity</A>
+</H2>
+
+<P>
+In standard coding practice it is assumed that a user keeps one of the
+precision and color options in force throughout the compilation.  So
+as a rule all functions in the interface take operands of the same
+precision and color.  As with data type names, function names come in
+generic and color- and precision-specific forms, as described in the
+next section.  Exceptions to this rule are functions that explicitly
+convert from double to single precision and vice versa.  These and
+functions that do not depend on color or precision are divided among
+seventeen separate libraries.  If the user chooses to adopt color and
+precision uniformity, then all variables can be defined with generic
+types and all functions accessed through generic names.  The
+prevailing color and precision is then defined through macros.  The
+interface automatically translates data type names and function names
+to the appropriate specific type names through typedefs and macros.
+With such a scheme and careful coding, changing only two macros and
+the QLA library converts code from one color and precision choice to
+another.
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html174"
+  HREF="node6.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html172"
+  HREF="node2.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html166"
+  HREF="node4.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html175"
+  HREF="node6.html">Breaking Color and Precision</A>
+<B> Up:</B> <A NAME="tex2html173"
+  HREF="node2.html">Datatypes</A>
+<B> Previous:</B> <A NAME="tex2html167"
+  HREF="node4.html">Specific Types for Color</A></DIV>
+<!--End of Navigation Panel-->
+<ADDRESS>
+James Osborn
+2006-06-25
+</ADDRESS>
+</BODY>
+</HTML>

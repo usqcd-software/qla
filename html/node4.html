@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.71)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Specific Types for Color and Precision</TITLE>
+<META NAME="description" CONTENT="Specific Types for Color and Precision">
+<META NAME="keywords" CONTENT="qla">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="qla.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="node2.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY >
+
+<DIV CLASS="navigation"><!--Navigation Panel-->
+<A NAME="tex2html164"
+  HREF="node5.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next"
+ SRC="/usr/share/latex2html/icons/next.png"></A> 
+<A NAME="tex2html162"
+  HREF="node2.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up"
+ SRC="/usr/share/latex2html/icons/up.png"></A> 
+<A NAME="tex2html156"
+  HREF="node3.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous"
+ SRC="/usr/share/latex2html/icons/prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html165"
+  HREF="node5.html">Color and Precision Uniformity</A>
+<B> Up:</B> <A NAME="tex2html163"
+  HREF="node2.html">Datatypes</A>
+<B> Previous:</B> <A NAME="tex2html157"
+  HREF="node3.html">Generic Names</A>
+<BR>
+<BR></DIV>
+<!--End of Navigation Panel-->
+
+<H2><A NAME="SECTION00022000000000000000">
+Specific Types for Color and Precision</A>
+</H2>
+
+<P>
+According to the chosen color and precision, names for specific
+floating point types are constructed from names for generic types.
+Thus <TT>QLA<TT>_</TT>ColorMatrix </TT> becomes <TT>QLA_</TT><I>PC</I><TT>_ColorMatrix</TT> where the precision <I>P</I> is <TT>F</TT>, <TT>D</TT>, or <TT>Q</TT> according to the table below
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">abbreviation</TD>
+<TD ALIGN="LEFT">description</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>F</TT></TD>
+<TD ALIGN="LEFT">single precision</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>D</TT></TD>
+<TD ALIGN="LEFT">double precision</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>Q</TT></TD>
+<TD ALIGN="LEFT">extended precision</TD>
+</TR>
+</TABLE>
+</DIV>
+and <I>C</I> is <TT>2</TT>, <TT>3</TT>, or <TT>N</TT>, if color is a
+consideration, as listed below.
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1">
+<TR><TD ALIGN="LEFT">abbreviation</TD>
+<TD ALIGN="LEFT">description</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>2</TT></TD>
+<TD ALIGN="LEFT">SU(2)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>3</TT></TD>
+<TD ALIGN="LEFT">SU(3)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><TT>N</TT></TD>
+<TD ALIGN="LEFT">SU(N)</TD>
+</TR>
+</TABLE>
+</DIV>
+(For the moment there is no provision for distinguishing among integer
+sizes.)
+
+<P>
+For example, the type
+<PRE>
+  QLA_F3_DiracFermion
+</PRE>
+describes a four-spin, three-color spinor.
+
+<P>
+The general color choice <TT>N</TT> can also be used for specialized
+<SPAN CLASS="MATH"><I>SU</I>(2)</SPAN> or <SPAN CLASS="MATH"><I>SU</I>(3)</SPAN> at the cost of degrading performance.
+
+<P>
+<BR><HR>
+<ADDRESS>
+James Osborn
+2006-06-25
+</ADDRESS>
+</BODY>
+</HTML>
