@@ -105,8 +105,8 @@ ternaryconst(M,eq_c_times,C,M,minus,M)
 
 #endif
 `
-int test_tensor_idx4(FILE *fp){
-  initialize_variables(fp);
+int test_tensor_idx4(FILE *fp, int ealign){
+  initialize_variables(fp, ealign);
 '
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 

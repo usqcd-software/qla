@@ -6,28 +6,32 @@
 #include <string.h>
 #include <libgen.h>
 
-extern int test_tensor_idx1(FILE *fp);
-extern int test_tensor_idx2(FILE *fp);
-extern int test_tensor_idx3(FILE *fp);
-extern int test_tensor_idx4(FILE *fp);
+int test_tensor_idx1(FILE *fp, int ealign);
+int test_tensor_idx2(FILE *fp, int ealign);
+int test_tensor_idx3(FILE *fp, int ealign);
+int test_tensor_idx4(FILE *fp, int ealign);
 
 int
 main(int argc, char* argv[])
 {
-  //char name[64];
   FILE *fp;
-
-  char *test_program_name= basename(argv[0]); 
-  test_program_name = strcat(test_program_name, ".result");
-  if (NULL == (fp = fopen(test_program_name,"w"))) {
-    fprintf(stderr, "Error in report function - cannot create \"%s\"\n", test_program_name);
+  char *fn = basename(argv[0]);
+  int len = strlen(fn) + 10;
+  char buf[len];
+  strcpy(buf, fn);
+  fn = strcat(buf, ".result");
+  fp = fopen(fn, "w");
+  if (fp == NULL) {
+    fprintf(stderr, "Error in report function - cannot create \"%s\"\n", fn);
     exit(-1);
   }
 
-  test_tensor_idx1(fp);
-  test_tensor_idx2(fp);
-  test_tensor_idx3(fp);
-  test_tensor_idx4(fp);
+  for(int i=1; i<=32; i*=2) {
+    test_tensor_idx1(fp, i);
+    test_tensor_idx2(fp, i);
+    test_tensor_idx3(fp, i);
+    test_tensor_idx4(fp, i);
+  }
 
   return 0;
 }

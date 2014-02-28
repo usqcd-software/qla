@@ -16,9 +16,9 @@ include(protocol_idx.m4)
 '
 include(tensor_idx_defs.m4)
 `
-int test_tensor_idx3(FILE *fp)
+int test_tensor_idx3(FILE *fp, int ealign)
 {
-  initialize_variables(fp);
+  initialize_variables(fp, ealign);
 '
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 

@@ -106,8 +106,8 @@ unary_set_diracvec(P,eq_diracvec,D)
 
 #endif
 `
-int test_tensor_idx1(FILE *fp){
-  initialize_variables(fp);
+int test_tensor_idx1(FILE *fp, int ealign){
+  initialize_variables(fp, ealign);
 '
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 

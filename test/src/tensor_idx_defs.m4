@@ -3,43 +3,23 @@ rem(`
      (Include file for test_tensor_idx.[1-4].m4)
 ')
 
-static  QLA_Real                  sR1[MAX],sR2[MAX],sR3[MAX];
-static  QLA_Complex               sC1[MAX],sC2[MAX],sC3[MAX];
-static  QLA_ColorMatrix           sM1[MAX],sM2[MAX],sM3[MAX];
-static  QLA_HalfFermion           sH1[MAX],sH2[MAX],sH3[MAX];
-static  QLA_DiracFermion          sD1[MAX],sD2[MAX],sD3[MAX];
-static  QLA_ColorVector           sV1[MAX],sV2[MAX],sV3[MAX];
-static  QLA_DiracPropagator       sP1[MAX],sP2[MAX],sP3[MAX];
+static  QLA_Real                  *sR1,*sR2,*sR3;
+static  QLA_Complex               *sC1,*sC2,*sC3;
+static  QLA_ColorMatrix           *sM1,*sM2,*sM3;
+static  QLA_HalfFermion           *sH1,*sH2,*sH3;
+static  QLA_DiracFermion          *sD1,*sD2,*sD3;
+static  QLA_ColorVector           *sV1,*sV2,*sV3;
+static  QLA_DiracPropagator       *sP1,*sP2,*sP3;
 
 static  QLA_RandomState           sS1[MAX];
 
-static  QLA_Real                  destR[MAX],chkR[MAX];
-static  QLA_Complex               destC[MAX],chkC[MAX];
-static  QLA_ColorMatrix           destM[MAX],chkM[MAX];
-static  QLA_HalfFermion           destH[MAX],chkH[MAX];
-static  QLA_DiracFermion          destD[MAX],chkD[MAX];
-static  QLA_ColorVector           destV[MAX],chkV[MAX];
-static  QLA_DiracPropagator       destP[MAX],chkP[MAX];
-
-#if 0
-  QLA_D_Real                chkRD[MAX];
-  QLA_D_Complex             chkCD[MAX];
-  QLA_D_ColorMatrix         chkMD[MAX];
-  QLA_D_HalfFermion         chkHD[MAX];
-  QLA_D_DiracFermion        chkDD[MAX];
-  QLA_D_ColorVector         chkVD[MAX];
-  QLA_D_DiracPropagator     chkPD[MAX];
-#endif
-
-#if 0
-  QLA_D_Real                chkrD;
-  QLA_D_Complex             chkcD;
-  QLA_D_ColorMatrix         chkmD;
-  QLA_D_HalfFermion         chkhD;
-  QLA_D_DiracFermion        chkdD;
-  QLA_D_ColorVector         chkvD;
-  QLA_D_DiracPropagator     chkpD;
-#endif
+static  QLA_Real                  *destR,*chkR;
+static  QLA_Complex               *destC,*chkC;
+static  QLA_ColorMatrix           *destM,*chkM;
+static  QLA_HalfFermion           *destH,*chkH;
+static  QLA_DiracFermion          *destD,*chkD;
+static  QLA_ColorVector           *destV,*chkV;
+static  QLA_DiracPropagator       *destP,*chkP;
 
 static  QLA_Real sC4re      = 1.2312;
 static  QLA_Real sC4im      = -0.701;
@@ -61,17 +41,14 @@ static  QLA_Int sI3[MAX] = { 92,  34, -21, -67, 104, 61, -10,  73, -96,  50};
 
 static  QLA_Int sI4      = 5001;
 
-  /*int dRx[MAX]  = {8,5,6,7,1,2,9,0,3,4};*/
 static  int sR1x[MAX] = {3,0,1,8,2,4,5,9,7,6};
 static  int sR2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
 static  int sR3x[MAX] = {8,3,2,5,6,9,7,4,0,1};
 
-  /*int dCx[MAX]  = {8,3,2,5,6,9,7,4,0,1};*/
 static  int sC1x[MAX] = {8,5,6,7,1,2,9,0,3,4};
 static  int sC2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
 
 static  int sI1x[MAX] = {4,9,0,2,1,3,7,8,5,6};
-  /*int sI3x[MAX] = {3,0,1,8,2,4,5,9,7,6};*/
 
 static  int sH1x[MAX] = {4,6,1,2,9,7,0,3,5,8};
 static  int sH2x[MAX] = {8,1,6,0,3,7,5,9,2,4};
@@ -87,8 +64,6 @@ static  int sP2x[MAX] = {2,9,5,6,7,8,1,0,3,4};
 
 static  int sM1x[MAX] = {6,0,3,7,9,5,8,1,2,4};
 static  int sM2x[MAX] = {6,1,4,5,0,7,9,2,8,3};
-
-  /*int zI1x[MAX] = {8,5,6,7,1,2,9,0,3,4};*/
 
 static  int sS1x[MAX] = {1,3,8,5,9,4,7,6,0,2};
 
@@ -108,10 +83,10 @@ static  QLA_RandomState         *sS1p[MAX];
 //static int *sV1nx = sV1x;
 static int *sM1nx = sM1x;
 #define ND 3
-static  QLA_ColorVector *sV1n[ND] = {sV1,sV2,sV3};
-static  QLA_ColorMatrix *sM1n[ND] = {sM1,sM2,sM3};
-static  QLA_ColorVector **sV1np[ND] = {sV1p,sV2p,sV3p};
-static  QLA_ColorMatrix **sM1np[ND] = {sM1p,sM2p,sM3p};
+static  QLA_ColorVector *sV1n[ND];
+static  QLA_ColorMatrix *sM1n[ND];
+static  QLA_ColorVector **sV1np[ND];
+static  QLA_ColorMatrix **sM1np[ND];
 static  QLA_ColorVector *sV1nt[ND];
 static  QLA_ColorMatrix *sM1nt[ND];
 #endif
@@ -121,7 +96,71 @@ static  char name[64];
 
 static  int i;
 
-static void initialize_variables(FILE *fp) {
+#define arrayr(t,v,n) v=(t*)amalloc(n*sizeof(t),ealign*sizeof(QLA_Real))
+#define arrayc(t,v,n) v=(t*)amalloc(n*sizeof(t),ealign*sizeof(QLA_Complex))
+#define arrayrq(t,v,n) v=(t*)amalloc(n*sizeof(t),ealign*sizeof(QLA_Q_Real))
+#define arraycq(t,v,n) v=(t*)amalloc(n*sizeof(t),ealign*sizeof(QLA_Q_Complex))
+static void *
+amalloc(size_t n, size_t align)
+{
+  size_t a2 = 2*align;
+  void *t = malloc(n+a2);
+  //fprintf(stderr, "align: %i  t: %p\n", (int)align, t);
+  size_t endbits = ((size_t)t) & (a2-1);
+  size_t offset = ((a2 + align) - endbits) % a2;
+  //fprintf(stderr, "align: %i  offset: %i\n", (int)align, (int)offset);
+  return (void*)(offset + (char*)t);
+}
+
+static void
+initialize_variables(FILE *fp, int ealign)
+{
+  for(i = 0; i < MAX; i++){
+    arrayr(QLA_Real, sR1, MAX);
+    arrayr(QLA_Real, sR2, MAX);
+    arrayr(QLA_Real, sR3, MAX);
+    arrayc(QLA_Complex, sC1, MAX);
+    arrayc(QLA_Complex, sC2, MAX);
+    arrayc(QLA_Complex, sC3, MAX);
+    arrayc(QLA_ColorMatrix, sM1, MAX);
+    arrayc(QLA_ColorMatrix, sM2, MAX);
+    arrayc(QLA_ColorMatrix, sM3, MAX);
+    arrayc(QLA_HalfFermion, sH1, MAX);
+    arrayc(QLA_HalfFermion, sH2, MAX);
+    arrayc(QLA_HalfFermion, sH3, MAX);
+    arrayc(QLA_DiracFermion, sD1, MAX);
+    arrayc(QLA_DiracFermion, sD2, MAX);
+    arrayc(QLA_DiracFermion, sD3, MAX);
+    arrayc(QLA_ColorVector, sV1, MAX);
+    arrayc(QLA_ColorVector, sV2, MAX);
+    arrayc(QLA_ColorVector, sV3, MAX);
+    arrayc(QLA_DiracPropagator, sP1, MAX);
+    arrayc(QLA_DiracPropagator, sP2, MAX);
+    arrayc(QLA_DiracPropagator, sP3, MAX);
+    arrayr(QLA_Real, destR, MAX);
+    arrayr(QLA_Real, chkR, MAX);
+    arrayc(QLA_Complex, destC, MAX);
+    arrayc(QLA_Complex, chkC, MAX);
+    arrayc(QLA_ColorMatrix, destM, MAX);
+    arrayc(QLA_ColorMatrix, chkM, MAX);
+    arrayc(QLA_HalfFermion, destH, MAX);
+    arrayc(QLA_HalfFermion, chkH, MAX);
+    arrayc(QLA_DiracFermion, destD, MAX);
+    arrayc(QLA_DiracFermion, chkD, MAX);
+    arrayc(QLA_ColorVector, destV, MAX);
+    arrayc(QLA_ColorVector, chkV, MAX);
+    arrayc(QLA_DiracPropagator, destP, MAX);
+    arrayc(QLA_DiracPropagator, chkP, MAX);
+  }
+
+#if ( QLA_Precision != 'Q' )
+#ifdef MULTISOURCE
+  sV1n[0] = sV1; sV1n[1] = sV2; sV1n[2] = sV3;
+  sM1n[0] = sM1; sM1n[1] = sM2; sM1n[2] = sM3;
+  sV1np[0] = sV1p; sV1np[1] = sV2p; sV1np[2] = sV3p;
+  sM1np[0] = sM1p; sM1np[1] = sM2p; sM1np[2] = sM3p;
+#endif
+#endif
 
   for(i = 0; i < MAX; i++){
     sR1p[i] = &sR1[sR2x[i]];

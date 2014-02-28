@@ -9,10 +9,28 @@ include(protocol_idx.m4)
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 #include "compare.h"
 
-int main(int argc, char *argv[]){
+#define arrayr(t,v,n) t *v=(t*)amalloc(n*sizeof(t),ealign*sizeof(QLA_Real))
+#define arrayc(t,v,n) t *v=(t*)amalloc(n*sizeof(t),ealign*sizeof(QLA_Complex))
+#define arrayrq(t,v,n) t *v=(t*)amalloc(n*sizeof(t),ealign*sizeof(QLA_Q_Real))
+#define arraycq(t,v,n) t *v=(t*)amalloc(n*sizeof(t),ealign*sizeof(QLA_Q_Complex))
+static void *
+amalloc(size_t n, size_t align)
+{
+  size_t a2 = 2*align;
+  void *t = malloc(n+a2);
+  //fprintf(stderr, "align: %i  t: %p\n", (int)align, t);
+  size_t endbits = ((size_t)t) & (a2-1);
+  size_t offset = ((a2 + align) - endbits) % a2;
+  //fprintf(stderr, "align: %i  offset: %i\n", (int)align, (int)offset);
+  return (void*)(offset + (char*)t);
+}
 
+void
+runtest(FILE *fp, int ealign)
+{
 #define QLA_DF_r_eq_I_dot_I QLA_D_r_eq_I_dot_I
 #define QLA_QD_r_eq_I_dot_I QLA_D_r_eq_I_dot_I
 
@@ -32,20 +50,13 @@ int main(int argc, char *argv[]){
 #endif
 
   QLA_Real sR4       = -1.635;
-  /*QLA_Int sI5      = 13;*/
 
-  /*int dIx[MAX]  = {8,3,2,5,6,9,7,4,0,1};*/
-
-  /*int zI1x[MAX] = {8,5,6,7,1,2,9,0,3,4};*/
-
-  /*QLA_D_Complex chkCD[MAX];*/
-  QLA_Q_Complex chkCQ[MAX];
-  QLA_Int destI[MAX],chkI[MAX];
+  arraycq(QLA_Q_Complex, chkCQ, MAX);
+  QLA_Int destI[MAX], chkI[MAX];
 
   QLA_Real destr,chkr;
   QLA_D_Real destrD,chkrD;
   QLA_Complex destc,chkc;
-  /*QLA_D_Complex chkcD;*/
   QLA_Q_Real chkrQ;
   QLA_Q_Complex chkcQ;
 
@@ -53,13 +64,10 @@ int main(int argc, char *argv[]){
   QLA_Real sC4im      = -701.;
   QLA_Complex sC4;
 
-  QLA_Real sR2[MAX] = {.2359, .6106, .5588, .6899, .5000,
-		.9789, .4457, .8602, .4282, .7920};
-  QLA_Real sC2re[MAX] = { .9789, -.4457, .8602, .4282, .7920,
-		     -.2359, -.6106, -.5588 -.6899, -.5000};
-  QLA_Real sC2im[MAX] = { .6188, -.1038,  .7359, -.9607,  .5032,
-		     2.1929, .7147, -2.6880, .4282, .5472};
-  QLA_Complex sC2[MAX];
+  arrayr(QLA_Real, sR2, MAX);
+  arrayr(QLA_Real, sC2re, MAX);
+  arrayr(QLA_Real, sC2im, MAX);
+  arrayc(QLA_Complex, sC2, MAX);
   int zI1[MAX] = { 3, 0, 7, 1, 0, 0, 3, 2, 1, 0};
   QLA_Int sI1[MAX] = { 61, -10,  73, -96,  50,
   		   92,  34, -21, -67, 104};
@@ -73,31 +81,21 @@ int main(int argc, char *argv[]){
   int sI2x[MAX] = {4,9,0,2,1,3,7,8,5,6};
   int sI3x[MAX] = {8,3,2,5,6,9,7,4,0,1};
 
-  QLA_Int /**nI1p[MAX],*/ *zI1p[MAX];
+  QLA_Int *zI1p[MAX];
   QLA_Int *sI1p[MAX], *sI2p[MAX], *sI3p[MAX];
   QLA_Real *sR2p[MAX], *sR3p[MAX];
-  QLA_Complex *sC2p[MAX]/*, *sC3p[MAX]*/;
+  QLA_Complex *sC2p[MAX];
 #endif
   
-  QLA_Real sR1[MAX] = { 61.88, -10.38,  73.59, -96.07,  50.32,
-		92.37,   34.58, -21.10, -67.05, 104.01};
+  arrayr(QLA_Real, sR1, MAX);
+  arrayr(QLA_Real, sR3, MAX);
+  arrayr(QLA_Real, sC1re, MAX);
+  arrayr(QLA_Real, sC3re, MAX);
+  arrayr(QLA_Real, sC1im, MAX);
+  arrayr(QLA_Real, sC3im, MAX);
 
-  QLA_Real sR3[MAX] = {-23.59, -56.32, -55.88, -11.55, 145.46, 
-		 219.29, 71.47, -268.80, 42.82, 54.72};
-
-  QLA_Real sC1re[MAX] = { 92.37,   34.58, -21.10, -67.05, 104.01,
-		      61.88, -10.38,  73.59, -96.07,  50.32};
-
-  QLA_Real sC3re[MAX] = {219.29, 71.47, -268.80, 42.82, 54.72,
-		     -23.59, -56.32, -55.88, -11.55, 145.46}; 
-
-  QLA_Real sC1im[MAX] = {-23.59, -61.06, -55.88 -68.99, -50.00,
-		      92.37,   34.58, -21.10, -67.05, 104.01};
-
-  QLA_Real sC3im[MAX] = {-23.59, -56.32, -55.88, -11.55, 145.46, 
-		      97.89, -44.57, 86.02, 42.82, 79.20};
-
-  QLA_Complex sC1[MAX],sC3[MAX];
+  arrayc(QLA_Complex, sC1, MAX);
+  arrayc(QLA_Complex, sC3, MAX);
 
   QLA_RandomState sS1[MAX];
 
@@ -118,20 +116,31 @@ int main(int argc, char *argv[]){
   QLA_Complex *sC1p[MAX];
   QLA_RandomState *sS1p[MAX];
 
-  QLA_Real destR[MAX],chkR[MAX];
-  QLA_Complex destC[MAX],chkC[MAX];
+  arrayr(QLA_Real, destR, MAX);
+  arrayr(QLA_Real, chkR, MAX);
+  arrayc(QLA_Complex, destC, MAX);
+  arrayc(QLA_Complex, chkC, MAX);
 
   int i;
-
   char name[64];
-  FILE *fp;
 
-  char *test_program_name= basename(argv[0]); 
-  test_program_name = strcat(test_program_name, ".result");
-  if (NULL == (fp = fopen(test_program_name,"w"))) {
-    fprintf(stderr, "Error in report function - cannot create \"%s\"\n", test_program_name);
-    exit(-1);
+  // initialize
+  QLA_seed_random(sS1, 987654321, time(NULL));
+#define R QLA_gaussian(sS1)
+  for(i = 0; i < MAX; i++){
+#if ( QLA_Precision != 'Q' )
+    sR2[i] = R;
+    sC2re[i] = R;
+    sC2im[i] = R;
+#endif
+    sR1[i] = R;
+    sC1re[i] = R;
+    sC1im[i] = R;
+    sR3[i] = R;
+    sC3re[i] = R;
+    sC3im[i] = R;
   }
+#undef R
 
   /* Create pointer lists */
 
@@ -145,13 +154,11 @@ int main(int argc, char *argv[]){
     sR3p[i] = &sR3[sR1x[i]];
 
     sC2p[i] = &sC2[sC2x[i]];
-    //sC3p[i] = &sC3[sC2x[i]];
 
     sI1p[i] = &sI1[sI1x[i]];
     sI2p[i] = &sI2[sI2x[i]];
     sI3p[i] = &sI3[sI3x[i]];
 
-    //nI1p[i] = &nI1[sR3x[i]];
     zI1p[i] = &zI1[sR2x[i]];
 #endif
   }
@@ -346,6 +353,28 @@ unaryrand(R,eq_random)
 
 unaryrand(R,eq_gaussian)
 unaryrand(C,eq_gaussian)
+}
+
+int
+main(int argc, char *argv[])
+{
+  FILE *fp;
+  char *fn = basename(argv[0]);
+  int len = strlen(fn) + 10;
+  char buf[len];
+  strcpy(buf, fn);
+  fn = strcat(buf, ".result");
+  fp = fopen(fn, "w");
+  if (fp == NULL) {
+    fprintf(stderr, "Error in report function - cannot create \"%s\"\n", fn);
+    exit(-1);
+  }
+
+  fprintf(stderr, "start\n");
+
+  for(int i=1; i<=32; i*=2) {
+    runtest(fp, i);
+  }
 
   return 0;
 }

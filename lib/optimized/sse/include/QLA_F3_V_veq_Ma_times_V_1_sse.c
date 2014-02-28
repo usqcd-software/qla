@@ -29,7 +29,7 @@
     r0i = addps(r0i,mulps(a2,b2i));
 
     r0i = shufps(r0i, r0i, 0xb1);
-    r0i = addps(r0i, sign02(r0r));
+    r0i = addps(r0i, sign13(r0r));
     storeups(&r[i], r0i);
 
     *foff(&r[i],4) =

@@ -1,3 +1,7 @@
+2014-02-28: James Osborn
+	Made testsuite run with varying alignments.
+	Corrected non-aligned sse spin project/reconstruct code.
+
 2014-01-16: James Osborn
 	Made generic cmath macros follow QLA_Precision.
 

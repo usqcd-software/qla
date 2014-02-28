@@ -14,21 +14,20 @@
 typedef __m128 v4sf;
 typedef __m64 v2sf;
 
+#if 1
 typedef union {
   int  i[4];
   v4sf v;
 } _ivu;
-
-static const _ivu _sgn01  = {{0x00000000, 0x00000000, 0x80000000, 0x80000000}};
-static const _ivu _sgn02  = {{0x00000000, 0x80000000, 0x00000000, 0x80000000}};
+static const _ivu _sgn01  = {{0x80000000, 0x80000000, 0x00000000, 0x00000000}};
+static const _ivu _sgn02  = {{0x80000000, 0x00000000, 0x80000000, 0x00000000}};
 static const _ivu _sgn03  = {{0x80000000, 0x00000000, 0x00000000, 0x80000000}};
 static const _ivu _sgn12  = {{0x00000000, 0x80000000, 0x80000000, 0x00000000}};
-static const _ivu _sgn13  = {{0x80000000, 0x00000000, 0x80000000, 0x00000000}};
-static const _ivu _sgn23  = {{0x80000000, 0x80000000, 0x00000000, 0x00000000}};
+static const _ivu _sgn13  = {{0x00000000, 0x80000000, 0x00000000, 0x80000000}};
+static const _ivu _sgn23  = {{0x00000000, 0x00000000, 0x80000000, 0x80000000}};
 static const _ivu _sgn0123= {{0x80000000, 0x80000000, 0x80000000, 0x80000000}};
-
-#if 0
-static const v4sf _sse_sign_01   = { 1, 1,-1,-1};
+#else
+static const v4sf _sgn01   = { 1, 1,-1,-1};
 static const v4sf _sse_sign_02   = { 1,-1, 1,-1};
 static const v4sf _sse_sign_03   = {-1, 1, 1,-1};
 static const v4sf _sse_sign_12   = { 1,-1,-1, 1};
@@ -76,7 +75,7 @@ static const v4sf _sse_sign_0123 = {-1,-1,-1,-1};
 #if QLA_SSE_LEVEL >= 3
 #define addsubps(a,b) _mm_addsub_ps(a,b)
 #else
-#define addsubps(a,b) addps(a,sign13(b))
+#define addsubps(a,b) addps(a,sign02(b))
 #endif
 
 #define concat(a,b) a ## b
@@ -87,13 +86,13 @@ static const v4sf _sse_sign_0123 = {-1,-1,-1,-1};
     r = addsubps(d0, shufps(d1, d1, 0x1b)); }
 
 #define spproj0m(r,p) {	v4sf d0, d1; d0=loadaps(p); d1=loadaps(foff(p,4)); \
-    r = subps(d0, sign13(shufps(d1, d1, 0x1b))); }
+    r = subps(d0, sign02(shufps(d1, d1, 0x1b))); }
 
 #define spproj1p(r,p) {	v4sf d0, d1; d0=loadaps(p); d1=loadaps(foff(p,4)); \
-    r = subps(d0, sign01(shufps(d1, d1, 0x4e))); }
+    r = addps(d0, sign01(shufps(d1, d1, 0x4e))); }
 
 #define spproj1m(r,p) {	v4sf d0, d1; d0=loadaps(p); d1=loadaps(foff(p,4)); \
-    r = addps(d0, sign01(shufps(d1, d1, 0x4e))); }
+    r = subps(d0, sign01(shufps(d1, d1, 0x4e))); }
 
 #define spproj2p(r,p) {	v4sf d0, d1; d0=loadaps(p); d1=loadaps(foff(p,4)); \
     r = addps(d0, sign03(shufps(d1, d1, 0xb1))); }
@@ -111,10 +110,10 @@ static const v4sf _sse_sign_0123 = {-1,-1,-1,-1};
 
 #define spproj4m(r,p) {	r=loadaps(foff(p,4)); }
 
-#define sprecon0p(r,h) { r = sign02(shufps(h, h, 0x1b)); }
-#define sprecon0m(r,h) { r = sign13(shufps(h, h, 0x1b)); }
-#define sprecon1p(r,h) { r = sign01(shufps(h, h, 0x4e)); }
-#define sprecon1m(r,h) { r = sign23(shufps(h, h, 0x4e)); }
+#define sprecon0p(r,h) { r = sign13(shufps(h, h, 0x1b)); }
+#define sprecon0m(r,h) { r = sign02(shufps(h, h, 0x1b)); }
+#define sprecon1p(r,h) { r = sign23(shufps(h, h, 0x4e)); }
+#define sprecon1m(r,h) { r = sign01(shufps(h, h, 0x4e)); }
 #define sprecon2p(r,h) { r = sign12(shufps(h, h, 0xb1)); }
 #define sprecon2m(r,h) { r = sign03(shufps(h, h, 0xb1)); }
 #define sprecon3p(r,h) { r = h; }

@@ -156,8 +156,8 @@ alleqops(`binary(R,',`_re,M,dot,M,sM1,sM2)')
 
 #endif
 `
-int test_tensor_idx2(FILE *fp){
-  initialize_variables(fp);
+int test_tensor_idx2(FILE *fp, int ealign){
+  initialize_variables(fp, ealign);
 '
 #if ( QLA_Precision != 'Q' )  /* Q precision is limited to assignments */
 

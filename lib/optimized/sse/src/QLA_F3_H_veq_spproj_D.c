@@ -182,12 +182,12 @@ QLA_F3_H_veq_spproj_D( QLA_F3_HalfFermion *restrict r,
 	  QLA_F3_DiracFermion *ai = &a[i];
 	  int i_c;
 	  for(i_c=0;i_c<3;i_c++) {
-	    QLA_c_eq_c_plus_c(QLA_F3_elem_H(*ri,i_c,0),
-			      QLA_F3_elem_D(*ai,i_c,0),
-			      QLA_F3_elem_D(*ai,i_c,3));
-	    QLA_c_eq_c_minus_c(QLA_F3_elem_H(*ri,i_c,1),
-			       QLA_F3_elem_D(*ai,i_c,1),
-			       QLA_F3_elem_D(*ai,i_c,2));
+	    QLA_c_eq_c_minus_c(QLA_F3_elem_H(*ri,i_c,0),
+			       QLA_F3_elem_D(*ai,i_c,0),
+			       QLA_F3_elem_D(*ai,i_c,3));
+	    QLA_c_eq_c_plus_c(QLA_F3_elem_H(*ri,i_c,1),
+			      QLA_F3_elem_D(*ai,i_c,1),
+			      QLA_F3_elem_D(*ai,i_c,2));
 	  }
         }
       } break;
@@ -261,12 +261,12 @@ QLA_F3_H_veq_spproj_D( QLA_F3_HalfFermion *restrict r,
           QLA_F3_DiracFermion *ai = &a[i];
           int i_c;
           for(i_c=0; i_c<3; i_c++) {
-	    QLA_c_eq_c_minus_c(QLA_F3_elem_H(*ri,i_c,0),
-			       QLA_F3_elem_D(*ai,i_c,0),
-			       QLA_F3_elem_D(*ai,i_c,3));
-	    QLA_c_eq_c_plus_c(QLA_F3_elem_H(*ri,i_c,1),
-			      QLA_F3_elem_D(*ai,i_c,1),
-			      QLA_F3_elem_D(*ai,i_c,2));
+	    QLA_c_eq_c_plus_c(QLA_F3_elem_H(*ri,i_c,0),
+			      QLA_F3_elem_D(*ai,i_c,0),
+			      QLA_F3_elem_D(*ai,i_c,3));
+	    QLA_c_eq_c_minus_c(QLA_F3_elem_H(*ri,i_c,1),
+			       QLA_F3_elem_D(*ai,i_c,1),
+			       QLA_F3_elem_D(*ai,i_c,2));
 	  }
         }
       } break;
