@@ -3,16 +3,25 @@
 AUTOMAKE_OPTIONS = no-dependencies
 
 QLASRC1 = \
+QLA_DF_c1_eq_Ca_dot_C.c \
 QLA_DF_c1_eq_C_dot_C.c \
 QLA_DF_c1_eq_sum_C.c \
+QLA_DF_c1_veq_Ca_dot_C.c \
+QLA_DF_c1_veq_Ca_dot_pC.c \
 QLA_DF_c1_veq_C_dot_C.c \
 QLA_DF_c1_veq_C_dot_pC.c \
+QLA_DF_c1_veq_pCa_dot_C.c \
+QLA_DF_c1_veq_pCa_dot_pC.c \
 QLA_DF_c1_veq_pC_dot_C.c \
 QLA_DF_c1_veq_pC_dot_pC.c \
 QLA_DF_c1_veq_sum_C.c \
 QLA_DF_c1_veq_sum_pC.c \
+QLA_DF_c1_xeq_Ca_dot_C.c \
+QLA_DF_c1_xeq_Ca_dot_pC.c \
 QLA_DF_c1_xeq_C_dot_C.c \
 QLA_DF_c1_xeq_C_dot_pC.c \
+QLA_DF_c1_xeq_pCa_dot_C.c \
+QLA_DF_c1_xeq_pCa_dot_pC.c \
 QLA_DF_c1_xeq_pC_dot_C.c \
 QLA_DF_c1_xeq_pC_dot_pC.c \
 QLA_DF_c1_xeq_sum_C.c \
@@ -72,16 +81,25 @@ QLA_FD_R_xeq_pR.c \
 QLA_FD_R_xeq_R.c
 
 QLAOBJ1 = \
+QLA_DF_c1_eq_Ca_dot_C.o \
 QLA_DF_c1_eq_C_dot_C.o \
 QLA_DF_c1_eq_sum_C.o \
+QLA_DF_c1_veq_Ca_dot_C.o \
+QLA_DF_c1_veq_Ca_dot_pC.o \
 QLA_DF_c1_veq_C_dot_C.o \
 QLA_DF_c1_veq_C_dot_pC.o \
+QLA_DF_c1_veq_pCa_dot_C.o \
+QLA_DF_c1_veq_pCa_dot_pC.o \
 QLA_DF_c1_veq_pC_dot_C.o \
 QLA_DF_c1_veq_pC_dot_pC.o \
 QLA_DF_c1_veq_sum_C.o \
 QLA_DF_c1_veq_sum_pC.o \
+QLA_DF_c1_xeq_Ca_dot_C.o \
+QLA_DF_c1_xeq_Ca_dot_pC.o \
 QLA_DF_c1_xeq_C_dot_C.o \
 QLA_DF_c1_xeq_C_dot_pC.o \
+QLA_DF_c1_xeq_pCa_dot_C.o \
+QLA_DF_c1_xeq_pCa_dot_pC.o \
 QLA_DF_c1_xeq_pC_dot_C.o \
 QLA_DF_c1_xeq_pC_dot_pC.o \
 QLA_DF_c1_xeq_sum_C.o \
@@ -169,7 +187,7 @@ lib_LIBRARIES = ../libqla_df.a
 AM_CFLAGS = -I$(top_srcdir)/include -DQLA_RESTRICT=restrict  
 
 # this is just to force automake to include the .c.o rule
-nodist____libqla_df_a_SOURCES = QLA_DF_c1_eq_C_dot_C.c
+nodist____libqla_df_a_SOURCES = QLA_DF_c1_eq_Ca_dot_C.c
 
 nodist_include_HEADERS = $(top_builddir)/include/qla_df.h
 

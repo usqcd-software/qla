@@ -295,6 +295,8 @@ alleqops(`binary(C,',`,Ca,times,Ca,sC1,sC2)')
   /* Local inner product - complex */
 
 alleqops(`binary(C,',`,C,dot,C,sC1,sC2)')
+alleqops(`binary(C,',`,Ca,dot,C,sC1,sC2)')
+alleqops(`binary(C,',`,C,dot,Ca,sC1,sC2)')
 alleqops(`binary(R,',`_re,C,dot,C,sC1,sC2)')
 
   /* Ternary operations */
@@ -328,6 +330,7 @@ unaryglobalnorm2(r,eq_norm2,C,,,)
 binaryglobaldotreal(r,eq,R,dot,R,,,)
 binaryglobaldotreal(r,eq,I,dot,I,,,)
 binaryglobaldot(c,eq,C,dot,C,,,)
+binaryglobaldot(c,eq,Ca,dot,C,,,)
 binaryglobaldotreal(r,eq_re,C,dot,C,,,)
 unarysumreal(r,eq_sum,R,,,)
 unarysumreal(r,eq_sum,I,,,)

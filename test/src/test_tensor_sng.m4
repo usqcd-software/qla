@@ -286,6 +286,10 @@ chkLocalDot(D);
 chkLocalDot(V);
 chkLocalDot(P);
 chkLocalDot(M);
+chkLocalDot(P,a);
+chkLocalDot(P,,a);
+chkLocalDot(M,a);
+chkLocalDot(M,,a);
 chkLocalRealDot(H);
 chkLocalRealDot(D);
 chkLocalRealDot(V);
@@ -332,6 +336,8 @@ alltensors(`chkNorm2');
 
   /* QLA_c_eq_T_dot_T */
 alltensors(`chkDot');
+chkDot(M,a);
+chkDot(P,a);
 chkRealDot(C);
 chkRealDot(H);
 chkRealDot(D);

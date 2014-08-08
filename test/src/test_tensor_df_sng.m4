@@ -129,6 +129,8 @@ alltensors(`chkAssignFD');
 /* Reductions */
 alltensors(`chkNorm2DF');
 alltensors(`chkDotDF');
+chkDotDF(M,a);
+chkDotDF(P,a);
 alltensors(`chkRealDotDF');
 alltensors(`chkSumDF');
 

@@ -72,9 +72,16 @@ sub make_code_binary_dot {
     $temp_def{'precision'} = $higher_precision;
 
     # For the dot product the adjoint of src1 is understood
-    $src1_mod_def{'adj'} = "a";
-    $src1_mod_def{'conj'} = "a";
-    $src1_mod_def{'trans'} = "t";
+    # we flip the adjointing here
+    if($src1_def{'adj'} eq 'a') {
+      $src1_mod_def{'adj'} = "";
+      $src1_mod_def{'conj'} = "";
+      $src1_mod_def{'trans'} = "";
+    } else {
+      $src1_mod_def{'adj'} = "a";
+      $src1_mod_def{'conj'} = "a";
+      $src1_mod_def{'trans'} = "t";
+    }
     $src1_mod_def{'mc'} = $src1_def{'nc'};
     $src1_mod_def{'nc'} = $src1_def{'mc'};
     $src1_mod_def{'ms'} = $src1_def{'ns'};
@@ -117,9 +124,16 @@ sub make_code_binary_dot_global {
   $global_def{'precision'} = $higher_precision;
 
   # For the dot product the adjoint of src1 is understood
-  $src1_mod_def{'adj'} = "a";
-  $src1_mod_def{'conj'} = "a";
-  $src1_mod_def{'trans'} = "t";
+  # we flip the adjointing here
+  if($src1_def{'adj'} eq 'a') {
+    $src1_mod_def{'adj'} = "";
+    $src1_mod_def{'conj'} = "";
+    $src1_mod_def{'trans'} = "";
+  } else {
+    $src1_mod_def{'adj'} = "a";
+    $src1_mod_def{'conj'} = "a";
+    $src1_mod_def{'trans'} = "t";
+  }
   $src1_mod_def{'mc'} = $src1_def{'nc'};
   $src1_mod_def{'nc'} = $src1_def{'mc'};
   $src1_mod_def{'ms'} = $src1_def{'ns'};

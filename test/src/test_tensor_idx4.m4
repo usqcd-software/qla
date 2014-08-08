@@ -134,6 +134,8 @@ binaryglobaldot(c,eq,D,dot,D,,,)
 binaryglobaldot(c,eq,V,dot,V,,,)
 binaryglobaldot(c,eq,P,dot,P,,,)
 binaryglobaldot(c,eq,M,dot,M,,,)
+binaryglobaldot(c,eq,Pa,dot,P,,,)
+binaryglobaldot(c,eq,Ma,dot,M,,,)
 
 binaryglobaldotreal(r,eq_re,H,dot,H,,,)
 binaryglobaldotreal(r,eq_re,D,dot,D,,,)

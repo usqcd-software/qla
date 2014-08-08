@@ -1766,22 +1766,44 @@ if(!$quadprecision){
 
 # Full inner product
 
-foreach $assgn ( @assign_list ){
-    foreach $t ( @data_list ){
-
-	# Destination type is real or complex.  Integer dot maps to real.
-	if($datatype_rc{$t} eq "c"){$dest_t = $datatype_complex_abbrev;}
-	else                       {$dest_t = $datatype_real_abbrev;}
-	&header3(" $datatype_generic_name{$t} (c = trace adj(a) dot b)");
-	foreach $indexing ( @ind_binary_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($dest_t,$t,$t);
-	    $def{'op'} = "dot";
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_binary_dot($assgn,"");
-	    }
-	}
+foreach $assgn ( @assign_list ) {
+  foreach $t ( @data_list ) {
+    # Destination type is real or complex.  Integer dot maps to real.
+    if($datatype_rc{$t} eq "c"){$dest_t = $datatype_complex_abbrev;}
+    else                       {$dest_t = $datatype_real_abbrev;}
+    &header3(" $datatype_generic_name{$t} (c = trace adj(a) times b)");
+    foreach $indexing ( @ind_binary_list ) {
+      %def = ();
+      ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($dest_t,$t,$t);
+      $def{'op'} = "dot";
+      if(&make_prototype($indexing,$assgn)){
+	&make_code_binary_dot($assgn,"");
+      }
     }
+  }
+}
+
+# other adjointing combinations for square datatypes
+foreach $assgn ( @assign_list ) {
+  foreach $t ( 'C','M','P' ) {
+    foreach $a1 ( '', $suffix_adjoint ) {
+      if($a1 eq 'a') { $a2=''; } else { $a2='a'; }
+      # Destination type is real or complex.  Integer dot maps to real.
+      if($datatype_rc{$t} eq "c"){$dest_t = $datatype_complex_abbrev;}
+      else                       {$dest_t = $datatype_real_abbrev;}
+      &header3(" $datatype_generic_name{$t} (c = trace (adj)a times (adj)b)");
+      foreach $indexing ( @ind_binary_list ) {
+	%def = ();
+	($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($dest_t,$t,$t);
+	$def{'op'} = "dot";
+	$def{'src1_adj'} = $a1;
+	$def{'src2_adj'} = $a2;
+	if(&make_prototype($indexing,$assgn)){
+	  &make_code_binary_dot($assgn,"");
+	}
+      }
+    }
+  }
 }
 
 # Real part of inner product
@@ -1792,7 +1814,7 @@ foreach $assgn ( @assign_list ){
 	# Destination type is real.  If result is already real, skip it.
 	if($datatype_rc{$t} eq "c"){$dest_t = $datatype_real_abbrev;}
 	else                       {next;}
-	&header3(" $datatype_generic_name{$t} (c = Re trace adj(a) dot b)");
+	&header3(" $datatype_generic_name{$t} (c = Re trace adj(a) times b)");
 	foreach $indexing ( @ind_binary_list ){
 	    %def = ();
 	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($dest_t,$t,$t);
@@ -2186,22 +2208,43 @@ $complex_scalar_abbrev = $datatype_scalar_abbrev{$datatype_complex_abbrev};
 
 # Full inner product
 
-foreach $assgn ( @assign_list ){
-    foreach $t ( @data_list ){
-	
-	# Destination type is real or complex.  Integer dot maps to real.
-	if($datatype_rc{$t} eq "c"){$dest_t = $complex_scalar_abbrev;}
-	else                       {$dest_t = $real_scalar_abbrev;}
-	&header3(" $datatype_generic_name{$t} (c = trace adj(a) dot b)");
-	foreach $indexing ( @ind_binary_reduction_list ){
-	    %def = ();
-	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($dest_t,$t,$t);
-	    $def{'op'} = "dot";
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_binary_dot_global($assgn,"");
-	    }
-	}
+foreach $assgn ( @assign_list ) {
+  foreach $t ( @data_list ) {
+    # Destination type is real or complex.  Integer dot maps to real.
+    if($datatype_rc{$t} eq "c"){$dest_t = $complex_scalar_abbrev;}
+    else                       {$dest_t = $real_scalar_abbrev;}
+    &header3(" $datatype_generic_name{$t} (c = trace adj(a) times b)");
+    foreach $indexing ( @ind_binary_reduction_list ){
+      %def = ();
+      ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($dest_t,$t,$t);
+      $def{'op'} = "dot";
+      if(&make_prototype($indexing,$assgn)){
+	&make_code_binary_dot_global($assgn,"");
+      }
     }
+  }
+}
+
+foreach $assgn ( @assign_list ) {
+  foreach $t ( 'C','M','P' ) {
+    foreach $a1 ( $suffix_adjoint ) {
+      if($a1 eq 'a') { $a2=''; } else { $a2='a'; }
+      # Destination type is real or complex.  Integer dot maps to real.
+      if($datatype_rc{$t} eq "c"){$dest_t = $complex_scalar_abbrev;}
+      else                       {$dest_t = $real_scalar_abbrev;}
+      &header3(" $datatype_generic_name{$t} (c = trace a times b)");
+      foreach $indexing ( @ind_binary_reduction_list ) {
+	%def = ();
+	($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($dest_t,$t,$t);
+	$def{'op'} = "dot";
+	$def{'src1_adj'} = $a1;
+	$def{'src2_adj'} = $a2;
+	if(&make_prototype($indexing,$assgn)){
+	  &make_code_binary_dot_global($assgn,"");
+	}
+      }
+    }
+  }
 }
 
 # Real part of inner product
@@ -2214,7 +2257,7 @@ foreach $assgn ( @assign_list ){
 	# Destination type is real.  If result is already real, skip it.
 	if($datatype_rc{$t} eq "c"){$dest_t = $real_scalar_abbrev;}
 	else                       {next;}
-	&header3(" $datatype_generic_name{$t} (c = Re trace adj(a) dot b)");
+	&header3(" $datatype_generic_name{$t} (c = Re trace adj(a) times b)");
 	foreach $indexing ( @ind_binary_reduction_list ){
 	    %def = ();
 	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($dest_t,$t,$t);
@@ -2241,26 +2284,51 @@ $complex_scalar_abbrev = $datatype_scalar_abbrev{$datatype_complex_abbrev};
 
 # Full inner product
 
-foreach $assgn ( @assign_list ){
-    foreach $t ( @data_list ){
-	
-	# Destination type is real or complex.  No integers.
-	if($datatype_floatpt{$t} == 0){next;}
-	if($datatype_rc{$t} eq "c"){$dest_t = $complex_scalar_abbrev;}
-	else                       {$dest_t = $real_scalar_abbrev;}
-	&header3(" $datatype_generic_name{$t} (c = trace adj(a) dot b)");
-	foreach $indexing ( @ind_binary_reduction_list ){
-	    %def = ();
-	    $def{'precision'} = $precision_double_abbrev.$precision_float_abbrev;
-	    $def{'dest_type'} = &datatype_specific($dest_t,$precision_double_abbrev);
-	    $def{'src1_type'} = &datatype_specific($t,$precision_float_abbrev);
-	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($dest_t,$t,$t);
-	    $def{'op'} = "dot";
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_binary_dot_global($assgn,"");
-	    }
-	}
+foreach $assgn ( @assign_list ) {
+  foreach $t ( @data_list ) {
+    # Destination type is real or complex.  No integers.
+    if($datatype_floatpt{$t} == 0){next;}
+    if($datatype_rc{$t} eq "c"){$dest_t = $complex_scalar_abbrev;}
+    else                       {$dest_t = $real_scalar_abbrev;}
+    &header3(" $datatype_generic_name{$t} (c = trace adj(a) times b)");
+    foreach $indexing ( @ind_binary_reduction_list ) {
+      %def = ();
+      $def{'precision'} = $precision_double_abbrev.$precision_float_abbrev;
+      $def{'dest_type'} = &datatype_specific($dest_t,$precision_double_abbrev);
+      $def{'src1_type'} = &datatype_specific($t,$precision_float_abbrev);
+      ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($dest_t,$t,$t);
+      $def{'op'} = "dot";
+      if(&make_prototype($indexing,$assgn)){
+	&make_code_binary_dot_global($assgn,"");
+      }
     }
+  }
+}
+
+foreach $assgn ( @assign_list ) {
+  foreach $t ( 'C','M','P' ) {
+    foreach $a1 ( $suffix_adjoint ) {
+      if($a1 eq 'a') { $a2=''; } else { $a2='a'; }
+      # Destination type is real or complex.  No integers.
+      if($datatype_floatpt{$t} == 0){next;}
+      if($datatype_rc{$t} eq "c"){$dest_t = $complex_scalar_abbrev;}
+      else                       {$dest_t = $real_scalar_abbrev;}
+      &header3(" $datatype_generic_name{$t} (c = trace a times b)");
+      foreach $indexing ( @ind_binary_reduction_list ) {
+	%def = ();
+	$def{'precision'} = $precision_double_abbrev.$precision_float_abbrev;
+	$def{'dest_type'} = &datatype_specific($dest_t,$precision_double_abbrev);
+	$def{'src1_type'} = &datatype_specific($t,$precision_float_abbrev);
+	($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($dest_t,$t,$t);
+	$def{'op'} = "dot";
+	$def{'src1_adj'} = $a1;
+	$def{'src2_adj'} = $a2;
+	if(&make_prototype($indexing,$assgn)){
+	  &make_code_binary_dot_global($assgn,"");
+	}
+      }
+    }
+  }
 }
 
 # Real part of inner product
@@ -2273,7 +2341,7 @@ foreach $assgn ( @assign_list ){
 	if($datatype_floatpt{$t} == 0){next;}
 	if($datatype_rc{$t} eq "c"){$dest_t = $real_scalar_abbrev;}
 	else                       {next;}
-	&header3(" $datatype_generic_name{$t} (c = Re trace adj(a) dot b)");
+	&header3(" $datatype_generic_name{$t} (c = Re trace adj(a) times b)");
 	foreach $indexing ( @ind_binary_reduction_list ){
 	    %def = ();
 	    $def{'precision'} = $precision_double_abbrev.$precision_float_abbrev;
@@ -2303,26 +2371,51 @@ $complex_scalar_abbrev = $datatype_scalar_abbrev{$datatype_complex_abbrev};
 
 # Full inner product
 
-foreach $assgn ( @assign_list ){
-    foreach $t ( @data_list ){
-	
-	# Destination type is real or complex. No integers.
-	if($datatype_floatpt{$t} == 0){next;}
-	if($datatype_rc{$t} eq "c"){$dest_t = $complex_scalar_abbrev;}
-	else                       {$dest_t = $real_scalar_abbrev;}
-	&header3(" $datatype_generic_name{$t} (c = trace adj(a) dot b)");
-	foreach $indexing ( @ind_binary_reduction_list ){
-	    %def = ();
-	    $def{'precision'} = $precision_longdouble_abbrev.$precision_double_abbrev;
-	    $def{'dest_type'} = &datatype_specific($dest_t,$precision_longdouble_abbrev);
-	    $def{'src1_type'} = &datatype_specific($t,$precision_double_abbrev);
-	    ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($dest_t,$t,$t);
-	    $def{'op'} = "dot";
-	    if(&make_prototype($indexing,$assgn)){
-		&make_code_binary_dot_global($assgn,"");
-	    }
-	}
+foreach $assgn ( @assign_list ) {
+  foreach $t ( @data_list ) {
+    # Destination type is real or complex. No integers.
+    if($datatype_floatpt{$t} == 0){next;}
+    if($datatype_rc{$t} eq "c"){$dest_t = $complex_scalar_abbrev;}
+    else                       {$dest_t = $real_scalar_abbrev;}
+    &header3(" $datatype_generic_name{$t} (c = trace adj(a) times b)");
+    foreach $indexing ( @ind_binary_reduction_list ) {
+      %def = ();
+      $def{'precision'} = $precision_longdouble_abbrev.$precision_double_abbrev;
+      $def{'dest_type'} = &datatype_specific($dest_t,$precision_longdouble_abbrev);
+      $def{'src1_type'} = &datatype_specific($t,$precision_double_abbrev);
+      ($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($dest_t,$t,$t);
+      $def{'op'} = "dot";
+      if(&make_prototype($indexing,$assgn)){
+	&make_code_binary_dot_global($assgn,"");
+      }
     }
+  }
+}
+
+foreach $assgn ( @assign_list ) {
+  foreach $t ( 'C','M','P' ) {
+    foreach $a1 ( $suffix_adjoint ) {
+      if($a1 eq 'a') { $a2=''; } else { $a2='a'; }
+      # Destination type is real or complex. No integers.
+      if($datatype_floatpt{$t} == 0){next;}
+      if($datatype_rc{$t} eq "c"){$dest_t = $complex_scalar_abbrev;}
+      else                       {$dest_t = $real_scalar_abbrev;}
+      &header3(" $datatype_generic_name{$t} (c = trace a times b)");
+      foreach $indexing ( @ind_binary_reduction_list ) {
+	%def = ();
+	$def{'precision'} = $precision_longdouble_abbrev.$precision_double_abbrev;
+	$def{'dest_type'} = &datatype_specific($dest_t,$precision_longdouble_abbrev);
+	$def{'src1_type'} = &datatype_specific($t,$precision_double_abbrev);
+	($def{'dest_t'},$def{'src1_t'},$def{'src2_t'}) = ($dest_t,$t,$t);
+	$def{'op'} = "dot";
+	$def{'src1_adj'} = $a1;
+	$def{'src2_adj'} = $a2;
+	if(&make_prototype($indexing,$assgn)){
+	  &make_code_binary_dot_global($assgn,"");
+	}
+      }
+    }
+  }
 }
 
 # Real part of inner product
@@ -2335,7 +2428,7 @@ foreach $assgn ( @assign_list ){
 	if($datatype_floatpt{$t} == 0){next;}
 	if($datatype_rc{$t} eq "c"){$dest_t = $real_scalar_abbrev;}
 	else                       {next;}
-	&header3(" $datatype_generic_name{$t} (c = Re trace adj(a) dot b)");
+	&header3(" $datatype_generic_name{$t} (c = Re trace adj(a) times b)");
 	foreach $indexing ( @ind_binary_reduction_list ){
 	    %def = ();
 	    $def{'precision'} = $precision_longdouble_abbrev.$precision_double_abbrev;

@@ -944,25 +944,25 @@ chkAssignOuterprod(M,meq)
 rem(`
      Local dot product
 ')
-rem(`chkLocalDoteqop(t1,op)')
+rem(`chkLocalDoteqop(t1,op,adj1,adj2)')
 define(chkLocalDoteqop,`
-  strcpy(name,"QLA_C_$2_$1_dot_$1");
+  strcpy(name,"QLA_C_$2_$1$3_dot_$1$4");
   QLA_c_eq_r(argdP(C),0.);  
   for_$1_elem {
-    QLA_c_peq_ca_times_c(argdP(C),$1_elem(arg1($1)),$1_elem(arg2($1)));
+    QLA_c_peq_c`'opA($3)_times_c$4(argdP(C),$1$3_elem(arg1($1)),$1$4_elem(arg2($1)));
   }
   QLA_c_eq_c(argt(C), arg1(C));
   QLA_c_$2_c(argt(C), argdP(C));
   QLA_c_eq_c(argd(C), arg1(C));
-  QLA_C_$2_$1_dot_$1(&argd(C),&arg1($1),&arg2($1));
+  QLA_C_$2_$1$3_dot_$1$4(&argd(C),&arg1($1),&arg2($1));
   checkeqsngCC(&argd(C),&argt(C),name,fp);
 ')
-rem(`chkLocalDot(t1)')
+rem(`chkLocalDot(t1,adj1,adj2)')
 define(chkLocalDot,`
-chkLocalDoteqop($1,eq)
-chkLocalDoteqop($1,peq)
-chkLocalDoteqop($1,eqm)
-chkLocalDoteqop($1,meq)
+chkLocalDoteqop($1,eq,$2,$3)
+chkLocalDoteqop($1,peq,$2,$3)
+chkLocalDoteqop($1,eqm,$2,$3)
+chkLocalDoteqop($1,meq,$2,$3)
 ')
 
 rem(`
@@ -1248,13 +1248,13 @@ define(chkNorm2QD,`
 rem(`
      Dot product
 ')
-rem(`chkDot(t1)')
+rem(`chkDot(t1,adj1)')
 define(chkDot,`
-  strcpy(name,"QLA_c_eq_$1_dot_$1");
-  QLA_c_eq_$1_dot_$1(&argd(C),&arg1($1),&arg2($1));
+  strcpy(name,"QLA_c_eq_$1$2_dot_$1");
+  QLA_c_eq_$1$2_dot_$1(&argd(C),&arg1($1),&arg2($1));
   QLA_c_eq_r(argtQ(C),0.);  
   for_$1_elem{
-    QLA_c_peq_ca_times_c(argtQ(C),$1_elem(arg1($1)),$1_elem(arg2($1)));
+    QLA_c_peq_c`'opA($2)_times_c(argtQ(C),$1$2_elem(arg1($1)),$1_elem(arg2($1)));
   }
   QLA_c_eq_c(argt(C), argtQ(C));
   checkeqsngCC(&argd(C),&argt(C),name,fp);
@@ -1278,13 +1278,13 @@ define(chkRealDot,`
 rem(`
      Dot product float to double
 ')
-rem(`chkDotDF(t1)')
+rem(`chkDotDF(t1,adj1)')
 define(chkDotDF,`
-  strcpy(name,"QLA_DF_c_eq_$1_dot_$1");
-  QLA_DF_c_eq_$1_dot_$1(&argdD(C),&arg1F($1),&arg2F($1));
+  strcpy(name,"QLA_DF_c_eq_$1$2_dot_$1");
+  QLA_DF_c_eq_$1$2_dot_$1(&argdD(C),&arg1F($1),&arg2F($1));
   QLA_c_eq_r(argtD(C),0.);  
   for_$1_elem{
-    QLA_c_peq_ca_times_c(argtD(C),$1_elem(arg1F($1)),$1_elem(arg2F($1)));
+    QLA_c_peq_c`'opA($2)_times_c(argtD(C),$1$2_elem(arg1F($1)),$1_elem(arg2F($1)));
   }
   checkeqsngDCC(&argdD(C),&argtD(C),name,fp);
 ')
@@ -1306,13 +1306,13 @@ define(chkRealDotDF,`
 rem(`
      Dot product double to long double
 ')
-rem(`chkDotQD(t1)')
+rem(`chkDotQD(t1,adj1)')
 define(chkDotQD,`
-  strcpy(name,"QLA_QD_c_eq_$1_dot_$1");
-  QLA_QD_c_eq_$1_dot_$1(&argdQ(C),&arg1D($1),&arg2D($1));
+  strcpy(name,"QLA_QD_c_eq_$1$2_dot_$1");
+  QLA_QD_c_eq_$1$2_dot_$1(&argdQ(C),&arg1D($1),&arg2D($1));
   QLA_c_eq_r(argtQ(C),0.);  
   for_$1_elem{
-    QLA_c_peq_ca_times_c(argtQ(C),$1_elem(arg1D($1)),$1_elem(arg2D($1)));
+    QLA_c_peq_c`'opA($2)_times_c(argtQ(C),$1$2_elem(arg1D($1)),$1_elem(arg2D($1)));
   }
   checkeqsngQCC(&argdQ(C),&argtQ(C),name,fp);
 ')

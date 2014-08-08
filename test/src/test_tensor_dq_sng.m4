@@ -129,6 +129,8 @@ alltensors(`chkAssignDQ');
 /* Reductions */
 alltensors(`chkNorm2QD');
 alltensors(`chkDotQD');
+chkDotQD(M,a);
+chkDotQD(P,a);
 alltensors(`chkRealDotQD');
 alltensors(`chkSumQD');
 `

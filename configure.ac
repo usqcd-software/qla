@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([qla],[1.8.0],[josborn at physics.bu.edu])
+AC_INIT([qla],[1.9.0],[josborn at physics.bu.edu])
 AC_CONFIG_AUX_DIR(config)
 AM_INIT_AUTOMAKE
 
@@ -38,6 +38,7 @@ for x in `echo "$NC" |tr ',' ' '`; do
     *) NCN=1;;
   esac
 done
+
 
 # code options
 

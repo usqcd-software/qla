@@ -106,6 +106,11 @@ int main(int argc, char *argv[]){
   QLA_c_eq_ca_times_c(chkCQ,sCD1,sCD2);
   CHECKeqsngQCC(destCQ,chkCQ,name,fp);
 
+  strcpy(name,"QLA_QD_c_eq_Ca_dot_C");
+  QLA_QD_c_eq_Ca_dot_C(&destCQ,&sCD1,&sCD2);
+  QLA_c_eq_c_times_c(chkCQ,sCD1,sCD2);
+  CHECKeqsngQCC(destCQ,chkCQ,name,fp);
+
   strcpy(name,"QLA_QD_r_eq_re_C_dot_C");
   QLA_QD_r_eq_re_C_dot_C(&destRQ,&sCD1,&sCD2);
   QLA_r_eq_Re_ca_times_c(chkRQ,sCD1,sCD2);

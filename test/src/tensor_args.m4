@@ -2,6 +2,8 @@ rem(`
      Function arguments for various types
      (Include file for protocol_tensor_sng.m4 and protocol_idx.m4)
 ')
+define(opA,`ifelse($1,a,`',`a')')
+
 define(argd, dest$1)
 define(argt, chk$1)
 
@@ -23,15 +25,15 @@ define(argtPF, `argtD($1)')
 define(argtPD, `argtQ($1)')
 define(argtPQ, `argtQ($1)')
 
-define(arg1, s$1``1'')
+define(arg1, ``s''`substr($1,0,1)'1)
 define(arg2, s$1``2'')
 define(arg3, s$1``3'')
 define(arg4, s$1``4'')
 define(argx, $1)
 
-define(arg1Q, s$1Q``1'')
-define(arg1D, s$1D``1'')
-define(arg1F, s$1F``1'')
+define(arg1Q, s$1Q1)
+define(arg1D, ``s''`substr($1,0,1)'D1)
+define(arg1F, ``s''`substr($1,0,1)'F1)
 define(arg2Q, s$1Q``2'')
 define(arg2D, s$1D``2'')
 define(arg2F, s$1F``2'')
@@ -40,18 +42,18 @@ define(arg3D, s$1D``3'')
 define(arg3F, s$1F``3'')
 
 define(idxd, d$1x)
-define(idx1, s$1``1''x)
+define(idx1, ``s''`substr($1,0,1)'1x)
 define(idx2, s$1``2''x)
 define(idxx, $1x)
 
-define(arg1p, s$1``1''p)
+define(arg1p, ``s''`substr($1,0,1)'1p)
 define(arg2p, s$1``2''p)
 define(argtp, chk$1p)
 define(argxp, $1p)
 
 define(arg1Qp, s$1Q``1''p)
-define(arg1Dp, s$1D``1''p)
-define(arg1Fp, s$1F``1''p)
+define(arg1Dp, ``s''`substr($1,0,1)'D1p)
+define(arg1Fp, ``s''`substr($1,0,1)'F1p)
 
 define(arg2Qp, s$1Q``2''p)
 define(arg2Dp, s$1D``2''p)
@@ -200,4 +202,3 @@ define(eqopeq,`=')
 define(eqopeqm,`=-')
 define(eqoppeq,`+=')
 define(eqopmeq,`-=')
-

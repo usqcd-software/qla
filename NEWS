@@ -1,3 +1,9 @@
+===============================================================================
+2014-08-08	version 1.9.0
+===============================================================================
+2014-08-07: James Osborn
+	Added local Xa_dot_X and X_dot_Xa and global Xa_dot_X routines.
+
 2014-02-28: James Osborn
 	Made testsuite run with varying alignments.
 	Corrected non-aligned sse spin project/reconstruct code.

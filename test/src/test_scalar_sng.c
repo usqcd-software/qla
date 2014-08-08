@@ -531,10 +531,32 @@ int main(int argc, char *argv[]){
   QLA_c_eq_ca_times_c(chkC,sC2,sC1);
   CHECKeqsngCC(&chkC,&destC,name,fp);
 
+  strcpy(name,"QLA_C_eq_Ca_dot_C");
+  QLA_C_eq_Ca_dot_C(&destC,&sC2,&sC1);
+  QLA_c_eq_c_times_c(chkC,sC2,sC1);
+  CHECKeqsngCC(&chkC,&destC,name,fp);
+
+  strcpy(name,"QLA_C_eq_C_dot_Ca");
+  QLA_C_eq_C_dot_Ca(&destC,&sC2,&sC1);
+  QLA_c_eq_ca_times_ca(chkC,sC2,sC1);
+  CHECKeqsngCC(&chkC,&destC,name,fp);
+
+
   strcpy(name,"QLA_C_eqm_C_dot_C");
   QLA_C_eqm_C_dot_C(&destC,&sC2,&sC1);
   QLA_c_eqm_ca_times_c(chkC,sC2,sC1);
   CHECKeqsngCC(&chkC,&destC,name,fp);
+
+  strcpy(name,"QLA_C_eqm_Ca_dot_C");
+  QLA_C_eqm_Ca_dot_C(&destC,&sC2,&sC1);
+  QLA_c_eqm_c_times_c(chkC,sC2,sC1);
+  CHECKeqsngCC(&chkC,&destC,name,fp);
+
+  strcpy(name,"QLA_C_eqm_C_dot_Ca");
+  QLA_C_eqm_C_dot_Ca(&destC,&sC2,&sC1);
+  QLA_c_eqm_ca_times_ca(chkC,sC2,sC1);
+  CHECKeqsngCC(&chkC,&destC,name,fp);
+
 
   QLA_c_eq_c(destC, sC1);
   QLA_c_eq_c(chkC, sC1);
@@ -545,10 +567,40 @@ int main(int argc, char *argv[]){
 
   QLA_c_eq_c(destC, sC1);
   QLA_c_eq_c(chkC, sC1);
+  strcpy(name,"QLA_C_peq_Ca_dot_C");
+  QLA_C_peq_Ca_dot_C(&destC,&sC2,&sC1);
+  QLA_c_peq_c_times_c(chkC,sC2,sC1);
+  CHECKeqsngCC(&chkC,&destC,name,fp);
+
+  QLA_c_eq_c(destC, sC1);
+  QLA_c_eq_c(chkC, sC1);
+  strcpy(name,"QLA_C_peq_C_dot_Ca");
+  QLA_C_peq_C_dot_Ca(&destC,&sC2,&sC1);
+  QLA_c_peq_ca_times_ca(chkC,sC2,sC1);
+  CHECKeqsngCC(&chkC,&destC,name,fp);
+
+
+  QLA_c_eq_c(destC, sC1);
+  QLA_c_eq_c(chkC, sC1);
   strcpy(name,"QLA_C_meq_C_dot_C");
   QLA_C_meq_C_dot_C(&destC,&sC2,&sC1);
   QLA_c_meq_ca_times_c(chkC,sC2,sC1);
   CHECKeqsngCC(&chkC,&destC,name,fp);
+
+  QLA_c_eq_c(destC, sC1);
+  QLA_c_eq_c(chkC, sC1);
+  strcpy(name,"QLA_C_meq_Ca_dot_C");
+  QLA_C_meq_Ca_dot_C(&destC,&sC2,&sC1);
+  QLA_c_meq_c_times_c(chkC,sC2,sC1);
+  CHECKeqsngCC(&chkC,&destC,name,fp);
+
+  QLA_c_eq_c(destC, sC1);
+  QLA_c_eq_c(chkC, sC1);
+  strcpy(name,"QLA_C_meq_C_dot_Ca");
+  QLA_C_meq_C_dot_Ca(&destC,&sC2,&sC1);
+  QLA_c_meq_ca_times_ca(chkC,sC2,sC1);
+  CHECKeqsngCC(&chkC,&destC,name,fp);
+
 
   strcpy(name,"QLA_R_eq_re_C_dot_C");
   QLA_R_eq_re_C_dot_C(&destR,&sC2,&sC1);
@@ -895,6 +947,11 @@ int main(int argc, char *argv[]){
   strcpy(name,"QLA_c_eq_C_dot_C");
   QLA_c_eq_C_dot_C(&destC,&sC1,&sC2);
   QLA_c_eq_ca_times_c(chkC,sC1,sC2);
+  CHECKeqsngCC(&destC,&chkC,name,fp);
+
+  strcpy(name,"QLA_c_eq_Ca_dot_C");
+  QLA_c_eq_Ca_dot_C(&destC,&sC1,&sC2);
+  QLA_c_eq_c_times_c(chkC,sC1,sC2);
   CHECKeqsngCC(&destC,&chkC,name,fp);
 
   strcpy(name,"QLA_r_eq_re_C_dot_C");
