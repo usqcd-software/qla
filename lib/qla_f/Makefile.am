@@ -2248,7 +2248,7 @@ BUILD_DEPS = \
 
 lib_LIBRARIES = ../libqla_f.a
 
-AM_CFLAGS = -I$(top_srcdir)/include -DQLA_RESTRICT=restrict -DQLA_Precision=\'F\' 
+AM_CFLAGS = -I$(top_srcdir)/include -DQLA_RESTRICT=restrict -DQLA_PrecisionInt=1 
 
 # this is just to force automake to include the .c.o rule
 nodist____libqla_f_a_SOURCES = QLA_F_c1_eq_Ca_dot_C.c

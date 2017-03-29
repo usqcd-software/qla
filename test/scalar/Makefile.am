@@ -32,42 +32,42 @@ IDXSRC = ../src/test_scalar_idx.c
 
 # macros
 nodist_test_macros_f_SOURCES = ../src/test_macros.c $(CMPSRC)
-test_macros_f_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'F\'
+test_macros_f_CFLAGS = $(AM_CFLAGS) -DQLA_PrecisionInt=1
 test_macros_f_LDADD = -lm
 
 nodist_test_macros_d_SOURCES = ../src/test_macros.c $(CMPSRC)
-test_macros_d_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'D\'
+test_macros_d_CFLAGS = $(AM_CFLAGS) -DQLA_PrecisionInt=2
 test_macros_d_LDADD = -lm
 
 nodist_test_macros_q_SOURCES = ../src/test_macros.c $(CMPSRC)
-test_macros_q_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'Q\'
+test_macros_q_CFLAGS = $(AM_CFLAGS) -DQLA_PrecisionInt=4
 test_macros_q_LDADD = -lm
 
 # f
 nodist_test_scalar_f_sng_SOURCES = $(SNGSRC) $(CMPSRC)
-test_scalar_f_sng_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'F\'
+test_scalar_f_sng_CFLAGS = $(AM_CFLAGS) -DQLA_PrecisionInt=1
 test_scalar_f_sng_LDADD = $(QLADF) $(QLAEXTRA)
 
 nodist_test_scalar_f_idx_SOURCES = $(IDXSRC) $(CMPSRC)
-test_scalar_f_idx_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'F\'
+test_scalar_f_idx_CFLAGS = $(AM_CFLAGS) -DQLA_PrecisionInt=1
 test_scalar_f_idx_LDADD = $(QLADF) $(QLAEXTRA)
 
 # d
 nodist_test_scalar_d_sng_SOURCES = $(SNGSRC) $(CMPSRC)
-test_scalar_d_sng_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'D\'
+test_scalar_d_sng_CFLAGS = $(AM_CFLAGS) -DQLA_PrecisionInt=2
 test_scalar_d_sng_LDADD = $(QLADQ) $(QLAEXTRA)
 
 nodist_test_scalar_d_idx_SOURCES = $(IDXSRC) $(CMPSRC)
-test_scalar_d_idx_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'D\'
+test_scalar_d_idx_CFLAGS = $(AM_CFLAGS) -DQLA_PrecisionInt=2
 test_scalar_d_idx_LDADD = $(QLADQ) $(QLAEXTRA)
 
 # q
 nodist_test_scalar_q_sng_SOURCES = $(SNGSRC) $(CMPSRC)
-test_scalar_q_sng_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'Q\'
+test_scalar_q_sng_CFLAGS = $(AM_CFLAGS) -DQLA_PrecisionInt=4
 test_scalar_q_sng_LDADD = $(QLAQ) $(QLAEXTRA)
 
 nodist_test_scalar_q_idx_SOURCES = $(IDXSRC) $(CMPSRC)
-test_scalar_q_idx_CFLAGS = $(AM_CFLAGS) -DQLA_Precision=\'Q\'
+test_scalar_q_idx_CFLAGS = $(AM_CFLAGS) -DQLA_PrecisionInt=4
 test_scalar_q_idx_LDADD = $(QLAQ) $(QLAEXTRA)
 
 # df

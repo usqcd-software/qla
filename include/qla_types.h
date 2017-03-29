@@ -1,6 +1,14 @@
 #ifndef _QLA_TYPES_H
 #define _QLA_TYPES_H
 
+#ifndef QLA_Precision
+#if QLA_PrecisionInt == 2
+#define QLA_Precision 'D'
+#else
+#define QLA_Precision 'F'
+#endif
+#endif
+
 #if defined(__GNUC__) || defined(__xlc__)
 #define _ALIGN2(x) __attribute__ ((aligned x))
 #else
